@@ -1,16 +1,41 @@
-import { useRouteError } from "react-router-dom";
+import { useRouteError, isRouteErrorResponse } from "react-router-dom";
 
-export default function ErrorPage() {
+const ErrorPage = () => {
     const error = useRouteError();
     console.error(error);
 
     return (
-        <div id="error-page">
+        <>
             <h1 className="title">Oops!</h1>
-            <p>Sorry, an unexpected error has occurred.</p>
             <p>
-                <i>{error.statusText || error.message}</i>
+                <i><RootBoundary /></i>
             </p>
-        </div>
+        </>
     );
 }
+
+function RootBoundary() {
+    const error = useRouteError();
+
+    if (isRouteErrorResponse(error)) {
+        if (error.status === 404) {
+            return <>Chyba {error.status} - Tato stránka existuje!</>;
+        }
+
+        if (error.status === 401) {
+            return <>Chyba {error.status} - Nemáte oprávnění!</>;
+        }
+
+        if (error.status === 503) {
+            return <>Chyba {error.status} - Nepodařilo se načíst API!</>;
+        }
+
+        if (error.status === 418) {
+            return <>🫖</>;
+        }
+    }
+
+    return <>{error.statusText || error.message}</>;
+}
+
+export default ErrorPage

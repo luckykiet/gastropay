@@ -1,6 +1,5 @@
-import 'bulma/css/bulma.min.css';
 import { Link } from 'react-router-dom';
-
+import packageJson from '../../package.json';
 
 const items = [
     {
@@ -16,7 +15,7 @@ const items = [
     {
         path: 'login',
         name: 'Přihlášení',
-        dividerAfter: true
+        dividerAfter: false
     }
 ];
 
@@ -32,14 +31,14 @@ const NavItems = () => {
 const Navbar = () => {
     // const activeClassName = "underline";
     return (
-        <nav className='navbar is-primary' role="navigation" aria-label="main navigation" >
+        <nav className='navbar is-primary is-spaced has-shadow' role="navigation" aria-label="main navigation" >
             <div className="navbar-brand">
                 <Link className="navbar-item" to="/">
-                    Gastro Pay
+                    {packageJson.app.name}
                 </Link>
             </div>
 
-            <div id="navbarMain" class="navbar-menu">
+            <div id="navbarMain" className="navbar-menu">
                 <div className="navbar-item has-dropdown is-hoverable">
                     <Link to="/" className="navbar-link">
                         Více

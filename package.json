@@ -1,5 +1,10 @@
 {
   "name": "gastropay",
+  "app": {
+    "name": "Gastro Pay",
+    "www": "gastropay.cz",
+    "provider": "Tuan Kiet Nguyen"
+  },
   "version": "0.1.0",
   "private": true,
   "dependencies": {

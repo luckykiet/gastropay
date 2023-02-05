@@ -1,6 +1,7 @@
 import 'bulma/css/bulma.min.css';
 import Navbar from '../Navbar';
 import { Outlet } from 'react-router-dom';
+import Footer from '../Footer';
 export default function RootLayout() {
     return (
         <>
@@ -13,6 +14,7 @@ export default function RootLayout() {
                         <Outlet />
                     </div>
                 </main>
+                <Footer />
             </div>
         </>
     )

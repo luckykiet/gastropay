@@ -6,6 +6,8 @@ import RootLayout from './components/layouts/RootLayout';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import ErrorPage from './pages/ErrorPage';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -16,23 +18,30 @@ const router = createBrowserRouter([
     path: "/",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "about",
-        element: <AboutPage />,
-        errorElement: <ErrorPage />,
+    children: [{
+      children: [
+        {
+          path: "",
+          element: <HomePage />,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: "about",
+          element: <AboutPage />,
+          errorElement: <ErrorPage />,
+        }, {
+          path: '/contact',
+          element: <ContactPage />,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: '/login',
+          element: <LoginPage />,
+          errorElement: <ErrorPage />,
+        },
+      ],
+    }]
 
-      }, {
-        path: '/contact',
-        element: <ContactPage />,
-        errorElement: <ErrorPage />,
-      },
-      {
-        path: '/error',
-        element: <ErrorPage />,
-        errorElement: <ErrorPage />,
-      },
-    ],
   },
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
