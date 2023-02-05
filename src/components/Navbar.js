@@ -1,19 +1,20 @@
 import 'bulma/css/bulma.min.css';
+import { Link } from 'react-router-dom';
 
 
 const items = [
     {
-        path: '/contact',
+        path: 'contact',
         name: 'Kontakty',
         dividerAfter: false
     },
     {
-        path: '/about',
+        path: 'about',
         name: 'O nás',
         dividerAfter: true
     },
     {
-        path: '/login',
+        path: 'login',
         name: 'Přihlášení',
         dividerAfter: true
     }
@@ -22,27 +23,27 @@ const items = [
 const NavItems = () => {
     return items.map(({ path, name, dividerAfter }) => (
         <>
-            <a className='navbar-item' href={path} >{name}</a>
+            <Link className='navbar-item' to={path} >{name}</Link>
             {dividerAfter ? <hr className="navbar-divider" /> : ''}
         </>
     ));
 }
 
 const Navbar = () => {
-    const activeClassName = "underline";
+    // const activeClassName = "underline";
     return (
         <nav className='navbar is-primary' role="navigation" aria-label="main navigation" >
             <div className="navbar-brand">
-                <a className="navbar-item" href="/">
+                <Link className="navbar-item" to="/">
                     Gastro Pay
-                </a>
+                </Link>
             </div>
 
             <div id="navbarMain" class="navbar-menu">
                 <div className="navbar-item has-dropdown is-hoverable">
-                    <a className="navbar-link">
+                    <Link to="/" className="navbar-link">
                         Více
-                    </a>
+                    </Link>
                     <div className="navbar-dropdown is-boxed">
                         <NavItems />
                     </div>
