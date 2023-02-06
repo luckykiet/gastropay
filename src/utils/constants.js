@@ -3,7 +3,9 @@ export const paths = {
     LOGIN: '/login',
     LOG_OUT: '/logout',
     CONTACT: '/contact',
-    ABOUT: '/about'
+    ABOUT: '/about',
+    REGISTRATION: '/registration',
+    FORGOTTEN_PASS: '/forgottenpassword'
 };
 
 export const languages = {

@@ -1,46 +1,53 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import packageJson from '../../package.json';
+import { paths } from '../utils';
 
 const items = [
     {
-        path: 'contact',
+        path: paths.CONTACT,
         name: 'Kontakty',
         dividerAfter: false
     },
     {
-        path: 'about',
+        path: paths.ABOUT,
         name: 'O nás',
         dividerAfter: true
     },
     {
-        path: 'login',
+        path: paths.LOGIN,
         name: 'Přihlášení',
+        dividerAfter: false
+    },
+    {
+        path: paths.REGISTRATION,
+        name: 'Registrace',
         dividerAfter: false
     }
 ];
 
 const NavItems = () => {
+    let activeClassName = ' is-active';
     return items.map(({ path, name, dividerAfter }) => (
         <>
-            <Link className='navbar-item' to={path} >{name}</Link>
+            <NavLink className={({ isActive }) =>
+                'navbar-item' + (isActive ? activeClassName : "")} to={path} >{name}</NavLink>
             {dividerAfter ? <hr className="navbar-divider" /> : ''}
         </>
     ));
 }
 
 const Navbar = () => {
-    // const activeClassName = "underline";
     return (
         <nav className='navbar is-primary is-spaced has-shadow' role="navigation" aria-label="main navigation" >
             <div className="navbar-brand">
-                <Link className="navbar-item" to="/">
+                <Link className="navbar-item" to={paths.HOME}>
                     {packageJson.app.name}
                 </Link>
             </div>
 
             <div id="navbarMain" className="navbar-menu">
                 <div className="navbar-item has-dropdown is-hoverable">
-                    <Link to="/" className="navbar-link">
+                    <Link to={paths.HOME} className="navbar-link">
                         Více
                     </Link>
                     <div className="navbar-dropdown is-boxed">

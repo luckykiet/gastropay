@@ -3,16 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './assets/scss/index.scss';
 import reportWebVitals from './reportWebVitals';
 import RootLayout from './components/layouts/RootLayout';
-import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactPage';
+import AboutPage from './pages/guest/AboutPage';
+import ContactPage from './pages/guest/ContactPage';
 import ErrorPage from './pages/ErrorPage';
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
+import HomePage from './pages/guest/HomePage';
+import LoginPage from './pages/auth/LoginPage';
+import RegisterPage from './pages/auth/RegisterPage';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import { paths } from './utils';
+import ForgottenPasswordPage from './pages/auth/ForgottenPasswordPage';
+
 
 const router = createBrowserRouter([
   {
@@ -36,13 +39,21 @@ const router = createBrowserRouter([
           errorElement: <ErrorPage />,
         },
         {
-          path: paths.LOGIN,
-          element: <LoginPage />,
+          path: paths.REGISTRATION,
+          element: <RegisterPage />,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: paths.FORGOTTEN_PASS,
+          element: <ForgottenPasswordPage />,
           errorElement: <ErrorPage />,
         },
       ],
     }]
-
+  }, {
+    path: paths.LOGIN,
+    element: <LoginPage />,
+    errorElement: <ErrorPage />,
   },
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
