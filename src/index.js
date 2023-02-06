@@ -12,10 +12,11 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import { paths } from './utils';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: paths.HOME,
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [{
@@ -26,16 +27,16 @@ const router = createBrowserRouter([
           errorElement: <ErrorPage />,
         },
         {
-          path: "about",
+          path: paths.ABOUT,
           element: <AboutPage />,
           errorElement: <ErrorPage />,
         }, {
-          path: '/contact',
+          path: paths.CONTACT,
           element: <ContactPage />,
           errorElement: <ErrorPage />,
         },
         {
-          path: '/login',
+          path: paths.LOGIN,
           element: <LoginPage />,
           errorElement: <ErrorPage />,
         },
