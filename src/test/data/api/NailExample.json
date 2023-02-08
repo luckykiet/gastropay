@@ -1,0 +1,302 @@
+{
+  "success": true,
+  "msg": {
+    "services": {
+      "1": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 1,
+        "price": "800.00",
+        "name": "Masáž celého těla, hlavy a obličeje "
+      },
+      "2": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 1,
+        "price": "500.00",
+        "name": "Masáž celého těla "
+      },
+      "3": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 1,
+        "price": "200.00",
+        "name": "Záda + šíje "
+      },
+      "4": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 1,
+        "price": "200.00",
+        "name": "Klasické masáže dolní končetiny "
+      },
+      "5": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 1,
+        "price": "100.00",
+        "name": "Horní končetiny"
+      },
+      "6": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 2,
+        "price": "500.00",
+        "name": "Lymfatické masáže dolní končetiny"
+      },
+      "7": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 2,
+        "price": "150.00",
+        "name": "Obličej + krk"
+      },
+      "8": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 3,
+        "price": "200.00",
+        "name": "Indická masáž hlavy a obličeje "
+      },
+      "9": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 3,
+        "price": "500.00",
+        "name": "Medová masáž zad a šíje "
+      },
+      "10": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 3,
+        "price": "500.00",
+        "name": "Čokoládová masáž zad a šíje "
+      },
+      "11": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 3,
+        "price": "600.00",
+        "name": "Havajská masáž celková"
+      },
+      "12": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 3,
+        "price": "500.00",
+        "name": "Těhotenská masáž "
+      },
+      "13": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 3,
+        "price": "700.00",
+        "name": "Čínská bodová masáž zad, šíje a nohou "
+      },
+      "14": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 3,
+        "price": "500.00",
+        "name": "Thajská masáž chodidel"
+      },
+      "15": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 3,
+        "price": "800.00",
+        "name": "Masáž horkými kameny"
+      },
+      "16": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 3,
+        "price": "900.00",
+        "name": "Bambusové masáže"
+      },
+      "17": {
+        "unit": "pcs",
+        "amount": 1,
+        "group": 3,
+        "price": "200.00",
+        "name": "Dětské masáže "
+      }
+    },
+    "settings": {
+      "timeCliff": 45,
+      "nDatesToRender": 14,
+      "startTime": "10:00",
+      "endTime": "18:00",
+      "isEnabledWeekend": false
+    },
+    "business": { "name": "Bodycare Studio" },
+    "currency": {
+      "locale": "cs",
+      "rounding": true,
+      "symbol": "Kč",
+      "code": "CZK"
+    },
+    "employees": [
+      {
+        "_id": "5e7232945a3ff006103e7f13",
+        "name": "Ana",
+        "bg": "D9D148",
+        "image": "zo82wbvv3eyiqrbufl98"
+      },
+      {
+        "_id": "58bf1cdd6d1193037caf873e",
+        "name": "Manikérka",
+        "bg": "41586b",
+        "image": "kfcbnc3xchzlwbl7hag5"
+      },
+      {
+        "_id": "5e72324f5a3ff006103e7ed5",
+        "name": "Dana",
+        "bg": "6B416B",
+        "image": "i9gc0sdgqem0zuzt0rar"
+      },
+      {
+        "_id": "5e7232665a3ff006103e7ee9",
+        "name": "Jana",
+        "bg": "38A86A",
+        "image": "vbwyj1nvlvi7iyqqd9wa"
+      }
+    ],
+    "serviceTabs": [
+      {
+        "name": "Klasické masáže",
+        "quickSales": [
+          {
+            "ean": "1",
+            "bg": "334C60",
+            "image": "vcxxkibhjum9k5xszlbh",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "2",
+            "bg": "334C60",
+            "image": "h3ris3o2vdeq95zye3yx",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "3",
+            "bg": "334C60",
+            "image": "tvvemerqrt6ynir9zenn",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "4",
+            "bg": "334C60",
+            "image": "gplgjrfs9sn0m7fvnjji",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "5",
+            "bg": "334C60",
+            "image": "us4dwtn20mycs1py2pzq",
+            "qsscale": false,
+            "enabled": true
+          }
+        ]
+      },
+      {
+        "name": "Lymfatické masáže",
+        "quickSales": [
+          {
+            "ean": "6",
+            "bg": "334C60",
+            "image": "dnn5cdllptixxmnq21hk",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "7",
+            "bg": "334C60",
+            "image": "fal2obalygaszojtkfus",
+            "qsscale": false,
+            "enabled": true
+          }
+        ]
+      },
+      {
+        "name": "Speciální masáže",
+        "quickSales": [
+          {
+            "ean": "8",
+            "bg": "334C60",
+            "image": "ledz6tax3fwolzrwzb5r",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "9",
+            "bg": "334C60",
+            "image": "pp0pkd36f3fg0ico1wc9",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "10",
+            "bg": "334C60",
+            "image": "peekvz5u6r5bjuu0krgi",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "11",
+            "bg": "334C60",
+            "image": "rbicoqa8k0dkancqirdv",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "12",
+            "bg": "334C60",
+            "image": "ljpftcpupu0wqwsg4qfc",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "13",
+            "bg": "334C60",
+            "image": "ybg0bbuzkuteznlq3rfj",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "14",
+            "bg": "334C60",
+            "image": "sn7ulbolrihhsjr27qap",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "15",
+            "bg": "334C60",
+            "image": "ipuftmlfdktmvjjxbdma",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "16",
+            "bg": "334C60",
+            "image": "ede61lfzeglpjvrsscot",
+            "qsscale": false,
+            "enabled": true
+          },
+          {
+            "ean": "17",
+            "bg": "334C60",
+            "image": "udrwrs523uruyb1lbh5p",
+            "qsscale": false,
+            "enabled": true
+          }
+        ]
+      }
+    ]
+  }
+}

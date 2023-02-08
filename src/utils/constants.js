@@ -5,7 +5,9 @@ export const paths = {
     CONTACT: '/contact',
     ABOUT: '/about',
     REGISTRATION: '/registration',
-    FORGOTTEN_PASS: '/forgottenpassword'
+    FORGOTTEN_PASS: '/forgottenpassword',
+    RESTAURANTS: '/restaurants',
+
 };
 
 export const languages = {

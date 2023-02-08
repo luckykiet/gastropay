@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import { paths } from './utils';
 import ForgottenPasswordPage from './pages/auth/ForgottenPasswordPage';
+import RestaurantsPage from './pages/guest/RestaurantsPage';
 
 
 const router = createBrowserRouter([
@@ -46,6 +47,11 @@ const router = createBrowserRouter([
         {
           path: paths.FORGOTTEN_PASS,
           element: <ForgottenPasswordPage />,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: paths.RESTAURANTS,
+          element: <RestaurantsPage />,
           errorElement: <ErrorPage />,
         },
       ],
