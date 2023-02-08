@@ -1,9 +1,9 @@
-const AboutPage = () => {
+import { Heading } from "react-bulma-components";
+
+export default function AboutPage() {
     return (
         <>
-            <h1 className="title">AboutPage</h1>
+            <Heading>AboutPage</Heading>
         </>
     )
 }
-
-export default AboutPage

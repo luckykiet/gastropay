@@ -1,12 +1,14 @@
 import packageJson from '../../../package.json';
-const HomePage = () => {
+import { Content, Heading, Button } from "react-bulma-components";
+
+export default function HomePage() {
     return (
         <>
-            <div className="content is-vcentered has-text-centered">
-                <h1 className="title is-spaced pt-5">{packageJson.app.name}</h1>
-            </div>
-            <div className="content">
-                <h2 className="subtitle">Vítáme vás v aplikaci {packageJson.app.name}</h2>
+            <Content className="has-text-centered">
+                <Heading className="pt-5" spaced>{packageJson.app.name}</Heading>
+            </Content>
+            <Content>
+                <Heading subtitle>Vítáme vás v aplikaci {packageJson.app.name}</Heading>
                 <p>Zde můžete pohodlně objednat jídlo bez obsluhy.</p>
                 <p>Návod:</p>
                 <ol>
@@ -15,13 +17,8 @@ const HomePage = () => {
                     <li>Zaplaťte svůj nákup</li>
                     <li>Zvolte stůl a počkejte na svoje jídlo</li>
                 </ol>
-            </div>
-
-            <button className="button is-large is-primary is-fullwidth">
-                Začni objednávat!
-            </button>
+            </Content>
+            <Button size={'large'} color={'primary'} fullwidth> Začněte objednávat!</Button>
         </>
     )
 }
-
-export default HomePage

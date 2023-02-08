@@ -1,9 +1,9 @@
-const ContactPage = () => {
+import { Heading } from "react-bulma-components";
+
+export default function ContactPage() {
     return (
         <>
-            <h1 className="title">ContactPage</h1>
+            <Heading>ContactPage</Heading>
         </>
     )
 }
-
-export default ContactPage

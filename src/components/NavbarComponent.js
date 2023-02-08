@@ -1,6 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import packageJson from '../../package.json';
 import { paths } from '../utils';
+import { Navbar } from 'react-bulma-components';
 
 const items = [
     {
@@ -31,33 +32,29 @@ const NavItems = () => {
         <>
             <NavLink className={({ isActive }) =>
                 'navbar-item' + (isActive ? activeClassName : "")} to={path} >{name}</NavLink>
-            {dividerAfter ? <hr className="navbar-divider" /> : ''}
+            {dividerAfter ? <Navbar.Divider /> : ''}
         </>
     ));
 }
 
-const Navbar = () => {
+export default function NavbarComponent() {
     return (
-        <nav className='navbar is-primary is-spaced has-shadow' role="navigation" aria-label="main navigation" >
-            <div className="navbar-brand">
+        <Navbar color={'primary'} className='is-spaced has-shadow' >
+            <Navbar.Brand>
                 <Link className="navbar-item" to={paths.HOME}>
                     {packageJson.app.name}
                 </Link>
-            </div>
-
-            <div id="navbarMain" className="navbar-menu">
-                <div className="navbar-item has-dropdown is-hoverable">
-                    <Link to={paths.HOME} className="navbar-link">
-                        Více
-                    </Link>
-                    <div className="navbar-dropdown is-boxed">
-                        <NavItems />
-                    </div>
-                </div>
-            </div>
-
-        </nav >
+            </Navbar.Brand>
+            <Navbar.Menu>
+                <Navbar.Container>
+                    <Navbar.Item hoverable>
+                        <Navbar.Link>Více</Navbar.Link>
+                        <Navbar.Dropdown boxed>
+                            <NavItems />
+                        </Navbar.Dropdown>
+                    </Navbar.Item>
+                </Navbar.Container>
+            </Navbar.Menu>
+        </Navbar>
     )
 }
-
-export default Navbar

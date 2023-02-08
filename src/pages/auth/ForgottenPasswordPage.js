@@ -1,33 +1,28 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
-const ForgottenPasswordPage = () => {
+import { Box, Columns, Content, Heading, Form, Icon, Button } from "react-bulma-components";
+export default function ForgottenPasswordPage() {
     return (
         <>
-            <div className="content is-vcentered has-text-centered">
-                <h1 className="title is-spaced pt-5">Obnovit heslo</h1>
-            </div>
-            <div className="columns is-centered pt-5">
-                <div className="column is-5-tablet is-4-desktop is-4-widescreen">
-                    <form action="" className="box">
-                        <div className="field">
-                            <label for="inputEmail" className="label">Email</label>
-                            <div className="control has-icons-left">
-                                <input id="inputEmail" type="email" placeholder="gastropay@vse.cz" className="input" required />
-                                <span className="icon is-small is-left">
-                                    <FontAwesomeIcon icon={faEnvelope} />
-                                </span>
-                            </div>
-                        </div>
-                        <div className="field">
-                            <button className="button is-warning is-fullwidth">
-                                Obnovit heslo
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <Content className="has-text-centered">
+                <Heading className="pt-5" spaced>Obnovit heslo</Heading>
+            </Content>
+            <Columns className="pt-5" centered vCentered >
+                <Columns.Column size={4} tablet={5} desktop={4} widescreen={4}>
+                    <Box>
+                        <Form.Field>
+                            <Form.Label for="inputEmail">
+                                Email
+                            </Form.Label>
+                            <Form.Control>
+                                <Form.Input id="inputEmail" type="email" placeholder="gastropay@vse.cz" required />
+                                <Icon align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
+                            </Form.Control>
+                        </Form.Field>
+                        <Button fullwidth color={'warning'}>Obnovit heslo</Button>
+                    </Box>
+                </Columns.Column>
+            </Columns>
         </>
     )
 }
-
-export default ForgottenPasswordPage

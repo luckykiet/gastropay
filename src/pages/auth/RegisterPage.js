@@ -1,66 +1,61 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
-const RegisterPage = () => {
+import { Box, Columns, Content, Heading, Form, Icon, Button } from "react-bulma-components";
+
+export default function RegisterPage() {
     return (
         <>
-            <div className="content is-vcentered has-text-centered">
-                <h1 className="title is-spaced pt-5">Registrační formulář</h1>
-            </div>
-            <div className="columns is-centered pt-5">
-                <div className="column is-5-tablet is-4-desktop is-4-widescreen">
-                    <form action="" className="box">
-                        <div className="field">
-                            <label for="inputICO" className="label">IČO</label>
-                            <div className="control has-icons-left">
-                                <input id="inputICO" type="text" placeholder="12345678" className="input" required />
-                                <span className="icon is-small is-left">
-                                    <FontAwesomeIcon icon={faUser} />
-                                </span>
-                            </div>
-                        </div>
-                        <div className="field">
-                            <label for="inputEmail" className="label">Email</label>
-                            <div className="control has-icons-left">
-                                <input id="inputEmail" type="email" placeholder="gastropay@vse.cz" className="input" required />
-                                <span className="icon is-small is-left">
-                                    <FontAwesomeIcon icon={faEnvelope} />
-                                </span>
-                            </div>
-                        </div>
-                        <div className="field">
-                            <label for="inputPassword" className="label">Heslo</label>
-                            <div className="control has-icons-left">
-                                <input id="inputPassword" type="password" placeholder="*******" className="input" required />
-                                <span className="icon is-small is-left">
-                                    <FontAwesomeIcon icon={faLock} />
-                                </span>
-                            </div>
-                        </div>
-                        <div className="field">
-                            <label for="inputConfirmPassword" className="label">Ověřit heslo</label>
-                            <div className="control has-icons-left">
-                                <input id="inputConfirmPassword" type="password" placeholder="*******" className="input" required />
-                                <span className="icon is-small is-left">
-                                    <FontAwesomeIcon icon={faLock} />
-                                </span>
-                            </div>
-                        </div>
-                        <div className="field">
-                            <label for="agreementCheckBox" className="checkbox">
-                                <input id="agreementCheckBox" type="checkbox" />
-                                &nbsp;Souhlasíte s podmínky
-                            </label>
-                        </div>
-                        <div className="field">
-                            <button className="button is-warning is-fullwidth">
-                                Zaregistrovat se
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <Content className="has-text-centered">
+                <Heading className="pt-5" spaced>Registrační formulář</Heading>
+            </Content>
+            <Columns className="pt-5" centered vCentered >
+                <Columns.Column size={4} tablet={5} desktop={4} widescreen={4}>
+                    <Box>
+                        <Form.Field>
+                            <Form.Label for="inputIco">
+                                IČO
+                            </Form.Label>
+                            <Form.Control>
+                                <Form.Input id="inputIco" type="text" placeholder="12345678" required />
+                                <Icon align="left"><FontAwesomeIcon icon={faUser} /></Icon>
+                            </Form.Control>
+                        </Form.Field>
+                        <Form.Field>
+                            <Form.Label for="inputEmail">
+                                Email
+                            </Form.Label>
+                            <Form.Control>
+                                <Form.Input id="inputEmail" type="email" placeholder="gastropay@vse.cz" required />
+                                <Icon align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
+                            </Form.Control>
+                        </Form.Field>
+                        <Form.Field>
+                            <Form.Label for="inputPassword">
+                                Heslo
+                            </Form.Label>
+                            <Form.Control>
+                                <Form.Input id="inputPassword" type="password" placeholder="*************" required />
+                                <Icon align="left">  <FontAwesomeIcon icon={faLock} /></Icon>
+                            </Form.Control>
+                        </Form.Field>
+                        <Form.Field>
+                            <Form.Label for="inputConfirmPassword">
+                                Ověření hesla
+                            </Form.Label>
+                            <Form.Control>
+                                <Form.Input id="inputConfirmPassword" type="password" placeholder="*************" required />
+                                <Icon align="left">  <FontAwesomeIcon icon={faLock} /></Icon>
+                            </Form.Control>
+                        </Form.Field>
+                        <Form.Field>
+                            <Form.Control>
+                                <Form.Checkbox id="agreementCheckBox">&nbsp;Souhlasíte s podmínky</Form.Checkbox>
+                            </Form.Control>
+                        </Form.Field>
+                        <Button fullwidth color={'warning'}>Zaregistrovat se</Button>
+                    </Box>
+                </Columns.Column>
+            </Columns>
         </>
     )
 }
-
-export default RegisterPage
