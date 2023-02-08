@@ -1,16 +1,30 @@
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
+import { Heading, Content, Container } from "react-bulma-components";
+import NavbarComponent from "../components/NavbarComponent";
+import FooterComponent from "../components/FooterComponent";
+import 'bulma/css/bulma.min.css';
 
-const ErrorPage = () => {
+export default function ErrorPage() {
     const error = useRouteError();
     console.error(error);
 
     return (
-        <>
-            <h1 className="title">Oops!</h1>
-            <p>
-                <i><RootBoundary /></i>
-            </p>
-        </>
+        <Container breakpoint={'fullhd'}>
+            <header>
+                <NavbarComponent />
+            </header>
+            <main>
+                <Container breakpoint={'widescreen'}>
+                    <Heading>Oops!</Heading>
+                    <Content>
+                        <p>
+                            <i><RootBoundary /></i>
+                        </p>
+                    </Content>
+                </Container>
+            </main>
+            <FooterComponent />
+        </Container>
     );
 }
 
@@ -37,5 +51,3 @@ function RootBoundary() {
 
     return <>{error.statusText || error.message}</>;
 }
-
-export default ErrorPage
