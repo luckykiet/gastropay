@@ -1,9 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { paths } from "../../utils";
 import { Box, Columns, Container, Hero, Form, Icon, Button } from "react-bulma-components";
 export default function LoginPage() {
+    const navigate = useNavigate();
+    const handleBackToApp = () => {
+        navigate(paths.HOME);
+    }
     return (
         <Hero size={'fullheight'} color={'primary'}>
             <Hero.Body>
@@ -29,16 +33,26 @@ export default function LoginPage() {
                                         <Icon align="left">  <FontAwesomeIcon icon={faLock} /></Icon>
                                     </Form.Control>
                                 </Form.Field>
-                                <p>Nemáte účet? <Link to={paths.REGISTRATION} className="is-underlined">Zaregistrujte</Link></p>
+                                <p className="py-2">Nemáte účet? <Link to={paths.REGISTRATION} className="is-underlined">Zaregistrujte</Link></p>
                                 <p>Zapoměl(a) jste heslo? <Link to={paths.FORGOTTEN_PASS} className="is-underlined">Obnovte heslo</Link></p>
-                                <Form.Field>
+                                <Form.Field py={2}>
                                     <Form.Control>
                                         <Form.Checkbox id="rememberMeCheckBox">&nbsp;Zapamatovat si</Form.Checkbox>
                                     </Form.Control>
                                 </Form.Field>
-                                <Button color={'success'}>
-                                    Přihlásit se
-                                </Button>
+                                <Columns>
+                                    <Columns.Column size={"half"}>
+                                        <Button fullwidth color={'success'}>
+                                            Přihlásit se
+                                        </Button>
+                                    </Columns.Column>
+                                    <Columns.Column size={"half"}>
+                                        <Button onClick={handleBackToApp} fullwidth color={'warning'}>
+                                            Zpět do aplikace
+                                        </Button>
+                                    </Columns.Column>
+                                </Columns>
+
                             </Box>
                         </Columns.Column>
                     </Columns>
