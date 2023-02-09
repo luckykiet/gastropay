@@ -11,8 +11,8 @@ export default function HomePage() {
     }
     return (
         <>
-            <Content className="has-text-centered">
-                <Heading size={1} className="pt-5" spaced>{packageJson.app.name}</Heading>
+            <Content textAlign={'center'}>
+                <Heading size={1} pt={5} spaced>{packageJson.app.name}</Heading>
             </Content>
             <Content>
                 <Heading size={3} subtitle>Vítáme vás v aplikaci {packageJson.app.name}</Heading>

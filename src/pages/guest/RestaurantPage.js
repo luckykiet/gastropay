@@ -6,8 +6,8 @@ export default function RestaurantPage() {
     console.log(idRestaurant);
     return (
         <>
-            <Content className="has-text-centered">
-                <Heading className="pt-5" spaced>Restaurace: {idRestaurant}</Heading>
+            <Content textAlign={'center'}>
+                <Heading pt={5} spaced>Restaurace: {idRestaurant}</Heading>
             </Content>
         </>
     )

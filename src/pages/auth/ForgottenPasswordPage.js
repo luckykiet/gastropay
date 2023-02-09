@@ -4,10 +4,10 @@ import { Box, Columns, Content, Heading, Form, Icon, Button } from "react-bulma-
 export default function ForgottenPasswordPage() {
     return (
         <>
-            <Content className="has-text-centered">
-                <Heading className="pt-5" spaced>Obnovit heslo</Heading>
+            <Content textAlign={"center"}>
+                <Heading pt={5} spaced>Obnovit heslo</Heading>
             </Content>
-            <Columns className="pt-5" centered vCentered >
+            <Columns pt={5} centered vCentered >
                 <Columns.Column size={4} tablet={5} desktop={4} widescreen={4}>
                     <Box>
                         <Form.Field>

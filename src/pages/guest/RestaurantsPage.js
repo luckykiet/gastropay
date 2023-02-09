@@ -28,7 +28,7 @@ export default function RestaurantsPage() {
     const RestaurantLists = () => {
         if (!restaurants || Object.keys(restaurants).length === 0) {
             return (
-                <Content className="has-text-centered">
+                <Content textAlign={"center"}>
                     <p>Momentálně není žádná restaurace aktivní</p>
                 </Content>
             )
@@ -84,8 +84,8 @@ export default function RestaurantsPage() {
 
     return (
         <>
-            <Content className="has-text-centered">
-                <Heading className="pt-5" spaced>Zvolte restauraci</Heading>
+            <Content textAlign={"center"}>
+                <Heading pt={5} spaced>Zvolte restauraci</Heading>
             </Content>
 
             <Container>
