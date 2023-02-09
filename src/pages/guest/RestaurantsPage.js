@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Container, Content, Heading, Block, Media, Image } from "react-bulma-components";
+import { Button, Card, Container, Content, Heading, Media, Image, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, checkTimeBefore, createAxios, paths } from "../../utils";
+import { BASE_URL, createAxios, paths } from "../../utils";
 import { Promise } from "bluebird";
 import moment from "moment";
 
@@ -36,7 +36,7 @@ export default function RestaurantsPage() {
             return (
                 Object.keys(restaurants).map((item) => {
                     return (
-                        <Block key={item}>
+                        <Columns.Column key={item} narrow>
                             <Card>
                                 <Card.Header>
                                     <Card.Header.Title>{restaurants[item].name}</Card.Header.Title>
@@ -64,7 +64,7 @@ export default function RestaurantsPage() {
                                     <Card.Footer.Item><Button onClick={() => navigate(paths.RESTAURANT + "/" + item)} color={"primary"} fullwidth>Zvolit</Button></Card.Footer.Item>
                                 </Card.Footer>
                             </Card>
-                        </Block>
+                        </Columns.Column>
                     )
                 })
             )
@@ -89,7 +89,10 @@ export default function RestaurantsPage() {
             </Content>
 
             <Container>
-                <RestaurantLists />
+                <Columns centered vCentered>
+                    <RestaurantLists />
+                </Columns>
+
             </Container>
 
         </>
