@@ -9,7 +9,7 @@ export default function LoginPage() {
             <Hero.Body>
                 <Container>
                     <Columns centered vCentered>
-                        <Columns.Column size={4} tablet={5} desktop={4} widescreen={4}>
+                        <Columns.Column size={"one-third"}>
                             <Box>
                                 <Form.Field>
                                     <Form.Label for="inputEmail">

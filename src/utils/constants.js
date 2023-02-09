@@ -16,3 +16,5 @@ export const languages = {
     CS: 'cs',
     EN: 'en'
 };
+
+export const BASE_URL = "http://localhost:3000";

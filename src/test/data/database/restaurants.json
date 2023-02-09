@@ -8,10 +8,11 @@
     },
     "openingTime": {
       "wednesday": {
-        "from": "08:00:00",
-        "to": "20:00:00"
+        "from": "08:00",
+        "to": "20:00"
       }
-    }
+    },
+    "image": "/images/restaurants/saigon_bistro.jpg"
   },
   "2": {
     "name": "Hanoi Bistro",
@@ -22,10 +23,11 @@
     },
     "openingTime": {
       "wednesday": {
-        "from": "10:00:00",
-        "to": "16:00:00"
+        "from": "10:00",
+        "to": "16:00"
       }
-    }
+    },
+    "image": "/images/restaurants/hanoi_bistro.jpg"
   },
   "3": {
     "name": "Pho 24",
@@ -36,8 +38,8 @@
     },
     "openingTime": {
       "wednesday": {
-        "from": "08:00:00",
-        "to": "23:00:00"
+        "from": "08:00",
+        "to": "23:00"
       }
     }
   }

@@ -6,17 +6,15 @@ import { Container } from 'react-bulma-components';
 export default function RootLayout() {
     return (
         <>
-            <Container breakpoint={'fullhd'}>
-                <header>
-                    <NavbarComponent />
-                </header>
-                <main>
-                    <Container breakpoint={'widescreen'}>
-                        <Outlet />
-                    </Container>
-                </main>
-                <FooterComponent />
-            </Container>
+            <header>
+                <NavbarComponent />
+            </header>
+            <main>
+                <Container breakpoint={'widescreen'}>
+                    <Outlet />
+                </Container>
+            </main>
+            <FooterComponent />
         </>
     )
 }

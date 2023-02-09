@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Container, Content, Heading, Section } from "react-bulma-components";
+import { Button, Card, Container, Content, Heading, Block, Media, Image } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { createAxios, paths } from "../../utils";
+import { BASE_URL, createAxios, paths } from "../../utils";
 import { Promise } from "bluebird";
 export default function RestaurantsPage() {
     const [restaurants, setRestaurants] = useState([]);
     const navigate = useNavigate();
+    const IMAGE_BASE_URL = "http://localhost:3000";
 
     //TODO get from db
     useEffect(() => {
@@ -28,28 +29,44 @@ export default function RestaurantsPage() {
             <Content className="has-text-centered">
                 <Heading className="pt-5" spaced>Zvolte restauraci</Heading>
             </Content>
-            <Section>
-                <Container>
-                    {Object.keys(restaurants).map((item, i) => {
-                        return (
+
+            <Container>
+                {Object.keys(restaurants).map((item) => {
+                    return (
+                        <Block>
                             <Card key={item}>
                                 <Card.Header>
                                     <Card.Header.Title>{restaurants[item].name}</Card.Header.Title>
                                 </Card.Header>
                                 <Card.Content>
-                                    <Content>
-                                        <p>{restaurants[item].address.street}</p>
-                                        <p>{restaurants[item].address.postalCode} {restaurants[item].address.city}</p>
-                                    </Content>
+                                    <Media>
+                                        <Media.Item align="left">
+                                            <Image alt={restaurants[item].name} src={restaurants[item].image ? IMAGE_BASE_URL + restaurants[item].image : BASE_URL + "/images/restaurants/default.jpg"} size={128}></Image>
+                                        </Media.Item>
+                                        <Media.Item align="center">
+                                            <Content>
+                                                <dl>
+                                                    <dt><strong>Adresa:</strong></dt>
+                                                    <dd>{restaurants[item].address.street}</dd>
+                                                    <dd>{restaurants[item].address.postalCode} {restaurants[item].address.city}</dd>
+                                                </dl>
+                                                <dl>
+                                                    <dt><strong>Otevírací doba:</strong></dt>
+                                                    <dd>Dnes: {restaurants[item].openingTime.wednesday.from} - {restaurants[item].openingTime.wednesday.to}</dd>
+                                                </dl>
+                                            </Content>
+                                        </Media.Item>
+                                    </Media>
                                 </Card.Content>
                                 <Card.Footer>
                                     <Card.Footer.Item><Button onClick={() => navigate(paths.RESTAURANT + "/" + item)} color={"primary"} fullwidth>Zvolit</Button></Card.Footer.Item>
                                 </Card.Footer>
                             </Card>
-                        )
-                    })}
-                </Container>
-            </Section>
+                        </Block>
+                    )
+                })}
+            </Container>
+
         </>
     );
 }                                                       

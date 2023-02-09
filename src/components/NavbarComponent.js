@@ -45,16 +45,14 @@ export default function NavbarComponent() {
                     {packageJson.app.name}
                 </Link>
             </Navbar.Brand>
-            <Navbar.Menu>
-                <Navbar.Container>
-                    <Navbar.Item hoverable>
-                        <Navbar.Link>Více</Navbar.Link>
-                        <Navbar.Dropdown boxed>
-                            <NavItems />
-                        </Navbar.Dropdown>
-                    </Navbar.Item>
-                </Navbar.Container>
-            </Navbar.Menu>
+            <Navbar.Container>
+                <Navbar.Item hoverable>
+                    <Navbar.Link>Více</Navbar.Link>
+                    <Navbar.Dropdown boxed>
+                        <NavItems />
+                    </Navbar.Dropdown>
+                </Navbar.Item>
+            </Navbar.Container>
         </Navbar>
     )
 }
