@@ -12,7 +12,7 @@ export default function LoginPage() {
                         <Columns.Column size={"one-third"}>
                             <Box>
                                 <Form.Field>
-                                    <Form.Label for="inputEmail">
+                                    <Form.Label htmlFor="inputEmail">
                                         Email
                                     </Form.Label>
                                     <Form.Control>
@@ -21,7 +21,7 @@ export default function LoginPage() {
                                     </Form.Control>
                                 </Form.Field>
                                 <Form.Field>
-                                    <Form.Label for="inputPassword">
+                                    <Form.Label htmlFor="inputPassword">
                                         Heslo
                                     </Form.Label>
                                     <Form.Control>

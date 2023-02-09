@@ -12,7 +12,7 @@ export default function RegisterPage() {
                 <Columns.Column size={4} tablet={5} desktop={4} widescreen={4}>
                     <Box>
                         <Form.Field>
-                            <Form.Label for="inputIco">
+                            <Form.Label htmlFor="inputIco">
                                 IČO
                             </Form.Label>
                             <Form.Control>
@@ -21,7 +21,7 @@ export default function RegisterPage() {
                             </Form.Control>
                         </Form.Field>
                         <Form.Field>
-                            <Form.Label for="inputEmail">
+                            <Form.Label htmlFor="inputEmail">
                                 Email
                             </Form.Label>
                             <Form.Control>
@@ -30,7 +30,7 @@ export default function RegisterPage() {
                             </Form.Control>
                         </Form.Field>
                         <Form.Field>
-                            <Form.Label for="inputPassword">
+                            <Form.Label htmlFor="inputPassword">
                                 Heslo
                             </Form.Label>
                             <Form.Control>
@@ -39,7 +39,7 @@ export default function RegisterPage() {
                             </Form.Control>
                         </Form.Field>
                         <Form.Field>
-                            <Form.Label for="inputConfirmPassword">
+                            <Form.Label htmlFor="inputConfirmPassword">
                                 Ověření hesla
                             </Form.Label>
                             <Form.Control>

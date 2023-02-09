@@ -18,23 +18,24 @@ export default function RestaurantsPage() {
                 throw resp.data;
             }
             setRestaurants(resp.data);
-        }).catch((error) => {
-            navigate(paths.ERROR);
-            console.log(error);
+        }).catch((err) => {
+            console.log(err);
         });
     }, [navigate]);
 
-    return (
-        <>
-            <Content className="has-text-centered">
-                <Heading className="pt-5" spaced>Zvolte restauraci</Heading>
-            </Content>
-
-            <Container>
-                {Object.keys(restaurants).map((item) => {
+    const RestaurantLists = () => {
+        if (!restaurants || Object.keys(restaurants).length === 0) {
+            return (
+                <Content className="has-text-centered">
+                    <p>Momentálně není žádná restaurace aktivní</p>
+                </Content>
+            )
+        } else {
+            return (
+                Object.keys(restaurants).map((item) => {
                     return (
-                        <Block>
-                            <Card key={item}>
+                        <Block key={item}>
+                            <Card>
                                 <Card.Header>
                                     <Card.Header.Title>{restaurants[item].name}</Card.Header.Title>
                                 </Card.Header>
@@ -64,7 +65,19 @@ export default function RestaurantsPage() {
                             </Card>
                         </Block>
                     )
-                })}
+                })
+            )
+        }
+    }
+
+    return (
+        <>
+            <Content className="has-text-centered">
+                <Heading className="pt-5" spaced>Zvolte restauraci</Heading>
+            </Content>
+
+            <Container>
+                <RestaurantLists />
             </Container>
 
         </>
