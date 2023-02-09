@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './assets/scss/index.scss';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import { paths } from './utils';
 import reportWebVitals from './reportWebVitals';
 import RootLayout from './components/layouts/RootLayout';
 import AboutPage from './pages/guest/AboutPage';
@@ -9,14 +14,9 @@ import ErrorPage from './pages/ErrorPage';
 import HomePage from './pages/guest/HomePage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import { paths } from './utils';
 import ForgottenPasswordPage from './pages/auth/ForgottenPasswordPage';
 import RestaurantsPage from './pages/guest/RestaurantsPage';
-
+import RestaurantPage from './pages/guest/RestaurantPage';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +52,11 @@ const router = createBrowserRouter([
         {
           path: paths.RESTAURANTS,
           element: <RestaurantsPage />,
+          errorElement: <ErrorPage />,
+        },
+        {
+          path: paths.RESTAURANT + "/:idRestaurant",
+          element: <RestaurantPage />,
           errorElement: <ErrorPage />,
         },
       ],

@@ -1,7 +1,14 @@
 import packageJson from '../../../package.json';
 import { Content, Heading, Button } from "react-bulma-components";
+import { useNavigate } from "react-router-dom";
+import { paths } from '../../utils';
 
 export default function HomePage() {
+    const navigate = useNavigate();
+
+    const handleStartApp = () => {
+        navigate(paths.RESTAURANTS);
+    }
     return (
         <>
             <Content className="has-text-centered">
@@ -18,7 +25,7 @@ export default function HomePage() {
                     <li>Zvolte stůl a počkejte na svoje jídlo</li>
                 </ol>
             </Content>
-            <Button size={'large'} color={'primary'} fullwidth> Začněte objednávat!</Button>
+            <Button size={'large'} color={'primary'} fullwidth onClick={handleStartApp}> Začněte objednávat!</Button>
         </>
     )
 }
