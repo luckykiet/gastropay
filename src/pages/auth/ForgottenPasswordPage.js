@@ -11,7 +11,7 @@ export default function ForgottenPasswordPage() {
                 <Columns.Column size={4} tablet={5} desktop={4} widescreen={4}>
                     <Box>
                         <Form.Field>
-                            <Form.Label for="inputEmail">
+                            <Form.Label htmlFor="inputEmail">
                                 Email
                             </Form.Label>
                             <Form.Control>
