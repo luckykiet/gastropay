@@ -54,7 +54,7 @@ export default function RestaurantsPage() {
                                                     <dd>{restaurants[item].address.postalCode} {restaurants[item].address.city}</dd>
                                                 </dl>
                                                 <dl>
-                                                    <dt>{OpeningTime(restaurants[item].openingTime.wednesday.from, restaurants[item].openingTime.wednesday.to)}</dt>
+                                                    <dt>{OpeningTime(restaurants[item].openingTime.today.from, restaurants[item].openingTime.today.to)}</dt>
                                                 </dl>
                                             </Content>
                                         </Media.Item>
@@ -75,7 +75,7 @@ export default function RestaurantsPage() {
         const formattedBeginTime = moment(beginTime, 'HH:mm');
         const formattedEndTime = moment(endTime, 'HH:mm');
         const currentTime = moment();
-        if (currentTime.isBefore(formattedEndTime)) {
+        if (currentTime.isBefore(formattedEndTime) && currentTime.isAfter(formattedBeginTime)) {
             return <p><strong className="has-text-success">Otevřeno</strong> &#x2022; Zavírá v {formattedEndTime.format('HH:mm')}</p>
         } else {
             return <p><strong className="has-text-danger">Zavřeno</strong> &#x2022; Otevírá v {formattedBeginTime.format('HH:mm')}</p>

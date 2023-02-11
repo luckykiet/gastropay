@@ -29,11 +29,11 @@ const items = [
 const NavItems = () => {
     let activeClassName = ' is-active';
     return items.map(({ path, name, dividerAfter }, index) => (
-        <>
-            <NavLink key={index} className={({ isActive }) =>
+        <div key={index}>
+            <NavLink className={({ isActive }) =>
                 'navbar-item' + (isActive ? activeClassName : "")} to={path} >{name}</NavLink>
             {dividerAfter ? <Navbar.Divider /> : ''}
-        </>
+        </div>
     ));
 }
 

@@ -7,7 +7,7 @@
       "postalCode": "11000"
     },
     "openingTime": {
-      "wednesday": {
+      "today": {
         "from": "08:00",
         "to": "20:00"
       }
@@ -22,7 +22,7 @@
       "postalCode": "15500"
     },
     "openingTime": {
-      "wednesday": {
+      "today": {
         "from": "10:00",
         "to": "16:00"
       }
@@ -37,7 +37,7 @@
       "postalCode": "12000"
     },
     "openingTime": {
-      "wednesday": {
+      "today": {
         "from": "08:00",
         "to": "23:00"
       }
