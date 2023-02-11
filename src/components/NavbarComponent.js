@@ -2,7 +2,9 @@ import { Link, NavLink } from 'react-router-dom';
 import packageJson from '../../package.json';
 import { paths } from '../utils';
 import { Navbar } from 'react-bulma-components';
+import { useState } from 'react';
 
+const activeClassName = 'is-active';
 const items = [
     {
         path: paths.CONTACT,
@@ -27,32 +29,43 @@ const items = [
 ];
 
 const NavItems = () => {
-    let activeClassName = ' is-active';
+
     return items.map(({ path, name, dividerAfter }, index) => (
         <div key={index}>
             <NavLink className={({ isActive }) =>
-                'navbar-item' + (isActive ? activeClassName : "")} to={path} >{name}</NavLink>
+                "navbar-item " + (isActive ? activeClassName : undefined)
+            } to={path} >{name}</NavLink>
             {dividerAfter ? <Navbar.Divider /> : ''}
         </div>
     ));
 }
 
 export default function NavbarComponent() {
+    const [isBurgerActive, setBurgerActive] = useState(false);
     return (
-        <Navbar color={'primary'} className='is-spaced has-shadow' >
+        <Navbar color={'primary'} role="navigation" aria-label="main navigation" className='is-spaced has-shadow' >
             <Navbar.Brand>
-                <Link className="navbar-item" to={paths.HOME}>
+                <Navbar.Item renderAs={Link} to={paths.HOME}>
                     {packageJson.app.name}
-                </Link>
-            </Navbar.Brand>
-            <Navbar.Container>
-                <Navbar.Item hoverable>
-                    <Navbar.Link>Více</Navbar.Link>
-                    <Navbar.Dropdown boxed>
-                        <NavItems />
-                    </Navbar.Dropdown>
                 </Navbar.Item>
-            </Navbar.Container>
+                <Navbar.Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
+                    setBurgerActive(!isBurgerActive);
+                }} className={
+                    isBurgerActive ? activeClassName : undefined
+                } />
+            </Navbar.Brand>
+            <Navbar.Menu id='navbarMain' className={
+                isBurgerActive ? activeClassName : undefined
+            }>
+                <Navbar.Container>
+                    <Navbar.Item hoverable>
+                        <Navbar.Link>Více</Navbar.Link>
+                        <Navbar.Dropdown boxed>
+                            <NavItems />
+                        </Navbar.Dropdown>
+                    </Navbar.Item>
+                </Navbar.Container>
+            </Navbar.Menu>
         </Navbar>
     )
 }
