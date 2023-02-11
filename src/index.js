@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './assets/scss/index.scss';
 import {
-  createBrowserRouter,
+  createMemoryRouter,
   RouterProvider,
 } from "react-router-dom";
 import { paths } from './utils';
@@ -18,7 +18,7 @@ import ForgottenPasswordPage from './pages/auth/ForgottenPasswordPage';
 import RestaurantsPage from './pages/guest/RestaurantsPage';
 import RestaurantPage from './pages/guest/RestaurantPage';
 
-const router = createBrowserRouter([
+const router = createMemoryRouter([
   {
     path: paths.HOME,
     element: <RootLayout />,
