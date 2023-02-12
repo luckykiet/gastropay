@@ -2,6 +2,7 @@
   "_id": "63e94557cb847448674e0c56",
   "name": "Hanoi Bistro",
   "api_url": "/api/hanoibistro.json",
+  "image": "/images/restaurants/hanoi_bistro.jpg",
   "openingTime": {
     "monday": {
       "from": "08:00",

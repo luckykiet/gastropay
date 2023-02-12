@@ -15,7 +15,7 @@ export default function ErrorPage() {
             </header>
             <main>
                 <Container breakpoint={'widescreen'}>
-                    <Heading>Oops!</Heading>
+                    <Heading>Výskytla se chyba!</Heading>
                     <Content>
                         <p>
                             <i><RootBoundary /></i>

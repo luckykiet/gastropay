@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './assets/scss/index.scss';
 import {
-  createMemoryRouter,
+  createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
 import { paths } from './utils';
@@ -18,7 +18,7 @@ import ForgottenPasswordPage from './pages/auth/ForgottenPasswordPage';
 import RestaurantsPage from './pages/guest/RestaurantsPage';
 import RestaurantPage from './pages/guest/RestaurantPage';
 
-const router = createMemoryRouter([
+const router = createBrowserRouter([
   {
     path: paths.HOME,
     element: <RootLayout />,
@@ -27,37 +27,30 @@ const router = createMemoryRouter([
       children: [
         {
           path: "",
-          element: <HomePage />,
-          errorElement: <ErrorPage />,
+          element: <HomePage />
         },
         {
           path: paths.ABOUT,
-          element: <AboutPage />,
-          errorElement: <ErrorPage />,
+          element: <AboutPage />
         }, {
           path: paths.CONTACT,
-          element: <ContactPage />,
-          errorElement: <ErrorPage />,
+          element: <ContactPage />
         },
         {
           path: paths.REGISTRATION,
-          element: <RegisterPage />,
-          errorElement: <ErrorPage />,
+          element: <RegisterPage />
         },
         {
           path: paths.FORGOTTEN_PASS,
-          element: <ForgottenPasswordPage />,
-          errorElement: <ErrorPage />,
+          element: <ForgottenPasswordPage />
         },
         {
           path: paths.RESTAURANTS,
-          element: <RestaurantsPage />,
-          errorElement: <ErrorPage />,
+          element: <RestaurantsPage />
         },
         {
           path: paths.RESTAURANT + "/:idRestaurant",
-          element: <RestaurantPage />,
-          errorElement: <ErrorPage />,
+          element: <RestaurantPage />
         },
       ],
     }]
