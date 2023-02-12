@@ -13,7 +13,7 @@ export default function LoginPage() {
             <Hero.Body>
                 <Container>
                     <Columns centered vCentered>
-                        <Columns.Column size={"one-third"}>
+                        <Columns.Column className="is-one-half-tablet is-one-third-widescreen">
                             <Box>
                                 <Form.Field>
                                     <Form.Label htmlFor="inputEmail">

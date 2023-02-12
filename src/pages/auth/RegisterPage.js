@@ -9,7 +9,7 @@ export default function RegisterPage() {
                 <Heading pt={5} spaced>Registrační formulář</Heading>
             </Content>
             <Columns pt={5} centered vCentered >
-                <Columns.Column size={4} tablet={5} desktop={4} widescreen={4}>
+                <Columns.Column className="is-one-half-tablet is-one-third-widescreen">
                     <Box>
                         <Form.Field>
                             <Form.Label htmlFor="inputIco">

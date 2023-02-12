@@ -10,7 +10,7 @@ export default function RootLayout() {
                 <NavbarComponent />
             </header>
             <main>
-                <Container breakpoint={'widescreen'}>
+                <Container breakpoint={'fluid'}>
                     <Outlet />
                 </Container>
             </main>
