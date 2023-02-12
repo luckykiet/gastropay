@@ -1,0 +1,31 @@
+{
+  "_id": "63e94557cb847448674e0c56",
+  "name": "Hanoi Bistro",
+  "api_url": "/api/hanoibistro.json",
+  "openingTime": {
+    "monday": {
+      "from": "08:00",
+      "to": "20:00"
+    },
+    "tuesday": {
+      "from": "08:00",
+      "to": "20:00"
+    },
+    "wednesday": {
+      "from": "08:00",
+      "to": "20:00"
+    },
+    "thursday": {
+      "from": "08:00",
+      "to": "20:00"
+    },
+    "friday": {
+      "from": "08:00",
+      "to": "20:00"
+    },
+    "saturday": {
+      "from": "08:00",
+      "to": "20:00"
+    }
+  }
+}

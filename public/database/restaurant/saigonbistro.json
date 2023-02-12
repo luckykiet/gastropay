@@ -1,0 +1,31 @@
+{
+  "_id": "63e94533bef7c06d37abd737",
+  "name": "Saigon Bistro",
+  "api_url": "/api/saigonbistro.json",
+  "openingTime": {
+    "monday": {
+      "from": "08:00",
+      "to": "21:00"
+    },
+    "tuesday": {
+      "from": "08:00",
+      "to": "20:00"
+    },
+    "wednesday": {
+      "from": "08:00",
+      "to": "23:00"
+    },
+    "friday": {
+      "from": "08:00",
+      "to": "20:00"
+    },
+    "saturday": {
+      "from": "11:00",
+      "to": "20:00"
+    },
+    "sunday": {
+      "from": "11:00",
+      "to": "20:00"
+    }
+  }
+}

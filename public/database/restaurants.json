@@ -1,5 +1,6 @@
 {
   "1": {
+    "_id": "63e94533bef7c06d37abd737",
     "name": "Saigon Bistro",
     "address": {
       "street": "Na porici 81",
@@ -15,6 +16,7 @@
     "image": "/images/restaurants/saigon_bistro.jpg"
   },
   "2": {
+    "_id": "63e94557cb847448674e0c56",
     "name": "Hanoi Bistro",
     "address": {
       "street": "K Trebonicum 85",
@@ -30,6 +32,7 @@
     "image": "/images/restaurants/hanoi_bistro.jpg"
   },
   "3": {
+    "_id": "63e9454e95220839c8fe3fab",
     "name": "Pho 24",
     "address": {
       "street": "Vodickova 2",
