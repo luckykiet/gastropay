@@ -36,7 +36,7 @@ export default function RestaurantsPage() {
             return (
                 Object.keys(restaurants).map((item) => {
                     return (
-                        <Columns.Column key={item} narrow>
+                        <Columns.Column key={restaurants[item]._id} narrow>
                             <Card>
                                 <Card.Header>
                                     <Card.Header.Title>{restaurants[item].name}</Card.Header.Title>
@@ -61,7 +61,7 @@ export default function RestaurantsPage() {
                                     </Media>
                                 </Card.Content>
                                 <Card.Footer>
-                                    <Card.Footer.Item><Button onClick={() => navigate(paths.RESTAURANT + "/" + item)} color={"primary"} fullwidth>Zvolit</Button></Card.Footer.Item>
+                                    <Card.Footer.Item><Button onClick={() => navigate(paths.RESTAURANT + "/" + restaurants[item]._id)} color={"primary"} fullwidth>Zvolit</Button></Card.Footer.Item>
                                 </Card.Footer>
                             </Card>
                         </Columns.Column>
