@@ -1,23 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Columns, Content, Heading, Section } from 'react-bulma-components';
+import { Columns, Content, Heading, Image } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
-import { createAxios, paths } from "../../utils";
+import { createAxios, paths, BASE_URL, isOpening } from "../../utils";
 import { Promise } from "bluebird";
+import moment from 'moment';
+import { daysOfWeeksCzech } from "../../utils";
 
 export default function RestaurantPage() {
     const [business, setBusiness] = useState([]);
     const { idRestaurant } = useParams();
     const IMAGE_BASE_URL = "http://localhost:3000";
-
-    const czechDays = {
-        "monday": "Pondělí",
-        "tuesday": "Úterý",
-        "wednesday": "Středa",
-        "thursday": "Čtvrtek",
-        "friday": "Pátek",
-        "saturday": "Sobota",
-        "sunday": "Neděle"
-    }
+    const todayDay = moment().day();
 
     useEffect(() => {
         //get from db then api
@@ -45,25 +38,23 @@ export default function RestaurantPage() {
                 :
                 <>
                     <Content textAlign={'center'}>
-                        <Heading pt={5} spaced>Restaurace: {idRestaurant}</Heading>
+                        <Heading pt={5} spaced>{business.name}</Heading>
                     </Content>
-                    <Section>
-                        <Columns>
-                            <Columns.Column>
-                                <Content>
-                                    <p>Otevírací doba:</p>
-                                    <ul>
-                                        {Object.keys(czechDays).map((item) => {
-                                            return <li key={item}>{czechDays[item]}: {business.openingTime[item] ? business.openingTime[item].from + "-" + business.openingTime[item].to : "Zavřeno"}</li>;
-                                        })}
-                                    </ul>
-                                </Content>
-                            </Columns.Column>
-                            <Columns.Column>
-
-                            </Columns.Column>
-                        </Columns>
-                    </Section>
+                    <Columns>
+                        <Columns.Column>
+                            <Image size={"3by2"} alt={business.name} src={business.image ? IMAGE_BASE_URL + business.image : BASE_URL + "/images/restaurants/default.jpg"}></Image>
+                        </Columns.Column>
+                        <Columns.Column>
+                            <Content>
+                                <p className='has-text-weight-bold is-size-4'>Otevírací doba:</p>
+                                <ul>
+                                    {Object.keys(daysOfWeeksCzech).map((item, index) => {
+                                        return <li className={index === todayDay ? " has-text-weight-bold" : undefined} key={item}><span className={'alignAfterColon'}>{daysOfWeeksCzech[item].name}: </span>{business.openingTime[item] ? <span className={(index === todayDay) && isOpening(business.openingTime[item].from, business.openingTime[item].to) ? "has-text-success" : undefined}>{business.openingTime[item].from + " - " + business.openingTime[item].to}</span> : <span className='has-text-danger'>Zavřeno</span>}</li>;
+                                    })}
+                                </ul>
+                            </Content>
+                        </Columns.Column>
+                    </Columns>
                 </>
             }
         </>

@@ -1,9 +1,68 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Container, Content, Heading, Media, Image, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, createAxios, paths } from "../../utils";
+import { BASE_URL, createAxios, isOpening, paths } from "../../utils";
 import { Promise } from "bluebird";
 import moment from "moment";
+import { daysOfWeeks, daysOfWeeksCzech } from "../../utils";
+
+const today = moment().day();
+const todaySring = daysOfWeeks[today];
+
+const todayOpeningTime = (todaySring, openingTimes) => {
+    if (openingTimes[todaySring]) {
+        const result = {
+            today: {
+                from: openingTimes[todaySring].from,
+                to: openingTimes[todaySring].to,
+            }
+        };
+        return result;
+    }
+    return {
+        today: "closed"
+    };
+};
+
+const nextOpeningTime = (today, daysOfWeeks, openingTimes) => {
+    let result = {
+        "nextOpenTime": "closed"
+    };
+    if (Object.keys(openingTimes).length < 1) {
+        return result;
+    }
+
+    let i = 0;
+    if (today !== 6) {
+        i = today;
+    }
+
+    let count = Object.keys(daysOfWeeks).length;
+    while (count > 0) {
+        i++;
+        const day = openingTimes[daysOfWeeks[i]];
+        if (day && Object.keys(day).length === 2) {
+            result = {
+                "nextOpenTime": {
+                    [daysOfWeeks[i]]: day
+                }
+            }
+            break;
+        }
+        if (i === 6) {
+            i = 0;
+        }
+        count--;
+    }
+    return result;
+};
+
+// const nextOpenTime = (beginTodayTime, beginTommorrowTime) => {
+//     const formattedBeginTodayTime = moment(beginTodayTime, "HH:mm");
+//     const formattedBeginTommorrowTime = moment(beginTommorrowTime, "HH:mm");
+//     const currentTime = moment();
+//     return currentTime.isBefore(formattedBeginTodayTime) ? formattedBeginTodayTime.format("HH:mm") : formattedBeginTommorrowTime.format("HH:mm");
+// };
 
 export default function RestaurantsPage() {
     const [restaurants, setRestaurants] = useState([]);
@@ -19,11 +78,33 @@ export default function RestaurantsPage() {
             if (!resp.data) {
                 throw resp.data;
             }
-            setRestaurants(resp.data);
+            const newRestaurants = {};
+            Object.keys(resp.data).forEach((res) => {
+                newRestaurants[res] = { ...resp.data[res] };
+                newRestaurants[res].openingTime = todayOpeningTime(todaySring, resp.data[res].openingTime);
+                Object.assign(newRestaurants[res], nextOpeningTime(today, daysOfWeeks, resp.data[res].openingTime));
+            });
+            setRestaurants(newRestaurants);
         }).catch((err) => {
             console.log(err);
         });
     }, [navigate]);
+
+    const OpeningTime = (beginTime, endTime, nextOpenTimeObj) => {
+        const isOpeningNow = isOpening(beginTime, endTime);
+        const formattedBeginTime = moment(beginTime, 'HH:mm');
+        const formattedEndTime = moment(endTime, 'HH:mm');
+
+        if (isOpeningNow) {
+            return <p><strong className="has-text-success">Otevřeno</strong> &#x2022; Zavírá v {formattedEndTime.format('HH:mm')}</p>
+        } else {
+            const currentTime = moment();
+            const day = Object.keys(nextOpenTimeObj)[0];
+            const nextOpeningTime = currentTime.isBefore(formattedBeginTime) ? formattedBeginTime.format('HH:mm') : moment(nextOpenTimeObj[day].from, 'HH:mm').format('HH:mm');
+            return <p><strong className="has-text-danger">Zavřeno</strong> &#x2022; Otevírá v {daysOfWeeksCzech[day].shortcut} {nextOpeningTime}</p>
+        }
+
+    }
 
     const RestaurantLists = () => {
         if (!restaurants || Object.keys(restaurants).length === 0) {
@@ -54,7 +135,7 @@ export default function RestaurantsPage() {
                                                     <dd>{restaurants[item].address.postalCode} {restaurants[item].address.city}</dd>
                                                 </dl>
                                                 <dl>
-                                                    <dt>{OpeningTime(restaurants[item].openingTime.today.from, restaurants[item].openingTime.today.to)}</dt>
+                                                    <dt>{OpeningTime(restaurants[item].openingTime.today.from, restaurants[item].openingTime.today.to, restaurants[item].nextOpenTime)}</dt>
                                                 </dl>
                                             </Content>
                                         </Media.Item>
@@ -68,17 +149,6 @@ export default function RestaurantsPage() {
                     )
                 })
             )
-        }
-    }
-
-    const OpeningTime = (beginTime, endTime) => {
-        const formattedBeginTime = moment(beginTime, 'HH:mm');
-        const formattedEndTime = moment(endTime, 'HH:mm');
-        const currentTime = moment();
-        if (currentTime.isBefore(formattedEndTime) && currentTime.isAfter(formattedBeginTime)) {
-            return <p><strong className="has-text-success">Otevřeno</strong> &#x2022; Zavírá v {formattedEndTime.format('HH:mm')}</p>
-        } else {
-            return <p><strong className="has-text-danger">Zavřeno</strong> &#x2022; Otevírá v {formattedBeginTime.format('HH:mm')}</p>
         }
     }
 

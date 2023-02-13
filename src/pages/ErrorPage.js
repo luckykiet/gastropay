@@ -9,12 +9,12 @@ export default function ErrorPage() {
     console.error(error);
 
     return (
-        <Container breakpoint={'fullhd'}>
+        <>
             <header>
                 <NavbarComponent />
             </header>
             <main>
-                <Container breakpoint={'widescreen'}>
+                <Container breakpoint={'fluid'}>
                     <Heading>Výskytla se chyba!</Heading>
                     <Content>
                         <p>
@@ -24,7 +24,7 @@ export default function ErrorPage() {
                 </Container>
             </main>
             <FooterComponent />
-        </Container>
+        </>
     );
 }
 

@@ -8,8 +8,28 @@
       "postalCode": "11000"
     },
     "openingTime": {
-      "today": {
+      "monday": {
         "from": "08:00",
+        "to": "21:00"
+      },
+      "tuesday": {
+        "from": "08:00",
+        "to": "20:00"
+      },
+      "wednesday": {
+        "from": "08:00",
+        "to": "23:00"
+      },
+      "friday": {
+        "from": "08:00",
+        "to": "20:00"
+      },
+      "saturday": {
+        "from": "11:00",
+        "to": "20:00"
+      },
+      "sunday": {
+        "from": "11:00",
         "to": "20:00"
       }
     },
@@ -24,9 +44,29 @@
       "postalCode": "15500"
     },
     "openingTime": {
-      "today": {
-        "from": "10:00",
-        "to": "16:00"
+      "monday": {
+        "from": "08:00",
+        "to": "17:00"
+      },
+      "tuesday": {
+        "from": "08:00",
+        "to": "20:00"
+      },
+      "wednesday": {
+        "from": "08:00",
+        "to": "20:00"
+      },
+      "thursday": {
+        "from": "08:00",
+        "to": "20:00"
+      },
+      "friday": {
+        "from": "08:00",
+        "to": "20:00"
+      },
+      "saturday": {
+        "from": "08:00",
+        "to": "20:00"
       }
     },
     "image": "/images/restaurants/hanoi_bistro.jpg"
@@ -40,9 +80,29 @@
       "postalCode": "12000"
     },
     "openingTime": {
-      "today": {
+      "monday": {
         "from": "08:00",
-        "to": "23:00"
+        "to": "20:00"
+      },
+      "tuesday": {
+        "from": "08:00",
+        "to": "20:00"
+      },
+      "wednesday": {
+        "from": "08:00",
+        "to": "20:00"
+      },
+      "thursday": {
+        "from": "08:00",
+        "to": "20:00"
+      },
+      "friday": {
+        "from": "08:00",
+        "to": "20:00"
+      },
+      "saturday": {
+        "from": "08:00",
+        "to": "20:00"
       }
     }
   }
