@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { createAxios, paths, BASE_URL, isOpening } from "../../utils";
 import { Promise } from "bluebird";
 import moment from 'moment';
-import { daysOfWeeksCzech } from "../../utils";
+import { daysOfWeeksCzech, MAX_OPENING_TIME_OBJECT_LENGTH } from "../../utils";
 
 export default function RestaurantPage() {
     const [business, setBusiness] = useState([]);
@@ -12,14 +12,8 @@ export default function RestaurantPage() {
     const IMAGE_BASE_URL = "http://localhost:3000";
     const todayDay = moment().day();
 
-    const currentOpenningTimeStyle = (isToday, isOpening) => {
-        if (isToday && isOpening) {
-            return "has-text-weight-bold has-text-success";
-        } else if (isToday && !isOpening) {
-            return "has-text-weight-bold has-text-danger";
-        } else {
-            return undefined;
-        }
+    const currentOpenningTimeStyle = (time) => {
+        return Object.keys(time).length < MAX_OPENING_TIME_OBJECT_LENGTH || !isOpening(time.from, time.to) ? "has-text-weight-bold has-text-danger" : "has-text-weight-bold has-text-success";
     }
 
     useEffect(() => {
@@ -59,7 +53,7 @@ export default function RestaurantPage() {
                                 <p className='has-text-weight-bold is-size-4'>Otevírací doba:</p>
                                 <ul>
                                     {Object.keys(daysOfWeeksCzech).map((item, index) => {
-                                        return <li className={currentOpenningTimeStyle((index === todayDay), !(business.openingTime[item]) ? false : isOpening(business.openingTime[item].from, business.openingTime[item].to))} key={item}><span className={'alignAfterColon'}>{daysOfWeeksCzech[item].name}: </span>{business.openingTime[item] ? <span>{business.openingTime[item].from + " - " + business.openingTime[item].to}</span> : <span>Zavřeno</span>}</li>;
+                                        return <li className={(index === todayDay ? currentOpenningTimeStyle(business.openingTime[item] ? business.openingTime[item] : {}) : undefined)} key={item}><span className={'alignAfterColon'}>{daysOfWeeksCzech[item].name}: </span>{business.openingTime[item] ? <span>{business.openingTime[item].from + " - " + business.openingTime[item].to}</span> : <span>Zavřeno</span>}</li>;
                                     })}
                                 </ul>
                             </Content>

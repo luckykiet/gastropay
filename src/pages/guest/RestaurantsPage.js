@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Container, Content, Heading, Media, Image, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, createAxios, isOpening, paths } from "../../utils";
+import { BASE_URL, MAX_OPENING_TIME_OBJECT_LENGTH, MIN_OPENING_TIME_OBJECT_ITEMS, createAxios, isOpening, paths } from "../../utils";
 import { Promise } from "bluebird";
 import moment from "moment";
 import { daysOfWeeks, daysOfWeeksCzech } from "../../utils";
@@ -25,15 +25,16 @@ const todayOpeningTime = (todaySring, openingTimes) => {
 };
 
 const nextOpeningTime = (today, daysOfWeeks, openingTimes) => {
+    const MAX_DAYS_OF_THE_WEEK = 6;
     let result = {
         "nextOpenTime": "closed"
     };
-    if (Object.keys(openingTimes).length < 1) {
+    if (Object.keys(openingTimes).length < MIN_OPENING_TIME_OBJECT_ITEMS) {
         return result;
     }
 
     let i = 0;
-    if (today !== 6) {
+    if (today !== MAX_DAYS_OF_THE_WEEK) {
         i = today;
     }
 
@@ -41,7 +42,7 @@ const nextOpeningTime = (today, daysOfWeeks, openingTimes) => {
     while (count > 0) {
         i++;
         const day = openingTimes[daysOfWeeks[i]];
-        if (day && Object.keys(day).length === 2) {
+        if (day && Object.keys(day).length === MAX_OPENING_TIME_OBJECT_LENGTH) {
             result = {
                 "nextOpenTime": {
                     [daysOfWeeks[i]]: day
@@ -49,7 +50,7 @@ const nextOpeningTime = (today, daysOfWeeks, openingTimes) => {
             }
             break;
         }
-        if (i === 6) {
+        if (i === MAX_DAYS_OF_THE_WEEK) {
             i = 0;
         }
         count--;
