@@ -1,15 +1,11 @@
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import packageJson from '../../package.json';
 import { paths } from '../utils';
-import { Button, Navbar } from 'react-bulma-components';
+import { Navbar } from 'react-bulma-components';
 import { useState } from 'react';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
 
 const activeClassName = 'is-active';
-const backNavigations = {
-    'restaurant': '/restaurants',
-};
 const items = [
     {
         path: paths.CONTACT,
@@ -46,12 +42,6 @@ const NavItems = () => {
 }
 
 export default function NavbarComponent() {
-    const { pathname } = useLocation();
-
-    const backButtonPaths = [];
-    const restaurantPath = pathname.split('/')[1];
-    backButtonPaths.push(restaurantPath);
-
     const [isBurgerActive, setBurgerActive] = useState(false);
     return (
         <Navbar color={'primary'} role="navigation" aria-label="main navigation" className='is-spaced has-shadow' >
@@ -59,6 +49,7 @@ export default function NavbarComponent() {
                 <Navbar.Item renderAs={Link} to={paths.HOME}>
                     {packageJson.app.name}
                 </Navbar.Item>
+
                 <Navbar.Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
                     setBurgerActive(!isBurgerActive);
                 }} className={
@@ -77,11 +68,6 @@ export default function NavbarComponent() {
                     </Navbar.Item>
                 </Navbar.Container>
             </Navbar.Menu>
-            {backNavigations[backButtonPaths] ?
-                <Navbar.Container align='right'>
-                    <Button renderAs={Link} rounded color={'warning'} to={backNavigations[backButtonPaths]}><FontAwesomeIcon icon={faArrowLeft} /></Button>
-                </Navbar.Container>
-                : undefined}
         </Navbar>
     )
 }
