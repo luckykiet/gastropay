@@ -12,6 +12,16 @@ export default function RestaurantPage() {
     const IMAGE_BASE_URL = "http://localhost:3000";
     const todayDay = moment().day();
 
+    const currentOpenningTimeStyle = (isToday, isOpening) => {
+        if (isToday && isOpening) {
+            return "has-text-weight-bold has-text-success";
+        } else if (isToday && !isOpening) {
+            return "has-text-weight-bold has-text-danger";
+        } else {
+            return undefined;
+        }
+    }
+
     useEffect(() => {
         //get from db then api
         const axios = createAxios("http://localhost:3000/");
@@ -49,7 +59,7 @@ export default function RestaurantPage() {
                                 <p className='has-text-weight-bold is-size-4'>Otevírací doba:</p>
                                 <ul>
                                     {Object.keys(daysOfWeeksCzech).map((item, index) => {
-                                        return <li className={index === todayDay ? " has-text-weight-bold" : undefined} key={item}><span className={'alignAfterColon'}>{daysOfWeeksCzech[item].name}: </span>{business.openingTime[item] ? <span className={(index === todayDay) && isOpening(business.openingTime[item].from, business.openingTime[item].to) ? "has-text-success" : undefined}>{business.openingTime[item].from + " - " + business.openingTime[item].to}</span> : <span className='has-text-danger'>Zavřeno</span>}</li>;
+                                        return <li className={currentOpenningTimeStyle((index === todayDay), !(business.openingTime[item]) ? false : isOpening(business.openingTime[item].from, business.openingTime[item].to))} key={item}><span className={'alignAfterColon'}>{daysOfWeeksCzech[item].name}: </span>{business.openingTime[item] ? <span>{business.openingTime[item].from + " - " + business.openingTime[item].to}</span> : <span>Zavřeno</span>}</li>;
                                     })}
                                 </ul>
                             </Content>

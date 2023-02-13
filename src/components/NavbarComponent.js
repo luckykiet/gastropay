@@ -49,12 +49,13 @@ export default function NavbarComponent() {
                 <Navbar.Item renderAs={Link} to={paths.HOME}>
                     {packageJson.app.name}
                 </Navbar.Item>
-
-                <Navbar.Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
-                    setBurgerActive(!isBurgerActive);
-                }} className={
-                    isBurgerActive ? activeClassName : undefined
-                } />
+                <Navbar.Container align='left'>
+                    <Navbar.Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
+                        setBurgerActive(!isBurgerActive);
+                    }} className={
+                        isBurgerActive ? activeClassName : undefined
+                    } />
+                </Navbar.Container>
             </Navbar.Brand>
             <Navbar.Menu id='navbarMain' className={
                 isBurgerActive ? activeClassName : undefined

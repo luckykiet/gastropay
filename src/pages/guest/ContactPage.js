@@ -8,10 +8,10 @@ export default function ContactPage() {
         <>
             <Heading pt={5}>Kontaktní údaje</Heading>
             <Content>
-                <p><FontAwesomeIcon icon={faUser} /> Autor: Tuan Kiet Nguyen</p>
-                <p><FontAwesomeIcon icon={faSchool} /> Email školní: <a href="mailto:ngut62@vse.cz">ngut62@vse.cz</a></p>
-                <p><FontAwesomeIcon icon={faEnvelope} /> Email osobní: <a href="mailto:ngntuankiet@gmail.com">ngntuankiet@gmail.com</a></p>
-                <p><FontAwesomeIcon icon={faGithub} /> Github: <a href="https://github.com/luckykiet/gastropay" target="_blank" rel="noopener noreferrer">{packageJson.app.name}</a></p>
+                <p><span className={'alignAfterIcon'}><FontAwesomeIcon icon={faUser} /></span><span>Autor: Tuan Kiet Nguyen</span></p>
+                <p><span className={'alignAfterIcon'}><FontAwesomeIcon icon={faSchool} /></span><span>Email školní: <a href="mailto:ngut62@vse.cz">ngut62@vse.cz</a></span></p>
+                <p><span className={'alignAfterIcon'}><FontAwesomeIcon icon={faEnvelope} /></span><span>Email osobní: <a href="mailto:ngntuankiet@gmail.com">ngntuankiet@gmail.com</a></span></p>
+                <p><span className={'alignAfterIcon'}><FontAwesomeIcon icon={faGithub} /></span><span>Github: <a href="https://github.com/luckykiet/gastropay" target="_blank" rel="noopener noreferrer">{packageJson.app.name}</a></span></p>
             </Content>
         </>
     )
