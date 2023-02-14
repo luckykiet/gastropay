@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Card, Container, Content, Heading, Columns, Tabs } from 'react-bulma-components';
+import { Card, Container, Content, Heading, Columns, Tabs, Button } from 'react-bulma-components';
 import { useAddToCartItem, useCartItems } from '../../stores/ZustandStores';
-import { calculateTotalCartPrice } from '../../utils';
+import { calculateCart } from '../../utils';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 const tabs = [
     { ean: 1, name: 'Bun' },
@@ -20,15 +23,22 @@ const ProductCard = ({ product }) => {
     const addToCartItem = useAddToCartItem();
 
     return (
-        <Columns.Column className='is-one-third'>
-            <Card onClick={() => addToCartItem(product, 1)}>
+        <Columns.Column className='is-one-quarter'>
+            <Card>
                 <Card.Image size={'4by3'} src={product.image} />
                 <Card.Content>
                     <Content>
-                        <Heading size={5}>{product.name}</Heading>
-                        <Heading subtitle size={6}>
-                            {product.price} Kč
-                        </Heading>
+                        <Columns>
+                            <Columns.Column size={'four-fifths'}>
+                                <Heading size={5}>{product.name}</Heading>
+                                <Heading subtitle size={6}>
+                                    {product.price} Kč
+                                </Heading>
+                            </Columns.Column>
+                            <Columns.Column size={'one-fifths'}>
+                                <Button onClick={() => addToCartItem(product, 1)} ><FontAwesomeIcon icon={faCartShopping} /></Button>
+                            </Columns.Column>
+                        </Columns>
                     </Content>
                 </Card.Content>
             </Card>
@@ -59,7 +69,7 @@ const Cart = () => {
                         {item.name} x {item.quantity} = {item.quantity * parseFloat(item.price)} Kč
                     </li>
                 ))}
-                <li>Total price: {calculateTotalCartPrice(cartItems)}</li>
+                <li>Total price: {calculateCart(cartItems).totalPrice}</li>
             </ul>
         </React.Fragment>
     );
@@ -88,6 +98,7 @@ const TabsPage = ({ listOfTabs, content }) => {
         </React.Fragment>
     );
 };
+
 
 export default function MenuPage() {
 
