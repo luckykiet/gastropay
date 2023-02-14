@@ -10,24 +10,26 @@ export default function RestaurantPage() {
     const { idRestaurant } = useParams();
     const IMAGE_BASE_URL = "http://localhost:3000";
     const todayDay = moment().day();
+
     const currentOpeningTimeStyle = (time) => {
         return Object.keys(time).length < MAX_OPENING_TIME_OBJECT_LENGTH || !isOpening(time.from, time.to)
             ? "has-text-weight-bold has-text-danger"
             : "has-text-weight-bold has-text-success";
     };
+
     useEffect(() => {
         const axios = createAxios(BASE_URL);
-        Promise.delay(0)
-            .then(async () => {
-                const resp = await axios.get(`/database/restaurant/${idRestaurant}.json`);
-                if (!resp.data) {
-                    throw new Error('No data');
-                }
-                setBusiness(resp.data);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        Promise.delay(0).then(() => {
+            return axios.get(`/database/restaurant/${idRestaurant}.json`);
+        }).then((resp) => {
+            if (!resp.data) {
+                throw new Error('No data')
+            }
+            setBusiness(resp.data);
+        }).catch((err) => {
+            console.log(err);
+        });
+
     }, [idRestaurant]);
 
     if (Object.keys(business).length === 0) {
@@ -37,7 +39,7 @@ export default function RestaurantPage() {
                     Výskytla se chyba
                 </Heading>
                 <p>
-                    Vraťte se na<Link to={paths.RESTAURANTS}>výběr restaurací.</Link>
+                    Vraťte se na <Link to={paths.RESTAURANTS}>výběr restaurací.</Link>
                 </p>
             </Content>
         );

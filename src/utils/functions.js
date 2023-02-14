@@ -11,3 +11,12 @@ export const isOpening = (beginTime, endTime) => {
     const currentTime = moment();
     return currentTime.isBefore(formattedEndTime) && currentTime.isAfter(formattedBeginTime) ? true : false;
 }
+
+
+export const calculateTotalCartPrice = (cartItems) => {
+    let totalPrice = 0;
+    cartItems.forEach((item) => {
+        totalPrice += item.quantity * parseFloat(item.price);
+    });
+    return Math.round(totalPrice);
+}

@@ -17,6 +17,7 @@ import RegisterPage from './pages/auth/RegisterPage';
 import ForgottenPasswordPage from './pages/auth/ForgottenPasswordPage';
 import RestaurantsPage from './pages/guest/RestaurantsPage';
 import RestaurantPage from './pages/guest/RestaurantPage';
+import MenuPage from './pages/guest/MenuPage';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
           path: paths.RESTAURANT + "/:idRestaurant",
           element: <RestaurantPage />
         },
+        {
+          path: "menu",
+          element: <MenuPage />
+        }
       ],
     }]
   }, {
