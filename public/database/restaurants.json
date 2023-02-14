@@ -8,28 +8,14 @@
       "postalCode": "11000"
     },
     "openingTime": {
-      "monday": {
-        "from": "08:00",
-        "to": "21:00"
-      },
-      "tuesday": {
-        "from": "08:00",
+      "today": {
+        "from": "19:00",
         "to": "20:00"
-      },
+      }
+    },
+    "nextOpeningTime": {
       "wednesday": {
-        "from": "08:00",
-        "to": "23:00"
-      },
-      "friday": {
-        "from": "08:00",
-        "to": "20:00"
-      },
-      "saturday": {
-        "from": "11:00",
-        "to": "20:00"
-      },
-      "sunday": {
-        "from": "11:00",
+        "from": "12:00",
         "to": "20:00"
       }
     },
@@ -44,28 +30,14 @@
       "postalCode": "15500"
     },
     "openingTime": {
-      "monday": {
-        "from": "08:00",
-        "to": "17:00"
-      },
-      "tuesday": {
-        "from": "08:00",
-        "to": "20:00"
-      },
-      "wednesday": {
-        "from": "08:00",
-        "to": "20:00"
-      },
+      "today": {
+        "from": "12:00",
+        "to": "15:00"
+      }
+    },
+    "nextOpeningTime": {
       "thursday": {
-        "from": "08:00",
-        "to": "20:00"
-      },
-      "friday": {
-        "from": "08:00",
-        "to": "20:00"
-      },
-      "saturday": {
-        "from": "08:00",
+        "from": "10:00",
         "to": "20:00"
       }
     },
@@ -80,29 +52,12 @@
       "postalCode": "12000"
     },
     "openingTime": {
-      "monday": {
-        "from": "08:00",
-        "to": "20:00"
-      },
-      "tuesday": {
-        "from": "08:00",
-        "to": "20:00"
-      },
-      "wednesday": {
-        "from": "08:00",
-        "to": "20:00"
-      },
-      "thursday": {
-        "from": "08:00",
-        "to": "20:00"
-      },
-      "friday": {
-        "from": "08:00",
-        "to": "20:00"
-      },
-      "saturday": {
-        "from": "08:00",
-        "to": "20:00"
+      "today": "closed"
+    },
+    "nextOpeningTime": {
+      "sunday": {
+        "from": "10:00",
+        "to": "23:00"
       }
     }
   }

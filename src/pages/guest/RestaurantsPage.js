@@ -1,63 +1,9 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card, Container, Content, Heading, Media, Image, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, MAX_OPENING_TIME_OBJECT_LENGTH, MIN_OPENING_TIME_OBJECT_ITEMS, createAxios, isOpening, paths } from "../../utils";
+import { BASE_URL, createAxios, isOpening, paths, daysOfWeeksCzech } from "../../utils";
 import { Promise } from "bluebird";
 import moment from "moment";
-import { daysOfWeeks, daysOfWeeksCzech } from "../../utils";
-
-const today = moment().day();
-const todaySring = daysOfWeeks[today];
-
-const todayOpeningTime = (todaySring, openingTimes) => {
-    if (openingTimes[todaySring]) {
-        const result = {
-            today: {
-                from: openingTimes[todaySring].from,
-                to: openingTimes[todaySring].to,
-            }
-        };
-        return result;
-    }
-    return {
-        today: "closed"
-    };
-};
-
-const nextOpeningTime = (today, daysOfWeeks, openingTimes) => {
-    const MAX_DAYS_OF_THE_WEEK = 6;
-    let result = {
-        "nextOpenTime": "closed"
-    };
-    if (Object.keys(openingTimes).length < MIN_OPENING_TIME_OBJECT_ITEMS) {
-        return result;
-    }
-
-    let i = 0;
-    if (today !== MAX_DAYS_OF_THE_WEEK) {
-        i = today;
-    }
-
-    let count = Object.keys(daysOfWeeks).length;
-    while (count > 0) {
-        i++;
-        const day = openingTimes[daysOfWeeks[i]];
-        if (day && Object.keys(day).length === MAX_OPENING_TIME_OBJECT_LENGTH) {
-            result = {
-                "nextOpenTime": {
-                    [daysOfWeeks[i]]: day
-                }
-            }
-            break;
-        }
-        if (i === MAX_DAYS_OF_THE_WEEK) {
-            i = 0;
-        }
-        count--;
-    }
-    return result;
-};
 
 export default function RestaurantsPage() {
     const [restaurants, setRestaurants] = useState([]);
@@ -73,32 +19,33 @@ export default function RestaurantsPage() {
             if (!resp.data) {
                 throw resp.data;
             }
-            const newRestaurants = {};
-            Object.keys(resp.data).forEach((res) => {
-                newRestaurants[res] = { ...resp.data[res] };
-                newRestaurants[res].openingTime = todayOpeningTime(todaySring, resp.data[res].openingTime);
-                Object.assign(newRestaurants[res], nextOpeningTime(today, daysOfWeeks, resp.data[res].openingTime));
-            });
-            setRestaurants(newRestaurants);
+            setRestaurants(resp.data);
         }).catch((err) => {
             console.log(err);
         });
     }, [navigate]);
 
-    const OpeningTime = (beginTime, endTime, nextOpenTimeObj) => {
-        const isOpeningNow = isOpening(beginTime, endTime);
-        const formattedBeginTime = moment(beginTime, 'HH:mm');
-        const formattedEndTime = moment(endTime, 'HH:mm');
-
-        if (isOpeningNow) {
-            return <p><strong className="has-text-success">Otevřeno</strong> &#x2022; Zavírá v {formattedEndTime.format('HH:mm')}</p>
+    const OpeningTime = (todayOpeningTime, nextOpenTime) => {
+        if (todayOpeningTime.today === "closed" && nextOpenTime === "closed") {
+            return <p><strong className="has-text-danger">Dočasně uzavřeno</strong></p>;
+        } else if (todayOpeningTime.today === "closed" && nextOpenTime !== "closed") {
+            const day = Object.keys(nextOpenTime);
+            return <p><strong className="has-text-danger">Zavřeno</strong>  &#x2022; Otevírá v {daysOfWeeksCzech[day]?.shortcut} {nextOpenTime[day]?.from}</p>;
         } else {
-            const currentTime = moment();
-            const day = Object.keys(nextOpenTimeObj)[0];
-            const nextOpeningTime = currentTime.isBefore(formattedBeginTime) ? formattedBeginTime.format('HH:mm') : moment(nextOpenTimeObj[day].from, 'HH:mm').format('HH:mm');
-            return <p><strong className="has-text-danger">Zavřeno</strong> &#x2022; Otevírá v {daysOfWeeksCzech[day].shortcut} {nextOpeningTime}</p>
+            const isOpeningNow = isOpening(todayOpeningTime.today.from, todayOpeningTime.today.to);
+            if (isOpeningNow) {
+                return <p><strong className="has-text-success">Otevřeno</strong> &#x2022; Zavírá v {todayOpeningTime.today.to}</p>
+            } else {
+                if (moment().isBefore(moment(todayOpeningTime.today.from, "HH:mm"))) {
+                    const beginTime = todayOpeningTime.today.from;
+                    return <p><strong className="has-text-danger">Zavřeno</strong>  &#x2022; Otevírá v {beginTime}</p>;
+                } else {
+                    const day = Object.keys(nextOpenTime);
+                    const beginTime = nextOpenTime[day]?.from;
+                    return <p><strong className="has-text-danger">Zavřeno</strong>  &#x2022; Otevírá v {daysOfWeeksCzech[day].shortcut} {beginTime}</p>;
+                }
+            }
         }
-
     }
 
     return (
@@ -133,7 +80,7 @@ export default function RestaurantsPage() {
                                                             <dd>{restaurants[item].address.postalCode} {restaurants[item].address.city}</dd>
                                                         </dl>
                                                         <dl>
-                                                            <dt>{OpeningTime(restaurants[item].openingTime.today.from, restaurants[item].openingTime.today.to, restaurants[item].nextOpenTime)}</dt>
+                                                            <dt>{OpeningTime(restaurants[item].openingTime, restaurants[item].nextOpeningTime)}</dt>
                                                         </dl>
                                                     </Content>
                                                 </Media.Item>
@@ -151,4 +98,4 @@ export default function RestaurantsPage() {
             </Container>
         </React.Fragment>
     );
-}                                                       
+}
