@@ -1,3 +1,4 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { Button, Card, Container, Content, Heading, Media, Image, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
@@ -58,13 +59,6 @@ const nextOpeningTime = (today, daysOfWeeks, openingTimes) => {
     return result;
 };
 
-// const nextOpenTime = (beginTodayTime, beginTommorrowTime) => {
-//     const formattedBeginTodayTime = moment(beginTodayTime, "HH:mm");
-//     const formattedBeginTommorrowTime = moment(beginTommorrowTime, "HH:mm");
-//     const currentTime = moment();
-//     return currentTime.isBefore(formattedBeginTodayTime) ? formattedBeginTodayTime.format("HH:mm") : formattedBeginTommorrowTime.format("HH:mm");
-// };
-
 export default function RestaurantsPage() {
     const [restaurants, setRestaurants] = useState([]);
     const navigate = useNavigate();
@@ -107,65 +101,54 @@ export default function RestaurantsPage() {
 
     }
 
-    const RestaurantLists = () => {
-        if (!restaurants || Object.keys(restaurants).length === 0) {
-            return (
-                <Content textAlign={"center"}>
-                    <p>Momentálně není žádná restaurace aktivní</p>
-                </Content>
-            )
-        } else {
-            return (
-                Object.keys(restaurants).map((item) => {
-                    return (
-                        <Columns.Column key={restaurants[item]._id} narrow>
-                            <Card>
-                                <Card.Header>
-                                    <Card.Header.Title>{restaurants[item].name}</Card.Header.Title>
-                                </Card.Header>
-                                <Card.Content>
-                                    <Media>
-                                        <Media.Item align="left">
-                                            <Image alt={restaurants[item].name} src={restaurants[item].image ? IMAGE_BASE_URL + restaurants[item].image : BASE_URL + "/images/restaurants/default.jpg"} size={128}></Image>
-                                        </Media.Item>
-                                        <Media.Item align="center">
-                                            <Content>
-                                                <dl>
-                                                    <dt><strong>Adresa:</strong></dt>
-                                                    <dd>{restaurants[item].address.street}</dd>
-                                                    <dd>{restaurants[item].address.postalCode} {restaurants[item].address.city}</dd>
-                                                </dl>
-                                                <dl>
-                                                    <dt>{OpeningTime(restaurants[item].openingTime.today.from, restaurants[item].openingTime.today.to, restaurants[item].nextOpenTime)}</dt>
-                                                </dl>
-                                            </Content>
-                                        </Media.Item>
-                                    </Media>
-                                </Card.Content>
-                                <Card.Footer>
-                                    <Card.Footer.Item><Button onClick={() => navigate(paths.RESTAURANT + "/" + restaurants[item]._id)} color={"primary"} fullwidth>Zvolit</Button></Card.Footer.Item>
-                                </Card.Footer>
-                            </Card>
-                        </Columns.Column>
-                    )
-                })
-            )
-        }
-    }
-
     return (
-        <>
+        <React.Fragment>
             <Content textAlign={"center"}>
                 <Heading pt={5} spaced>Zvolte restauraci</Heading>
             </Content>
-
             <Container>
                 <Columns centered vCentered>
-                    <RestaurantLists />
+                    {(!restaurants || Object.keys(restaurants).length === 0) ?
+                        <Content textAlign={"center"}>
+                            <p>Momentálně není žádná restaurace aktivní</p>
+                        </Content>
+                        :
+                        Object.keys(restaurants).map((item) => {
+                            return (
+                                <Columns.Column key={restaurants[item]._id} narrow>
+                                    <Card>
+                                        <Card.Header>
+                                            <Card.Header.Title>{restaurants[item].name}</Card.Header.Title>
+                                        </Card.Header>
+                                        <Card.Content>
+                                            <Media>
+                                                <Media.Item align="left">
+                                                    <Image alt={restaurants[item].name} src={restaurants[item].image ? IMAGE_BASE_URL + restaurants[item].image : BASE_URL + "/images/restaurants/default.jpg"} size={128}></Image>
+                                                </Media.Item>
+                                                <Media.Item align="center">
+                                                    <Content>
+                                                        <dl>
+                                                            <dt><strong>Adresa:</strong></dt>
+                                                            <dd>{restaurants[item].address.street}</dd>
+                                                            <dd>{restaurants[item].address.postalCode} {restaurants[item].address.city}</dd>
+                                                        </dl>
+                                                        <dl>
+                                                            <dt>{OpeningTime(restaurants[item].openingTime.today.from, restaurants[item].openingTime.today.to, restaurants[item].nextOpenTime)}</dt>
+                                                        </dl>
+                                                    </Content>
+                                                </Media.Item>
+                                            </Media>
+                                        </Card.Content>
+                                        <Card.Footer>
+                                            <Card.Footer.Item><Button onClick={() => navigate(paths.RESTAURANT + "/" + restaurants[item]._id)} color={"primary"} fullwidth>Zvolit</Button></Card.Footer.Item>
+                                        </Card.Footer>
+                                    </Card>
+                                </Columns.Column>
+                            )
+                        })
+                    }
                 </Columns>
-
             </Container>
-
-        </>
+        </React.Fragment>
     );
 }                                                       

@@ -13,10 +13,10 @@ export default function BackButtonComponent() {
     const restaurantPath = pathname.split('/')[1];
     backButtonPaths.push(restaurantPath);
     return (
-        <>
+        <React.Fragment>
             {backNavigations[backButtonPaths] ?
                 <Button id='fixedBackButton' renderAs={Link} rounded color={'warning'} size={'medium'} className='is-responsive' to={backNavigations[backButtonPaths]}><FontAwesomeIcon icon={faArrowLeft} /></Button>
                 : undefined}
-        </>
+        </React.Fragment>
     )
 }

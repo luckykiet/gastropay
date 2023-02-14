@@ -15,16 +15,13 @@ export default function RestaurantPage() {
             ? "has-text-weight-bold has-text-danger"
             : "has-text-weight-bold has-text-success";
     };
-
     useEffect(() => {
         const axios = createAxios(BASE_URL);
         Promise.delay(0)
-            .then(() => {
-                return axios.get(`/database/restaurant/${idRestaurant}.json`);
-            })
-            .then((resp) => {
+            .then(async () => {
+                const resp = await axios.get(`/database/restaurant/${idRestaurant}.json`);
                 if (!resp.data) {
-                    throw new Error("No data");
+                    throw new Error('No data');
                 }
                 setBusiness(resp.data);
             })
@@ -47,7 +44,7 @@ export default function RestaurantPage() {
     }
 
     return (
-        <>
+        <React.Fragment>
             <Content textAlign={"center"}>
                 <Heading pt={5} spaced>
                     {business.name}
@@ -79,6 +76,6 @@ export default function RestaurantPage() {
                     </Content>
                 </Columns.Column>
             </Columns>
-        </>
+        </React.Fragment>
     );
 }

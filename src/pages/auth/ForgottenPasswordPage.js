@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { Box, Columns, Content, Heading, Form, Icon, Button } from "react-bulma-components";
+import React from "react";
 export default function ForgottenPasswordPage() {
     return (
-        <>
+        <React.Fragment>
             <Content textAlign={"center"}>
                 <Heading pt={5} spaced>Obnovit heslo</Heading>
             </Content>
@@ -23,6 +24,6 @@ export default function ForgottenPasswordPage() {
                     </Box>
                 </Columns.Column>
             </Columns>
-        </>
+        </React.Fragment>
     )
 }

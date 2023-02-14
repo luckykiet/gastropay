@@ -1,10 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { Box, Columns, Content, Heading, Form, Icon, Button } from "react-bulma-components";
+import React from "react";
 
 export default function RegisterPage() {
     return (
-        <>
+        <React.Fragment>
             <Content textAlign={"center"}>
                 <Heading pt={5} spaced>Registrační formulář</Heading>
             </Content>
@@ -56,6 +57,6 @@ export default function RegisterPage() {
                     </Box>
                 </Columns.Column>
             </Columns>
-        </>
+        </React.Fragment>
     )
 }
