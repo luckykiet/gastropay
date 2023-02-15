@@ -9,7 +9,8 @@ export const paths = {
     FORGOTTEN_PASS: '/forgottenpassword',
     RESTAURANTS: '/restaurants',
     RESTAURANT: '/restaurant',
-
+    MENU: '/menu',
+    ID_RESTAURANT: ':idRestaurant'
 };
 
 export const languages = {

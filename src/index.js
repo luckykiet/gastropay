@@ -18,6 +18,7 @@ import ForgottenPasswordPage from './pages/auth/ForgottenPasswordPage';
 import RestaurantsPage from './pages/guest/RestaurantsPage';
 import RestaurantPage from './pages/guest/RestaurantPage';
 import MenuPage from './pages/guest/MenuPage';
+import MenuLayout from './components/layouts/MenuLayout';
 
 const router = createBrowserRouter([
   {
@@ -50,12 +51,11 @@ const router = createBrowserRouter([
           element: <RestaurantsPage />
         },
         {
-          path: paths.RESTAURANT + "/:idRestaurant",
-          element: <RestaurantPage />
-        },
-        {
-          path: "menu",
-          element: <MenuPage />
+          path: paths.RESTAURANT,
+          children: [{
+            path: paths.ID_RESTAURANT,
+            element: <RestaurantPage />,
+          }]
         }
       ],
     }]
@@ -64,6 +64,15 @@ const router = createBrowserRouter([
     element: <LoginPage />,
     errorElement: <ErrorPage />,
   },
+  {
+    path: paths.MENU,
+    element: <MenuLayout />,
+    errorElement: <ErrorPage />,
+    children: [{
+      path: paths.ID_RESTAURANT,
+      element: <MenuPage />
+    }]
+  }
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

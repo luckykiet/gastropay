@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Columns, Content, Heading, Image } from 'react-bulma-components';
+import { Button, Columns, Content, Heading, Image } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
 import { createAxios, paths, BASE_URL, isOpening, daysOfWeeksCzech, MAX_OPENING_TIME_OBJECT_LENGTH } from "../../utils";
 import Promise from "bluebird";
@@ -7,17 +7,17 @@ import moment from 'moment';
 
 const { Column } = Columns;
 
+const currentOpeningTimeStyle = (time) => {
+    return Object.keys(time).length < MAX_OPENING_TIME_OBJECT_LENGTH || !isOpening(time.from, time.to)
+        ? "has-text-weight-bold has-text-danger"
+        : "has-text-weight-bold has-text-success";
+};
+
 export default function RestaurantPage() {
     const [business, setBusiness] = useState({});
     const { idRestaurant } = useParams();
     const IMAGE_BASE_URL = "http://localhost:3000";
     const todayDay = moment().day();
-
-    const currentOpeningTimeStyle = (time) => {
-        return Object.keys(time).length < MAX_OPENING_TIME_OBJECT_LENGTH || !isOpening(time.from, time.to)
-            ? "has-text-weight-bold has-text-danger"
-            : "has-text-weight-bold has-text-success";
-    };
 
     useEffect(() => {
         const axios = createAxios(BASE_URL);
@@ -31,7 +31,6 @@ export default function RestaurantPage() {
         }).catch((err) => {
             console.log(err);
         });
-
     }, [idRestaurant]);
 
     if (Object.keys(business).length === 0) {
@@ -78,6 +77,7 @@ export default function RestaurantPage() {
                             ))}
                         </ul>
                     </Content>
+                    <Button color={'success'} fullwidth size={'medium'} renderAs={Link} to={paths.MENU + "/" + idRestaurant}>Objednat jídlo</Button>
                 </Column>
             </Columns>
         </Fragment>
