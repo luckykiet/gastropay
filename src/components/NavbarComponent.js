@@ -1,6 +1,6 @@
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 import packageJson from '../../package.json';
-import { paths } from '../utils';
+import { PATHS } from '../utils';
 import { Navbar } from 'react-bulma-components';
 import { useState } from 'react';
 
@@ -8,22 +8,22 @@ const { Brand, Item, Burger, Container, Menu, Dropdown, Link } = Navbar;
 const activeClassName = 'is-active';
 const items = [
     {
-        path: paths.CONTACT,
+        path: PATHS.CONTACT,
         name: 'Kontakty',
         dividerAfter: false
     },
     {
-        path: paths.ABOUT,
+        path: PATHS.ABOUT,
         name: 'O nás',
         dividerAfter: true
     },
     {
-        path: paths.LOGIN,
+        path: PATHS.LOGIN,
         name: 'Přihlášení',
         dividerAfter: false
     },
     {
-        path: paths.REGISTRATION,
+        path: PATHS.REGISTRATION,
         name: 'Registrace',
         dividerAfter: false
     }
@@ -46,7 +46,7 @@ export default function NavbarComponent() {
     return (
         <Navbar color={'primary'} role="navigation" aria-label="main navigation" className='is-spaced has-shadow' >
             <Brand>
-                <Item renderAs={RouterLink} to={paths.HOME}>
+                <Item renderAs={RouterLink} to={PATHS.HOME}>
                     {packageJson.app.name}
                 </Item>
                 <Container align='left'>

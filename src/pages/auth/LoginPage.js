@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from "react-router-dom";
-import { paths } from "../../utils";
+import { PATHS } from "../../utils";
 import { Box, Columns, Container, Hero, Icon, Button, Form } from "react-bulma-components";
 
 const { Body } = Hero;
@@ -11,7 +11,7 @@ const { Column } = Columns;
 export default function LoginPage() {
     const navigate = useNavigate();
     const handleBackToApp = () => {
-        navigate(paths.HOME);
+        navigate(PATHS.HOME);
     }
     return (
         <Hero size={'fullheight'} color={'primary'}>
@@ -38,8 +38,8 @@ export default function LoginPage() {
                                         <Icon align="left">  <FontAwesomeIcon icon={faLock} /></Icon>
                                     </Control>
                                 </Field>
-                                <p className="py-2">Nemáte účet? <Link to={paths.REGISTRATION} className="is-underlined">Zaregistrujte</Link></p>
-                                <p>Zapoměl(a) jste heslo? <Link to={paths.FORGOTTEN_PASS} className="is-underlined">Obnovte heslo</Link></p>
+                                <p className="py-2">Nemáte účet? <Link to={PATHS.REGISTRATION} className="is-underlined">Zaregistrujte</Link></p>
+                                <p>Zapoměl(a) jste heslo? <Link to={PATHS.FORGOTTEN_PASS} className="is-underlined">Obnovte heslo</Link></p>
                                 <Field py={2}>
                                     <Control>
                                         <Checkbox id="rememberMeCheckBox">&nbsp;Zapamatovat si</Checkbox>

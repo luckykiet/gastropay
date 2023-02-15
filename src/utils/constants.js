@@ -1,4 +1,4 @@
-export const paths = {
+export const PATHS = {
     HOME: '/',
     LOGIN: '/login',
     LOG_OUT: '/logout',
@@ -13,7 +13,7 @@ export const paths = {
     ID_RESTAURANT: ':idRestaurant'
 };
 
-export const languages = {
+export const LANGUAGES = {
     CS: 'cs',
     EN: 'en'
 };

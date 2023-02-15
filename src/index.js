@@ -5,7 +5,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { paths } from './utils';
+import { PATHS } from './utils';
 import reportWebVitals from './reportWebVitals';
 import RootLayout from './components/layouts/RootLayout';
 import AboutPage from './pages/guest/AboutPage';
@@ -22,7 +22,7 @@ import MenuLayout from './components/layouts/MenuLayout';
 
 const router = createBrowserRouter([
   {
-    path: paths.HOME,
+    path: PATHS.HOME,
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [{
@@ -32,44 +32,46 @@ const router = createBrowserRouter([
           element: <HomePage />
         },
         {
-          path: paths.ABOUT,
+          path: PATHS.ABOUT,
           element: <AboutPage />
         }, {
-          path: paths.CONTACT,
+          path: PATHS.CONTACT,
           element: <ContactPage />
         },
         {
-          path: paths.REGISTRATION,
+          path: PATHS.REGISTRATION,
           element: <RegisterPage />
         },
         {
-          path: paths.FORGOTTEN_PASS,
+          path: PATHS.FORGOTTEN_PASS,
           element: <ForgottenPasswordPage />
         },
         {
-          path: paths.RESTAURANTS,
+          path: PATHS.RESTAURANTS,
           element: <RestaurantsPage />
         },
-        {
-          path: paths.RESTAURANT,
-          children: [{
-            path: paths.ID_RESTAURANT,
-            element: <RestaurantPage />,
-          }]
-        }
       ],
     }]
   }, {
-    path: paths.LOGIN,
+    path: PATHS.LOGIN,
     element: <LoginPage />,
     errorElement: <ErrorPage />,
   },
   {
-    path: paths.MENU,
+    path: PATHS.RESTAURANT,
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
+    children: [{
+      path: PATHS.ID_RESTAURANT,
+      element: <RestaurantPage />,
+    }]
+  },
+  {
+    path: PATHS.MENU,
     element: <MenuLayout />,
     errorElement: <ErrorPage />,
     children: [{
-      path: paths.ID_RESTAURANT,
+      path: PATHS.ID_RESTAURANT,
       element: <MenuPage />
     }]
   }

@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Button, Columns, Content, Heading, Image } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
-import { createAxios, paths, BASE_URL, isOpening, daysOfWeeksCzech, MAX_OPENING_TIME_OBJECT_LENGTH } from "../../utils";
+import { createAxios, PATHS, BASE_URL, isOpening, daysOfWeeksCzech, MAX_OPENING_TIME_OBJECT_LENGTH } from "../../utils";
 import Promise from "bluebird";
 import moment from 'moment';
 
@@ -40,12 +40,11 @@ export default function RestaurantPage() {
                     Výskytla se chyba
                 </Heading>
                 <p>
-                    Vraťte se na <Link to={paths.RESTAURANTS}>výběr restaurací.</Link>
+                    Vraťte se na <Link to={PATHS.RESTAURANTS}>výběr restaurací.</Link>
                 </p>
             </Content>
         );
     }
-
     return (
         <Fragment>
             <Content textAlign={"center"}>
@@ -77,7 +76,7 @@ export default function RestaurantPage() {
                             ))}
                         </ul>
                     </Content>
-                    <Button color={'success'} fullwidth size={'medium'} renderAs={Link} to={paths.MENU + "/" + idRestaurant}>Objednat jídlo</Button>
+                    <Button color={'success'} fullwidth size={'medium'} renderAs={Link} to={PATHS.MENU + "/" + idRestaurant}>Objednat jídlo</Button>
                 </Column>
             </Columns>
         </Fragment>

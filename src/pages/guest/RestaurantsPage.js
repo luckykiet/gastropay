@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Button, Card, Container, Content as TextContent, Heading, Media, Image, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, createAxios, isOpening, paths, daysOfWeeksCzech } from "../../utils";
+import { BASE_URL, createAxios, isOpening, PATHS, daysOfWeeksCzech } from "../../utils";
 import { Promise } from "bluebird";
 import moment from "moment";
 
@@ -91,7 +91,7 @@ export default function RestaurantsPage() {
                                             </Media>
                                         </Content>
                                         <Footer>
-                                            <Footer.Item><Button onClick={() => navigate(paths.RESTAURANT + "/" + restaurants[item]._id)} color={"primary"} fullwidth>Zvolit</Button></Footer.Item>
+                                            <Footer.Item><Button onClick={() => navigate(PATHS.RESTAURANT + "/" + restaurants[item]._id)} color={"primary"} fullwidth>Zvolit</Button></Footer.Item>
                                         </Footer>
                                     </Card>
                                 </Column>
