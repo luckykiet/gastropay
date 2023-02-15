@@ -3,14 +3,14 @@ import { Heading, Content, Container } from "react-bulma-components";
 import NavbarComponent from "../components/NavbarComponent";
 import FooterComponent from "../components/FooterComponent";
 import 'bulma/css/bulma.min.css';
-import React from "react";
+import React, { Fragment } from "react";
 
 export default function ErrorPage() {
     const error = useRouteError();
     console.error(error);
 
     return (
-        <React.Fragment>
+        <Fragment>
             <header>
                 <NavbarComponent />
             </header>
@@ -25,7 +25,7 @@ export default function ErrorPage() {
                 </Container>
             </main>
             <FooterComponent />
-        </React.Fragment>
+        </Fragment>
     );
 }
 
@@ -34,21 +34,21 @@ function RootBoundary() {
 
     if (isRouteErrorResponse(error)) {
         if (error.status === 404) {
-            return <React.Fragment>Chyba {error.status} - Tato stránka existuje!</React.Fragment>;
+            return <Fragment>Chyba {error.status} - Tato stránka existuje!</Fragment>;
         }
 
         if (error.status === 401) {
-            return <React.Fragment>Chyba {error.status} - Nemáte oprávnění!</React.Fragment>;
+            return <Fragment>Chyba {error.status} - Nemáte oprávnění!</Fragment>;
         }
 
         if (error.status === 503) {
-            return <React.Fragment>Chyba {error.status} - Nepodařilo se načíst API!</React.Fragment>;
+            return <Fragment>Chyba {error.status} - Nepodařilo se načíst API!</Fragment>;
         }
 
         if (error.status === 418) {
-            return <React.Fragment>🫖</React.Fragment>;
+            return <Fragment>🫖</Fragment>;
         }
     }
 
-    return <React.Fragment>{error.statusText || error.message}</React.Fragment>;
+    return <Fragment>{error.statusText || error.message}</Fragment>;
 }

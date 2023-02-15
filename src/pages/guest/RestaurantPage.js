@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Columns, Content, Heading, Image } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
 import { createAxios, paths, BASE_URL, isOpening, daysOfWeeksCzech, MAX_OPENING_TIME_OBJECT_LENGTH } from "../../utils";
 import Promise from "bluebird";
 import moment from 'moment';
+
+const { Column } = Columns;
 
 export default function RestaurantPage() {
     const [business, setBusiness] = useState({});
@@ -46,21 +48,21 @@ export default function RestaurantPage() {
     }
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Content textAlign={"center"}>
                 <Heading pt={5} spaced>
                     {business.name}
                 </Heading>
             </Content>
             <Columns>
-                <Columns.Column>
+                <Column>
                     <Image
                         size={"3by2"}
                         alt={business.name}
                         src={business.image ? IMAGE_BASE_URL + business.image : BASE_URL + "/images/restaurants/default.jpg"}
                     ></Image>
-                </Columns.Column>
-                <Columns.Column>
+                </Column>
+                <Column>
                     <Content>
                         <p className="has-text-weight-bold is-size-4">Otevírací doba:</p>
                         <ul>
@@ -76,8 +78,8 @@ export default function RestaurantPage() {
                             ))}
                         </ul>
                     </Content>
-                </Columns.Column>
+                </Column>
             </Columns>
-        </React.Fragment>
+        </Fragment>
     );
 }

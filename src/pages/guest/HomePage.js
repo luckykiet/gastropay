@@ -2,7 +2,7 @@ import packageJson from '../../../package.json';
 import { Content, Heading, Button } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
 import { paths } from '../../utils';
-import React from "react";
+import React, { Fragment } from "react";
 
 export default function HomePage() {
     const navigate = useNavigate();
@@ -11,7 +11,7 @@ export default function HomePage() {
         navigate(paths.RESTAURANTS);
     }
     return (
-        <React.Fragment>
+        <Fragment>
             <Content textAlign={'center'}>
                 <Heading size={1} pt={5} spaced>{packageJson.app.name}</Heading>
             </Content>
@@ -27,6 +27,6 @@ export default function HomePage() {
                 </ol>
             </Content>
             <Button size={'large'} color={'primary'} fullwidth onClick={handleStartApp}> Začněte objednávat!</Button>
-        </React.Fragment>
+        </Fragment>
     )
 }

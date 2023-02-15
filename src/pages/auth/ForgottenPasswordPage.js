@@ -1,29 +1,31 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { Box, Columns, Content, Heading, Form, Icon, Button } from "react-bulma-components";
-import React from "react";
+import React, { Fragment } from "react";
+const { Column } = Columns;
+const { Field, Label, Control, Input } = Form;
 export default function ForgottenPasswordPage() {
     return (
-        <React.Fragment>
+        <Fragment>
             <Content textAlign={"center"}>
                 <Heading pt={5} spaced>Obnovit heslo</Heading>
             </Content>
             <Columns pt={5} centered vCentered >
-                <Columns.Column size={4} tablet={5} desktop={4} widescreen={4}>
+                <Column size={4} tablet={5} desktop={4} widescreen={4}>
                     <Box>
-                        <Form.Field>
-                            <Form.Label htmlFor="inputEmail">
+                        <Field>
+                            <Label htmlFor="inputEmail">
                                 Email
-                            </Form.Label>
-                            <Form.Control>
-                                <Form.Input id="inputEmail" type="email" placeholder="gastropay@vse.cz" required />
+                            </Label>
+                            <Control>
+                                <Input id="inputEmail" type="email" placeholder="gastropay@vse.cz" required />
                                 <Icon align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
-                            </Form.Control>
-                        </Form.Field>
+                            </Control>
+                        </Field>
                         <Button fullwidth color={'warning'}>Obnovit heslo</Button>
                     </Box>
-                </Columns.Column>
+                </Column>
             </Columns>
-        </React.Fragment>
+        </Fragment>
     )
 }

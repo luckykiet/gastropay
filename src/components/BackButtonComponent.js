@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Button } from 'react-bulma-components';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,10 +13,10 @@ export default function BackButtonComponent() {
     const restaurantPath = pathname.split('/')[1];
     backButtonPaths.push(restaurantPath);
     return (
-        <React.Fragment>
+        <Fragment>
             {backNavigations[backButtonPaths] ?
                 <Button id='fixedBackButton' renderAs={Link} rounded color={'warning'} size={'medium'} className='is-responsive' to={backNavigations[backButtonPaths]}><FontAwesomeIcon icon={faArrowLeft} /></Button>
                 : undefined}
-        </React.Fragment>
+        </Fragment>
     )
 }

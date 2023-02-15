@@ -1,10 +1,10 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link as RouterLink, NavLink } from 'react-router-dom';
 import packageJson from '../../package.json';
 import { paths } from '../utils';
 import { Navbar } from 'react-bulma-components';
 import { useState } from 'react';
 
-
+const { Brand, Item, Burger, Container, Menu, Dropdown, Link } = Navbar;
 const activeClassName = 'is-active';
 const items = [
     {
@@ -45,30 +45,30 @@ export default function NavbarComponent() {
     const [isBurgerActive, setBurgerActive] = useState(false);
     return (
         <Navbar color={'primary'} role="navigation" aria-label="main navigation" className='is-spaced has-shadow' >
-            <Navbar.Brand>
-                <Navbar.Item renderAs={Link} to={paths.HOME}>
+            <Brand>
+                <Item renderAs={RouterLink} to={paths.HOME}>
                     {packageJson.app.name}
-                </Navbar.Item>
-                <Navbar.Container align='left'>
-                    <Navbar.Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
+                </Item>
+                <Container align='left'>
+                    <Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
                         setBurgerActive(!isBurgerActive);
                     }} className={
                         isBurgerActive ? activeClassName : undefined
                     } />
-                </Navbar.Container>
-            </Navbar.Brand>
-            <Navbar.Menu id='navbarMain' className={
+                </Container>
+            </Brand>
+            <Menu id='navbarMain' className={
                 isBurgerActive ? activeClassName : undefined
             }>
-                <Navbar.Container align='left'>
-                    <Navbar.Item hoverable>
-                        <Navbar.Link>Více</Navbar.Link>
-                        <Navbar.Dropdown boxed>
+                <Container align='left'>
+                    <Item hoverable>
+                        <Link>Více</Link>
+                        <Dropdown boxed>
                             <NavItems />
-                        </Navbar.Dropdown>
-                    </Navbar.Item>
-                </Navbar.Container>
-            </Navbar.Menu>
+                        </Dropdown>
+                    </Item>
+                </Container>
+            </Menu>
         </Navbar>
     )
 }

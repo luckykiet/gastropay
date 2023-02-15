@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { Card, Container, Content, Heading, Columns, Tabs, Button } from 'react-bulma-components';
+import React, { Fragment, useState } from 'react';
+import { Card, Container, Content as TextContent, Heading, Columns, Tabs, Button } from 'react-bulma-components';
 import { useAddToCartItem, useCartItems } from '../../stores/ZustandStores';
 import { calculateCart } from '../../utils';
 import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+const { Column } = Columns;
+const { Image, Content } = Card;
+const { Tab } = Tabs;
 
 const tabs = [
     { ean: 1, name: 'Bun' },
@@ -23,26 +26,26 @@ const ProductCard = ({ product }) => {
     const addToCartItem = useAddToCartItem();
 
     return (
-        <Columns.Column className='is-one-quarter'>
-            <Card>
-                <Card.Image size={'4by3'} src={product.image} />
-                <Card.Content>
-                    <Content>
+        <Column className='is-one-quarter'>
+            <Card key={product.ean}>
+                <Image size={'4by3'} src={product.image} />
+                <Content>
+                    <TextContent>
                         <Columns>
-                            <Columns.Column size={'four-fifths'}>
+                            <Column size={'four-fifths'}>
                                 <Heading size={5}>{product.name}</Heading>
                                 <Heading subtitle size={6}>
                                     {product.price} Kč
                                 </Heading>
-                            </Columns.Column>
-                            <Columns.Column size={'one-fifths'}>
+                            </Column>
+                            <Column size={'one-fifths'}>
                                 <Button onClick={() => addToCartItem(product, 1)} ><FontAwesomeIcon icon={faCartShopping} /></Button>
-                            </Columns.Column>
+                            </Column>
                         </Columns>
-                    </Content>
-                </Card.Content>
+                    </TextContent>
+                </Content>
             </Card>
-        </Columns.Column>
+        </Column>
     );
 };
 
@@ -50,18 +53,18 @@ const ProductCard = ({ product }) => {
 const ProductList = ({ groupId, content }) => {
     const groupedProducts = content.filter((product) => product.group === groupId);
     return (
-        <React.Fragment>
+        <Fragment key={groupId}>
             {groupedProducts.map((product) => (
                 <ProductCard key={product.ean} product={product} />
             ))}
-        </React.Fragment>
+        </Fragment>
     );
 };
 
 const Cart = () => {
     const cartItems = useCartItems();
     return (
-        <React.Fragment>
+        <Fragment>
             <Heading size={4}>Cart</Heading>
             <ul>
                 {cartItems.map((item) => (
@@ -71,7 +74,7 @@ const Cart = () => {
                 ))}
                 <li>Total price: {calculateCart(cartItems).totalPrice}</li>
             </ul>
-        </React.Fragment>
+        </Fragment>
     );
 };
 
@@ -82,12 +85,12 @@ const TabsPage = ({ listOfTabs, content }) => {
     };
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Tabs align={'center'} size={'large'}>
                 {listOfTabs.map((tab) => (
-                    <Tabs.Tab key={tab.ean} active={activeTab === tab.ean} onClick={() => handleTabClick(tab.ean)}>
+                    <Tab key={tab.ean} active={activeTab === tab.ean} onClick={() => handleTabClick(tab.ean)}>
                         {tab.name}
-                    </Tabs.Tab>
+                    </Tab>
                 ))}
             </Tabs>
             <Columns centered vCentered>
@@ -95,7 +98,7 @@ const TabsPage = ({ listOfTabs, content }) => {
                     activeTab === tab.ean && <ProductList key={tab.ean} groupId={tab.ean} content={content} />
                 ))}
             </Columns>
-        </React.Fragment>
+        </Fragment>
     );
 };
 
@@ -103,7 +106,7 @@ const TabsPage = ({ listOfTabs, content }) => {
 export default function MenuPage() {
 
     return (
-        <React.Fragment>
+        <Fragment>
             <Content textAlign={"center"}>
                 <Heading pt={5} spaced>
                     Menu
@@ -113,6 +116,6 @@ export default function MenuPage() {
                 <TabsPage listOfTabs={tabs} content={products} />
             </Container>
             <Cart />
-        </React.Fragment>
+        </Fragment>
     );
 };
