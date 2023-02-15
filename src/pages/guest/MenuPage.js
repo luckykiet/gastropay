@@ -1,13 +1,10 @@
-import React, { Fragment, useState } from 'react';
-import { Card, Container, Content as TextContent, Heading, Columns, Tabs, Button } from 'react-bulma-components';
-import { useAddToCartItem, useCartItems } from '../../stores/ZustandStores';
-import { calculateCart } from '../../utils';
-import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { Fragment } from 'react';
+import { Card, Container, Heading } from 'react-bulma-components';
+import Cart from '../../components/menu/Cart';
+import TabsList from '../../components/menu/TabsList';
 
-const { Column } = Columns;
-const { Image, Content } = Card;
-const { Tab } = Tabs;
+const { Content } = Card;
+
 
 const tabs = [
     { ean: 1, name: 'Bun' },
@@ -22,85 +19,6 @@ const products = [
     { ean: 5, group: 2, name: 'Pho ga', image: 'https://www.hungrywanderlust.com/wp-content/uploads/2020/01/Chicken-Pho-Recipe_0206-1024x683.jpg', price: 139 },
 ];
 
-const ProductCard = ({ product }) => {
-    const addToCartItem = useAddToCartItem();
-
-    return (
-        <Column className='is-one-quarter'>
-            <Card key={product.ean}>
-                <Image size={'4by3'} src={product.image} />
-                <Content>
-                    <TextContent>
-                        <Columns>
-                            <Column size={'four-fifths'}>
-                                <Heading size={5}>{product.name}</Heading>
-                                <Heading subtitle size={6}>
-                                    {product.price} Kč
-                                </Heading>
-                            </Column>
-                            <Column size={'one-fifths'}>
-                                <Button onClick={() => addToCartItem(product, 1)} ><FontAwesomeIcon icon={faCartShopping} /></Button>
-                            </Column>
-                        </Columns>
-                    </TextContent>
-                </Content>
-            </Card>
-        </Column>
-    );
-};
-
-
-const ProductList = ({ groupId, content }) => {
-    const groupedProducts = content.filter((product) => product.group === groupId);
-    return (
-        <Fragment key={groupId}>
-            {groupedProducts.map((product) => (
-                <ProductCard key={product.ean} product={product} />
-            ))}
-        </Fragment>
-    );
-};
-
-const Cart = () => {
-    const cartItems = useCartItems();
-    return (
-        <Fragment>
-            <Heading size={4}>Cart</Heading>
-            <ul>
-                {cartItems.map((item) => (
-                    <li key={item.id}>
-                        {item.name} x {item.quantity} = {item.quantity * parseFloat(item.price)} Kč
-                    </li>
-                ))}
-                <li>Total price: {calculateCart(cartItems).totalPrice}</li>
-            </ul>
-        </Fragment>
-    );
-};
-
-const TabsPage = ({ listOfTabs, content }) => {
-    const [activeTab, setActiveTab] = useState(listOfTabs.length > 0 ? listOfTabs[0].ean : 0);
-    const handleTabClick = (index) => {
-        setActiveTab(index);
-    };
-
-    return (
-        <Fragment>
-            <Tabs align={'center'} size={'large'}>
-                {listOfTabs.map((tab) => (
-                    <Tab key={tab.ean} active={activeTab === tab.ean} onClick={() => handleTabClick(tab.ean)}>
-                        {tab.name}
-                    </Tab>
-                ))}
-            </Tabs>
-            <Columns centered vCentered>
-                {listOfTabs.map((tab) => (
-                    activeTab === tab.ean && <ProductList key={tab.ean} groupId={tab.ean} content={content} />
-                ))}
-            </Columns>
-        </Fragment>
-    );
-};
 
 
 export default function MenuPage() {
@@ -113,7 +31,7 @@ export default function MenuPage() {
                 </Heading>
             </Content>
             <Container>
-                <TabsPage listOfTabs={tabs} content={products} />
+                <TabsList listOfTabs={tabs} content={products} />
             </Container>
             <Cart />
         </Fragment>
