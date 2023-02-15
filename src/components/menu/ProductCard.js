@@ -10,7 +10,7 @@ const { Image, Content } = Card;
 export default function ProductCard({ product }) {
     const addToCartItem = useAddToCartItem();
     return (
-        <Column className='is-one-quarter'>
+        <Column size="is-5-mobile is-4-tablet is-3-desktop" className='is-one-quarter'>
             <Card key={product.ean}>
                 <Image size={'4by3'} src={product.image} />
                 <Content>
