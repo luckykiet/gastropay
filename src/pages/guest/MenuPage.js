@@ -1,11 +1,8 @@
 import React, { Fragment } from 'react';
 import { Card, Container, Heading } from 'react-bulma-components';
-import Cart from '../../components/menu/Cart';
 import TabsList from '../../components/menu/TabsList';
 
 const { Content } = Card;
-
-
 const tabs = [
     { ean: 1, name: 'Bun' },
     { ean: 2, name: 'Pho' }
@@ -19,8 +16,6 @@ const products = [
     { ean: 5, group: 2, name: 'Pho ga', image: 'https://www.hungrywanderlust.com/wp-content/uploads/2020/01/Chicken-Pho-Recipe_0206-1024x683.jpg', price: 139 },
 ];
 
-
-
 export default function MenuPage() {
 
     return (
@@ -33,7 +28,6 @@ export default function MenuPage() {
             <Container>
                 <TabsList listOfTabs={tabs} content={products} />
             </Container>
-            <Cart />
         </Fragment>
     );
 };

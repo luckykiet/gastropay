@@ -23,7 +23,7 @@ export default function RestaurantPage() {
 
     useEffect(() => {
         const axios = createAxios(BASE_URL);
-        Promise.delay(1000).then(() => {
+        Promise.delay(500).then(() => {
             return axios.get(`/database/restaurant/${idRestaurant}.json`);
         }).then((resp) => {
             if (!resp.data) {

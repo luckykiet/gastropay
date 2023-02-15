@@ -5,6 +5,8 @@ import FooterComponent from '../FooterComponent';
 import { Container } from 'react-bulma-components';
 import BackButtonComponent from '../BackButtonComponent';
 import MenuNavbar from '../menu/MenuNavbar';
+import CollapsibleSidebar from '../menu/CollapsibleSidebar';
+
 export default function MenuLayout() {
     return (
         <Fragment>
@@ -13,6 +15,7 @@ export default function MenuLayout() {
             </header>
             <main>
                 <Container id='mainContainer' breakpoint={'fluid'}>
+                    <CollapsibleSidebar />
                     <BackButtonComponent />
                     <Outlet />
                 </Container>

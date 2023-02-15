@@ -10,19 +10,16 @@ const { Brand, Item, Container } = Navbar;
 
 export default function MenuNavbar() {
     const cartItems = useCartItems();
-    const handleShowCart = () => {
-        console.log(cartItems);
-    };
+
     return (
         <Navbar color={'primary'} role="navigation" aria-label="menu navigation" className='is-spaced has-shadow'>
             <Brand>
                 <Item renderAs={Link} to={PATHS.HOME}>
                     {packageJson.app.name}
                 </Item>
-
             </Brand>
             <Container align='right'>
-                <CartButton numItems={calculateCart(cartItems).totalQuantity} handleShowCart={handleShowCart} />
+                <CartButton numItems={calculateCart(cartItems).totalQuantity} />
             </Container>
         </Navbar>
     );

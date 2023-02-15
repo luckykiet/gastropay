@@ -1,21 +1,37 @@
 import React, { Fragment } from 'react'
-import { useCartItems } from '../../stores/ZustandStores';
+import { useCartItems, useDecrementCartItem, useIncrementCartItem, useRemoveCartItem } from '../../stores/ZustandStores';
 import { calculateCart } from '../../utils';
-import { Heading } from 'react-bulma-components';
+import { Table, Button } from 'react-bulma-components';
+import { faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function Cart() {
     const cartItems = useCartItems();
+    const incrementCartItem = useIncrementCartItem();
+    const decrementCartItem = useDecrementCartItem();
+    const removeCartItem = useRemoveCartItem()
     return (
         <Fragment>
-            <Heading size={4}>Cart</Heading>
-            <ul>
-                {cartItems.map((item) => (
-                    <li key={item.id}>
-                        {item.name} x {item.quantity} = {item.quantity * parseFloat(item.price)} Kč
-                    </li>
-                ))}
-                <li>Total price: {calculateCart(cartItems).totalPrice}</li>
-            </ul>
+            <Table size={'fullwidth'}>
+                <thead>
+                    <tr>
+                        <th>Název</th>
+                        <th>Množství</th>
+                        <th colSpan={2}>Cena</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {cartItems.map((item) => (
+                        <tr key={item.id}>
+                            <td>{item.name}</td>
+                            <td>x {item.quantity}</td>
+                            <td>{item.quantity * parseFloat(item.price)} Kč</td>
+                            <td><Button onClick={() => incrementCartItem(item.id)} size={'small'} color={'white'}><FontAwesomeIcon icon={faPlus} /></Button><Button onClick={() => decrementCartItem(item.id)} size={'small'} color={'white'}><FontAwesomeIcon icon={faMinus} /></Button><Button onClick={() => removeCartItem(item.id)} size={'small'} color={'white'}><FontAwesomeIcon icon={faTrash} /></Button></td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
+            <p>Celkem: {calculateCart(cartItems).totalPrice} Kč</p>
         </Fragment>
     );
 };

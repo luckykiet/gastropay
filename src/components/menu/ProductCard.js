@@ -16,13 +16,13 @@ export default function ProductCard({ product }) {
                 <Content>
                     <TextContent>
                         <Columns>
-                            <Column size={'four-fifths'}>
-                                <Heading size={5}>{product.name}</Heading>
-                                <Heading subtitle size={6}>
+                            <Column size={'three-fifths'}>
+                                <Heading size={6}>{product.name}</Heading>
+                                <Heading subtitle size={7}>
                                     {product.price} Kč
                                 </Heading>
                             </Column>
-                            <Column size={'one-fifths'}>
+                            <Column size={'two-fifths'}>
                                 <Button color={'white'} onClick={() => addToCartItem(product, 1)} ><FontAwesomeIcon icon={faCartShopping} /></Button>
                             </Column>
                         </Columns>
