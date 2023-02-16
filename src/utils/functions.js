@@ -27,7 +27,7 @@ export const calculateCart = (cartItems) => {
 }
 
 export const addSlashAfterUrl = (url) => {
-    if (!url.endsWith('/')) {
+    if (url && !url.endsWith('/')) {
         url = url + '/';
     }
     return url;

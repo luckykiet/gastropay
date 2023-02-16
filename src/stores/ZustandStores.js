@@ -4,8 +4,8 @@ import produce from 'immer';
 import { useCallback } from 'react';
 
 const useStore = create((set) => ({
-    choosedRestaurant: {},
-    setChoosedRestaurant: (restaurant) => set({ restaurant }),
+    choosenRestaurant: {},
+    setChoosenRestaurant: (choosenRestaurant) => set({ choosenRestaurant }),
 
     settings: {},
     setSettings: (settings) => set({ settings }),
@@ -14,6 +14,7 @@ const useStore = create((set) => ({
     setIsSidebarShowed: (isSidebarShowed) => set({ isSidebarShowed }),
 
     cartItems: [],
+    setCartItem: (cartItems) => set([cartItems]),
     addToCartItem: (item, quantity) =>
         set(
             produce((state) => {
@@ -59,6 +60,7 @@ const useStore = create((set) => ({
 
 // Memoized selectors
 export const useCartItems = () => useStore(useCallback((state) => state.cartItems, []));
+export const useSetCartItems = () => useStore(useCallback((state) => state.setCartItem, []));
 export const useAddToCartItem = () => useStore(useCallback((state) => state.addToCartItem, []));
 export const useRemoveCartItem = () => useStore(useCallback((state) => state.removeCartItem, []));
 export const useDecrementCartItem = () => useStore(useCallback((state) => state.decrementCartItem, []));
@@ -67,8 +69,8 @@ export const useIncrementCartItem = () => useStore(useCallback((state) => state.
 export const useSettings = () => useStore(useCallback((state) => state.settings, []));
 export const useSetSettings = () => useStore(useCallback((state) => state.setSettings, []));
 
-export const useChoosedRestaurant = () => useStore(useCallback((state) => state.choosedRestaurant, []));
-export const useSetChoosedRestaurant = () => useStore(useCallback((state) => state.setChoosedRestaurant, []));
+export const useChoosenRestaurant = () => useStore(useCallback((state) => state.choosenRestaurant, []));
+export const useSetChoosenRestaurant = () => useStore(useCallback((state) => state.setChoosenRestaurant, []));
 
 export const useIsSidebarShowed = () => useStore(useCallback((state) => state.isSidebarShowed, []));
 export const useSetIsSidebarShowed = () => useStore(useCallback((state) => state.setIsSidebarShowed, []));

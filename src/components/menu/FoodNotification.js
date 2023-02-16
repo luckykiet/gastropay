@@ -3,7 +3,6 @@ import { Notification, Button } from 'react-bulma-components';
 
 export default function FoodNotification({ isShowed, msg, color }) {
     const [showNotification, setShowNotification] = useState(isShowed);
-
     const handleCloseNotification = () => {
         setShowNotification(false);
     }

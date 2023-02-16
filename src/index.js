@@ -17,7 +17,6 @@ import RegisterPage from './pages/auth/RegisterPage';
 import ForgottenPasswordPage from './pages/auth/ForgottenPasswordPage';
 import RestaurantsPage from './pages/guest/RestaurantsPage';
 import RestaurantPage from './pages/guest/RestaurantPage';
-import MenuPage from './pages/guest/MenuPage';
 import MenuLayout from './components/layouts/MenuLayout';
 
 const router = createBrowserRouter([
@@ -70,10 +69,6 @@ const router = createBrowserRouter([
     path: PATHS.MENU,
     element: <MenuLayout />,
     errorElement: <ErrorPage />,
-    children: [{
-      path: PATHS.ID_RESTAURANT,
-      element: <MenuPage />
-    }]
   }
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));

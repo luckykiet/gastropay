@@ -56,56 +56,58 @@ export default function RestaurantsPage() {
 
     return (
         <Fragment>
-            <TextContent textAlign={"center"}>
-                <Heading pt={5} spaced>Zvolte restauraci</Heading>
-            </TextContent>
-            <Container>
-                {loading ? (
-                    <LoadingComponent />
-                ) :
-                    <Columns centered vCentered>
-                        {(!restaurants || Object.keys(restaurants).length === 0) ?
-                            <TextContent textAlign={"center"}>
-                                <p>Momentálně není žádná restaurace aktivní</p>
-                            </TextContent>
-                            :
-                            Object.keys(restaurants).map((item) => {
-                                return (
-                                    <Column key={restaurants[item]._id} narrow>
-                                        <Card>
-                                            <Header>
-                                                <Header.Title>{restaurants[item].name}</Header.Title>
-                                            </Header>
-                                            <Content>
-                                                <Media>
-                                                    <Item align="left">
-                                                        <Image alt={restaurants[item].name} src={restaurants[item].image ? BASE_URL + restaurants[item].image : IMAGE_BASE_URL + "/restaurants/default.jpg"} size={128}></Image>
-                                                    </Item>
-                                                    <Item align="center">
-                                                        <TextContent>
-                                                            <dl>
-                                                                <dt><strong>Adresa:</strong></dt>
-                                                                <dd>{restaurants[item].address.street}</dd>
-                                                                <dd>{restaurants[item].address.postalCode} {restaurants[item].address.city}</dd>
-                                                            </dl>
-                                                            <dl>
-                                                                <dt>{OpeningTime(restaurants[item].openingTime, restaurants[item].nextOpeningTime)}</dt>
-                                                            </dl>
-                                                        </TextContent>
-                                                    </Item>
-                                                </Media>
-                                            </Content>
-                                            <Footer>
-                                                <Footer.Item><Button onClick={() => navigate(PATHS.RESTAURANT + "/" + restaurants[item]._id)} color={"primary"} fullwidth>Zvolit</Button></Footer.Item>
-                                            </Footer>
-                                        </Card>
-                                    </Column>
-                                )
-                            })
-                        }
-                    </Columns>
-                }
-            </Container>
+            {loading ? (
+                <LoadingComponent />
+            ) :
+                <Fragment>
+                    <TextContent textAlign={"center"}>
+                        <Heading pt={5} spaced>Zvolte restauraci</Heading>
+                    </TextContent>
+                    <Container>
+                        <Columns centered vCentered>
+                            {(!restaurants || Object.keys(restaurants).length === 0) ?
+                                <TextContent textAlign={"center"}>
+                                    <p>Momentálně není žádná restaurace aktivní</p>
+                                </TextContent>
+                                :
+                                Object.keys(restaurants).map((item) => {
+                                    return (
+                                        <Column key={restaurants[item]._id} narrow>
+                                            <Card>
+                                                <Header>
+                                                    <Header.Title>{restaurants[item].name}</Header.Title>
+                                                </Header>
+                                                <Content>
+                                                    <Media>
+                                                        <Item align="left">
+                                                            <Image alt={restaurants[item].name} src={restaurants[item].image ? BASE_URL + restaurants[item].image : IMAGE_BASE_URL + "/restaurants/default.jpg"} size={128}></Image>
+                                                        </Item>
+                                                        <Item align="center">
+                                                            <TextContent>
+                                                                <dl>
+                                                                    <dt><strong>Adresa:</strong></dt>
+                                                                    <dd>{restaurants[item].address.street}</dd>
+                                                                    <dd>{restaurants[item].address.postalCode} {restaurants[item].address.city}</dd>
+                                                                </dl>
+                                                                <dl>
+                                                                    <dt>{OpeningTime(restaurants[item].openingTime, restaurants[item].nextOpeningTime)}</dt>
+                                                                </dl>
+                                                            </TextContent>
+                                                        </Item>
+                                                    </Media>
+                                                </Content>
+                                                <Footer>
+                                                    <Footer.Item><Button onClick={() => navigate(PATHS.RESTAURANT + "/" + restaurants[item]._id)} color={"primary"} fullwidth>Zvolit</Button></Footer.Item>
+                                                </Footer>
+                                            </Card>
+                                        </Column>
+                                    )
+                                })
+                            }
+                        </Columns>
+                    </Container>
+                </Fragment>
+            }
         </Fragment>
     );
 }

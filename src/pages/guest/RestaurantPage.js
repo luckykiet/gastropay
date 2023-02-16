@@ -5,6 +5,7 @@ import { createAxios, PATHS, BASE_URL, isOpening, daysOfWeeksCzech, MAX_OPENING_
 import Promise from "bluebird";
 import moment from 'moment';
 import LoadingComponent from '../../components/LoadingComponent';
+import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/ZustandStores';
 
 const { Column } = Columns;
 
@@ -15,7 +16,7 @@ const currentOpeningTimeStyle = (time) => {
 };
 
 export default function RestaurantPage() {
-    const [business, setBusiness] = useState({});
+    const [business, setBusiness] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
     const [loading, setLoading] = useState(true);
     const { idRestaurant } = useParams();
 
@@ -34,59 +35,62 @@ export default function RestaurantPage() {
         }).catch((err) => {
             console.log(err);
         });
-    }, [idRestaurant]);
+    }, [idRestaurant, setBusiness]);
 
 
     return (
         <Fragment>
-            <Content textAlign={"center"}>
-                <Heading pt={5} spaced>
-                    {business.name}
-                </Heading>
-            </Content>
             {loading ? (
                 <LoadingComponent />
             ) : (
-                Object.keys(business).length === 0 ?
-                    (
-                        <Content textAlign={"center"}>
-                            <Heading pt={5} spaced>
-                                Výskytla se chyba
-                            </Heading>
-                            <p>
-                                Vraťte se na <Link to={PATHS.RESTAURANTS}>výběr restaurací.</Link>
-                            </p>
-                        </Content>
-                    ) :
-                    (
-                        <Columns>
-                            <Column>
-                                <Image
-                                    size={"3by2"}
-                                    alt={business.name}
-                                    src={business.image ? addSlashAfterUrl(business.image.baseUrl) + business.image.params : addSlashAfterUrl(IMAGE_BASE_URL) + "/restaurants/default.jpg"}
-                                ></Image>
-                            </Column>
-                            <Column>
-                                <Content>
-                                    <p className="has-text-weight-bold is-size-4">Otevírací doba:</p>
-                                    <ul>
-                                        {Object.keys(daysOfWeeksCzech).map((item, index) => (
-                                            <li className={index === todayDay ? currentOpeningTimeStyle(business.openingTime?.[item] ?? {}) : undefined} key={item}>
-                                                <span className="alignAfterColon">{daysOfWeeksCzech[item].name}:</span>
-                                                {business.openingTime?.[item] ? (
-                                                    <span>{business.openingTime[item].from + " - " + business.openingTime[item].to}</span>
-                                                ) : (
-                                                    <span>Zavřeno</span>
-                                                )}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </Content>
-                                <Button color={'success'} fullwidth size={'medium'} renderAs={Link} to={PATHS.MENU + "/" + idRestaurant}>Objednat jídlo</Button>
-                            </Column>
-                        </Columns>
-                    ))}
+                <Fragment>
+                    <Content textAlign={"center"}>
+                        <Heading pt={5} spaced>
+                            {business.name}
+                        </Heading>
+                    </Content>
+                    {Object.keys(business).length === 0 ?
+                        (
+                            <Content textAlign={"center"}>
+                                <Heading pt={5} spaced>
+                                    Výskytla se chyba
+                                </Heading>
+                                <p>
+                                    Vraťte se na <Link to={PATHS.RESTAURANTS}>výběr restaurací.</Link>
+                                </p>
+                            </Content>
+                        ) :
+                        (
+                            <Columns>
+                                <Column>
+                                    <Image
+                                        size={"3by2"}
+                                        alt={business.name}
+                                        src={business.image ? addSlashAfterUrl(business.image.baseUrl) + business.image.params : addSlashAfterUrl(IMAGE_BASE_URL) + "/restaurants/default.jpg"}
+                                    ></Image>
+                                </Column>
+                                <Column>
+                                    <Content>
+                                        <p className="has-text-weight-bold is-size-4">Otevírací doba:</p>
+                                        <ul>
+                                            {Object.keys(daysOfWeeksCzech).map((item, index) => (
+                                                <li className={index === todayDay ? currentOpeningTimeStyle(business.openingTime?.[item] ?? {}) : undefined} key={item}>
+                                                    <span className="alignAfterColon">{daysOfWeeksCzech[item].name}:</span>
+                                                    {business.openingTime?.[item] ? (
+                                                        <span>{business.openingTime[item].from + " - " + business.openingTime[item].to}</span>
+                                                    ) : (
+                                                        <span>Zavřeno</span>
+                                                    )}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </Content>
+                                    <Button color={'success'} fullwidth size={'medium'} renderAs={Link} to={PATHS.MENU}>Objednat jídlo</Button>
+                                </Column>
+                            </Columns>
+                        )}
+                </Fragment>
+            )}
         </Fragment>
     );
 }

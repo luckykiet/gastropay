@@ -12,7 +12,7 @@ export default function ProductCard({ product, showNotification }) {
     const addToCartItem = useAddToCartItem();
     const handleAddToCartClick = (product) => {
         addToCartItem(product, 1);
-        showNotification(true, product.name, "success");
+        showNotification(product.name, "success");
     };
     return (
         <Column narrow size="is-5-touch is-4-tablet is-3-desktop" className='is-one-quarter'>

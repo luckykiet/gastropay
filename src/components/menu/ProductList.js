@@ -1,20 +1,43 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useReducer } from 'react';
 import ProductCard from './ProductCard';
 import FoodNotification from './FoodNotification';
 
+const NOTIFICATION_DURATION = 3000;
+
+const notificationReducer = (state, action) => {
+    switch (action.type) {
+        case 'SHOW':
+            return {
+                isShowed: true,
+                msg: action.msg,
+                color: action.color
+            };
+        case 'HIDE':
+            return {
+                isShowed: false,
+                msg: '',
+                color: ''
+            };
+        default:
+            return state;
+    }
+};
+
 export default function ProductList({ group, content }) {
     const groupedProducts = content.filter((product) => product.group === group);
-    const [notification, setNotification] = useState({
+
+    const [notification, dispatch] = useReducer(notificationReducer, {
         isShowed: false,
-        msg: "",
-        color: ""
+        msg: '',
+        color: ''
     });
 
-    const handleShowNotification = (isShowed, productName, color) => {
-        setNotification({ isShowed: isShowed, msg: "Přidáno " + productName + " do košíku!", color: color });
+    const handleShowNotification = (productName, color) => {
+        dispatch({ type: 'SHOW', msg: `Přidáno ${productName} do košíku!`, color: color });
+
         setTimeout(() => {
-            setNotification({ isShowed: false, msg: "", color: "" });
-        }, 3000);
+            dispatch({ type: 'HIDE' });
+        }, NOTIFICATION_DURATION);
     };
 
     return (
