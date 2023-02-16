@@ -6,7 +6,6 @@ import Promise from "bluebird";
 import moment from 'moment';
 import LoadingComponent from '../../components/LoadingComponent';
 import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/ZustandStores';
-import { DEV_MODE } from '../../utils';
 
 const { Column } = Columns;
 
@@ -24,7 +23,7 @@ export default function RestaurantPage() {
     const todayDay = moment().day();
 
     useEffect(() => {
-        const axios = createAxios(DEV_MODE ? addSlashAfterUrl(BASE_URL) : addSlashAfterUrl("https://api.npoint.io"));
+        const axios = createAxios(addSlashAfterUrl(BASE_URL));
         Promise.delay(500).then(() => {
             // TODO json for each restaurant
             return axios.get(`database/restaurant/${idRestaurant}.json`);
