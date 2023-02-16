@@ -5,10 +5,7 @@
     "baseUrl": "https://api.npoint.io/",
     "params": "445a2a2f2e28ef43b7ca"
   },
-  "image": {
-    "baseUrl": "http://localhost:3000/images/restaurants",
-    "params": "saigon_bistro.jpg"
-  },
+  "image": "restaurants/saigon_bistro.jpg",
   "openingTime": {
     "monday": {
       "from": "08:00",

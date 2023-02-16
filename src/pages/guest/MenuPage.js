@@ -18,9 +18,14 @@ export default function MenuPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (Object.keys(restaurant).length === 0) {
+        return () => {
             setRestaurant({});
             setCart([]);
+        };
+    }, [navigate, setCart, setRestaurant]);
+
+    useEffect(() => {
+        if (Object.keys(restaurant).length === 0) {
             navigate(PATHS.RESTAURANTS);
         } else {
             const axios = createAxios(apiUrl);
@@ -59,7 +64,7 @@ export default function MenuPage() {
                     setLoading(false);
                 });
         }
-    }, [apiUrl, navigate, restaurant, setCart, setRestaurant]);
+    }, [apiUrl, navigate, restaurant]);
 
     return (
         <Fragment>

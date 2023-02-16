@@ -69,7 +69,7 @@ export default function RestaurantPage() {
                                     <Image
                                         size={"3by2"}
                                         alt={business.name}
-                                        src={business.image ? addSlashAfterUrl(business.image.baseUrl) + business.image.params : addSlashAfterUrl(IMAGE_BASE_URL) + "/restaurants/default.jpg"}
+                                        src={business.image ? addSlashAfterUrl(IMAGE_BASE_URL) + business.image : addSlashAfterUrl(IMAGE_BASE_URL) + "/restaurants/default.jpg"}
                                     ></Image>
                                 </Column>
                                 <Column>

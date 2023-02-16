@@ -81,7 +81,7 @@ export default function RestaurantsPage() {
                                                 <Content>
                                                     <Media>
                                                         <Item align="left">
-                                                            <Image alt={restaurants[item].name} src={restaurants[item].image ? BASE_URL + restaurants[item].image : IMAGE_BASE_URL + "/restaurants/default.jpg"} size={128}></Image>
+                                                            <Image alt={restaurants[item].name} src={restaurants[item].image ? addSlashAfterUrl(IMAGE_BASE_URL) + restaurants[item].image : addSlashAfterUrl(IMAGE_BASE_URL) + "/restaurants/default.jpg"} size={128}></Image>
                                                         </Item>
                                                         <Item align="center">
                                                             <TextContent>

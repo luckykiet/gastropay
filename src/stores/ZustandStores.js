@@ -14,8 +14,8 @@ const useStore = create((set) => ({
     setIsSidebarShowed: (isSidebarShowed) => set({ isSidebarShowed }),
 
     cartItems: [],
-    setCartItem: (cartItems) => set([cartItems]),
-    addToCartItem: (item, quantity) =>
+    setCartItems: (cartItems) => set({ cartItems }),
+    addToCartItems: (item, quantity) =>
         set(
             produce((state) => {
                 const existingItemIndex = state.cartItems.findIndex((i) => i.ean === item.ean);
@@ -32,7 +32,7 @@ const useStore = create((set) => ({
                 }
             })
         ),
-    decrementCartItem: (id) =>
+    decrementCartItems: (id) =>
         set(
             produce((state) => {
                 const index = state.cartItems.findIndex((i) => i.id === id);
@@ -42,14 +42,14 @@ const useStore = create((set) => ({
                 }
             })
         ),
-    incrementCartItem: (id) =>
+    incrementCartItems: (id) =>
         set(
             produce((state) => {
                 const index = state.cartItems.findIndex((i) => i.id === id);
                 state.cartItems[index].quantity += 1;
             })
         ),
-    removeCartItem: (id) =>
+    removeCartItems: (id) =>
         set(
             produce((state) => {
                 const index = state.cartItems.findIndex((i) => i.id === id);
@@ -58,13 +58,12 @@ const useStore = create((set) => ({
         ),
 }));
 
-// Memoized selectors
 export const useCartItems = () => useStore(useCallback((state) => state.cartItems, []));
-export const useSetCartItems = () => useStore(useCallback((state) => state.setCartItem, []));
-export const useAddToCartItem = () => useStore(useCallback((state) => state.addToCartItem, []));
-export const useRemoveCartItem = () => useStore(useCallback((state) => state.removeCartItem, []));
-export const useDecrementCartItem = () => useStore(useCallback((state) => state.decrementCartItem, []));
-export const useIncrementCartItem = () => useStore(useCallback((state) => state.incrementCartItem, []));
+export const useSetCartItems = () => useStore(useCallback((state) => state.setCartItems, []));
+export const useAddToCartItem = () => useStore(useCallback((state) => state.addToCartItems, []));
+export const useRemoveCartItem = () => useStore(useCallback((state) => state.removeCartItems, []));
+export const useDecrementCartItem = () => useStore(useCallback((state) => state.decrementCartItems, []));
+export const useIncrementCartItem = () => useStore(useCallback((state) => state.incrementCartItems, []));
 
 export const useSettings = () => useStore(useCallback((state) => state.settings, []));
 export const useSetSettings = () => useStore(useCallback((state) => state.setSettings, []));

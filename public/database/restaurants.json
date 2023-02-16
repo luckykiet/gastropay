@@ -19,7 +19,7 @@
         "to": "20:00"
       }
     },
-    "image": "/images/restaurants/saigon_bistro.jpg"
+    "image": "restaurants/saigon_bistro.jpg"
   },
   "2": {
     "_id": "63e94557cb847448674e0c56",
@@ -41,7 +41,7 @@
         "to": "20:00"
       }
     },
-    "image": "/images/restaurants/hanoi_bistro.jpg"
+    "image": "restaurants/hanoi_bistro.jpg"
   },
   "3": {
     "_id": "63e9454e95220839c8fe3fab",
