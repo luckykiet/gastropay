@@ -6,7 +6,7 @@ body {
 
 .collapsible-sidebar {
     background-color: #f5f5f5;
-    width: 500px;
+    width: 600px;
     height: 100vh;
     position: fixed;
     top: 0;
@@ -23,4 +23,10 @@ body {
         overflow-y: auto;
         overflow-x: hidden;
     }
+}
+
+.notification {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
 }
