@@ -2,8 +2,6 @@ import React from "react";
 import "../../assets/scss/CollapsibleSidebar.scss";
 import { Button, Card, Heading } from "react-bulma-components";
 import { useIsSidebarShowed, useSetIsSidebarShowed } from "../../stores/ZustandStores";
-import { faX } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Cart from "./Cart";
 const CollapsibleSidebar = () => {
     const [isSidebarShowed, setIsSidebarShowed] = [useIsSidebarShowed(), useSetIsSidebarShowed()];
@@ -18,7 +16,7 @@ const CollapsibleSidebar = () => {
                         <Heading size={3}>Košík</Heading>
                     </Card.Header.Title>
                     <Card.Header.Icon>
-                        <Button color={"white"} onClick={handleCloseSidebar}><FontAwesomeIcon icon={faX} /></Button>
+                        <Button size={"large"} onClick={handleCloseSidebar} remove />
                     </Card.Header.Icon>
                 </Card.Header>
                 <Card.Content>

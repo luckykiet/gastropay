@@ -27,5 +27,17 @@ export const calculateCart = (cartItems) => {
 }
 
 export const addSlashAfterUrl = (url) => {
-    return url.substr(-1) !== '/' ? url += '/' : url;
+    if (!url.endsWith('/')) {
+        url = url + '/';
+    }
+    return url;
+};
+
+export const isValidUrl = (url) => {
+    try {
+        new URL(url);
+        return true;
+    } catch (error) {
+        return false;
+    }
 }
