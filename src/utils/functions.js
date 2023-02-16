@@ -25,3 +25,7 @@ export const calculateCart = (cartItems) => {
         totalPrice: Math.round(totalPrice),
     };
 }
+
+export const addSlashAfterUrl = (url) => {
+    return url.substr(-1) !== '/' ? url += '/' : url;
+}

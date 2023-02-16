@@ -1,8 +1,14 @@
 {
   "_id": "63e94557cb847448674e0c56",
   "name": "Hanoi Bistro",
-  "api_url": "/api/hanoibistro.json",
-  "image": "/images/restaurants/hanoi_bistro.jpg",
+  "api": {
+    "baseUrl": "https://api.npoint.io/",
+    "params": "b9ff29cf3f38bed736a5"
+  },
+  "image": {
+    "baseUrl": "http://localhost:3000/images/restaurants/",
+    "params": "hanoi_bistro.jpg"
+  },
   "openingTime": {
     "monday": {
       "from": "08:00",

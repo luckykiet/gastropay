@@ -4,6 +4,9 @@ import produce from 'immer';
 import { useCallback } from 'react';
 
 const useStore = create((set) => ({
+    choosedRestaurant: {},
+    setChoosedRestaurant: (restaurant) => set({ restaurant }),
+
     settings: {},
     setSettings: (settings) => set({ settings }),
 
@@ -63,6 +66,9 @@ export const useIncrementCartItem = () => useStore(useCallback((state) => state.
 
 export const useSettings = () => useStore(useCallback((state) => state.settings, []));
 export const useSetSettings = () => useStore(useCallback((state) => state.setSettings, []));
+
+export const useChoosedRestaurant = () => useStore(useCallback((state) => state.choosedRestaurant, []));
+export const useSetChoosedRestaurant = () => useStore(useCallback((state) => state.setChoosedRestaurant, []));
 
 export const useIsSidebarShowed = () => useStore(useCallback((state) => state.isSidebarShowed, []));
 export const useSetIsSidebarShowed = () => useStore(useCallback((state) => state.setIsSidebarShowed, []));

@@ -1,8 +1,14 @@
 {
   "_id": "63e94533bef7c06d37abd737",
   "name": "Saigon Bistro",
-  "api_url": "/api/saigonbistro.json",
-  "image": "/images/restaurants/saigon_bistro.jpg",
+  "api": {
+    "baseUrl": "https://api.npoint.io/",
+    "params": "445a2a2f2e28ef43b7ca"
+  },
+  "image": {
+    "baseUrl": "http://localhost:3000/images/restaurants",
+    "params": "saigon_bistro.jpg"
+  },
   "openingTime": {
     "monday": {
       "from": "08:00",
