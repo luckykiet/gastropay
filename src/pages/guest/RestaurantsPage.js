@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Button, Card, Container, Content as TextContent, Heading, Media, Image, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, createAxios, isOpening, PATHS, daysOfWeeksCzech } from "../../utils";
+import { BASE_URL, createAxios, isOpening, PATHS, daysOfWeeksCzech, IMAGE_BASE_URL } from "../../utils";
 import { Promise } from "bluebird";
 import moment from "moment";
 import LoadingComponent from "../../components/LoadingComponent";
@@ -14,7 +14,6 @@ export default function RestaurantsPage() {
     const [loading, setLoading] = useState(true);
     const [restaurants, setRestaurants] = useState([]);
     const navigate = useNavigate();
-    const IMAGE_BASE_URL = "http://localhost:3000";
 
     //TODO get from db
     useEffect(() => {
@@ -80,7 +79,7 @@ export default function RestaurantsPage() {
                                             <Content>
                                                 <Media>
                                                     <Item align="left">
-                                                        <Image alt={restaurants[item].name} src={restaurants[item].image ? IMAGE_BASE_URL + restaurants[item].image : BASE_URL + "/images/restaurants/default.jpg"} size={128}></Image>
+                                                        <Image alt={restaurants[item].name} src={restaurants[item].image ? BASE_URL + restaurants[item].image : IMAGE_BASE_URL + "/restaurants/default.jpg"} size={128}></Image>
                                                     </Item>
                                                     <Item align="center">
                                                         <TextContent>

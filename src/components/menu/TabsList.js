@@ -4,7 +4,7 @@ import ProductList from './ProductList';
 
 const { Tab } = Tabs;
 export default function TabsList({ listOfTabs, content }) {
-  const [activeTab, setActiveTab] = useState(listOfTabs.length > 0 ? listOfTabs[0].ean : 0);
+  const [activeTab, setActiveTab] = useState(listOfTabs.length > 0 ? listOfTabs[0].id : 0);
   const handleTabClick = (index) => {
     setActiveTab(index);
   };
@@ -13,14 +13,14 @@ export default function TabsList({ listOfTabs, content }) {
     <Fragment>
       <Tabs align={'center'} size={'large'}>
         {listOfTabs.map((tab) => (
-          <Tab key={tab.ean} active={activeTab === tab.ean} onClick={() => handleTabClick(tab.ean)}>
+          <Tab key={tab.id} active={activeTab === tab.id} onClick={() => handleTabClick(tab.id)}>
             {tab.name}
           </Tab>
         ))}
       </Tabs>
       <Columns centered vCentered>
         {listOfTabs.map((tab) => (
-          activeTab === tab.ean && <ProductList key={tab.ean} groupId={tab.ean} content={content} />
+          activeTab === tab.id && <ProductList key={tab.id} group={tab.id} content={content} />
         ))}
       </Columns>
     </Fragment>

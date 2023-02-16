@@ -19,6 +19,7 @@ export const LANGUAGES = {
 };
 
 export const BASE_URL = "http://localhost:3000";
+export const IMAGE_BASE_URL = "http://localhost:3000/images";
 
 export const daysOfWeeks = {
     0: "sunday",

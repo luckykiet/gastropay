@@ -3,9 +3,6 @@
   "msg": {
     "categories": [
       {
-        "name": "Bun"
-      },
-      {
         "name": "Rýže"
       },
       {
@@ -13,49 +10,10 @@
       }
     ],
     "menu": {
-      "1": {
-        "unit": "ks",
-        "amount": 1,
-        "group": 1,
-        "price": "119.00",
-        "name": "Bun bo nam bo",
-        "description": "SMAŽENÉ HOVĚZÍ MASO, RÝŽOVÉ NUDLE, SALÁT, ARAŠÍDY",
-        "allergens": [4, 5],
-        "image": "https://ms2.ostium.cz/instance/web-recepty/jINtNvoq/h397w674t.jpg"
-      },
-      "2": {
-        "unit": "ks",
-        "amount": 1,
-        "group": 1,
-        "price": "109.00",
-        "name": "Bun cha gio",
-        "description": "JARNÍ ZÁVITKY (3 KS), RÝŽOVÉ NUDLE, SALÁT, ARAŠÍDY",
-        "allergens": [4, 5],
-        "image": "https://thevietvegan.com/wp-content/uploads/2020/09/IMG_0886W-480x480.jpg"
-      },
-      "3": {
-        "unit": "ks",
-        "amount": 1,
-        "group": 1,
-        "price": "114.00",
-        "name": "Bun thit nuong",
-        "description": "GRIL. VEPŘOVÉ MASO, RÝŽOVÉ NUDLE, SALÁT, ARAŠÍDY",
-        "allergens": [4, 5]
-      },
-      "4": {
-        "unit": "ks",
-        "amount": 1,
-        "group": 1,
-        "price": "114.00",
-        "name": "Bun nem nuong",
-        "description": "VEPŘOVÉ KARBANÁTKY (2KS) S KREVETY, RÝŽOVÉ NUDLE, SALÁT, ARAŠÍDY",
-        "allergens": [2, 4, 5],
-        "image": "https://theravenouscouple.com/wp-content/uploads/2009/05/bunnemnuong.jpg"
-      },
       "5": {
         "unit": "ks",
         "amount": 1,
-        "group": 2,
+        "group": 1,
         "price": "114.00",
         "name": "Com chien ga",
         "description": "RIZITO S KUŘECÍM MASEM, ZELENINA",
@@ -64,7 +22,7 @@
       "6": {
         "unit": "ks",
         "amount": 1,
-        "group": 2,
+        "group": 1,
         "price": "109.00",
         "name": "Com dui ga",
         "description": "KŘUPAVÉ KUŘECÍ STEHNO SE ZELENINOU, RÝŽE, SÓJOVÁ OMÁČKA",
@@ -74,7 +32,7 @@
       "7": {
         "unit": "ks",
         "amount": 1,
-        "group": 2,
+        "group": 1,
         "price": "114.00",
         "name": "Com muc",
         "description": "SÉPIE VE SLADKOKYSELÉ OMÁČCE, ZELENINA A RÝŽE",
@@ -83,7 +41,7 @@
       "8": {
         "unit": "ks",
         "amount": 1,
-        "group": 2,
+        "group": 1,
         "price": "114.00",
         "name": "Com bo xao",
         "description": "SMAŽENÉ HOVĚZÍ MASO SE ZELENINOU V OMÁČCE A RÝŽE"
@@ -91,7 +49,7 @@
       "9": {
         "unit": "ks",
         "amount": 1,
-        "group": 2,
+        "group": 1,
         "price": "109.00",
         "name": "Com nhong",
         "description": "OBALOVANÉ KUŘECÍ MASO S RÝŽÍ, ZELENINA"
@@ -99,7 +57,7 @@
       "10": {
         "unit": "ks",
         "amount": 1,
-        "group": 2,
+        "group": 1,
         "price": "114.00",
         "name": "Grilované kuřecí prso",
         "description": "OBALOVANÉ KUŘECÍ MASO S RÝŽÍ, ZELENINA",
@@ -108,7 +66,7 @@
       "11": {
         "unit": "ks",
         "amount": 1,
-        "group": 3,
+        "group": 2,
         "price": "119.00",
         "name": "Pho bo",
         "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S HOVĚZÍM MASEM",
@@ -117,7 +75,7 @@
       "12": {
         "unit": "ks",
         "amount": 1,
-        "group": 3,
+        "group": 2,
         "price": "119.00",
         "name": "Pho ga",
         "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S UŘECÍM MASO",
@@ -126,7 +84,7 @@
       "13": {
         "unit": "ks",
         "amount": 1,
-        "group": 3,
+        "group": 2,
         "price": "119.00",
         "name": "Pho bo vien",
         "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S HOVĚZÍMI MASOVÝMI KOULEMI"

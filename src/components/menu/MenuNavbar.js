@@ -18,7 +18,7 @@ export default function MenuNavbar() {
                     {packageJson.app.name}
                 </Item>
             </Brand>
-            <Container align='right'>
+            <Container align='right' >
                 <CartButton numItems={calculateCart(cartItems).totalQuantity} />
             </Container>
         </Navbar>
