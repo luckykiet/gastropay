@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Button, Card, Container, Content as TextContent, Heading, Media, Image, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, createAxios, isOpening, PATHS, daysOfWeeksCzech, IMAGE_BASE_URL } from "../../utils";
+import { BASE_URL, createAxios, isOpening, PATHS, daysOfWeeksCzech, IMAGE_BASE_URL, DEV_MODE, addSlashAfterUrl } from "../../utils";
 import { Promise } from "bluebird";
 import moment from "moment";
 import LoadingComponent from "../../components/LoadingComponent";
@@ -17,9 +17,9 @@ export default function RestaurantsPage() {
 
     //TODO get from db
     useEffect(() => {
-        const axios = createAxios("https://api.npoint.io");
+        const axios = createAxios(DEV_MODE ? addSlashAfterUrl(BASE_URL) : addSlashAfterUrl("https://api.npoint.io"));
         Promise.delay(1000).then(() => {
-            return axios.get('/ad7ab5801a0f12a188f2');
+            return axios.get(DEV_MODE ? 'database/restaurants.json' : 'ad7ab5801a0f12a188f2');
         }).then((resp) => {
             if (!resp.data) {
                 throw resp.data;
@@ -28,6 +28,7 @@ export default function RestaurantsPage() {
             setLoading(false);
         }).catch((err) => {
             console.log(err);
+            setLoading(false);
         });
     }, [navigate]);
 

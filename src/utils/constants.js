@@ -1,3 +1,5 @@
+export const DEV_MODE = true;
+
 export const PATHS = {
     HOME: '/',
     LOGIN: '/login',
@@ -18,8 +20,8 @@ export const LANGUAGES = {
     EN: 'en'
 };
 
-export const BASE_URL = "http://localhost:3000";
-export const IMAGE_BASE_URL = "http://localhost:3000/images";
+export const BASE_URL = DEV_MODE ? "http://localhost:3000" : "https://gastropay.ruano.cz";
+export const IMAGE_BASE_URL = DEV_MODE ? "http://localhost:3000/images" : "https://gastropay.ruano.cz/images";
 
 export const daysOfWeeks = {
     0: "sunday",

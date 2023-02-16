@@ -6,6 +6,7 @@ import Promise from "bluebird";
 import moment from 'moment';
 import LoadingComponent from '../../components/LoadingComponent';
 import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/ZustandStores';
+import { DEV_MODE } from '../../utils';
 
 const { Column } = Columns;
 
@@ -23,9 +24,10 @@ export default function RestaurantPage() {
     const todayDay = moment().day();
 
     useEffect(() => {
-        const axios = createAxios(BASE_URL);
+        const axios = createAxios(DEV_MODE ? addSlashAfterUrl(BASE_URL) : addSlashAfterUrl("https://api.npoint.io"));
         Promise.delay(500).then(() => {
-            return axios.get(`/database/restaurant/${idRestaurant}.json`);
+            // TODO json for each restaurant
+            return axios.get(`database/restaurant/${idRestaurant}.json`);
         }).then((resp) => {
             if (!resp.data) {
                 throw new Error('No data')
@@ -33,6 +35,8 @@ export default function RestaurantPage() {
             setBusiness(resp.data);
             setLoading(false);
         }).catch((err) => {
+            setBusiness({});
+            setLoading(false);
             console.log(err);
         });
     }, [idRestaurant, setBusiness]);

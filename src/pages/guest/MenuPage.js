@@ -56,6 +56,7 @@ export default function MenuPage() {
                 })
                 .catch((err) => {
                     console.log(err);
+                    setLoading(false);
                 });
         }
     }, [apiUrl, navigate, restaurant, setCart, setRestaurant]);
