@@ -16,7 +16,7 @@ export default function ErrorPage() {
             </header>
             <main>
                 <Container breakpoint={'fluid'}>
-                    <Heading>Výskytla se chyba!</Heading>
+                    <Heading pt={5}>Výskytla se chyba!</Heading>
                     <Content>
                         <p>
                             <i><RootBoundary /></i>
