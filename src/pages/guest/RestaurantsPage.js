@@ -54,7 +54,6 @@ export default function RestaurantsPage() {
                 newRestaurants[index].openingTime = todayAndNext.openingTime;
                 newRestaurants[index].nextOpenTime = todayAndNext.nextOpenTime;
             }
-            console.log(newRestaurants);
             setRestaurants(newRestaurants);
             setLoading(false);
         }).catch((err) => {

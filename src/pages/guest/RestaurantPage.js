@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Button, Columns, Content, Heading, Image } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
-import { createAxios, PATHS, BASE_URL, isOpening, daysOfWeeksCzech, MAX_OPENING_TIME_OBJECT_LENGTH, IMAGE_BASE_URL, addSlashAfterUrl } from "../../utils";
+import { createAxios, PATHS, API_URL, isOpening, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl } from "../../utils";
 import Promise from "bluebird";
 import moment from 'moment';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -9,8 +9,8 @@ import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/Zust
 
 const { Column } = Columns;
 
-const currentOpeningTimeStyle = (time) => {
-    return Object.keys(time).length < MAX_OPENING_TIME_OBJECT_LENGTH || !isOpening(time.from, time.to)
+const currentOpeningTimeStyle = (day) => {
+    return day.status === 'closed' || !isOpening(day.from, day.to)
         ? "has-text-weight-bold has-text-danger"
         : "has-text-weight-bold has-text-success";
 };
@@ -23,15 +23,15 @@ export default function RestaurantPage() {
     const todayDay = moment().day();
 
     useEffect(() => {
-        const axios = createAxios(addSlashAfterUrl(BASE_URL));
+        const axios = createAxios(addSlashAfterUrl(API_URL));
         Promise.delay(500).then(() => {
-            // TODO json for each restaurant
-            return axios.get(`database/restaurant/${idRestaurant}.json`);
+            return axios.get(`api/restaurant/${idRestaurant}`);
         }).then((resp) => {
-            if (!resp.data) {
-                throw new Error('No data')
+            if (!resp.data.success) {
+                throw new Error('No data');
             }
-            setBusiness(resp.data);
+            const restaurant = resp.data.data;
+            setBusiness(restaurant);
             setLoading(false);
         }).catch((err) => {
             setBusiness({});
@@ -76,11 +76,11 @@ export default function RestaurantPage() {
                                     <Content>
                                         <p className="has-text-weight-bold is-size-4">Otevírací doba:</p>
                                         <ul>
-                                            {Object.keys(daysOfWeeksCzech).map((item, index) => (
-                                                <li className={index === todayDay ? currentOpeningTimeStyle(business.openingTime?.[item] ?? {}) : undefined} key={item}>
-                                                    <span className="alignAfterColon">{daysOfWeeksCzech[item].name}:</span>
-                                                    {business.openingTime?.[item] ? (
-                                                        <span>{business.openingTime[item].from + " - " + business.openingTime[item].to}</span>
+                                            {Object.keys(daysOfWeeksCzech).map((day, index) => (
+                                                <li className={index === todayDay ? currentOpeningTimeStyle(business.openingTime[day]) : undefined} key={day}>
+                                                    <span className="alignAfterColon">{daysOfWeeksCzech[day].name}:</span>
+                                                    {business.openingTime[day].status === 'open' ? (
+                                                        <span>{business.openingTime[day].from + " - " + business.openingTime[day].to}</span>
                                                     ) : (
                                                         <span>Zavřeno</span>
                                                     )}

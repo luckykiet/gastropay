@@ -65,6 +65,3 @@ export const daysOfWeeksCzech = {
         "name": "Sobota"
     }
 }
-
-export const MAX_OPENING_TIME_OBJECT_LENGTH = 2;
-export const MIN_OPENING_TIME_OBJECT_ITEMS = 1;
