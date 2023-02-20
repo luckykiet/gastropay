@@ -1,5 +1,5 @@
 {
-  "_id": "63e94533bef7c06d37abd737",
+  "idOwner": "63e94533bef7c06d37abd737",
   "name": "Saigon Bistro",
   "api": {
     "baseUrl": "https://api.npoint.io/",
@@ -8,26 +8,37 @@
   "image": "restaurants/saigon_bistro.jpg",
   "openingTime": {
     "monday": {
+      "status": "open",
       "from": "08:00",
       "to": "21:00"
     },
     "tuesday": {
+      "status": "open",
       "from": "08:00",
       "to": "20:00"
     },
     "wednesday": {
+      "status": "open",
+      "from": "08:00",
+      "to": "23:00"
+    },
+    "thursday": {
+      "status": "closed",
       "from": "08:00",
       "to": "23:00"
     },
     "friday": {
+      "status": "open",
       "from": "08:00",
       "to": "20:00"
     },
     "saturday": {
+      "status": "open",
       "from": "11:00",
       "to": "20:00"
     },
     "sunday": {
+      "status": "open",
       "from": "11:00",
       "to": "20:00"
     }

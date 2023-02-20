@@ -1,5 +1,5 @@
 {
-  "_id": "63e94557cb847448674e0c56",
+  "idOwner": "63e94533bef7c06d37abd737",
   "name": "Hanoi Bistro",
   "api": {
     "baseUrl": "https://api.npoint.io/",
@@ -8,28 +8,37 @@
   "image": "restaurants/hanoi_bistro.jpg",
   "openingTime": {
     "monday": {
+      "status": "open",
       "from": "08:00",
       "to": "17:00"
     },
     "tuesday": {
+      "status": "open",
       "from": "08:00",
       "to": "20:00"
     },
     "wednesday": {
+      "status": "open",
       "from": "08:00",
       "to": "20:00"
     },
     "thursday": {
+      "status": "open",
       "from": "08:00",
       "to": "20:00"
     },
     "friday": {
+      "status": "open",
       "from": "08:00",
       "to": "20:00"
     },
     "saturday": {
+      "status": "open",
       "from": "08:00",
       "to": "20:00"
+    },
+    "sunday": {
+      "status": "closed"
     }
   }
 }

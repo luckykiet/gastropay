@@ -1,0 +1,32 @@
+{
+  "idOwner": "63e94557cb847448674e0c56",
+  "name": "Pho 24",
+  "api": {
+    "baseUrl": "",
+    "params": ""
+  },
+  "image": "",
+  "openingTime": {
+    "monday": {
+      "status": "closed"
+    },
+    "tuesday": {
+      "status": "closed"
+    },
+    "wednesday": {
+      "status": "closed"
+    },
+    "thursday": {
+      "status": "closed"
+    },
+    "friday": {
+      "status": "closed"
+    },
+    "saturday": {
+      "status": "closed"
+    },
+    "sunday": {
+      "status": "closed"
+    }
+  }
+}

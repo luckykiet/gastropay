@@ -15,7 +15,7 @@ export default function BackButtonComponent() {
     return (
         <Fragment>
             {backNavigations[backButtonPaths] ?
-                <Button id='fixedBackButton' renderAs={Link} rounded color={'warning'} size={'medium'} className='is-responsive' to={backNavigations[backButtonPaths]}><FontAwesomeIcon icon={faArrowLeft} /></Button>
+                <Button id='fixedBackButton' renderAs={Link} rounded color={'warning'} size={'medium'} className='is-responsive' to={backNavigations[backButtonPaths]} preventScrollReset={true}><FontAwesomeIcon icon={faArrowLeft} /></Button>
                 : undefined}
         </Fragment>
     )
