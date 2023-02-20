@@ -4,6 +4,11 @@ const Schema = mongoose.Schema;
 const restaurantSchema = new Schema({
     idOwner: { type: Schema.Types.ObjectId, required: true },
     name: { type: String, required: true },
+    address: {
+        street: { type: String, required: true },
+        city: { type: String, required: true },
+        postalCode: { type: String, required: true }
+    },
     api: {
         baseUrl: { type: String },
         params: { type: String }

@@ -1,6 +1,11 @@
 {
   "idOwner": "63e94557cb847448674e0c56",
   "name": "Pho 24",
+  "address": {
+    "street": "Vodickova 2",
+    "city": "Praha 2",
+    "postalCode": "12000"
+  },
   "openingTime": {
     "monday": {
       "status": "closed"

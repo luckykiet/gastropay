@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Button, Card, Container, Content as TextContent, Heading, Media, Image, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { BASE_URL, createAxios, isOpening, PATHS, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl } from "../../utils";
+import { API_URL, createAxios, isOpening, PATHS, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl } from "../../utils";
 import { Promise } from "bluebird";
 import moment from "moment";
 import LoadingComponent from "../../components/LoadingComponent";
@@ -10,6 +10,28 @@ const { Item } = Media;
 const { Header, Content, Footer } = Card;
 const { Column } = Columns;
 
+const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+const dateObj = new Date();
+const today = dateObj.getDay();
+
+
+const getTodayAndNextOpeningTime = (openingTimeObj) => {
+    let sortedOpeningTime = {};
+    for (let index = 0; index < days.length; index++) {
+        sortedOpeningTime[days[index]] = openingTimeObj[days[index]];
+    }
+
+    const nextDays = Object.entries(sortedOpeningTime);
+    const sliceIndex = today === 6 ? 0 : (today + 1) % 7;
+    const splicedPart = nextDays.splice(0, sliceIndex);
+    Array.prototype.push.apply(nextDays, splicedPart);
+
+    const nextDayOpen = nextDays.find(day => day[1].status === "open");
+    const todayOpeningTime = { "today": sortedOpeningTime[days[today]] };
+    const nextOpeningTime = nextDayOpen ? { [nextDayOpen[0]]: sortedOpeningTime[nextDayOpen[0]] } : { status: "closed" };
+    return { openingTime: todayOpeningTime, nextOpenTime: nextOpeningTime };
+}
+
 export default function RestaurantsPage() {
     const [loading, setLoading] = useState(true);
     const [restaurants, setRestaurants] = useState([]);
@@ -17,14 +39,23 @@ export default function RestaurantsPage() {
 
     //TODO get from db
     useEffect(() => {
-        const axios = createAxios(addSlashAfterUrl(BASE_URL));
+        const axios = createAxios(addSlashAfterUrl(API_URL));
         Promise.delay(1000).then(() => {
-            return axios.get('database/restaurants.json');
+            return axios.get('api/restaurants');
         }).then((resp) => {
-            if (!resp.data) {
-                throw resp.data;
+            if (!resp.data.success) {
+                throw resp.data.data;
             }
-            setRestaurants(resp.data);
+            const restaurants = resp.data.data;
+            const newRestaurants = {};
+            for (let index = 0; index < restaurants.length; index++) {
+                newRestaurants[index] = { ...restaurants[index] };
+                const todayAndNext = getTodayAndNextOpeningTime(restaurants[index].openingTime);
+                newRestaurants[index].openingTime = todayAndNext.openingTime;
+                newRestaurants[index].nextOpenTime = todayAndNext.nextOpenTime;
+            }
+            console.log(newRestaurants);
+            setRestaurants(newRestaurants);
             setLoading(false);
         }).catch((err) => {
             console.log(err);
@@ -33,9 +64,9 @@ export default function RestaurantsPage() {
     }, [navigate]);
 
     const OpeningTime = (todayOpeningTime, nextOpenTime) => {
-        if (todayOpeningTime.today === "closed" && nextOpenTime === "closed") {
+        if (todayOpeningTime.today.status === "closed" && nextOpenTime.status === "closed") {
             return <p><strong className="has-text-danger">Dočasně uzavřeno</strong></p>;
-        } else if (todayOpeningTime.today === "closed" && nextOpenTime !== "closed") {
+        } else if (todayOpeningTime.today.status === "closed" && nextOpenTime.status !== "closed") {
             const day = Object.keys(nextOpenTime);
             return <p><strong className="has-text-danger">Zavřeno</strong>  &#x2022; Otevírá v {daysOfWeeksCzech[day]?.shortcut} {nextOpenTime[day]?.from}</p>;
         } else {
@@ -91,7 +122,7 @@ export default function RestaurantsPage() {
                                                                     <dd>{restaurants[item].address.postalCode} {restaurants[item].address.city}</dd>
                                                                 </dl>
                                                                 <dl>
-                                                                    <dt>{OpeningTime(restaurants[item].openingTime, restaurants[item].nextOpeningTime)}</dt>
+                                                                    <dt>{OpeningTime(restaurants[item].openingTime, restaurants[item].nextOpenTime)}</dt>
                                                                 </dl>
                                                             </TextContent>
                                                         </Item>

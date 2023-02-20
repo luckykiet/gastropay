@@ -1,4 +1,4 @@
-const Restaurant = require('../models/RestaurantModel')
+const Restaurant = require('../models/RestaurantModel');
 
 const createRestaurant = async (req, res) => {
     try {
@@ -11,10 +11,6 @@ const createRestaurant = async (req, res) => {
         }
 
         const restaurant = new Restaurant(body);
-
-        if (!restaurant) {
-            return res.status(400).json({ success: false, error: "Restaurant not match with model." })
-        }
 
         await restaurant.save().then(() => {
             return res.status(201).json({
@@ -48,9 +44,11 @@ const updateRestaurant = async (req, res) => {
                 message: 'Restaurant not found!',
             })
         }
+        restaurant.idOwner = body.idOwner
         restaurant.name = body.name
-        restaurant.time = body.time
-        restaurant.rating = body.rating
+        restaurant.api = body.api
+        restaurant.image = body.image
+        restaurant.openingTime = body.openingTime
         restaurant
             .save()
             .then(() => {
@@ -80,8 +78,7 @@ const deleteRestaurant = async (req, res) => {
                 .status(404)
                 .json({ success: false, error: `Restaurant not found` })
         }
-
-        return res.status(200).json({ success: true, data: restaurant })
+        return res.status(200).json({ success: true, msg: "Deleted restaurant " + restaurant.name + " successfully!" })
     }).catch(err => console.log(err))
 }
 
@@ -105,11 +102,13 @@ const getRestaurants = async (req, res) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
+
         if (!restaurants.length) {
             return res
                 .status(404)
-                .json({ success: false, error: `Restaurant not found` })
+                .json({ success: false, error: `Restaurants not found` })
         }
+
         return res.status(200).json({ success: true, data: restaurants })
     }).catch(err => console.log(err))
 }

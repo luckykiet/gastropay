@@ -1,6 +1,11 @@
 {
   "idOwner": "63e94533bef7c06d37abd737",
   "name": "Saigon Bistro",
+  "address": {
+    "street": "Na porici 81",
+    "city": "Praha 1",
+    "postalCode": "11000"
+  },
   "api": {
     "baseUrl": "https://api.npoint.io/",
     "params": "445a2a2f2e28ef43b7ca"

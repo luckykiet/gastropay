@@ -1,6 +1,11 @@
 {
   "idOwner": "63e94533bef7c06d37abd737",
   "name": "Hanoi Bistro",
+  "address": {
+    "street": "K Trebonicum 85",
+    "city": "Praha 5",
+    "postalCode": "15500"
+  },
   "api": {
     "baseUrl": "https://api.npoint.io/",
     "params": "b9ff29cf3f38bed736a5"

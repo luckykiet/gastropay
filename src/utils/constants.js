@@ -22,6 +22,8 @@ export const LANGUAGES = {
 
 export const BASE_URL = DEV_MODE ? "http://localhost:3000" : "https://gastropay.ruano.cz";
 export const IMAGE_BASE_URL = DEV_MODE ? "http://localhost:3000/images" : "https://gastropay.ruano.cz/images";
+export const API_PORT = 4000;
+export const API_URL = DEV_MODE ? "http://localhost:" + API_PORT : "https://gastropay.ruano.cz";
 
 export const daysOfWeeks = {
     0: "sunday",
