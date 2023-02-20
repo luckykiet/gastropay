@@ -46,7 +46,7 @@ const restaurantSchema = new Schema({
             status: { type: String, enum: ["open", "closed"], default: "closed" }
         }
     }
-});
+}, { timestamps: true });
 
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
