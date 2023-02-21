@@ -2,7 +2,7 @@ const { isObjectIdOrHexString } = require('mongoose');
 const Restaurant = require('../models/RestaurantModel');
 const ObjectId = require('mongoose').Types.ObjectId;
 
-const createRestaurant = async (req, res) => {
+const createRestaurant = (req, res) => {
     try {
         const body = req.body;
         if (!body) {
@@ -11,15 +11,26 @@ const createRestaurant = async (req, res) => {
                 msg: 'You must provide a restaurant',
             })
         }
+        const query = Restaurant.findOne({ idOwner: ObjectId(body.idOwner), 'name': body.name, address: body.address });
+        query.select("name");
+        query.exec(async function (error, foundRestaurant) {
+            if (error || foundRestaurant) {
+                return res.status(400).json({
+                    success: false,
+                    msg: error ? error : 'Restaurant ' + foundRestaurant.name + ' already exists!',
+                })
+            }
 
-        const restaurant = new Restaurant(body);
+            const restaurant = new Restaurant(body);
 
-        await restaurant.save().then(() => {
-            return res.status(201).json({
-                success: true,
-                msg: 'Restaurant ' + restaurant.name + ' created!',
-            })
+            await restaurant.save().then(() => {
+                return res.status(201).json({
+                    success: true,
+                    msg: 'Restaurant ' + restaurant.name + ' created!',
+                })
+            });
         });
+
     } catch (err) {
         res.status(400).json({
             success: false,
@@ -46,11 +57,17 @@ const updateRestaurant = async (req, res) => {
     }
 
     await Restaurant.findOne({ _id: ObjectId(req.params.id) }, (err, restaurant) => {
-        if (err || !restaurant) {
+        if (err) {
             return res.status(404).json({
                 success: false,
-                msg: err,
+                msg: err
             })
+        }
+
+        if (!restaurant) {
+            return res
+                .status(404)
+                .json({ success: false, msg: `Restaurant not found` })
         }
 
         restaurant.name = body.name
