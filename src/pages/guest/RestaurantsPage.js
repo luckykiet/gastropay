@@ -10,28 +10,6 @@ const { Item } = Media;
 const { Header, Content, Footer } = Card;
 const { Column } = Columns;
 
-const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-const dateObj = new Date();
-const today = dateObj.getDay();
-
-
-const getTodayAndNextOpeningTime = (openingTimeObj) => {
-    let sortedOpeningTime = {};
-    for (let index = 0; index < days.length; index++) {
-        sortedOpeningTime[days[index]] = openingTimeObj[days[index]];
-    }
-
-    const nextDays = Object.entries(sortedOpeningTime);
-    const sliceIndex = today === 6 ? 0 : (today + 1) % 7;
-    const splicedPart = nextDays.splice(0, sliceIndex);
-    Array.prototype.push.apply(nextDays, splicedPart);
-
-    const nextDayOpen = nextDays.find(day => day[1].isOpen);
-    const todayOpeningTime = { "today": sortedOpeningTime[days[today]] };
-    const nextOpeningTime = nextDayOpen ? { [nextDayOpen[0]]: sortedOpeningTime[nextDayOpen[0]] } : { isOpen: false };
-    return { openingTime: todayOpeningTime, nextOpenTime: nextOpeningTime };
-}
-
 export default function RestaurantsPage() {
     const [loading, setLoading] = useState(true);
     const [restaurants, setRestaurants] = useState([]);
@@ -47,14 +25,7 @@ export default function RestaurantsPage() {
                 throw resp.data.msg;
             }
             const restaurants = resp.data.msg;
-            const newRestaurants = {};
-            for (let index = 0; index < restaurants.length; index++) {
-                newRestaurants[index] = { ...restaurants[index] };
-                const todayAndNext = getTodayAndNextOpeningTime(restaurants[index].openingTime);
-                newRestaurants[index].openingTime = todayAndNext.openingTime;
-                newRestaurants[index].nextOpenTime = todayAndNext.nextOpenTime;
-            }
-            setRestaurants(newRestaurants);
+            setRestaurants(restaurants);
             setLoading(false);
         }).catch((err) => {
             console.log(err);

@@ -13,7 +13,7 @@ const createRestaurant = (req, res) => {
         }
         const query = Restaurant.findOne({ idOwner: ObjectId(body.idOwner), 'name': body.name, address: body.address });
         query.select("name");
-        query.exec(async function (error, foundRestaurant) {
+        query.exec(async (error, foundRestaurant) => {
             if (error || foundRestaurant) {
                 return res.status(400).json({
                     success: false,
@@ -136,20 +136,41 @@ const getRestaurantById = async (req, res) => {
     }).catch(err => console.log(err))
 }
 
-const getRestaurants = async (req, res) => {
-    await Restaurant.find({}, (err, restaurants) => {
+const getRestaurants = (req, res) => {
+    Restaurant.find().lean().exec(async (err, restaurants) => {
         if (err) {
-            return res.status(400).json({ success: false, msg: err })
+            return res.status(400).json({ success: false, msg: err });
         }
 
         if (!restaurants.length) {
             return res
                 .status(404)
-                .json({ success: false, msg: `Restaurants not found` })
+                .json({ success: false, msg: `Restaurants not found` });
         }
 
-        return res.status(200).json({ success: true, msg: restaurants })
-    }).catch(err => console.log(err))
+        const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        const dateObj = new Date();
+        const today = dateObj.getDay();
+
+        for (let index = 0; index < restaurants.length; index++) {
+            let sortedOpeningTime = {};
+            for (let j = 0; j < days.length; j++) {
+                sortedOpeningTime[days[j]] = restaurants[index].openingTime[days[j]];
+            }
+            const nextDays = Object.entries(sortedOpeningTime);
+            const sliceIndex = today === 6 ? 0 : (today + 1) % 7;
+            const splicedPart = nextDays.splice(0, sliceIndex);
+            Array.prototype.push.apply(nextDays, splicedPart);
+
+            const nextDayOpen = nextDays.find(day => day[1].isOpen);
+            const todayOpeningTime = { "today": sortedOpeningTime[days[today]] };
+            const nextOpeningTime = nextDayOpen ? { [nextDayOpen[0]]: sortedOpeningTime[nextDayOpen[0]] } : { isOpen: false };
+            restaurants[index].openingTime = todayOpeningTime;
+            restaurants[index].nextOpenTime = nextOpeningTime;
+        }
+
+        return res.status(200).json({ success: true, msg: restaurants });
+    })
 }
 
 module.exports = {
