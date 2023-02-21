@@ -8,25 +8,25 @@
   },
   "openingTime": {
     "monday": {
-      "status": "closed"
+      "isOpen": false
     },
     "tuesday": {
-      "status": "closed"
+      "isOpen": false
     },
     "wednesday": {
-      "status": "closed"
+      "isOpen": false
     },
     "thursday": {
-      "status": "closed"
+      "isOpen": false
     },
     "friday": {
-      "status": "closed"
+      "isOpen": false
     },
     "saturday": {
-      "status": "closed"
+      "isOpen": false
     },
     "sunday": {
-      "status": "closed"
+      "isOpen": false
     }
   }
 }

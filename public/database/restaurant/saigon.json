@@ -13,37 +13,37 @@
   "image": "restaurants/saigon_bistro.jpg",
   "openingTime": {
     "monday": {
-      "status": "open",
+      "isOpen": true,
       "from": "08:00",
       "to": "21:00"
     },
     "tuesday": {
-      "status": "open",
+      "isOpen": true,
       "from": "08:00",
       "to": "20:00"
     },
     "wednesday": {
-      "status": "open",
+      "isOpen": true,
       "from": "08:00",
       "to": "23:00"
     },
     "thursday": {
-      "status": "closed",
+      "isOpen": false,
       "from": "08:00",
       "to": "23:00"
     },
     "friday": {
-      "status": "open",
+      "isOpen": true,
       "from": "08:00",
       "to": "20:00"
     },
     "saturday": {
-      "status": "open",
+      "isOpen": true,
       "from": "11:00",
-      "to": "20:00"
+      "to": "19:00"
     },
     "sunday": {
-      "status": "open",
+      "isOpen": true,
       "from": "11:00",
       "to": "20:00"
     }

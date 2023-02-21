@@ -26,9 +26,9 @@ const getTodayAndNextOpeningTime = (openingTimeObj) => {
     const splicedPart = nextDays.splice(0, sliceIndex);
     Array.prototype.push.apply(nextDays, splicedPart);
 
-    const nextDayOpen = nextDays.find(day => day[1].status === "open");
+    const nextDayOpen = nextDays.find(day => day[1].isOpen);
     const todayOpeningTime = { "today": sortedOpeningTime[days[today]] };
-    const nextOpeningTime = nextDayOpen ? { [nextDayOpen[0]]: sortedOpeningTime[nextDayOpen[0]] } : { status: "closed" };
+    const nextOpeningTime = nextDayOpen ? { [nextDayOpen[0]]: sortedOpeningTime[nextDayOpen[0]] } : { isOpen: false };
     return { openingTime: todayOpeningTime, nextOpenTime: nextOpeningTime };
 }
 
@@ -44,9 +44,9 @@ export default function RestaurantsPage() {
             return axios.get('api/restaurants');
         }).then((resp) => {
             if (!resp.data.success) {
-                throw resp.data.data;
+                throw resp.data.msg;
             }
-            const restaurants = resp.data.data;
+            const restaurants = resp.data.msg;
             const newRestaurants = {};
             for (let index = 0; index < restaurants.length; index++) {
                 newRestaurants[index] = { ...restaurants[index] };
@@ -63,9 +63,9 @@ export default function RestaurantsPage() {
     }, [navigate]);
 
     const OpeningTime = (todayOpeningTime, nextOpenTime) => {
-        if (todayOpeningTime.today.status === "closed" && nextOpenTime.status === "closed") {
+        if (!todayOpeningTime.today.isOpen && !nextOpenTime.isOpen) {
             return <p><strong className="has-text-danger">Dočasně uzavřeno</strong></p>;
-        } else if (todayOpeningTime.today.status === "closed" && nextOpenTime.status !== "closed") {
+        } else if (!todayOpeningTime.today.isOpen && nextOpenTime.isOpen) {
             const day = Object.keys(nextOpenTime);
             return <p><strong className="has-text-danger">Zavřeno</strong>  &#x2022; Otevírá v {daysOfWeeksCzech[day]?.shortcut} {nextOpenTime[day]?.from}</p>;
         } else {

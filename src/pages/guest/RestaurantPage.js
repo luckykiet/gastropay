@@ -10,7 +10,7 @@ import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/Zust
 const { Column } = Columns;
 
 const currentOpeningTimeStyle = (day) => {
-    return day.status === 'closed' || !isOpening(day.from, day.to)
+    return !day.isOpen || !isOpening(day.from, day.to)
         ? "has-text-weight-bold has-text-danger"
         : "has-text-weight-bold has-text-success";
 };
@@ -30,7 +30,7 @@ export default function RestaurantPage() {
             if (!resp.data.success) {
                 throw new Error('No data');
             }
-            const restaurant = resp.data.data;
+            const restaurant = resp.data.msg;
             setBusiness(restaurant);
             setLoading(false);
         }).catch((err) => {
@@ -79,7 +79,7 @@ export default function RestaurantPage() {
                                             {Object.keys(daysOfWeeksCzech).map((day, index) => (
                                                 <li className={index === todayDay ? currentOpeningTimeStyle(business.openingTime[day]) : undefined} key={day}>
                                                     <span className="alignAfterColon">{daysOfWeeksCzech[day].name}:</span>
-                                                    {business.openingTime[day].status === 'open' ? (
+                                                    {business.openingTime[day].isOpen ? (
                                                         <span>{business.openingTime[day].from + " - " + business.openingTime[day].to}</span>
                                                     ) : (
                                                         <span>Zavřeno</span>

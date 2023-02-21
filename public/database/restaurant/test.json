@@ -1,46 +1,44 @@
 {
   "idOwner": "63e94533bef7c06d37abd737",
-  "name": "Hanoi Bistro",
+  "name": "",
   "address": {
-    "street": "K Trebonicum 85",
+    "street": "K Trebonicum 85   ",
     "city": "Praha 5",
-    "postalCode": "15500"
+    "postalCode": "155000"
   },
   "api": {
-    "baseUrl": "https://api.npoint.io/",
+    "baseUrl": "  https://api.npoint.io/. ",
     "params": "b9ff29cf3f38bed736a5"
   },
   "image": "restaurants/hanoi_bistro.jpg",
   "openingTime": {
     "monday": {
-      "isOpen": true,
+      "isOpen": false,
       "from": "08:00",
       "to": "17:00"
     },
     "tuesday": {
-      "isOpen": true,
-      "from": "08:00",
-      "to": "20:00"
+      "isOpen": true
     },
     "wednesday": {
-      "isOpen": true,
+      "isOpen": false,
       "from": "08:00",
       "to": "20:00"
     },
     "thursday": {
       "isOpen": true,
       "from": "08:00",
-      "to": "23:00"
+      "to": "20:00"
     },
     "friday": {
-      "isOpen": true,
+      "isOpen": false,
       "from": "08:00",
-      "to": "23:00"
+      "to": "20:00"
     },
     "saturday": {
       "isOpen": true,
       "from": "08:00",
-      "to": "21:00"
+      "to": "20:00"
     },
     "sunday": {
       "isOpen": false
