@@ -47,5 +47,6 @@
       "from": "11:00",
       "to": "20:00"
     }
-  }
+  },
+  "isAvailable": true
 }

@@ -64,6 +64,7 @@ const updateRestaurant = async (req, res) => {
     restaurant.api = body.api;
     restaurant.image = body.image;
     restaurant.openingTime = body.openingTime;
+    restaurant.isAvailable = body.isAvailable;
     await restaurant
         .save()
         .then(() => {
@@ -120,7 +121,14 @@ const getRestaurantById = async (req, res) => {
 };
 
 const getRestaurants = async (req, res) => {
-    const restaurants = await Restaurant.find().lean().exec();
+    const sortOrderList = ['asc', 'desc', 'ascending', 'descending', '1', '-1'];
+
+    const query = Restaurant.find();
+    if (req.params.field && req.params.orderBy && sortOrderList.includes(req.params.orderBy)) {
+        query.sort({ [req.params.field]: [req.params.orderBy] })
+    }
+    query.where({ isAvailable: true });
+    const restaurants = await query.lean().exec();
 
     if (!restaurants.length) {
         return res

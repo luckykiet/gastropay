@@ -106,7 +106,8 @@ const restaurantSchema = new Schema({
             },
             isOpen: { type: Boolean, default: false, required: true }
         }
-    }
+    },
+    isAvailable: { type: Boolean, required: true, default: false }
 }, { timestamps: true });
 
 const Restaurant = mongoose.model('Restaurant', restaurantSchema);

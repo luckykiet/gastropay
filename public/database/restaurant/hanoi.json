@@ -45,5 +45,6 @@
     "sunday": {
       "isOpen": false
     }
-  }
+  },
+  "isAvailable": true
 }
