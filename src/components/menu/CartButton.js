@@ -11,7 +11,7 @@ const CartButton = ({ numItems }) => {
         setIsSidebarShowed(!isSidebarShowed);
     }
     return (
-        <Button color={'primary'} size={"large"} onClick={handleSetIsSidebarShowed}>
+        <Button color={'primary'} size={"medium"} onClick={handleSetIsSidebarShowed}>
             <FontAwesomeIcon icon={faCartShopping} />
             {numItems > 0 && <span className='has-text-weight-bold'>&nbsp;{numItems}x</span>}
         </Button>

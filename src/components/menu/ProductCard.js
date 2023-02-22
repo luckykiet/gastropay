@@ -22,12 +22,12 @@ export default function ProductCard({ product, showNotification }) {
                     <Columns className="is-mobile">
                         <Column color="primary" size="three-fifths">
                             <TextContent>
-                                <Heading size={6}>{product.name}</Heading>
-                                <Heading subtitle size={7}>{product.price} Kč</Heading>
+                                <Heading size={5}>{product.name}</Heading>
+                                <Heading subtitle size={6}>{product.price} Kč</Heading>
                             </TextContent>
                         </Column>
                         <Column color="primary" size="two-fifths">
-                            <Button color="white" onClick={() => handleAddToCartClick(product)}>
+                            <Button color="white" size={"large"} onClick={() => handleAddToCartClick(product)}>
                                 <FontAwesomeIcon icon={faCartShopping} />
                             </Button>
                         </Column>

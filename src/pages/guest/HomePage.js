@@ -26,7 +26,7 @@ export default function HomePage() {
                     <li>Zvolte stůl a počkejte na svoje jídlo</li>
                 </ol>
             </Content>
-            <Button size={'large'} color={'primary'} fullwidth onClick={handleStartApp}> Začněte objednávat!</Button>
+            <Button size={'large'} color={'primary'} className='has-text-weight-bold' fullwidth onClick={handleStartApp}> Začněte objednávat!</Button>
         </Fragment>
     )
 }

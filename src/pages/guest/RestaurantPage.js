@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Button, Columns, Content, Heading, Image } from 'react-bulma-components';
+import { Block, Button, Columns, Content, Heading, Image } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
 import { createAxios, PATHS, API_URL, isOpening, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl } from "../../utils";
 import Promise from "bluebird";
@@ -66,41 +66,47 @@ export default function RestaurantPage() {
                             </Content>
                         ) :
                         (
-                            <Columns>
-                                <Column size={"is-half"}>
-                                    <Image
-                                        size={"3by2"}
-                                        alt={business.name}
-                                        src={business.image ? addSlashAfterUrl(IMAGE_BASE_URL) + business.image : addSlashAfterUrl(IMAGE_BASE_URL) + "/restaurants/default.jpg"}
-                                    ></Image>
-                                </Column>
-                                <Column>
-                                    <Content>
-                                        <Heading renderAs='h3' className="has-text-weight-bold is-size-4">Otevírací doba:</Heading>
-                                        <ul className='is-size-5'>
-                                            {Object.keys(daysOfWeeksCzech).map((day, index) => (
-                                                <li className={index === todayDay ? currentOpeningTimeStyle(business.openingTime[day]) : undefined} key={day}>
-                                                    <span className="alignAfterColon">{daysOfWeeksCzech[day].name}:</span>
-                                                    {business.openingTime[day].isOpen ? (
-                                                        <span>{business.openingTime[day].from + " - " + business.openingTime[day].to}</span>
-                                                    ) : (
-                                                        <span>Zavřeno</span>
-                                                    )}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </Content>
-                                </Column>
-                                <Column size={"is-half"}>
-                                    <Content size={'medium'}>
-                                        <Heading renderAs='h3' className="has-text-weight-bold is-size-4">Adresa:</Heading>
-                                        <span>{business.address.street}</span>
-                                        <br />
-                                        <span>{business.address.postalCode} {business.address.city}</span>
-                                    </Content>
-                                </Column>
-                                <Button rounded color={'success'} fullwidth size={'large'} renderAs={Link} to={PATHS.MENU}>Objednat jídlo</Button>
-                            </Columns>
+                            <Fragment>
+                                <Columns>
+                                    <Column size={"is-half"}>
+                                        <Image
+                                            size={"3by2"}
+                                            alt={business.name}
+                                            src={business.image ? addSlashAfterUrl(IMAGE_BASE_URL) + business.image : addSlashAfterUrl(IMAGE_BASE_URL) + "/restaurants/default.jpg"}
+                                        ></Image>
+                                    </Column>
+                                    <Column>
+                                        <Content>
+                                            <Heading renderAs='h3' className="has-text-weight-bold is-size-4">Otevírací doba:</Heading>
+                                            <ul className='is-size-5'>
+                                                {Object.keys(daysOfWeeksCzech).map((day, index) => (
+                                                    <li className={index === todayDay ? currentOpeningTimeStyle(business.openingTime[day]) : undefined} key={day}>
+                                                        <span className="alignAfterColon">{daysOfWeeksCzech[day].name}:</span>
+                                                        {business.openingTime[day].isOpen ? (
+                                                            <span>{business.openingTime[day].from + " - " + business.openingTime[day].to}</span>
+                                                        ) : (
+                                                            <span>Zavřeno</span>
+                                                        )}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </Content>
+                                    </Column>
+                                    <Column size={"is-half"}>
+                                        <Content size={'medium'}>
+                                            <Heading renderAs='h3' className="has-text-weight-bold is-size-4">Adresa:</Heading>
+                                            <span>{business.address.street}</span>
+                                            <br />
+                                            <span>{business.address.postalCode} {business.address.city}</span>
+                                        </Content>
+                                    </Column>
+                                </Columns>
+                                <Block pt={5}>
+                                    <Columns centered vCentered>
+                                        <Button className='has-text-weight-bold' rounded color={'success'} style={{ width: "500px" }} size={'large'} renderAs={Link} to={PATHS.MENU}>Objednat jídlo</Button>
+                                    </Columns>
+                                </Block>
+                            </Fragment>
                         )}
                 </Fragment>
             )}
