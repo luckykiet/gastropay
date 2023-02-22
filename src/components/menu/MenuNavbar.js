@@ -14,7 +14,7 @@ export default function MenuNavbar() {
     return (
         <Navbar color={'primary'} role="navigation" aria-label="menu navigation" className='is-spaced has-shadow'>
             <Brand>
-                <Item renderAs={Link} to={PATHS.HOME}>
+                <Item className='is-size-4 has-text-weight-bold' renderAs={Link} to={PATHS.HOME}>
                     {packageJson.app.name}
                 </Item>
             </Brand>

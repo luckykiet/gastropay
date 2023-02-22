@@ -13,7 +13,7 @@ export default function TabsList({ listOfTabs, content }) {
     <Fragment>
       <Tabs align={'center'} size={'large'}>
         {listOfTabs.map((tab) => (
-          <Tab key={tab.id} active={activeTab === tab.id} onClick={() => handleTabClick(tab.id)}>
+          <Tab className='has-text-weight-semibold is-size-4' key={tab.id} active={activeTab === tab.id} onClick={() => handleTabClick(tab.id)}>
             {tab.name}
           </Tab>
         ))}

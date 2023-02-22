@@ -99,7 +99,7 @@ export default function RestaurantPage() {
                                         <span>{business.address.postalCode} {business.address.city}</span>
                                     </Content>
                                 </Column>
-                                <Button color={'success'} fullwidth size={'medium'} renderAs={Link} to={PATHS.MENU}>Objednat jídlo</Button>
+                                <Button rounded color={'success'} fullwidth size={'large'} renderAs={Link} to={PATHS.MENU}>Objednat jídlo</Button>
                             </Columns>
                         )}
                 </Fragment>

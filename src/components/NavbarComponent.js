@@ -34,7 +34,7 @@ const NavItems = () => {
     return items.map(({ path, name, dividerAfter }, index) => (
         <div key={index}>
             <NavLink className={({ isActive }) =>
-                "navbar-item " + (isActive ? activeClassName : undefined)
+                "navbar-item is-size-5 " + (isActive ? activeClassName : undefined)
             } to={path} >{name}</NavLink>
             {dividerAfter ? <Navbar.Divider /> : ''}
         </div>
@@ -46,7 +46,7 @@ export default function NavbarComponent() {
     return (
         <Navbar color={'primary'} role="navigation" aria-label="main navigation" className='is-spaced has-shadow' >
             <Brand>
-                <Item renderAs={RouterLink} to={PATHS.HOME}>
+                <Item className='is-size-4 has-text-weight-bold' renderAs={RouterLink} to={PATHS.HOME}>
                     {packageJson.app.name}
                 </Item>
                 <Container align='left'>
@@ -61,7 +61,7 @@ export default function NavbarComponent() {
                 isBurgerActive ? activeClassName : undefined
             }>
                 <Container align='left'>
-                    <Item hoverable>
+                    <Item className='is-size-4' hoverable>
                         <Link>Více</Link>
                         <Dropdown boxed>
                             <NavItems />

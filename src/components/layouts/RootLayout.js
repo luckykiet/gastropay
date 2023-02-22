@@ -13,7 +13,7 @@ export default function RootLayout() {
             </header>
             <main>
                 <Container id='mainContainer' breakpoint={'fluid'}>
-                    <BackButtonComponent />
+                    <BackButtonComponent backNavigations={{ 'restaurant': '/restaurants' }} />
                     <Outlet />
                 </Container>
             </main>

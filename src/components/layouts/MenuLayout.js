@@ -6,8 +6,10 @@ import BackButtonComponent from '../BackButtonComponent';
 import MenuNavbar from '../menu/MenuNavbar';
 import CollapsibleSidebar from '../menu/CollapsibleSidebar';
 import MenuPage from '../../pages/guest/MenuPage';
+import { useChoosenRestaurant } from '../../stores/ZustandStores';
 
 export default function MenuLayout() {
+    const restaurant = useChoosenRestaurant();
     return (
         <Fragment>
             <header>
@@ -16,7 +18,7 @@ export default function MenuLayout() {
             <main>
                 <Container id='mainContainer' breakpoint={'fluid'}>
                     <CollapsibleSidebar />
-                    <BackButtonComponent />
+                    <BackButtonComponent backNavigations={{ "menu": "/restaurant/" + restaurant?._id }} />
                     <MenuPage />
                 </Container>
             </main>

@@ -3,10 +3,8 @@ import { Button } from 'react-bulma-components';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-const backNavigations = {
-    'restaurant': '/restaurants',
-};
-export default function BackButtonComponent() {
+
+export default function BackButtonComponent({ backNavigations }) {
     const { pathname } = useLocation();
 
     const backButtonPaths = [];

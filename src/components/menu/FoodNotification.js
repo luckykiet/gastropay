@@ -9,7 +9,7 @@ export default function FoodNotification({ isShowed, msg, color }) {
 
     useEffect(() => {
         setShowNotification(isShowed);
-    }, [isShowed, msg, color]);
+    }, [isShowed]);
 
     return (
         <Fragment>
