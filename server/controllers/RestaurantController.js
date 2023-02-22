@@ -127,6 +127,7 @@ const getRestaurants = async (req, res) => {
     if (req.query.field && req.query.orderBy && sortOrderList.includes(req.query.orderBy)) {
         query.sort({ [req.query.field]: [req.query.orderBy] })
     }
+    query.select("_id name address openingTime image isAvailable");
     query.where({ isAvailable: true });
     const restaurants = await query.lean().exec();
 
@@ -153,6 +154,7 @@ const searchRestaurants = async (req, res) => {
     } else {
         query.sort({ 'name': 'asc' })
     }
+    query.select("_id name address openingTime image isAvailable");
     query.where({ isAvailable: true });
     const restaurants = await query.lean().exec();
 
