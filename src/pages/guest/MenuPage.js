@@ -24,77 +24,61 @@ export default function MenuPage() {
         };
     }, [navigate, setCart, setRestaurant]);
 
+
     useEffect(() => {
         if (Object.keys(restaurant).length === 0) {
             navigate(PATHS.RESTAURANTS);
         } else {
-            const axios = createAxios(apiUrl);
-            Promise.delay(500)
-                .then(() => axios.get(restaurant.api.params))
-                .then((resp) => {
-                    if (!resp.data.success) {
-                        throw new Error('No data');
+            const fetchData = async () => {
+                try {
+                    const axios = createAxios(apiUrl);
+                    const { data: { success, msg } } = await axios.get(restaurant.api.params);
+                    if (!success) {
+                        throw new Error(msg);
                     }
-
-                    const tabs = [];
-                    resp.data.msg.categories.forEach((tab, index) => {
-                        tabs.push({
-                            id: (index + 1),
-                            name: tab.name,
-                        });
-                    });
-
-                    const newMenu = [];
-
-                    Object.keys(resp.data.msg.menu).forEach((ean) => {
-                        newMenu.push({
-                            ean,
-                            ...resp.data.msg.menu[ean],
-                        });
-                    });
-
-                    setMenu({
-                        tabs,
-                        menu: newMenu,
-                    });
+                    const tabs = msg.categories.map((tab, index) => ({
+                        id: index + 1,
+                        name: tab.name,
+                    }));
+                    const newMenu = Object.entries(msg.menu).map(([ean, item]) => ({ ean, ...item }));
+                    setMenu({ tabs, menu: newMenu });
+                } catch (error) {
+                    console.log(error);
+                } finally {
                     setLoading(false);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    setLoading(false);
-                });
+                }
+            };
+            Promise.delay(500).then(fetchData);
         }
-    }, [apiUrl, navigate, restaurant]);
+    }, [navigate, restaurant, apiUrl]);
 
     return (
         <Fragment>
-
             {loading ? (
                 <LoadingComponent />
             ) : (
                 <Fragment>
-                    <Content textAlign={"center"}>
+                    <Content textAlign="center">
                         <Heading pt={5} spaced>
                             {restaurant.name} - Menu
                         </Heading>
                     </Content>
                     <Container>
-                        {Object.keys(menu).length === 0 ?
-                            (
-                                <Content textAlign={"center"}>
-                                    <Heading pt={5} spaced>
-                                        Výskytla se chyba
-                                    </Heading>
-                                    <p>
-                                        Vraťte se na <Link to={PATHS.RESTAURANTS}>výběr restaurací.</Link>
-                                    </p>
-                                </Content>
-                            ) :
-                            (<TabsList listOfTabs={menu.tabs} content={menu.menu} />)
-                        }
+                        {Object.keys(menu).length === 0 ? (
+                            <Content textAlign="center">
+                                <Heading pt={5} spaced>
+                                    Výskytla se chyba
+                                </Heading>
+                                <p>
+                                    Vraťte se na <Link to={PATHS.RESTAURANTS}>výběr restaurací.</Link>
+                                </p>
+                            </Content>
+                        ) : (
+                            <TabsList listOfTabs={menu.tabs} content={menu.menu} />
+                        )}
                     </Container>
                 </Fragment>
             )}
         </Fragment>
     );
-};
+}

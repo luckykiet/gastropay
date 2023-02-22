@@ -51,17 +51,16 @@ export default function RestaurantsPage() {
         const axios = createAxios(addSlashAfterUrl(API_URL));
 
         const fetchData = async () => {
-            setLoading(true);
             try {
-                let url = 'api/restaurants';
+                let apiUrl = 'api/restaurants';
                 if (sortField.value !== "" && (sortOrder === 'asc' || sortOrder === 'desc')) {
-                    url += '&' + sortField.value + '&' + sortOrder;
+                    apiUrl += '&' + sortField.value + '&' + sortOrder;
                 }
-                const resp = await axios.get(url);
-                if (!resp.data.success) {
-                    throw resp.data.msg;
+                const { data: { success, msg } } = await axios.get(apiUrl);
+                if (!success) {
+                    throw new Error(msg);
                 }
-                setRestaurants(resp.data.msg);
+                setRestaurants(msg);
                 setLoading(false);
             } catch (err) {
                 console.log(err);

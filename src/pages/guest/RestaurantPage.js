@@ -23,21 +23,23 @@ export default function RestaurantPage() {
     const todayDay = moment().day();
 
     useEffect(() => {
-        const axios = createAxios(addSlashAfterUrl(API_URL));
-        Promise.delay(500).then(() => {
-            return axios.get(`api/restaurant/${idRestaurant}`);
-        }).then((resp) => {
-            if (!resp.data.success) {
-                throw new Error('No data');
+        const fetchData = async () => {
+            try {
+                const axios = createAxios(addSlashAfterUrl(API_URL));
+                const { data: { success, msg } } = await axios.get(`api/restaurant/${idRestaurant}`);
+                if (!success) {
+                    throw new Error(msg);
+                }
+                const restaurant = msg;
+                setBusiness(restaurant);
+                setLoading(false);
+            } catch (err) {
+                setBusiness({});
+                setLoading(false);
+                console.log(err);
             }
-            const restaurant = resp.data.msg;
-            setBusiness(restaurant);
-            setLoading(false);
-        }).catch((err) => {
-            setBusiness({});
-            setLoading(false);
-            console.log(err);
-        });
+        }
+        Promise.delay(500).then(fetchData);
     }, [idRestaurant, setBusiness]);
 
 
