@@ -140,6 +140,7 @@ const getRestaurants = async (req, res) => {
 };
 
 const searchRestaurants = async (req, res) => {
+    const sortOrderList = ['asc', 'desc', 'ascending', 'descending', '1', '-1'];
     const query = Restaurant.find({
         $or: [
             { name: { $regex: req.query.text, $options: 'i' } },
@@ -147,7 +148,11 @@ const searchRestaurants = async (req, res) => {
             { "address.city": { $regex: req.query.text, $options: 'i' } },
         ]
     });
-    query.sort({ 'name': 'asc' })
+    if (req.query.field && req.query.orderBy && sortOrderList.includes(req.query.orderBy)) {
+        query.sort({ [req.query.field]: [req.query.orderBy] })
+    } else {
+        query.sort({ 'name': 'asc' })
+    }
     query.where({ isAvailable: true });
     const restaurants = await query.lean().exec();
 

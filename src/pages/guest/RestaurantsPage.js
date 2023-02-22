@@ -58,11 +58,16 @@ export default function RestaurantsPage() {
         const fetchData = async () => {
             try {
                 let apiUrl = 'api/restaurants';
+
                 if (searchQuery) {
                     apiUrl += '/search?text=' + searchQuery;
+                    if (sortField.value !== "" && (sortOrder === 'asc' || sortOrder === 'desc')) {
+                        apiUrl += '&field=' + sortField.value + '&orderBy=' + sortOrder;
+                    }
                 } else if (sortField.value !== "" && (sortOrder === 'asc' || sortOrder === 'desc')) {
                     apiUrl += '?field=' + sortField.value + '&orderBy=' + sortOrder;
                 }
+
                 const { data: { success, msg } } = await axios.get(apiUrl);
                 if (!success) {
                     throw new Error(msg);
