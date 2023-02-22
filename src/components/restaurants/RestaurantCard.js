@@ -51,7 +51,7 @@ export default function RestaurantCard({ restaurant }) {
                 </Content>
                 <Footer>
                     <Footer.Item>
-                        <Button onClick={() => navigate(PATHS.RESTAURANT + '/' + restaurant._id)} color={'primary'} fullwidth>
+                        <Button rounded onClick={() => navigate(PATHS.RESTAURANT + '/' + restaurant._id)} color={'primary'} fullwidth>
                             Zvolit
                         </Button>
                     </Footer.Item>

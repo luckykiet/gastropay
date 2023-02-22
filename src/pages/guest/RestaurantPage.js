@@ -67,7 +67,7 @@ export default function RestaurantPage() {
                         ) :
                         (
                             <Columns>
-                                <Column>
+                                <Column size={"is-half"}>
                                     <Image
                                         size={"3by2"}
                                         alt={business.name}
@@ -76,8 +76,8 @@ export default function RestaurantPage() {
                                 </Column>
                                 <Column>
                                     <Content>
-                                        <p className="has-text-weight-bold is-size-4">Otevírací doba:</p>
-                                        <ul>
+                                        <Heading renderAs='h3' className="has-text-weight-bold is-size-4">Otevírací doba:</Heading>
+                                        <ul className='is-size-5'>
                                             {Object.keys(daysOfWeeksCzech).map((day, index) => (
                                                 <li className={index === todayDay ? currentOpeningTimeStyle(business.openingTime[day]) : undefined} key={day}>
                                                     <span className="alignAfterColon">{daysOfWeeksCzech[day].name}:</span>
@@ -90,8 +90,16 @@ export default function RestaurantPage() {
                                             ))}
                                         </ul>
                                     </Content>
-                                    <Button color={'success'} fullwidth size={'medium'} renderAs={Link} to={PATHS.MENU}>Objednat jídlo</Button>
                                 </Column>
+                                <Column size={"is-half"}>
+                                    <Content size={'medium'}>
+                                        <Heading renderAs='h3' className="has-text-weight-bold is-size-4">Adresa:</Heading>
+                                        <span>{business.address.street}</span>
+                                        <br />
+                                        <span>{business.address.postalCode} {business.address.city}</span>
+                                    </Content>
+                                </Column>
+                                <Button color={'success'} fullwidth size={'medium'} renderAs={Link} to={PATHS.MENU}>Objednat jídlo</Button>
                             </Columns>
                         )}
                 </Fragment>
