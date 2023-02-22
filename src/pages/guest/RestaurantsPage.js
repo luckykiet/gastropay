@@ -54,41 +54,27 @@ export default function RestaurantsPage() {
 
     useEffect(() => {
         const axios = createAxios(addSlashAfterUrl(API_URL));
-        if (searchQuery !== '') {
-            const fetchData = async () => {
-                try {
-                    const { data: { success, msg } } = await axios.get("api/restaurants/search?text=" + searchQuery);
-                    if (!success) {
-                        throw new Error(msg);
-                    }
-                    setRestaurants(msg);
-                    setLoading(false);
-                } catch (err) {
-                    console.log(err);
-                    setLoading(false);
+        let delayTime = searchQuery ? 0 : 500;
+        const fetchData = async () => {
+            try {
+                let apiUrl = 'api/restaurants';
+                if (searchQuery) {
+                    apiUrl += '/search?text=' + searchQuery;
+                } else if (sortField.value !== "" && (sortOrder === 'asc' || sortOrder === 'desc')) {
+                    apiUrl += '?field=' + sortField.value + '&orderBy=' + sortOrder;
                 }
-            }
-            Promise.delay(0).then(fetchData);
-        } else {
-            const fetchData = async () => {
-                try {
-                    let apiUrl = 'api/restaurants';
-                    if (sortField.value !== "" && (sortOrder === 'asc' || sortOrder === 'desc')) {
-                        apiUrl += '?field=' + sortField.value + '&orderBy=' + sortOrder;
-                    }
-                    const { data: { success, msg } } = await axios.get(apiUrl);
-                    if (!success) {
-                        throw new Error(msg);
-                    }
-                    setRestaurants(msg);
-                    setLoading(false);
-                } catch (err) {
-                    console.log(err);
-                    setLoading(false);
+                const { data: { success, msg } } = await axios.get(apiUrl);
+                if (!success) {
+                    throw new Error(msg);
                 }
+                setRestaurants(msg);
+                setLoading(false);
+            } catch (err) {
+                console.log(err);
+                setLoading(false);
             }
-            Promise.delay(500).then(fetchData);
         }
+        Promise.delay(delayTime).then(fetchData);
     }, [navigate, sortField, sortOrder, searchQuery]);
 
     return (
