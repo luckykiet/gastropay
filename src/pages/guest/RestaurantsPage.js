@@ -2,11 +2,11 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Button, Container, Content as TextContent, Heading, Columns, Form } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
 import { API_URL, createAxios, addSlashAfterUrl } from "../../utils";
-import { Promise } from "bluebird";
 import LoadingComponent from "../../components/LoadingComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpAZ, faArrowDownAZ } from '@fortawesome/free-solid-svg-icons';
 import RestaurantCard from "../../components/restaurants/RestaurantCard";
+import { Promise } from "bluebird";
 
 
 const { Select } = Form;
@@ -49,35 +49,51 @@ export default function RestaurantsPage() {
 
     useEffect(() => {
         const axios = createAxios(addSlashAfterUrl(API_URL));
-        Promise.delay(500).then(() => {
-            if (sortField.value !== "" && (sortOrder === 'asc' || sortOrder === 'desc')) {
-                return axios.get('api/restaurants&' + sortField.value + "&" + sortOrder);
-            } else {
-                return axios.get('api/restaurants');
+
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                let url = 'api/restaurants';
+                if (sortField.value !== "" && (sortOrder === 'asc' || sortOrder === 'desc')) {
+                    url += '&' + sortField.value + '&' + sortOrder;
+                }
+                const resp = await axios.get(url);
+                if (!resp.data.success) {
+                    throw resp.data.msg;
+                }
+                setRestaurants(resp.data.msg);
+                setLoading(false);
+            } catch (err) {
+                console.log(err);
+                setLoading(false);
             }
-        }).then((resp) => {
-            if (!resp.data.success) {
-                throw resp.data.msg;
-            }
-            const restaurants = resp.data.msg;
-            setRestaurants(restaurants);
-            setLoading(false);
-        }).catch((err) => {
-            console.log(err);
-            setLoading(false);
-        });
+        }
+
+        Promise.delay(500).then(fetchData);
     }, [navigate, sortField, sortOrder]);
 
     return (
         <Fragment>
+            <TextContent textAlign={"center"}>
+                <Heading size={2} pt={5} spaced>Zvolte restauraci</Heading>
+                <Columns centered vCentered>
+                    {sortableFields.length === 0 ? ""
+                        :
+                        <Fragment>
+                            <label htmlFor={"sortFieldSelect"} className="is-size-4">Seřadit podle:&nbsp;</label>
+                            <Select id="sortFieldSelect" value={sortField.value} onChange={handleSelectChange} size={"medium"}>
+                                <SelectItems />
+                            </Select>
+                            <Button onClick={handleSortOrderClick} size={"large"} color={"white"}><FontAwesomeIcon icon={sortOrder === 'asc' ? faArrowDownAZ : faArrowUpAZ} /></Button>
+                        </Fragment>
+                    }
+                </Columns>
+            </TextContent>
             {loading ? (
                 <LoadingComponent />
             ) :
-                ((!restaurants || Object.keys(restaurants).length === 0) ? (
-                    <Fragment>
-                        <TextContent textAlign={"center"}>
-                            <Heading size={2} pt={5} spaced>Zvolte restauraci</Heading>
-                        </TextContent>
+                (
+                    (!restaurants || Object.keys(restaurants).length === 0) ? (
                         <Container>
                             <Columns centered vCentered>
                                 <TextContent textAlign={"center"}>
@@ -85,31 +101,15 @@ export default function RestaurantsPage() {
                                 </TextContent>
                             </Columns>
                         </Container>
-                    </Fragment>
-                ) : (
-                    <Fragment>
-                        <TextContent textAlign={"center"}>
-                            <Heading size={2} pt={5} spaced>Zvolte restauraci</Heading>
-                            <Columns centered vCentered>
-                                {sortableFields.length === 0 ? ""
-                                    :
-                                    <Fragment>
-                                        <label htmlFor={"sortFieldSelect"} className="is-size-4">Seřadit podle:&nbsp;</label>
-                                        <Select id="sortFieldSelect" value={sortField.value} onChange={handleSelectChange} size={"medium"}>
-                                            <SelectItems />
-                                        </Select>
-                                        <Button onClick={handleSortOrderClick} size={"large"} color={"white"}><FontAwesomeIcon icon={sortOrder === 'asc' ? faArrowDownAZ : faArrowUpAZ} /></Button>
-                                    </Fragment>
-                                }
-                            </Columns>
-                        </TextContent>
+                    ) : (
                         <Container>
                             <Columns centered vCentered>
                                 {Object.keys(restaurants).map((index) => (<RestaurantCard key={index} restaurant={restaurants[index]} />))}
                             </Columns>
                         </Container>
-                    </Fragment>)
-                )}
+                    )
+                )
+            }
         </Fragment>
     );
 }
