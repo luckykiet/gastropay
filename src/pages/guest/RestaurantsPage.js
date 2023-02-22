@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpAZ, faArrowDownAZ } from '@fortawesome/free-solid-svg-icons';
 import RestaurantCard from "../../components/restaurants/RestaurantCard";
 import { Promise } from "bluebird";
-
+import SearchBar from "../../components/restaurants/SearchBar";
 
 const { Select } = Form;
 
@@ -35,6 +35,7 @@ export default function RestaurantsPage() {
     const [restaurants, setRestaurants] = useState([]);
     const [sortField, setSortField] = useState({ value: sortableFields[0]?.value ? sortableFields[0].value : "" });
     const [sortOrder, setSortOrder] = useState('asc');
+    const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
     const handleSelectChange = (event) => {
@@ -47,46 +48,68 @@ export default function RestaurantsPage() {
         setLoading(true);
     }
 
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
     useEffect(() => {
         const axios = createAxios(addSlashAfterUrl(API_URL));
-
-        const fetchData = async () => {
-            try {
-                let apiUrl = 'api/restaurants';
-                if (sortField.value !== "" && (sortOrder === 'asc' || sortOrder === 'desc')) {
-                    apiUrl += '&' + sortField.value + '&' + sortOrder;
+        if (searchQuery !== '') {
+            const fetchData = async () => {
+                try {
+                    const { data: { success, msg } } = await axios.get("api/restaurants/search?text=" + searchQuery);
+                    if (!success) {
+                        throw new Error(msg);
+                    }
+                    setRestaurants(msg);
+                    setLoading(false);
+                } catch (err) {
+                    console.log(err);
+                    setLoading(false);
                 }
-                const { data: { success, msg } } = await axios.get(apiUrl);
-                if (!success) {
-                    throw new Error(msg);
-                }
-                setRestaurants(msg);
-                setLoading(false);
-            } catch (err) {
-                console.log(err);
-                setLoading(false);
             }
+            Promise.delay(0).then(fetchData);
+        } else {
+            const fetchData = async () => {
+                try {
+                    let apiUrl = 'api/restaurants';
+                    if (sortField.value !== "" && (sortOrder === 'asc' || sortOrder === 'desc')) {
+                        apiUrl += '?field=' + sortField.value + '&orderBy=' + sortOrder;
+                    }
+                    const { data: { success, msg } } = await axios.get(apiUrl);
+                    if (!success) {
+                        throw new Error(msg);
+                    }
+                    setRestaurants(msg);
+                    setLoading(false);
+                } catch (err) {
+                    console.log(err);
+                    setLoading(false);
+                }
+            }
+            Promise.delay(500).then(fetchData);
         }
-
-        Promise.delay(500).then(fetchData);
-    }, [navigate, sortField, sortOrder]);
+    }, [navigate, sortField, sortOrder, searchQuery]);
 
     return (
         <Fragment>
             <TextContent textAlign={"center"}>
                 <Heading size={2} pt={5} spaced>Zvolte restauraci</Heading>
-                <Columns centered vCentered>
-                    {sortableFields.length === 0 ? ""
-                        :
-                        <Fragment>
-                            <label htmlFor={"sortFieldSelect"} className="is-size-4">Seřadit podle:&nbsp;</label>
-                            <Select id="sortFieldSelect" value={sortField.value} onChange={handleSelectChange} size={"medium"}>
-                                <SelectItems />
-                            </Select>
-                            <Button onClick={handleSortOrderClick} size={"large"} color={"white"}><FontAwesomeIcon icon={sortOrder === 'asc' ? faArrowDownAZ : faArrowUpAZ} /></Button>
-                        </Fragment>
-                    }
-                </Columns>
+                <Container>
+                    <Columns centered vCentered>
+                        {sortableFields.length === 0 ? ""
+                            :
+                            <Fragment>
+                                <label htmlFor={"sortFieldSelect"} className="is-size-4">Seřadit podle:&nbsp;</label>
+                                <Select id="sortFieldSelect" value={sortField.value} onChange={handleSelectChange} size={"medium"}>
+                                    <SelectItems />
+                                </Select>
+                                <Button onClick={handleSortOrderClick} size={"large"} color={"white"}><FontAwesomeIcon icon={sortOrder === 'asc' ? faArrowDownAZ : faArrowUpAZ} /></Button>
+                                <SearchBar handleSearch={handleSearch} width={"300px"} />
+                            </Fragment>
+                        }
+                    </Columns>
+                </Container>
             </TextContent>
             {loading ? (
                 <LoadingComponent />

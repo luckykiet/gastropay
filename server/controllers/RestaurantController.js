@@ -124,8 +124,8 @@ const getRestaurants = async (req, res) => {
     const sortOrderList = ['asc', 'desc', 'ascending', 'descending', '1', '-1'];
 
     const query = Restaurant.find();
-    if (req.params.field && req.params.orderBy && sortOrderList.includes(req.params.orderBy)) {
-        query.sort({ [req.params.field]: [req.params.orderBy] })
+    if (req.query.field && req.query.orderBy && sortOrderList.includes(req.query.orderBy)) {
+        query.sort({ [req.query.field]: [req.query.orderBy] })
     }
     query.where({ isAvailable: true });
     const restaurants = await query.lean().exec();
@@ -135,7 +135,32 @@ const getRestaurants = async (req, res) => {
             .status(404)
             .json({ success: false, msg: `Restaurants not found` });
     }
+    editTodayAndNextOpeningTime(restaurants);
+    return res.status(200).json({ success: true, msg: restaurants });
+};
 
+const searchRestaurants = async (req, res) => {
+    const query = Restaurant.find({
+        $or: [
+            { name: { $regex: req.query.text, $options: 'i' } },
+            { "address.city": { $regex: req.query.text, $options: 'i' } },
+        ]
+    });
+    query.sort({ 'name': 'asc' })
+    query.where({ isAvailable: true });
+    const restaurants = await query.lean().exec();
+
+    if (!restaurants.length) {
+        return res
+            .status(200)
+            .json({ success: false, msg: `Restaurants not found` });
+    }
+
+    editTodayAndNextOpeningTime(restaurants);
+    return res.status(200).json({ success: true, msg: restaurants });
+};
+
+const editTodayAndNextOpeningTime = (restaurants) => {
     const days = [
         "sunday",
         "monday",
@@ -147,7 +172,6 @@ const getRestaurants = async (req, res) => {
     ];
     const dateObj = new Date();
     const today = dateObj.getDay();
-
     for (let index = 0; index < restaurants.length; index++) {
         let sortedOpeningTime = {};
         for (let j = 0; j < days.length; j++) {
@@ -166,9 +190,7 @@ const getRestaurants = async (req, res) => {
         restaurants[index].openingTime = todayOpeningTime;
         restaurants[index].nextOpenTime = nextOpeningTime;
     }
-
-    return res.status(200).json({ success: true, msg: restaurants });
-};
+}
 
 module.exports = {
     createRestaurant,
@@ -176,4 +198,5 @@ module.exports = {
     deleteRestaurant,
     getRestaurants,
     getRestaurantById,
+    searchRestaurants
 };
