@@ -46,7 +46,7 @@ export default function NavbarComponent() {
     return (
         <Navbar color={'primary'} role="navigation" aria-label="main navigation" className='is-spaced has-shadow' >
             <Brand>
-                <Item className='is-size-4 has-text-weight-bold' renderAs={RouterLink} to={PATHS.HOME}>
+                <Item className='is-size-3 has-text-weight-bold' renderAs={RouterLink} to={PATHS.HOME}>
                     {packageJson.app.name}
                 </Item>
                 <Container align='left'>

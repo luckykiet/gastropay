@@ -34,6 +34,19 @@ export const addSlashAfterUrl = (url) => {
     return url;
 };
 
+
+export const removeSlashFromUrl = (url) => {
+    if (url.endsWith('/')) {
+        url = url.replace(/\/+$/, '');
+    }
+    return url;
+}
+
+export const stringToValidFilename = (str) => {
+    return str.replace(/[^a-zA-Z0-9._-]/g, '_');
+}
+
+
 export const isValidUrl = (url) => {
     try {
         new URL(url);

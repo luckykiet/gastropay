@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Block, Button, Columns, Content, Heading, Image } from 'react-bulma-components';
+import { Block, Button, Columns, Container, Content, Heading, Image } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
-import { createAxios, PATHS, API_URL, isOpening, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl } from "../../utils";
+import { createAxios, PATHS, API_URL, isOpening, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl, BASE_URL, removeSlashFromUrl } from "../../utils";
 import Promise from "bluebird";
 import moment from 'moment';
 import LoadingComponent from '../../components/LoadingComponent';
 import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/ZustandStores';
+import DownloadableQRCode from '../../components/restaurants/DownloadableQRCode';
 
 const { Column } = Columns;
 
@@ -69,11 +70,13 @@ export default function RestaurantPage() {
                             <Fragment>
                                 <Columns>
                                     <Column size={"is-half"}>
-                                        <Image
-                                            size={"3by2"}
-                                            alt={business.name}
-                                            src={business.image ? addSlashAfterUrl(IMAGE_BASE_URL) + business.image : addSlashAfterUrl(IMAGE_BASE_URL) + "/restaurants/default.jpg"}
-                                        ></Image>
+                                        <Container className='has-text-left'>
+                                            <Image
+                                                size={"3by2"}
+                                                alt={business.name}
+                                                src={business.image ? addSlashAfterUrl(IMAGE_BASE_URL) + business.image : addSlashAfterUrl(IMAGE_BASE_URL) + "/restaurants/default.jpg"}
+                                            />
+                                        </Container>
                                     </Column>
                                     <Column>
                                         <Content>
@@ -99,12 +102,13 @@ export default function RestaurantPage() {
                                             <br />
                                             <span>{business.address.postalCode} {business.address.city}</span>
                                         </Content>
+                                        <Block><DownloadableQRCode info={{ name: business.name, url: removeSlashFromUrl(BASE_URL) + PATHS.RESTAURANT + "/" + business._id, size: 200 }} /></Block>
                                     </Column>
                                 </Columns>
                                 <Block pt={5}>
-                                    <Columns centered vCentered>
-                                        <Button className='has-text-weight-bold' rounded color={'success'} style={{ width: "500px" }} size={'large'} renderAs={Link} to={PATHS.MENU}>Objednat jídlo</Button>
-                                    </Columns>
+                                    <Container className='has-text-centered' >
+                                        <Button className='has-text-weight-bold' rounded color={'success'} style={{ width: "300px" }} size={'large'} renderAs={Link} to={PATHS.MENU}>Objednat jídlo</Button>
+                                    </Container>
                                 </Block>
                             </Fragment>
                         )}
