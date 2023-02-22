@@ -143,6 +143,7 @@ const searchRestaurants = async (req, res) => {
     const query = Restaurant.find({
         $or: [
             { name: { $regex: req.query.text, $options: 'i' } },
+            { "address.street": { $regex: req.query.text, $options: 'i' } },
             { "address.city": { $regex: req.query.text, $options: 'i' } },
         ]
     });
