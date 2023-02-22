@@ -5,11 +5,12 @@ export const createAxios = (urlAPI) => {
     return Axios.create({ baseURL: urlAPI })
 };
 
-export const isOpening = (beginTime, endTime) => {
-    const formattedBeginTime = moment(beginTime, "HH:mm");
-    const formattedEndTime = moment(endTime, "HH:mm");
-    const currentTime = moment();
-    return currentTime.isBefore(formattedEndTime) && currentTime.isAfter(formattedBeginTime) ? true : false;
+
+export const isOpening = (from, to) => {
+    const now = moment();
+    const openingTime = moment(from, "HH:mm");
+    const closingTime = moment(to, "HH:mm");
+    return now.isBetween(openingTime, closingTime);
 }
 
 export const calculateCart = (cartItems) => {

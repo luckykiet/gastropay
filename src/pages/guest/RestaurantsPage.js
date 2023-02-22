@@ -1,15 +1,14 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Button, Card, Container, Content as TextContent, Heading, Media, Image, Columns, Form } from "react-bulma-components";
+import { Button, Container, Content as TextContent, Heading, Columns, Form } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { API_URL, createAxios, isOpening, PATHS, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl } from "../../utils";
+import { API_URL, createAxios, addSlashAfterUrl } from "../../utils";
 import { Promise } from "bluebird";
-import moment from "moment";
 import LoadingComponent from "../../components/LoadingComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpAZ, faArrowDownAZ } from '@fortawesome/free-solid-svg-icons';
-const { Item } = Media;
-const { Header, Content, Footer } = Card;
-const { Column } = Columns;
+import RestaurantCard from "../../components/restaurants/RestaurantCard";
+
+
 const { Select } = Form;
 
 const sortableFields = [
@@ -69,29 +68,6 @@ export default function RestaurantsPage() {
         });
     }, [navigate, sortField, sortOrder]);
 
-    const OpeningTime = (todayOpeningTime, nextOpenTime) => {
-        if (!todayOpeningTime.today.isOpen && !nextOpenTime.isOpen) {
-            return <p><strong className="has-text-danger">Dočasně uzavřeno</strong></p>;
-        } else if (!todayOpeningTime.today.isOpen && nextOpenTime.isOpen) {
-            const day = Object.keys(nextOpenTime);
-            return <p><strong className="has-text-danger">Zavřeno</strong>  &#x2022; Otevírá v {daysOfWeeksCzech[day]?.shortcut} {nextOpenTime[day]?.from}</p>;
-        } else {
-            const isOpeningNow = isOpening(todayOpeningTime.today.from, todayOpeningTime.today.to);
-            if (isOpeningNow) {
-                return <p><strong className="has-text-success">Otevřeno</strong> &#x2022; Zavírá v {todayOpeningTime.today.to}</p>
-            } else {
-                if (moment().isBefore(moment(todayOpeningTime.today.from, "HH:mm"))) {
-                    const beginTime = todayOpeningTime.today.from;
-                    return <p><strong className="has-text-danger">Zavřeno</strong>  &#x2022; Otevírá v {beginTime}</p>;
-                } else {
-                    const day = Object.keys(nextOpenTime);
-                    const beginTime = nextOpenTime[day]?.from;
-                    return <p><strong className="has-text-danger">Zavřeno</strong>  &#x2022; Otevírá v {daysOfWeeksCzech[day].shortcut} {beginTime}</p>;
-                }
-            }
-        }
-    }
-
     return (
         <Fragment>
             {loading ? (
@@ -122,46 +98,14 @@ export default function RestaurantsPage() {
                                         <Select id="sortFieldSelect" value={sortField.value} onChange={handleSelectChange} size={"medium"}>
                                             <SelectItems />
                                         </Select>
-                                        <Button onClick={handleSortOrderClick} size={"large"} color={"white"}><FontAwesomeIcon icon={sortOrder === 'asc' ? faArrowUpAZ : faArrowDownAZ} /></Button>
+                                        <Button onClick={handleSortOrderClick} size={"large"} color={"white"}><FontAwesomeIcon icon={sortOrder === 'asc' ? faArrowDownAZ : faArrowUpAZ} /></Button>
                                     </Fragment>
                                 }
                             </Columns>
                         </TextContent>
                         <Container>
                             <Columns centered vCentered>
-                                {Object.keys(restaurants).map((item) => {
-                                    return (
-                                        <Column key={restaurants[item]._id} narrow>
-                                            <Card>
-                                                <Header>
-                                                    <Header.Title>{restaurants[item].name}</Header.Title>
-                                                </Header>
-                                                <Content>
-                                                    <Media>
-                                                        <Item align="left">
-                                                            <Image alt={restaurants[item].name} src={restaurants[item].image ? addSlashAfterUrl(IMAGE_BASE_URL) + restaurants[item].image : addSlashAfterUrl(IMAGE_BASE_URL) + "/restaurants/default.jpg"} size={128}></Image>
-                                                        </Item>
-                                                        <Item align="center">
-                                                            <TextContent>
-                                                                <dl>
-                                                                    <dt><strong>Adresa:</strong></dt>
-                                                                    <dd>{restaurants[item].address.street}</dd>
-                                                                    <dd>{restaurants[item].address.postalCode} {restaurants[item].address.city}</dd>
-                                                                </dl>
-                                                                <dl>
-                                                                    <dt>{OpeningTime(restaurants[item].openingTime, restaurants[item].nextOpenTime)}</dt>
-                                                                </dl>
-                                                            </TextContent>
-                                                        </Item>
-                                                    </Media>
-                                                </Content>
-                                                <Footer>
-                                                    <Footer.Item><Button onClick={() => navigate(PATHS.RESTAURANT + "/" + restaurants[item]._id)} color={"primary"} fullwidth>Zvolit</Button></Footer.Item>
-                                                </Footer>
-                                            </Card>
-                                        </Column>
-                                    )
-                                })}
+                                {Object.keys(restaurants).map((index) => (<RestaurantCard key={index} restaurant={restaurants[index]} />))}
                             </Columns>
                         </Container>
                     </Fragment>)
