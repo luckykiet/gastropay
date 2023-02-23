@@ -1,14 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Address = require("./AddressModel");
 
 const restaurantSchema = new Schema({
     idOwner: { type: Schema.Types.ObjectId, required: true },
     name: { type: String, trim: true, required: true },
-    address: {
-        street: { type: String, trim: true, required: true },
-        city: { type: String, trim: true, required: true },
-        postalCode: { type: String, required: true, match: [/^\d{3} ?\d{2}$/, "Postal code must be: 11000 or 110 00"] }
-    },
+    address: Address,
     api: {
         baseUrl: { type: String, trim: true },
         params: { type: String, trim: true }
