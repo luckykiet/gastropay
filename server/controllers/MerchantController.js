@@ -12,14 +12,12 @@ const createMerchant = async (req, res) => {
             msg: "You must provide a merchant",
         });
     }
-    const query = MerchantModel.findOne({
+    const foundMerchant = await MerchantModel.findOne({
         ico: body.ico,
-    });
-    query.select("ico");
+    }).select("ico").exec();
 
-    const foundMerchant = await query.exec();
     if (foundMerchant) {
-        return res.status(400).json({
+        return res.status(200).json({
             success: false,
             msg: "Merchant with ICO:" + foundMerchant.ico + " already exists!",
         });
@@ -125,6 +123,12 @@ const getMerchantByIdOrIco = async (req, res) => {
     return res.status(200).json({ success: true, msg: merchant });
 };
 
+const checkMerchantByIco = async (req, res) => {
+    const merchant = await MerchantModel.findOne({
+        ico: req.query.ico,
+    }).select("ico").exec();
+    return res.status(200).json({ success: true, msg: merchant ? true : false });
+}
 
 const getMerchants = async (req, res) => {
     const sortOrderList = ['asc', 'desc', 'ascending', 'descending', '1', '-1'];
@@ -177,5 +181,6 @@ module.exports = {
     deleteMerchant,
     getMerchants,
     getMerchantByIdOrIco,
+    checkMerchantByIco,
     searchMerchants
 };

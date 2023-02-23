@@ -42,7 +42,7 @@ export const checkICO = (ico) => {
         }
         sum = sum % 11;
         const x = (11 - sum) % 10;
-        return x === numberArray.slice(-1) ? true : false;
+        return x === parseInt(numberArray.slice(-1)) ? true : false;
     }
     catch (e) {
         return false;
