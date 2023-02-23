@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Address = require("./AddressModel");
 
-const restaurantSchema = new Schema({
+const RestaurantSchema = new Schema({
     idOwner: { type: Schema.Types.ObjectId, required: true },
     name: { type: String, trim: true, required: true },
-    address: Address,
+    address: { type: Address.AddressSchema, required: true },
     api: {
         baseUrl: { type: String, trim: true },
         params: { type: String, trim: true }
@@ -107,6 +107,9 @@ const restaurantSchema = new Schema({
     isAvailable: { type: Boolean, required: true, default: false }
 }, { timestamps: true });
 
-const Restaurant = mongoose.model('Restaurant', restaurantSchema);
+const RestaurantModel = mongoose.model('Restaurant', RestaurantSchema);
 
-module.exports = Restaurant;
+module.exports = {
+    RestaurantModel,
+    RestaurantSchema
+};

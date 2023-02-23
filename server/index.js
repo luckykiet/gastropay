@@ -5,10 +5,11 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const connectDB = require('./db');
-const API_PORT = 4000;
+const config = require('./config');
 
 // Routers
-const restaurantRouter = require('./routes/RestaurantRouter');
+const RestaurantRouter = require('./routes/RestaurantRouter');
+const MerchantRouter = require('./routes/MerchantRouter');
 
 // Inits
 const app = express();
@@ -20,7 +21,8 @@ app.use(morgan('combined'));
 connectDB();
 
 // Define api
-app.use('/api', restaurantRouter);
+app.use('/api', RestaurantRouter);
+app.use('/api', MerchantRouter);
 
 // Start api
-app.listen(API_PORT, () => console.log(`Server running on port ${API_PORT}`));
+app.listen(config.API_PORT, () => console.log(`Server running on port ${config.API_PORT}`));

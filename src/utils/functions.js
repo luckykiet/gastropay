@@ -2,7 +2,7 @@ import Axios from 'axios';
 import moment from 'moment';
 
 export const createAxios = (urlAPI) => {
-    return Axios.create({ numberArrayaseURL: urlAPI })
+    return Axios.create({ baseURL: urlAPI })
 };
 
 

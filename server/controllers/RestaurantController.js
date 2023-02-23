@@ -1,5 +1,6 @@
 const { isObjectIdOrHexString } = require("mongoose");
 const Restaurant = require("../models/RestaurantModel");
+const RestaurantModel = Restaurant.RestaurantModel;
 const ObjectId = require("mongoose").Types.ObjectId;
 
 const createRestaurant = async (req, res) => {
@@ -10,14 +11,13 @@ const createRestaurant = async (req, res) => {
             msg: "You must provide a restaurant",
         });
     }
-    const query = Restaurant.findOne({
+
+    const foundRestaurant = await RestaurantModel.findOne({
         idOwner: ObjectId(body.idOwner),
         name: body.name,
         address: body.address,
-    });
-    query.select("name");
+    }).select("name").exec();
 
-    const foundRestaurant = await query.exec();
     if (foundRestaurant) {
         return res.status(400).json({
             success: false,
@@ -25,7 +25,7 @@ const createRestaurant = async (req, res) => {
         });
     }
 
-    const restaurant = new Restaurant(body);
+    const restaurant = new RestaurantModel(body);
 
     await restaurant.save().then(() => {
         return res.status(201).json({
@@ -52,30 +52,20 @@ const updateRestaurant = async (req, res) => {
         });
     }
 
-    const restaurant = await Restaurant.findOne({ _id: ObjectId(req.params.id) });
+    const restaurant = await RestaurantModel.findByIdAndUpdate(req.params.id, body, {
+        new: true,
+    });
+
     if (!restaurant) {
         return res
             .status(404)
             .json({ success: false, msg: `Restaurant not found` });
     }
 
-    restaurant.name = body.name;
-    restaurant.address = body.address;
-    restaurant.api = body.api;
-    restaurant.image = body.image;
-    restaurant.openingTime = body.openingTime;
-    restaurant.isAvailable = body.isAvailable;
-    await restaurant
-        .save()
-        .then(() => {
-            return res.status(200).json({
-                success: true,
-                msg: "Restaurant " + restaurant.name + " updated!",
-            });
-        })
-        .catch((err) => {
-            return res.status(404).json({ success: false, msg: err });
-        });
+    return res.status(200).json({
+        success: true,
+        msg: "Restaurant " + restaurant.name + " updated!",
+    });
 };
 
 const deleteRestaurant = async (req, res) => {
@@ -85,9 +75,7 @@ const deleteRestaurant = async (req, res) => {
             msg: "Invalid ID.",
         });
     }
-    const restaurant = await Restaurant.findOneAndDelete({
-        _id: ObjectId(req.params.id),
-    });
+    const restaurant = await RestaurantModel.findByIdAndDelete(req.params.id);
     if (!restaurant) {
         return res
             .status(404)
@@ -110,7 +98,7 @@ const getRestaurantById = async (req, res) => {
         });
     }
 
-    const restaurant = await Restaurant.findOne({ _id: ObjectId(req.params.id) });
+    const restaurant = await RestaurantModel.findById(req.params.id);
 
     if (!restaurant) {
         return res
@@ -123,13 +111,12 @@ const getRestaurantById = async (req, res) => {
 const getRestaurants = async (req, res) => {
     const sortOrderList = ['asc', 'desc', 'ascending', 'descending', '1', '-1'];
 
-    const query = Restaurant.find();
+    const query = RestaurantModel.find();
     if (req.query.field && req.query.orderBy && sortOrderList.includes(req.query.orderBy)) {
         query.sort({ [req.query.field]: [req.query.orderBy] })
     }
     query.select("_id name address openingTime image isAvailable");
-    query.where({ isAvailable: true });
-    const restaurants = await query.lean().exec();
+    const restaurants = await query.where({ isAvailable: true }).lean().exec();
 
     if (!restaurants.length) {
         return res
@@ -142,21 +129,20 @@ const getRestaurants = async (req, res) => {
 
 const searchRestaurants = async (req, res) => {
     const sortOrderList = ['asc', 'desc', 'ascending', 'descending', '1', '-1'];
-    const query = Restaurant.find({
+    const query = RestaurantModel.find({
         $or: [
             { name: { $regex: req.query.text, $options: 'i' } },
-            { "address.street": { $regex: req.query.text, $options: 'i' } },
-            { "address.city": { $regex: req.query.text, $options: 'i' } },
+            { address: { $regex: req.query.text, $options: 'i' } },
         ]
     });
+
     if (req.query.field && req.query.orderBy && sortOrderList.includes(req.query.orderBy)) {
         query.sort({ [req.query.field]: [req.query.orderBy] })
     } else {
         query.sort({ 'name': 'asc' })
     }
     query.select("_id name address openingTime image isAvailable");
-    query.where({ isAvailable: true });
-    const restaurants = await query.lean().exec();
+    const restaurants = await query.where({ isAvailable: true }).lean().exec();
 
     if (!restaurants.length) {
         return res
