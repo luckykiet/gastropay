@@ -8,6 +8,7 @@ import { Promise } from "bluebird";
 const { Field, Label, Control, Input, Checkbox, Help } = Form;
 
 export default function RegisterPage() {
+    const [postMsg, setPostMsg] = useState('');
     const [icoCheckMsg, setIcoCheckMsg] = useState('');
     const [emailCheckMsg, setEmailCheckMsg] = useState('');
     const [isEmailValid, setIsEmailValid] = useState(true);
@@ -24,18 +25,24 @@ export default function RegisterPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('/api/posts', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-            setFormData({ ico: '', email: '', password: '' });
-        } else {
-            console.error('Error submitting post form');
+        try {
+            const axios = createAxios(addSlashAfterUrl(API_URL));
+            const { data: { success, msg } } = await axios.post(
+                "api/merchant",
+                JSON.stringify(formData), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (success) {
+                setFormData({ ico: '', email: '', password: '' });
+                setConfirmPassword('');
+                setPostMsg('');
+            } else {
+                setPostMsg(msg);
+            }
+        } catch (error) {
+            setPostMsg(error);
         }
     }
 
@@ -50,7 +57,8 @@ export default function RegisterPage() {
         setFormData({ ...formData, [name]: value });
         if (name === 'password') {
             setPasswordsMatch(!value || !confirmPassword ? null : value === confirmPassword);
-            setIsPasswordValid(value.length >= 8 || value.length === 0);
+            const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
+            setIsPasswordValid(passwordRegex.test(value) || value.length === 0);
         } else if (name === 'email') {
             const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             setIsEmailValid(emailRegex.test(value) || value.length === 0);
@@ -140,7 +148,7 @@ export default function RegisterPage() {
                             <Control>
                                 <Input color={emailCheckMsg === "OK" ? "success" : (emailCheckMsg !== '' || !isEmailValid) ? "danger" : undefined} name={"email"} value={email} onChange={handleChange} id="inputEmail" type={"email"} placeholder="gastropay@vse.cz" required />
                                 <Icon color={emailCheckMsg === "OK" ? "success" : (emailCheckMsg !== '' || !isEmailValid) ? "danger" : undefined} align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
-                                {emailCheckMsg === "OK" ? <Icon color={"success"} align="right"><FontAwesomeIcon icon={faCheck} /></Icon> : !isEmailValid && <Help color="danger">Nesprávný email formát</Help>}
+                                {emailCheckMsg === "OK" ? <Icon color={"success"} align="right"><FontAwesomeIcon icon={faCheck} /></Icon> : !isEmailValid ? <Help color="danger">Nesprávný email formát</Help> : emailCheckMsg !== '' && <Help color={"danger"}>{emailCheckMsg}</Help>}
                             </Control>
                         </Field>
                         <Field>
@@ -150,7 +158,7 @@ export default function RegisterPage() {
                             <Control>
                                 <Input name={"password"} color={isPasswordValid ? null : "danger"} value={password} onChange={handleChange} id="inputPassword" type="password" placeholder="*************" required />
                                 <Icon align="left"><FontAwesomeIcon icon={faLock} /></Icon>
-                                {!isPasswordValid && <Help color="danger">Heslo musí obsahovat alespoň 8 znaků</Help>}
+                                {!isPasswordValid && <Help color="danger">Heslo musí obsahovat alespoň 8 znaků, 1 velké, 1 malé písmeno a 1 číslici</Help>}
                             </Control>
                         </Field>
                         <Field>
@@ -169,6 +177,7 @@ export default function RegisterPage() {
                             </Control>
                         </Field>
                         <Button submit fullwidth color={'warning'}>Zaregistrovat se</Button>
+                        {postMsg !== '' && <p className="has-text-danger">{postMsg}</p>}
                     </form>
                 </Box>
             </Container>

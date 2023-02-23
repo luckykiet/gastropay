@@ -6,13 +6,13 @@ const Comgate = require("./ComgateModel");
 
 const MerchantSchema = new Schema({
     email: { type: String, trim: true, match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/], required: true, unique: true },
-    name: { type: String, trim: true, required: true },
+    name: { type: String, trim: true },
     password: { type: String, required: true },
     ico: { type: String, match: [/^\d{8}$/, "Ico with 8 digits"], required: true, unique: true },
-    address: { type: Address.AddressSchema, required: true },
+    address: { type: Address.AddressSchema },
     telephone: { type: String, trim: true },
     paymentGates: {
-        comgate: { type: Comgate.ComgateSchema, required: true }
+        comgate: { type: Comgate.ComgateSchema }
     },
     isAvailable: { type: Boolean, required: true, default: true }
 }, { timestamps: true });

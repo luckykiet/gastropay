@@ -36,9 +36,9 @@ export const checkICO = (ico) => {
         }
         // x = (11-((8*numberArray[0] + ... + 2*numberArray[6])%11))%10
         let sum = 0;
-        let numberArray = ico.split('');
+        const numberArray = ico.split('');
         for (let weight = 0; weight < (numberArray.length - 1); weight++) {
-            sum += (parseInt(numberArray[weight]) * (8 - weight));
+            sum += (parseInt(numberArray[weight]) * (numberArray.length - weight));
         }
         sum = sum % 11;
         const x = (11 - sum) % 10;
@@ -47,6 +47,18 @@ export const checkICO = (ico) => {
     catch (e) {
         return false;
     }
+}
+
+export const generateRandomIco = () => {
+    const randomNum = Math.floor(Math.random() * 9000000) + 1000000;
+    const numberArray = randomNum.toString().split('');
+    let sum = 0;
+    for (let weight = 0; weight < (numberArray.length); weight++) {
+        sum += (parseInt(numberArray[weight]) * ((numberArray.length + 1) - weight));
+    }
+    sum = sum % 11;
+    numberArray.push(((11 - sum) % 10));
+    return numberArray.join('');
 }
 
 export const addSlashAfterUrl = (url) => {

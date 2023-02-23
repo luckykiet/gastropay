@@ -12,14 +12,26 @@ const createMerchant = async (req, res) => {
             msg: "You must provide a merchant",
         });
     }
-    const foundMerchant = await MerchantModel.findOne({
+
+    const foundMerchantByICO = await MerchantModel.findOne({
         ico: body.ico,
     }).select("ico").exec();
 
-    if (foundMerchant) {
+    if (foundMerchantByICO) {
         return res.status(200).json({
             success: false,
-            msg: "Merchant with ICO:" + foundMerchant.ico + " already exists!",
+            msg: "Merchant with ICO:" + foundMerchantByICO.ico + " already exists!",
+        });
+    }
+
+    const foundMerchantByEmail = await MerchantModel.findOne({
+        email: body.email,
+    }).select("email").exec();
+
+    if (foundMerchantByEmail) {
+        return res.status(200).json({
+            success: false,
+            msg: "Merchant with email:" + foundMerchantByEmail.email + " already exists!",
         });
     }
 
@@ -28,10 +40,11 @@ const createMerchant = async (req, res) => {
     await merchant.save().then(() => {
         return res.status(201).json({
             success: true,
-            msg: "Merchant " + merchant.name + " created!",
+            msg: "Merchant with ICO: " + merchant.ico + " created!",
         });
     });
 };
+
 
 const updateMerchant = async (req, res) => {
     const merchantId = req.params.id;
