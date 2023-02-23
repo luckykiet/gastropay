@@ -2,14 +2,18 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 const Address = require("./AddressModel");
+const Comgate = require("./ComgateModel");
 
 const merchantSchema = new Schema({
     email: { type: String, trim: true, match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/], required: true, unique: true },
     name: { type: String, trim: true, required: true },
     password: { type: String, required: true },
     ico: { type: String, match: [/^\d{8}$/, "Ico with 8 digits"], required: true, unique: true },
-    address: Address,
-    telephones: { type: String, trim: true },
+    address: { type: Address, required: true },
+    telephone: { type: String, trim: true },
+    paymentGates: {
+        comgate: { type: Comgate, required: true }
+    },
     isAvailable: { type: Boolean, required: true, default: true }
 }, { timestamps: true });
 
