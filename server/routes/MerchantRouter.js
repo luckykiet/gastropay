@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/' + MERCHANT, MerchantController.createMerchant);
 router.put('/' + MERCHANT + '/:id', MerchantController.updateMerchant);
 router.delete('/' + MERCHANT + '/:id', MerchantController.deleteMerchant);
-router.get('/' + MERCHANT + '/check?', MerchantController.checkMerchantByIco);
+router.get('/' + MERCHANT + '/check?', MerchantController.checkMerchantByIcoOrEmail);
 router.get('/' + MERCHANT + '?', MerchantController.getMerchantByIdOrIco);
 router.get('/' + MERCHANT + 's', MerchantController.getMerchants);
 router.get('/' + MERCHANT + 's?', MerchantController.getMerchants);

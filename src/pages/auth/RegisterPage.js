@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faLock, faUser, faCheck, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLock, faUser, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Box, Content, Heading, Form, Icon, Button, Container } from "react-bulma-components";
 import React, { Fragment, useState, useEffect, useCallback } from "react";
 import { checkICO, createAxios, API_URL, addSlashAfterUrl } from "../../utils";
@@ -9,14 +9,18 @@ const { Field, Label, Control, Input, Checkbox, Help } = Form;
 
 export default function RegisterPage() {
     const [icoCheckMsg, setIcoCheckMsg] = useState('');
+    const [emailCheckMsg, setEmailCheckMsg] = useState('');
+    const [isEmailValid, setIsEmailValid] = useState(true);
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [isPasswordValid, setIsPasswordValid] = useState(true);
+    const [passwordsMatch, setPasswordsMatch] = useState(null);
     const [formData, setFormData] = useState({
         ico: '',
         email: '',
-        password: '',
-        confirmPassword: ''
+        password: ''
     });
 
-    const { ico, email, password, confirmPassword } = formData;
+    const { ico, email, password } = formData;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,17 +39,49 @@ export default function RegisterPage() {
         }
     }
 
+    const handleConfirmPasswordChange = (e) => {
+        const { value } = e.target;
+        setConfirmPassword(value);
+        setPasswordsMatch(!value || !password ? null : value === password);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+        if (name === 'password') {
+            setPasswordsMatch(!value || !confirmPassword ? null : value === confirmPassword);
+            setIsPasswordValid(value.length >= 8 || value.length === 0);
+        } else if (name === 'email') {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            setIsEmailValid(emailRegex.test(value) || value.length === 0);
+        }
     }
 
-    const fetchData = useCallback(async () => {
+    const checkEmailExist = useCallback(async () => {
         try {
             const axios = createAxios(addSlashAfterUrl(API_URL));
-            const { data: { msg } } = await axios.get(`api/merchant/check?ico=${ico}`);
-            setIcoCheckMsg(msg ? "IČO je již registrováno!" : 'OK');
+            const { data: { success, msg } } = await axios.get(`api/merchant/check?email=${email}`);
+            if (success) {
+                setEmailCheckMsg(msg ? "Email je již používán!" : 'OK');
+            } else {
+                setEmailCheckMsg(msg);
+            }
+
+        } catch (err) {
+            setEmailCheckMsg('');
+            console.log(err);
+        }
+    }, [email]);
+
+    const checkIcoExist = useCallback(async () => {
+        try {
+            const axios = createAxios(addSlashAfterUrl(API_URL));
+            const { data: { success, msg } } = await axios.get(`api/merchant/check?ico=${ico}`);
+            if (success) {
+                setIcoCheckMsg(msg ? "IČO je již registrováno!" : 'OK');
+            } else {
+                setIcoCheckMsg(msg);
+            }
         } catch (err) {
             setIcoCheckMsg('');
             console.log(err);
@@ -64,9 +100,20 @@ export default function RegisterPage() {
                 setIcoCheckMsg("Nevalidní IČO!");
                 return;
             }
-            Promise.delay(0).then(fetchData);
+            Promise.delay(0).then(checkIcoExist);
         }
-    }, [ico, fetchData])
+    }, [ico, checkIcoExist]);
+
+    useEffect(() => {
+        if (email && isEmailValid) {
+            Promise.delay(0).then(checkEmailExist);
+            return;
+        } else {
+            setEmailCheckMsg('');
+            return;
+        }
+
+    }, [email, isEmailValid, checkEmailExist]);
 
     return (
         <Fragment>
@@ -81,18 +128,19 @@ export default function RegisterPage() {
                                 IČO
                             </Label>
                             <Control>
-                                <Input color={icoCheckMsg !== '' ? (icoCheckMsg === "OK" ? "success" : "danger") : undefined} name={"ico"} value={ico} type={"search"} onChange={handleChange} id="inputIco" placeholder="12345678" required />
-                                <Icon color={icoCheckMsg !== '' ? (icoCheckMsg === "OK" ? "success" : "danger") : undefined} align="left"><FontAwesomeIcon icon={icoCheckMsg !== '' ? (icoCheckMsg === "OK" ? faCheck : faExclamationTriangle) : faUser} /></Icon>
+                                <Input color={icoCheckMsg !== '' ? (icoCheckMsg === "OK" ? "success" : "danger") : undefined} name={"ico"} value={ico} type={"text"} onChange={handleChange} id="inputIco" placeholder="12345678" required />
+                                <Icon color={icoCheckMsg !== '' ? (icoCheckMsg === "OK" ? "success" : "danger") : undefined} align="left"><FontAwesomeIcon icon={faUser} /></Icon>
+                                {icoCheckMsg === "OK" ? <Icon color={"success"} align="right"><FontAwesomeIcon icon={faCheck} /></Icon> : icoCheckMsg !== '' && <Help color={"danger"}>{icoCheckMsg}</Help>}
                             </Control>
-                            {(icoCheckMsg !== '' && icoCheckMsg !== "OK") ? <Help color={"danger"}>{icoCheckMsg}</Help> : ""}
                         </Field>
                         <Field>
                             <Label htmlFor="inputEmail">
                                 Email
                             </Label>
                             <Control>
-                                <Input name={"email"} value={email} onChange={handleChange} id="inputEmail" type={"email"} placeholder="gastropay@vse.cz" required />
-                                <Icon align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
+                                <Input color={emailCheckMsg === "OK" ? "success" : (emailCheckMsg !== '' || !isEmailValid) ? "danger" : undefined} name={"email"} value={email} onChange={handleChange} id="inputEmail" type={"email"} placeholder="gastropay@vse.cz" required />
+                                <Icon color={emailCheckMsg === "OK" ? "success" : (emailCheckMsg !== '' || !isEmailValid) ? "danger" : undefined} align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
+                                {emailCheckMsg === "OK" ? <Icon color={"success"} align="right"><FontAwesomeIcon icon={faCheck} /></Icon> : !isEmailValid && <Help color="danger">Nesprávný email formát</Help>}
                             </Control>
                         </Field>
                         <Field>
@@ -100,8 +148,9 @@ export default function RegisterPage() {
                                 Heslo
                             </Label>
                             <Control>
-                                <Input name={"password"} value={password} onChange={handleChange} id="inputPassword" type="password" placeholder="*************" required />
+                                <Input name={"password"} color={isPasswordValid ? null : "danger"} value={password} onChange={handleChange} id="inputPassword" type="password" placeholder="*************" required />
                                 <Icon align="left"><FontAwesomeIcon icon={faLock} /></Icon>
+                                {!isPasswordValid && <Help color="danger">Heslo musí obsahovat alespoň 8 znaků</Help>}
                             </Control>
                         </Field>
                         <Field>
@@ -109,13 +158,14 @@ export default function RegisterPage() {
                                 Ověření hesla
                             </Label>
                             <Control>
-                                <Input name={"confirmPassword"} value={confirmPassword} onChange={handleChange} id="inputConfirmPassword" type="password" placeholder="*************" required />
-                                <Icon align="left"><FontAwesomeIcon icon={faLock} /></Icon>
+                                <Input color={passwordsMatch !== null ? (passwordsMatch ? "success" : "danger") : undefined} name={"confirmPassword"} value={confirmPassword} onChange={handleConfirmPasswordChange} id="inputConfirmPassword" type="password" placeholder="*************" required />
+                                <Icon color={passwordsMatch !== null ? (passwordsMatch ? "success" : "danger") : undefined} align="left"><FontAwesomeIcon icon={faLock} /></Icon>
+                                {passwordsMatch !== null ? (passwordsMatch ? <Icon color={"success"} align="right"><FontAwesomeIcon icon={faCheck} /></Icon> : <Help color={"danger"}>Hesla neshodují!</Help>) : ""}
                             </Control>
                         </Field>
                         <Field>
                             <Control>
-                                <Checkbox id="agreementCheckBox">&nbsp;Souhlasíte s podmínky</Checkbox>
+                                <Checkbox required id="agreementCheckBox">&nbsp;Souhlasíte s podmínky</Checkbox>
                             </Control>
                         </Field>
                         <Button submit fullwidth color={'warning'}>Zaregistrovat se</Button>

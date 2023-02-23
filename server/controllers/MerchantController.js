@@ -123,12 +123,17 @@ const getMerchantByIdOrIco = async (req, res) => {
     return res.status(200).json({ success: true, msg: merchant });
 };
 
-const checkMerchantByIco = async (req, res) => {
-    const merchant = await MerchantModel.findOne({
-        ico: req.query.ico,
-    }).select("ico").exec();
+const checkMerchantByIcoOrEmail = async (req, res) => {
+    let merchant = null;
+    if (req.query.ico) {
+        merchant = await MerchantModel.findOne({ ico: req.query.ico }).select("ico").exec();
+    } else if (req.query.email) {
+        merchant = await MerchantModel.findOne({ email: req.query.email }).select("email").exec();
+    } else {
+        return res.status(400).json({ success: false, msg: "Nesprávný parametr!" });
+    }
     return res.status(200).json({ success: true, msg: merchant ? true : false });
-}
+};
 
 const getMerchants = async (req, res) => {
     const sortOrderList = ['asc', 'desc', 'ascending', 'descending', '1', '-1'];
@@ -181,6 +186,6 @@ module.exports = {
     deleteMerchant,
     getMerchants,
     getMerchantByIdOrIco,
-    checkMerchantByIco,
+    checkMerchantByIcoOrEmail,
     searchMerchants
 };
