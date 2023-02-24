@@ -3,14 +3,21 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "build",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
+      "script": "server-start",
       "problemMatcher": [],
-      "label": "npm: build",
-      "detail": "react-scripts build"
+      "label": "npm: server-start",
+      "detail": "nodemon server/index.js"
+    },
+    {
+      "type": "npm",
+      "script": "react-start",
+      "problemMatcher": [],
+      "label": "npm: react-start",
+      "detail": "yarn start"
+    },
+    {
+      "label": "Gastro Pay local start",
+      "dependsOn": ["npm: server-start", "npm: react-start"]
     }
   ]
 }
