@@ -23,6 +23,7 @@ import MerchantLayout from './components/layouts/MerchantLayout';
 import LogoutPage from './pages/auth/LogoutPage';
 import useAuth from './pages/auth/useAuth';
 import LoadingComponent from './components/LoadingComponent';
+import DashboardPage from './pages/merchant/DashboardPage';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -101,6 +102,10 @@ const router = createBrowserRouter([
   {
     path: PATHS.DASHBOARD,
     element: <ProtectedRoute><MerchantLayout /></ProtectedRoute>,
+    children: [{
+      path: "",
+      element: <DashboardPage />,
+    }],
     errorElement: <ErrorPage />,
   }
 ]);

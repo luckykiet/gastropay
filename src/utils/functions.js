@@ -1,5 +1,6 @@
 import Axios from 'axios';
 import moment from 'moment';
+import jwtDecode from 'jwt-decode';
 
 export const createAxios = (urlAPI) => {
     return Axios.create({ baseURL: urlAPI })
@@ -86,5 +87,15 @@ export const isValidUrl = (url) => {
         return true;
     } catch (error) {
         return false;
+    }
+}
+
+export const getIdFromToken = (token = localStorage.getItem('token')) => {
+    try {
+        const payload = jwtDecode(token, '@ThIS iS Sup3rb s3creT!');
+        return payload.userId;
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return "Invalid";
     }
 }

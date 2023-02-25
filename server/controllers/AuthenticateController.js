@@ -2,6 +2,7 @@ const Merchant = require("../models/MerchantModel");
 const MerchantModel = Merchant.MerchantModel;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const config = require('../config');
 
 const login = async (req, res) => {
     const { email, password } = req.body;
@@ -13,7 +14,7 @@ const login = async (req, res) => {
     if (!isPasswordValid) {
         return res.status(401).json({ success: false, msg: 'Invalid credentials' });
     }
-    const token = jwt.sign({ userId: user._id }, 'secret');
+    const token = jwt.sign({ userId: user._id }, config.JWT_SECRET, { expiresIn: '1h' });
     return res.status(201).json({
         success: true,
         msg: { token: token },
@@ -54,7 +55,7 @@ const register = async (req, res) => {
     const merchant = new MerchantModel(body);
 
     await merchant.save().then(() => {
-        const token = jwt.sign({ userId: merchant._id }, 'secret');
+        const token = jwt.sign({ userId: merchant._id }, config.JWT_SECRET, { expiresIn: '1h' });
         return res.status(201).json({
             success: true,
             msg: { token: token },
@@ -62,24 +63,7 @@ const register = async (req, res) => {
     });
 };
 
-const authenticateToken = (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) {
-        return res.status(401).json({ success: false, message: 'Unauthorized' });
-    }
-    jwt.verify(token, 'secret', (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ success: false, message: 'Unauthorized' });
-        }
-        req.userId = decoded.userId;
-        res.json({ success: true, msg: 'Protected endpoint' });
-        next();
-    });
-};
-
 module.exports = {
     login,
-    register,
-    authenticateToken
+    register
 }

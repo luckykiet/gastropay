@@ -6,7 +6,9 @@ const PATHS = {
     PROTECTED: "protected",
     REGISTER: "register"
 }
+const JWT_SECRET = "@ThIS iS Sup3rb s3creT!";
 module.exports = {
     API_PORT,
-    PATHS
+    PATHS,
+    JWT_SECRET
 }

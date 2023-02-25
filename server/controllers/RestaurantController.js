@@ -127,6 +127,19 @@ const getRestaurants = async (req, res) => {
     return res.status(200).json({ success: true, msg: restaurants });
 };
 
+const getRestaurantsByMerchantID = async (req, res) => {
+    const query = RestaurantModel.find({ idOwner: req.params.merchantId });
+    query.sort({ createdAt: "desc" })
+    query.select("_id name openingTime image isAvailable");
+    const restaurants = await query.lean().exec();
+    if (!restaurants.length) {
+        return res
+            .status(200)
+            .json({ success: false, msg: `Restaurants not found` });
+    }
+    return res.status(200).json({ success: true, msg: restaurants });
+};
+
 const searchRestaurants = async (req, res) => {
     const sortOrderList = ['asc', 'desc', 'ascending', 'descending', '1', '-1'];
     const query = RestaurantModel.find({
@@ -192,5 +205,6 @@ module.exports = {
     deleteRestaurant,
     getRestaurants,
     getRestaurantById,
-    searchRestaurants
+    searchRestaurants,
+    getRestaurantsByMerchantID
 };

@@ -3,14 +3,15 @@ const config = require('../config');
 const MerchantController = require('../controllers/MerchantController');
 const MERCHANT = config.PATHS.MERCHANT;
 const router = express.Router();
+const authMiddleware = require('./AuthMiddleware');
 
-router.post('/' + MERCHANT, MerchantController.createMerchant);
-router.put('/' + MERCHANT + '/:id', MerchantController.updateMerchant);
-router.delete('/' + MERCHANT + '/:id', MerchantController.deleteMerchant);
-router.get('/' + MERCHANT + '/check?', MerchantController.checkMerchantByIcoOrEmail);
-router.get('/' + MERCHANT + '?', MerchantController.getMerchantByIdOrIco);
-router.get('/' + MERCHANT + 's', MerchantController.getMerchants);
-router.get('/' + MERCHANT + 's?', MerchantController.getMerchants);
-router.get('/' + MERCHANT + 's/search?', MerchantController.searchMerchants);
+router.post('/' + MERCHANT, authMiddleware, MerchantController.createMerchant);
+router.put('/' + MERCHANT + '/:id', authMiddleware, MerchantController.updateMerchant);
+router.delete('/' + MERCHANT + '/:id', authMiddleware, MerchantController.deleteMerchant);
+router.get('/' + MERCHANT + '/check?', authMiddleware, MerchantController.checkMerchantByIcoOrEmail);
+router.get('/' + MERCHANT + '?', authMiddleware, MerchantController.getMerchantByIdOrIco);
+router.get('/' + MERCHANT + 's', authMiddleware, MerchantController.getMerchants);
+router.get('/' + MERCHANT + 's?', authMiddleware, MerchantController.getMerchants);
+router.get('/' + MERCHANT + 's/search?', authMiddleware, MerchantController.searchMerchants);
 
 module.exports = router;

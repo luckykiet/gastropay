@@ -10,14 +10,13 @@ const useAuth = () => {
         const axios = createAxios(addSlashAfterUrl(API_URL));
         const checkAuth = async () => {
             try {
-                const response = await axios.get('protected', {
+                const token = localStorage.getItem('token');
+                await axios.get('protected', {
                     headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                        Authorization: 'Bearer ' + token,
                     }
                 });
-                if (response.data.success) {
-                    setIsAuthenticated(true);
-                }
+                setIsAuthenticated(true);
             } catch (error) {
                 !!localStorage.getItem('token') && localStorage.removeItem('token');
                 setIsAuthenticated(false);
