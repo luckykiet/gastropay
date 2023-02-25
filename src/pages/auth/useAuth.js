@@ -19,11 +19,13 @@ const useAuth = () => {
                     setIsAuthenticated(true);
                 }
             } catch (error) {
+                !!localStorage.getItem('token') && localStorage.removeItem('token');
                 setIsAuthenticated(false);
             } finally {
                 setIsLoading(false);
             }
         };
+
         if (!!localStorage.getItem('token')) {
             Promise.delay(500).then(checkAuth);
         } else {
