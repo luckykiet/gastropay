@@ -1,10 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from "react-router-dom";
-import { createAxios, addSlashAfterUrl, API_URL } from "../../utils";
+import { createAxios, addSlashAfterUrl, API_URL, PATHS } from "../../utils";
 import { Box, Columns, Container, Hero, Icon, Button, Form } from "react-bulma-components";
 import { useState } from "react";
-import { PATHS } from '../../utils';
 const { Body } = Hero;
 const { Field, Label, Control, Input, Help } = Form;
 const { Column } = Columns;
@@ -30,7 +29,7 @@ export default function LoginPage() {
             try {
                 const axios = createAxios(addSlashAfterUrl(API_URL));
                 const { data: { success, msg } } = await axios.post(
-                    "login",
+                    `${PATHS.API.LOGIN}`,
                     JSON.stringify({ email: email, password: password }), {
                     headers: {
                         'Content-Type': 'application/json'

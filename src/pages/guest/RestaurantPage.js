@@ -28,7 +28,7 @@ export default function RestaurantPage() {
         const fetchData = async () => {
             try {
                 const axios = createAxios(addSlashAfterUrl(API_URL));
-                const { data: { success, msg } } = await axios.get(`api/restaurant/${idRestaurant}`);
+                const { data: { success, msg } } = await axios.get(`api/${PATHS.API.RESTAURANT}/${idRestaurant}`);
                 if (!success) {
                     throw new Error(msg);
                 }

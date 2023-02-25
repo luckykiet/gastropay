@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createAxios, addSlashAfterUrl, API_URL, getIdFromToken } from '../../utils';
+import { createAxios, addSlashAfterUrl, API_URL, getIdFromToken, PATHS } from '../../utils';
 import { Promise } from 'bluebird';
 export default function DashboardPage() {
     const userId = getIdFromToken();
@@ -9,7 +9,7 @@ export default function DashboardPage() {
         const fetchRestaurants = async () => {
             const axios = createAxios(addSlashAfterUrl(API_URL));
             try {
-                const { data: { success, msg } } = await axios.get("api/restaurants/" + userId, {
+                const { data: { success, msg } } = await axios.get(`api/${PATHS.API.RESTAURANT}s/${userId}`, {
                     headers: {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }

@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Button, Container, Content as TextContent, Heading, Columns, Form } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { API_URL, createAxios, addSlashAfterUrl } from "../../utils";
+import { API_URL, createAxios, addSlashAfterUrl, PATHS } from "../../utils";
 import LoadingComponent from "../../components/LoadingComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUpAZ, faArrowDownAZ } from '@fortawesome/free-solid-svg-icons';
@@ -57,7 +57,7 @@ export default function RestaurantsPage() {
         let delayTime = searchQuery ? 0 : 500;
         const fetchData = async () => {
             try {
-                let apiUrl = 'api/restaurants';
+                let apiUrl = `api/${PATHS.API.RESTAURANT}s`;
 
                 if (searchQuery) {
                     apiUrl += '/search?text=' + searchQuery;

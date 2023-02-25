@@ -102,7 +102,7 @@ const getRestaurantById = async (req, res) => {
 
     if (!restaurant) {
         return res
-            .status(404)
+            .status(200)
             .json({ success: false, msg: `Restaurant not found` });
     }
     return res.status(200).json({ success: true, msg: restaurant });

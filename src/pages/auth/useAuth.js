@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createAxios, addSlashAfterUrl, API_URL } from '../../utils';
 import { Promise } from 'bluebird';
+import { PATHS } from '../../config/config';
 
 const useAuth = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -11,7 +12,7 @@ const useAuth = () => {
         const checkAuth = async () => {
             try {
                 const token = localStorage.getItem('token');
-                await axios.get('protected', {
+                await axios.get(`${PATHS.API.PROTECTED}`, {
                     headers: {
                         Authorization: 'Bearer ' + token,
                     }
