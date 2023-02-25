@@ -1,5 +1,5 @@
 const express = require('express');
-const config = require('../../config/config');
+const config = require('../../src/config/config');
 const RestaurantController = require('../controllers/RestaurantController');
 const RESTAURANT = config.PATHS.API.RESTAURANT;
 const router = express.Router();

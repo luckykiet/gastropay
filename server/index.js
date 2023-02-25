@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const connectDB = require('./db');
-const config = require('../config/config');
+const config = require('../src/config/config');
 
 // Routers
 const RestaurantRouter = require('./routes/RestaurantRouter');

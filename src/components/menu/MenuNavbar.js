@@ -1,10 +1,11 @@
 import React from 'react';
 import { Container, Navbar } from 'react-bulma-components';
 import { Link } from 'react-router-dom';
-import { PATHS, calculateCart } from '../../utils';
+import { calculateCart } from '../../utils';
 import packageJson from '../../../package.json';
 import CartButton from './CartButton';
 import { useCartItems } from '../../stores/ZustandStores';
+import config from '../../config/config';
 
 const { Brand, Item } = Navbar;
 
@@ -14,7 +15,7 @@ export default function MenuNavbar() {
     return (
         <Navbar color={'primary'} role="navigation" aria-label="menu navigation" className='is-spaced has-shadow'>
             <Brand>
-                <Item className='is-size-3 has-text-weight-bold' renderAs={Link} to={PATHS.HOME}>
+                <Item className='is-size-3 has-text-weight-bold' renderAs={Link} to={config.PATHS.ROUTERS.HOME}>
                     {packageJson.app.name}
                 </Item>
             </Brand>

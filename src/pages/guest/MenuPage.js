@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Card, Container, Heading } from 'react-bulma-components';
 import TabsList from '../../components/menu/TabsList';
-import { createAxios, PATHS, addSlashAfterUrl } from '../../utils';
+import { createAxios, addSlashAfterUrl } from '../../utils';
 import { Link, useNavigate } from 'react-router-dom';
 import LoadingComponent from '../../components/LoadingComponent';
 import { Promise } from 'bluebird';
 import { useChoosenRestaurant, useSetCartItems, useSetChoosenRestaurant } from '../../stores/ZustandStores';
+import config from '../../config/config';
 
 const { Content } = Card;
 
@@ -27,7 +28,7 @@ export default function MenuPage() {
 
     useEffect(() => {
         if (Object.keys(restaurant).length === 0) {
-            navigate(PATHS.RESTAURANTS);
+            navigate(config.PATHS.ROUTERS.RESTAURANTS);
         } else {
             const fetchData = async () => {
                 try {
@@ -70,7 +71,7 @@ export default function MenuPage() {
                                     Výskytla se chyba
                                 </Heading>
                                 <p>
-                                    Vraťte se na <Link to={PATHS.RESTAURANTS}>výběr restaurací.</Link>
+                                    Vraťte se na <Link to={config.PATHS.ROUTERS.RESTAURANTS}>výběr restaurací.</Link>
                                 </p>
                             </Content>
                         ) : (

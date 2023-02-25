@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PATHS } from '../../utils';
+import config from '../../config/config';
 
 function LogoutPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
     localStorage.removeItem('token');
-    navigate(PATHS.LOGIN);
+    navigate(config.PATHS.ROUTERS.LOGIN);
   }, [navigate]);
 
   return null;

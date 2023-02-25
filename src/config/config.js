@@ -10,6 +10,7 @@ const config = {
     IMAGE_BASE_URL: DEV_MODE ? "http://localhost:3000/images" : "https://gastropay.ruano.cz/images",
     API_PORT: API_PORT,
     APP_PORT: APP_PORT,
+    MONGODB_URI: 'mongodb://localhost:27017/gastropay',
     PATHS: {
         ROUTERS: {
             HOME: '/',

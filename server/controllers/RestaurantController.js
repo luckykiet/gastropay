@@ -145,10 +145,10 @@ const searchRestaurants = async (req, res) => {
     const query = RestaurantModel.find({
         $or: [
             { name: { $regex: req.query.text, $options: 'i' } },
-            { address: { $regex: req.query.text, $options: 'i' } },
+            { "address.city": { $regex: req.query.text, $options: 'i' } },
+            { "address.street": { $regex: req.query.text, $options: 'i' } }
         ]
     });
-
     if (req.query.field && req.query.orderBy && sortOrderList.includes(req.query.orderBy)) {
         query.sort({ [req.query.field]: [req.query.orderBy] })
     } else {
@@ -156,13 +156,12 @@ const searchRestaurants = async (req, res) => {
     }
     query.select("_id name address openingTime image isAvailable");
     const restaurants = await query.where({ isAvailable: true }).lean().exec();
-
     if (!restaurants.length) {
         return res
             .status(200)
             .json({ success: false, msg: `Restaurants not found` });
     }
-
+    console.log(restaurants)
     editTodayAndNextOpeningTime(restaurants);
     return res.status(200).json({ success: true, msg: restaurants });
 };

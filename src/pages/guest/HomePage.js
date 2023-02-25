@@ -1,14 +1,14 @@
 import packageJson from '../../../package.json';
 import { Content, Heading, Button } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
-import { PATHS } from '../../utils';
 import React, { Fragment } from "react";
+import config from '../../config/config';
 
 export default function HomePage() {
     const navigate = useNavigate();
 
     const handleStartApp = () => {
-        navigate(PATHS.RESTAURANTS);
+        navigate(config.PATHS.ROUTERS.RESTAURANTS);
     }
     return (
         <Fragment>

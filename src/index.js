@@ -6,7 +6,6 @@ import {
   RouterProvider,
   Navigate
 } from "react-router-dom";
-import { PATHS } from './utils';
 import reportWebVitals from './reportWebVitals';
 import RootLayout from './components/layouts/RootLayout';
 import AboutPage from './pages/guest/AboutPage';
@@ -24,11 +23,12 @@ import LogoutPage from './pages/auth/LogoutPage';
 import useAuth from './pages/auth/useAuth';
 import LoadingComponent from './components/LoadingComponent';
 import DashboardPage from './pages/merchant/DashboardPage';
+import config from './config/config';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
   if (!isAuthenticated && !isLoading) {
-    return <Navigate to={PATHS.LOGIN} replace />
+    return <Navigate to={config.config.PATHS.ROUTERS.LOGIN} replace />
   }
   if (isLoading) {
     return <LoadingComponent />;
@@ -39,14 +39,14 @@ const ProtectedRoute = ({ children }) => {
 const AuthRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
   if (isAuthenticated) {
-    return <Navigate to={PATHS.DASHBOARD} replace />
+    return <Navigate to={config.PATHS.ROUTERS.DASHBOARD} replace />
   }
   return children;
 }
 
 const router = createBrowserRouter([
   {
-    path: PATHS.HOME,
+    path: config.PATHS.ROUTERS.HOME,
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [{
@@ -56,51 +56,51 @@ const router = createBrowserRouter([
           element: <HomePage />
         },
         {
-          path: PATHS.ABOUT,
+          path: config.PATHS.ROUTERS.ABOUT,
           element: <AboutPage />
         }, {
-          path: PATHS.CONTACT,
+          path: config.PATHS.ROUTERS.CONTACT,
           element: <ContactPage />
         },
         {
-          path: PATHS.REGISTRATION,
+          path: config.PATHS.ROUTERS.REGISTRATION,
           element: <AuthRoute><RegisterPage /></AuthRoute>
         },
         {
-          path: PATHS.FORGOTTEN_PASS,
+          path: config.PATHS.ROUTERS.FORGOTTEN_PASS,
           element: <ForgottenPasswordPage />
         },
         {
-          path: PATHS.RESTAURANTS,
+          path: config.PATHS.ROUTERS.RESTAURANTS,
           element: <RestaurantsPage />
         },
       ],
     }]
   }, {
-    path: PATHS.LOGIN,
+    path: config.PATHS.ROUTERS.LOGIN,
     element: <AuthRoute><LoginPage /></AuthRoute>,
     errorElement: <ErrorPage />,
   }, {
-    path: PATHS.LOGOUT,
+    path: config.PATHS.ROUTERS.LOGOUT,
     element: <LogoutPage />,
     errorElement: <ErrorPage />,
   },
   {
-    path: PATHS.RESTAURANT,
+    path: config.PATHS.ROUTERS.RESTAURANT,
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [{
-      path: PATHS.ID_RESTAURANT,
+      path: config.PATHS.ROUTERS.ID_RESTAURANT,
       element: <RestaurantPage />,
     }]
   },
   {
-    path: PATHS.MENU,
+    path: config.PATHS.ROUTERS.MENU,
     element: <MenuLayout />,
     errorElement: <ErrorPage />,
   },
   {
-    path: PATHS.DASHBOARD,
+    path: config.PATHS.ROUTERS.DASHBOARD,
     element: <ProtectedRoute><MerchantLayout /></ProtectedRoute>,
     children: [{
       path: "",

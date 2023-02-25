@@ -1,12 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Block, Button, Columns, Container, Content, Heading, Image } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
-import { createAxios, PATHS, API_URL, isOpening, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl, BASE_URL, removeSlashFromUrl } from "../../utils";
+import { createAxios, API_URL, isOpening, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl, BASE_URL, removeSlashFromUrl } from "../../utils";
 import Promise from "bluebird";
 import moment from 'moment';
 import LoadingComponent from '../../components/LoadingComponent';
 import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/ZustandStores';
 import DownloadableQRCode from '../../components/restaurants/DownloadableQRCode';
+import config from '../../config/config';
 
 const { Column } = Columns;
 
@@ -62,7 +63,7 @@ export default function RestaurantPage() {
                                     Výskytla se chyba
                                 </Heading>
                                 <p>
-                                    Vraťte se na <Link to={PATHS.RESTAURANTS}>výběr restaurací.</Link>
+                                    Vraťte se na <Link to={config.PATHS.ROUTERS.RESTAURANTS}>výběr restaurací.</Link>
                                 </p>
                             </Content>
                         ) :
@@ -102,12 +103,12 @@ export default function RestaurantPage() {
                                             <br />
                                             <span>{business.address.postalCode} {business.address.city}</span>
                                         </Content>
-                                        <Block><DownloadableQRCode info={{ name: business.name, url: removeSlashFromUrl(BASE_URL) + PATHS.RESTAURANT + "/" + business._id, size: 200 }} /></Block>
+                                        <Block><DownloadableQRCode info={{ name: business.name, url: removeSlashFromUrl(BASE_URL) + config.PATHS.ROUTERS.RESTAURANT + "/" + business._id, size: 200 }} /></Block>
                                     </Column>
                                 </Columns>
                                 <Block pt={5}>
                                     <Container className='has-text-centered' >
-                                        <Button className='has-text-weight-bold' rounded color={'success'} style={{ width: "300px" }} size={'large'} renderAs={Link} to={PATHS.MENU}>Objednat jídlo</Button>
+                                        <Button className='has-text-weight-bold' rounded color={'success'} style={{ width: "300px" }} size={'large'} renderAs={Link} to={config.PATHS.ROUTERS.MENU}>Objednat jídlo</Button>
                                     </Container>
                                 </Block>
                             </Fragment>

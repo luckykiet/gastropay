@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
-const MONGODB_URI = 'mongodb://localhost:27017/gastropay';
-
+const config = require('../../src/config/config');
 const connectDB = async () => {
     try {
-        await mongoose.connect(MONGODB_URI, {
+        await mongoose.connect(config.MONGODB_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });

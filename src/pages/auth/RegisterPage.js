@@ -2,9 +2,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faUser, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Box, Content, Heading, Form, Icon, Button, Container } from "react-bulma-components";
 import React, { Fragment, useState, useEffect, useCallback } from "react";
-import { checkICO, createAxios, API_URL, addSlashAfterUrl, PATHS } from "../../utils";
+import { checkICO, createAxios, API_URL, addSlashAfterUrl } from "../../utils";
 import { Promise } from "bluebird";
 import { useNavigate } from "react-router-dom";
+import config from "../../config/config";
 
 const { Field, Label, Control, Input, Checkbox, Help } = Form;
 
@@ -40,7 +41,7 @@ export default function RegisterPage() {
                 });
                 if (success) {
                     localStorage.setItem('token', msg.token);
-                    navigate(PATHS.DASHBOARD);
+                    navigate(config.PATHS.ROUTERS.DASHBOARD);
                 } else {
                     setPostMsg(msg);
                 }
