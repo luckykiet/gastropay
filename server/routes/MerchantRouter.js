@@ -1,7 +1,7 @@
 const express = require('express');
 const config = require('../../config/config');
 const MerchantController = require('../controllers/MerchantController');
-const MERCHANT = config.PATHS.MERCHANT;
+const MERCHANT = config.PATHS.API.MERCHANT;
 const router = express.Router();
 const authMiddleware = require('./AuthMiddleware');
 

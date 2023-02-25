@@ -1,9 +1,9 @@
 const express = require('express');
 const config = require('../../config/config');
 const AuthenticateController = require('../controllers/AuthenticateController');
-const LOGIN = config.PATHS.LOGIN;
-const PROTECTED = config.PATHS.PROTECTED;
-const REGISTER = config.PATHS.REGISTER;
+const LOGIN = config.PATHS.API.LOGIN;
+const PROTECTED = config.PATHS.API.PROTECTED;
+const REGISTER = config.PATHS.API.REGISTER;
 const router = express.Router();
 const authMiddleware = require('./AuthMiddleware');
 

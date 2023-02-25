@@ -3,21 +3,23 @@
   "tasks": [
     {
       "type": "npm",
-      "script": "server-start",
-      "problemMatcher": [],
-      "label": "npm: server-start",
-      "detail": "nodemon server/index.js"
-    },
-    {
-      "type": "npm",
       "script": "react-start",
       "problemMatcher": [],
       "label": "npm: react-start",
       "detail": "yarn start"
     },
     {
+      "type": "npm",
+      "script": "server-start",
+      "path": "server",
+      "problemMatcher": [],
+      "label": "npm: server-start - server",
+      "detail": "nodemon index.js"
+    },
+    {
       "label": "Gastro Pay local start",
-      "dependsOn": ["npm: server-start", "npm: react-start"]
+      "dependsOn": ["npm: react-start", "npm: server-start - server"],
+      "problemMatcher": []
     }
   ]
 }
