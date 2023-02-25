@@ -7,7 +7,7 @@ import moment from 'moment';
 import LoadingComponent from '../../components/LoadingComponent';
 import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/ZustandStores';
 import DownloadableQRCode from '../../components/restaurants/DownloadableQRCode';
-import config from '../../config/config';
+import { PATHS } from '../../utils';
 
 const { Column } = Columns;
 
@@ -63,7 +63,7 @@ export default function RestaurantPage() {
                                     Výskytla se chyba
                                 </Heading>
                                 <p>
-                                    Vraťte se na <Link to={config.PATHS.ROUTERS.RESTAURANTS}>výběr restaurací.</Link>
+                                    Vraťte se na <Link to={PATHS.ROUTERS.RESTAURANTS}>výběr restaurací.</Link>
                                 </p>
                             </Content>
                         ) :
@@ -103,12 +103,12 @@ export default function RestaurantPage() {
                                             <br />
                                             <span>{business.address.postalCode} {business.address.city}</span>
                                         </Content>
-                                        <Block><DownloadableQRCode info={{ name: business.name, url: removeSlashFromUrl(BASE_URL) + config.PATHS.ROUTERS.RESTAURANT + "/" + business._id, size: 200 }} /></Block>
+                                        <Block><DownloadableQRCode info={{ name: business.name, url: removeSlashFromUrl(BASE_URL) + PATHS.ROUTERS.RESTAURANT + "/" + business._id, size: 200 }} /></Block>
                                     </Column>
                                 </Columns>
                                 <Block pt={5}>
                                     <Container className='has-text-centered' >
-                                        <Button className='has-text-weight-bold' rounded color={'success'} style={{ width: "300px" }} size={'large'} renderAs={Link} to={config.PATHS.ROUTERS.MENU}>Objednat jídlo</Button>
+                                        <Button className='has-text-weight-bold' rounded color={'success'} style={{ width: "300px" }} size={'large'} renderAs={Link} to={PATHS.ROUTERS.MENU}>Objednat jídlo</Button>
                                     </Container>
                                 </Block>
                             </Fragment>

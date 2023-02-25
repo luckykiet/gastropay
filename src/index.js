@@ -23,12 +23,12 @@ import LogoutPage from './pages/auth/LogoutPage';
 import useAuth from './pages/auth/useAuth';
 import LoadingComponent from './components/LoadingComponent';
 import DashboardPage from './pages/merchant/DashboardPage';
-import config from './config/config';
+import { PATHS } from './utils';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
   if (!isAuthenticated && !isLoading) {
-    return <Navigate to={config.config.PATHS.ROUTERS.LOGIN} replace />
+    return <Navigate to={PATHS.ROUTERS.LOGIN} replace />
   }
   if (isLoading) {
     return <LoadingComponent />;
@@ -39,14 +39,14 @@ const ProtectedRoute = ({ children }) => {
 const AuthRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
   if (isAuthenticated) {
-    return <Navigate to={config.PATHS.ROUTERS.DASHBOARD} replace />
+    return <Navigate to={PATHS.ROUTERS.DASHBOARD} replace />
   }
   return children;
 }
 
 const router = createBrowserRouter([
   {
-    path: config.PATHS.ROUTERS.HOME,
+    path: PATHS.ROUTERS.HOME,
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [{
@@ -56,51 +56,51 @@ const router = createBrowserRouter([
           element: <HomePage />
         },
         {
-          path: config.PATHS.ROUTERS.ABOUT,
+          path: PATHS.ROUTERS.ABOUT,
           element: <AboutPage />
         }, {
-          path: config.PATHS.ROUTERS.CONTACT,
+          path: PATHS.ROUTERS.CONTACT,
           element: <ContactPage />
         },
         {
-          path: config.PATHS.ROUTERS.REGISTRATION,
+          path: PATHS.ROUTERS.REGISTRATION,
           element: <AuthRoute><RegisterPage /></AuthRoute>
         },
         {
-          path: config.PATHS.ROUTERS.FORGOTTEN_PASS,
+          path: PATHS.ROUTERS.FORGOTTEN_PASS,
           element: <ForgottenPasswordPage />
         },
         {
-          path: config.PATHS.ROUTERS.RESTAURANTS,
+          path: PATHS.ROUTERS.RESTAURANTS,
           element: <RestaurantsPage />
         },
       ],
     }]
   }, {
-    path: config.PATHS.ROUTERS.LOGIN,
+    path: PATHS.ROUTERS.LOGIN,
     element: <AuthRoute><LoginPage /></AuthRoute>,
     errorElement: <ErrorPage />,
   }, {
-    path: config.PATHS.ROUTERS.LOGOUT,
+    path: PATHS.ROUTERS.LOGOUT,
     element: <LogoutPage />,
     errorElement: <ErrorPage />,
   },
   {
-    path: config.PATHS.ROUTERS.RESTAURANT,
+    path: PATHS.ROUTERS.RESTAURANT,
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [{
-      path: config.PATHS.ROUTERS.ID_RESTAURANT,
+      path: PATHS.ROUTERS.ID_RESTAURANT,
       element: <RestaurantPage />,
     }]
   },
   {
-    path: config.PATHS.ROUTERS.MENU,
+    path: PATHS.ROUTERS.MENU,
     element: <MenuLayout />,
     errorElement: <ErrorPage />,
   },
   {
-    path: config.PATHS.ROUTERS.DASHBOARD,
+    path: PATHS.ROUTERS.DASHBOARD,
     element: <ProtectedRoute><MerchantLayout /></ProtectedRoute>,
     children: [{
       path: "",

@@ -5,7 +5,7 @@ import React, { Fragment, useState, useEffect, useCallback } from "react";
 import { checkICO, createAxios, API_URL, addSlashAfterUrl } from "../../utils";
 import { Promise } from "bluebird";
 import { useNavigate } from "react-router-dom";
-import config from "../../config/config";
+import { PATHS } from '../../utils';
 
 const { Field, Label, Control, Input, Checkbox, Help } = Form;
 
@@ -41,7 +41,7 @@ export default function RegisterPage() {
                 });
                 if (success) {
                     localStorage.setItem('token', msg.token);
-                    navigate(config.PATHS.ROUTERS.DASHBOARD);
+                    navigate(PATHS.ROUTERS.DASHBOARD);
                 } else {
                     setPostMsg(msg);
                 }

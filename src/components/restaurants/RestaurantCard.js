@@ -3,7 +3,7 @@ import { Columns, Card, Media, Image, Content as TextContent, Button } from 'rea
 import { IMAGE_BASE_URL, addSlashAfterUrl } from "../../utils";
 import OpeningTimeStatus from "../../components/restaurants/OpeningTimeStatus";
 import { useNavigate } from 'react-router-dom';
-import config from '../../config/config';
+import { PATHS } from '../../utils';
 
 export default function RestaurantCard({ restaurant }) {
     const { Item } = Media;
@@ -52,7 +52,7 @@ export default function RestaurantCard({ restaurant }) {
                 </Content>
                 <Footer>
                     <Footer.Item>
-                        <Button rounded size={"medium"} className='has-text-weight-bold' onClick={() => navigate(config.PATHS.ROUTERS.RESTAURANT + '/' + restaurant._id)} color={'primary'} fullwidth>
+                        <Button rounded size={"medium"} className='has-text-weight-bold' onClick={() => navigate(PATHS.ROUTERS.RESTAURANT + '/' + restaurant._id)} color={'primary'} fullwidth>
                             Zvolit
                         </Button>
                     </Footer.Item>

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { createAxios, addSlashAfterUrl, API_URL } from "../../utils";
 import { Box, Columns, Container, Hero, Icon, Button, Form } from "react-bulma-components";
 import { useState } from "react";
-import config from "../../config/config";
+import { PATHS } from '../../utils';
 const { Body } = Hero;
 const { Field, Label, Control, Input, Help } = Form;
 const { Column } = Columns;
@@ -38,7 +38,7 @@ export default function LoginPage() {
                 });
                 if (success) {
                     localStorage.setItem('token', msg.token);
-                    navigate(config.PATHS.ROUTERS.DASHBOARD);
+                    navigate(PATHS.ROUTERS.DASHBOARD);
                 } else {
                     setPostMsg(msg);
                 }
@@ -49,7 +49,7 @@ export default function LoginPage() {
     };
 
     const handleBackToApp = () => {
-        navigate(config.PATHS.ROUTERS.HOME);
+        navigate(PATHS.ROUTERS.HOME);
     }
 
     return (
@@ -79,8 +79,8 @@ export default function LoginPage() {
                                             <Icon align="left">  <FontAwesomeIcon icon={faLock} /></Icon>
                                         </Control>
                                     </Field>
-                                    <p className="py-2">Nemáte účet? <Link to={config.PATHS.ROUTERS.REGISTRATION} className="is-underlined">Zaregistrujte</Link></p>
-                                    <p>Zapoměl(a) jste heslo? <Link to={config.PATHS.ROUTERS.FORGOTTEN_PASS} className="is-underlined">Obnovte heslo</Link></p>
+                                    <p className="py-2">Nemáte účet? <Link to={PATHS.ROUTERS.REGISTRATION} className="is-underlined">Zaregistrujte</Link></p>
+                                    <p>Zapoměl(a) jste heslo? <Link to={PATHS.ROUTERS.FORGOTTEN_PASS} className="is-underlined">Obnovte heslo</Link></p>
                                     <Columns pt={4}>
                                         <Column size={"half"}>
                                             <Button submit fullwidth color={'success'}>
