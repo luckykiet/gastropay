@@ -44,8 +44,8 @@ export default function RegisterPage() {
                 } else {
                     setPostMsg(msg);
                 }
-            } catch (error) {
-                setPostMsg(error);
+            } catch (err) {
+                setPostMsg(err.response.data.msg);
             }
         }
     }

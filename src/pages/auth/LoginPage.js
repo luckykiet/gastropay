@@ -42,7 +42,7 @@ export default function LoginPage() {
                     setPostMsg(msg);
                 }
             } catch (err) {
-                console.log(err)
+                setPostMsg(err.response.data.msg);
             }
         }
     };
