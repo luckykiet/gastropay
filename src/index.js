@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './assets/scss/index.scss';
 import {
   createBrowserRouter,
-  RouterProvider
+  RouterProvider,
+  Navigate
 } from "react-router-dom";
 import { PATHS } from './utils';
 import reportWebVitals from './reportWebVitals';
@@ -20,6 +21,27 @@ import RestaurantPage from './pages/guest/RestaurantPage';
 import MenuLayout from './components/layouts/MenuLayout';
 import MerchantLayout from './components/layouts/MerchantLayout';
 import LogoutPage from './pages/auth/LogoutPage';
+import useAuth from './pages/auth/useAuth';
+import LoadingComponent from './components/LoadingComponent';
+
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, isLoading } = useAuth();
+  if (!isAuthenticated && !isLoading) {
+    return <Navigate to={PATHS.LOGIN} replace />
+  }
+  if (isLoading) {
+    return <LoadingComponent />;
+  }
+  return children;
+}
+
+const AuthRoute = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  if (isAuthenticated) {
+    return <Navigate to={PATHS.DASHBOARD} replace />
+  }
+  return children;
+}
 
 const router = createBrowserRouter([
   {
@@ -41,7 +63,7 @@ const router = createBrowserRouter([
         },
         {
           path: PATHS.REGISTRATION,
-          element: <RegisterPage />
+          element: <AuthRoute><RegisterPage /></AuthRoute>
         },
         {
           path: PATHS.FORGOTTEN_PASS,
@@ -55,7 +77,7 @@ const router = createBrowserRouter([
     }]
   }, {
     path: PATHS.LOGIN,
-    element: <LoginPage />,
+    element: <AuthRoute><LoginPage /></AuthRoute>,
     errorElement: <ErrorPage />,
   }, {
     path: PATHS.LOGOUT,
@@ -78,7 +100,7 @@ const router = createBrowserRouter([
   },
   {
     path: PATHS.DASHBOARD,
-    element: <MerchantLayout />,
+    element: <ProtectedRoute><MerchantLayout /></ProtectedRoute>,
     errorElement: <ErrorPage />,
   }
 ]);

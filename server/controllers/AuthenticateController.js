@@ -73,10 +73,10 @@ const authenticateToken = (req, res, next) => {
             return res.status(401).json({ success: false, message: 'Unauthorized' });
         }
         req.userId = decoded.userId;
+        res.json({ success: true, msg: 'Protected endpoint' });
         next();
     });
-    res.json({ success: true, msg: 'Protected endpoint' });
-}
+};
 
 module.exports = {
     login,

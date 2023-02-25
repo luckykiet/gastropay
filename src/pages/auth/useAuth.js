@@ -24,8 +24,11 @@ const useAuth = () => {
                 setIsLoading(false);
             }
         };
-        Promise.delay(500).then(checkAuth);
-
+        if (!!localStorage.getItem('token')) {
+            Promise.delay(500).then(checkAuth);
+        } else {
+            setIsLoading(false);
+        }
     }, []);
 
     return { isAuthenticated, isLoading };

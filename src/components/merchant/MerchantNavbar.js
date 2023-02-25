@@ -15,9 +15,9 @@ export default function MerchantNavbar() {
                 </Item>
             </Brand>
             <Navbar.Container align='right'>
-                <Item>
-                    <Button color={'warning'} renderAs={Link} to={PATHS.LOGOUT}>Odhlásit se</Button>
-                </Item>
+                <Button className='is-warning' renderAs={Link} to={PATHS.LOGOUT}>
+                    Odhlásit se
+                </Button>
             </Navbar.Container>
         </Navbar>
     );
