@@ -3,7 +3,7 @@ export const DEV_MODE = true;
 export const PATHS = {
     HOME: '/',
     LOGIN: '/login',
-    LOG_OUT: '/logout',
+    LOGOUT: '/logout',
     ERROR: '/error',
     CONTACT: '/contact',
     ABOUT: '/about',

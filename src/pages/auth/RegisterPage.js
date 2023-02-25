@@ -3,14 +3,12 @@ import { faEnvelope, faLock, faUser, faCheck } from '@fortawesome/free-solid-svg
 import { Box, Content, Heading, Form, Icon, Button, Container } from "react-bulma-components";
 import React, { Fragment, useState, useEffect, useCallback } from "react";
 import { checkICO, createAxios, API_URL, addSlashAfterUrl, PATHS } from "../../utils";
-import { useLoggedIn, useSetLoggedIn } from "../../stores/ZustandStores";
 import { Promise } from "bluebird";
 import { useNavigate } from "react-router-dom";
 
 const { Field, Label, Control, Input, Checkbox, Help } = Form;
 
 export default function RegisterPage() {
-    const [loggedIn, setLoggedIn] = [useLoggedIn(), useSetLoggedIn()];
     const [postMsg, setPostMsg] = useState('');
     const [icoCheckMsg, setIcoCheckMsg] = useState('');
     const [emailCheckMsg, setEmailCheckMsg] = useState('');
@@ -23,9 +21,8 @@ export default function RegisterPage() {
         email: '',
         password: ''
     });
-
-    const { ico, email, password } = formData;
     const navigate = useNavigate();
+    const { ico, email, password } = formData;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -43,7 +40,7 @@ export default function RegisterPage() {
                 });
                 if (success) {
                     localStorage.setItem('token', msg.token);
-                    setLoggedIn(true);
+                    navigate(PATHS.DASHBOARD);
                 } else {
                     setPostMsg(msg);
                 }
@@ -129,12 +126,6 @@ export default function RegisterPage() {
         }
 
     }, [email, isEmailValid, checkEmailExist]);
-
-    useEffect(() => {
-        if (loggedIn) {
-            navigate(PATHS.DASHBOARD);
-        }
-    })
 
     return (
         <Fragment>

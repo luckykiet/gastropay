@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './assets/scss/index.scss';
 import {
   createBrowserRouter,
-  RouterProvider,
+  RouterProvider
 } from "react-router-dom";
 import { PATHS } from './utils';
 import reportWebVitals from './reportWebVitals';
@@ -19,6 +19,7 @@ import RestaurantsPage from './pages/guest/RestaurantsPage';
 import RestaurantPage from './pages/guest/RestaurantPage';
 import MenuLayout from './components/layouts/MenuLayout';
 import MerchantLayout from './components/layouts/MerchantLayout';
+import LogoutPage from './pages/auth/LogoutPage';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
   }, {
     path: PATHS.LOGIN,
     element: <LoginPage />,
+    errorElement: <ErrorPage />,
+  }, {
+    path: PATHS.LOGOUT,
+    element: <LogoutPage />,
     errorElement: <ErrorPage />,
   },
   {

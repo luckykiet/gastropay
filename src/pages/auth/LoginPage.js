@@ -3,33 +3,17 @@ import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from "react-router-dom";
 import { PATHS, createAxios, addSlashAfterUrl, API_URL } from "../../utils";
 import { Box, Columns, Container, Hero, Icon, Button, Form } from "react-bulma-components";
-import { useState, useEffect } from "react";
-import { useLoggedIn, useSetLoggedIn } from "../../stores/ZustandStores";
-import jwt_decode from 'jwt-decode';
+import { useState } from "react";
 const { Body } = Hero;
 const { Field, Label, Control, Input, Help } = Form;
 const { Column } = Columns;
 
 export default function LoginPage() {
-    const [loggedIn, setLoggedIn] = [useLoggedIn(), useSetLoggedIn()];
     const [postMsg, setPostMsg] = useState('');
     const [email, setEmail] = useState('');
     const [isEmailValid, setIsEmailValid] = useState(null);
     const [password, setPassword] = useState('');
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            const decodedToken = jwt_decode(token);
-            if (decodedToken.exp * 1000 < Date.now()) {
-                setLoggedIn(false);
-            } else {
-                setLoggedIn(true);
-            }
-        } else {
-            setLoggedIn(false);
-        }
-    }, [setLoggedIn]);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { value } = e.target;
@@ -53,25 +37,20 @@ export default function LoginPage() {
                 });
                 if (success) {
                     localStorage.setItem('token', msg.token);
-                    setLoggedIn(true);
+                    navigate(PATHS.DASHBOARD);
                 } else {
                     setPostMsg(msg);
                 }
-            } catch (error) {
-                setPostMsg(error);
+            } catch (err) {
+                console.log(err)
             }
         }
     };
-    const navigate = useNavigate();
+
     const handleBackToApp = () => {
         navigate(PATHS.HOME);
     }
 
-    useEffect(() => {
-        if (loggedIn) {
-            navigate(PATHS.DASHBOARD);
-        }
-    })
     return (
         <Hero size={'fullheight'} color={'primary'}>
             <Body>

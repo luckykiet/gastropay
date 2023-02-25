@@ -14,7 +14,10 @@ const login = async (req, res) => {
         return res.status(401).json({ success: false, msg: 'Invalid credentials' });
     }
     const token = jwt.sign({ userId: user._id }, 'secret');
-    return res.status(200).json({ success: true, msg: token });
+    return res.status(201).json({
+        success: true,
+        msg: { token: token },
+    });
 }
 
 const register = async (req, res) => {

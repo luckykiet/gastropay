@@ -4,9 +4,6 @@ import produce from 'immer';
 import { useCallback } from 'react';
 
 const useStore = create((set) => ({
-    loggedIn: false,
-    setLoggedIn: (loggedIn) => set({ loggedIn }),
-
     choosenRestaurant: {},
     setChoosenRestaurant: (choosenRestaurant) => set({ choosenRestaurant }),
 
@@ -76,6 +73,3 @@ export const useSetChoosenRestaurant = () => useStore(useCallback((state) => sta
 
 export const useIsSidebarShowed = () => useStore(useCallback((state) => state.isSidebarShowed, []));
 export const useSetIsSidebarShowed = () => useStore(useCallback((state) => state.setIsSidebarShowed, []));
-
-export const useLoggedIn = () => useStore(useCallback((state) => state.loggedIn, []));
-export const useSetLoggedIn = () => useStore(useCallback((state) => state.setLoggedIn, []));
