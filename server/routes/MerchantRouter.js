@@ -1,5 +1,5 @@
 const express = require('express');
-const config = require('../config');
+const config = require('../../config/config');
 const MerchantController = require('../controllers/MerchantController');
 const MERCHANT = config.PATHS.MERCHANT;
 const router = express.Router();

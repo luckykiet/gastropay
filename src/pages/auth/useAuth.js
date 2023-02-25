@@ -26,7 +26,7 @@ const useAuth = () => {
         };
 
         if (!!localStorage.getItem('token')) {
-            Promise.delay(500).then(checkAuth);
+            Promise.delay(0).then(checkAuth);
         } else {
             setIsLoading(false);
         }

@@ -1,5 +1,5 @@
 const express = require('express');
-const config = require('../config');
+const config = require('../../config/config');
 const AuthenticateController = require('../controllers/AuthenticateController');
 const LOGIN = config.PATHS.LOGIN;
 const PROTECTED = config.PATHS.PROTECTED;
