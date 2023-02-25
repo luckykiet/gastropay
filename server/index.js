@@ -10,6 +10,7 @@ const config = require('./config');
 // Routers
 const RestaurantRouter = require('./routes/RestaurantRouter');
 const MerchantRouter = require('./routes/MerchantRouter');
+const AuthenticateRouter = require('./routes/AuthenticateRouter');
 
 // Inits
 const app = express();
@@ -23,6 +24,7 @@ connectDB();
 // Define api
 app.use('/api', RestaurantRouter);
 app.use('/api', MerchantRouter);
+app.use('', AuthenticateRouter);
 
 // Start api
 app.listen(config.API_PORT, () => console.log(`Server running on port ${config.API_PORT}`));

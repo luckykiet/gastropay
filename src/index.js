@@ -18,6 +18,7 @@ import ForgottenPasswordPage from './pages/auth/ForgottenPasswordPage';
 import RestaurantsPage from './pages/guest/RestaurantsPage';
 import RestaurantPage from './pages/guest/RestaurantPage';
 import MenuLayout from './components/layouts/MenuLayout';
+import MerchantLayout from './components/layouts/MerchantLayout';
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,11 @@ const router = createBrowserRouter([
   {
     path: PATHS.MENU,
     element: <MenuLayout />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: PATHS.DASHBOARD,
+    element: <MerchantLayout />,
     errorElement: <ErrorPage />,
   }
 ]);

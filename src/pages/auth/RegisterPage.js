@@ -2,12 +2,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faUser, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Box, Content, Heading, Form, Icon, Button, Container } from "react-bulma-components";
 import React, { Fragment, useState, useEffect, useCallback } from "react";
-import { checkICO, createAxios, API_URL, addSlashAfterUrl } from "../../utils";
+import { checkICO, createAxios, API_URL, addSlashAfterUrl, PATHS } from "../../utils";
+import { useLoggedIn, useSetLoggedIn } from "../../stores/ZustandStores";
 import { Promise } from "bluebird";
+import { useNavigate } from "react-router-dom";
 
 const { Field, Label, Control, Input, Checkbox, Help } = Form;
 
 export default function RegisterPage() {
+    const [loggedIn, setLoggedIn] = [useLoggedIn(), useSetLoggedIn()];
     const [postMsg, setPostMsg] = useState('');
     const [icoCheckMsg, setIcoCheckMsg] = useState('');
     const [emailCheckMsg, setEmailCheckMsg] = useState('');
@@ -22,27 +25,31 @@ export default function RegisterPage() {
     });
 
     const { ico, email, password } = formData;
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const axios = createAxios(addSlashAfterUrl(API_URL));
-            const { data: { success, msg } } = await axios.post(
-                "api/merchant",
-                JSON.stringify(formData), {
-                headers: {
-                    'Content-Type': 'application/json'
+        if (ico.length !== 8 || icoCheckMsg !== 'OK' || !isEmailValid || !passwordsMatch || !isPasswordValid || confirmPassword === '' || email === '' || password === '') {
+            setPostMsg("Zkontrolujte vyplněné údaje!")
+        } else {
+            try {
+                const axios = createAxios(addSlashAfterUrl(API_URL));
+                const { data: { success, msg } } = await axios.post(
+                    "register",
+                    JSON.stringify(formData), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (success) {
+                    localStorage.setItem('token', msg.token);
+                    setLoggedIn(true);
+                } else {
+                    setPostMsg(msg);
                 }
-            });
-            if (success) {
-                setFormData({ ico: '', email: '', password: '' });
-                setConfirmPassword('');
-                setPostMsg('');
-            } else {
-                setPostMsg(msg);
+            } catch (error) {
+                setPostMsg(error);
             }
-        } catch (error) {
-            setPostMsg(error);
         }
     }
 
@@ -123,6 +130,12 @@ export default function RegisterPage() {
 
     }, [email, isEmailValid, checkEmailExist]);
 
+    useEffect(() => {
+        if (loggedIn) {
+            navigate(PATHS.DASHBOARD);
+        }
+    })
+
     return (
         <Fragment>
             <Content textAlign={"center"}>
@@ -177,8 +190,8 @@ export default function RegisterPage() {
                             </Control>
                         </Field>
                         <Button submit fullwidth color={'warning'}>Zaregistrovat se</Button>
-                        {postMsg !== '' && <p className="has-text-danger">{postMsg}</p>}
                     </form>
+                    {postMsg !== '' && <p className="has-text-danger">{postMsg}</p>}
                 </Box>
             </Container>
         </Fragment>

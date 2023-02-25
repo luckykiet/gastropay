@@ -12,7 +12,8 @@ export const PATHS = {
     RESTAURANTS: '/restaurants',
     RESTAURANT: '/restaurant',
     MENU: '/menu',
-    ID_RESTAURANT: ':idRestaurant'
+    ID_RESTAURANT: ':idRestaurant',
+    DASHBOARD: "/merchant"
 };
 
 export const LANGUAGES = {

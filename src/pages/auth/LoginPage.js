@@ -1,18 +1,77 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from "react-router-dom";
-import { PATHS } from "../../utils";
+import { PATHS, createAxios, addSlashAfterUrl, API_URL } from "../../utils";
 import { Box, Columns, Container, Hero, Icon, Button, Form } from "react-bulma-components";
-
+import { useState, useEffect } from "react";
+import { useLoggedIn, useSetLoggedIn } from "../../stores/ZustandStores";
+import jwt_decode from 'jwt-decode';
 const { Body } = Hero;
-const { Field, Label, Control, Input, Checkbox } = Form;
+const { Field, Label, Control, Input, Help } = Form;
 const { Column } = Columns;
 
 export default function LoginPage() {
+    const [loggedIn, setLoggedIn] = [useLoggedIn(), useSetLoggedIn()];
+    const [postMsg, setPostMsg] = useState('');
+    const [email, setEmail] = useState('');
+    const [isEmailValid, setIsEmailValid] = useState(null);
+    const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decodedToken = jwt_decode(token);
+            if (decodedToken.exp * 1000 < Date.now()) {
+                setLoggedIn(false);
+            } else {
+                setLoggedIn(true);
+            }
+        } else {
+            setLoggedIn(false);
+        }
+    }, [setLoggedIn]);
+
+    const handleChange = (e) => {
+        const { value } = e.target;
+        setEmail(value);
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        setIsEmailValid(emailRegex.test(value) || value.length === 0);
+    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (email === '' || !isEmailValid || password === '') {
+            setPostMsg("Zkontrolujte vyplněné údaje!");
+        } else {
+            try {
+                const axios = createAxios(addSlashAfterUrl(API_URL));
+                const { data: { success, msg } } = await axios.post(
+                    "login",
+                    JSON.stringify({ email: email, password: password }), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (success) {
+                    localStorage.setItem('token', msg.token);
+                    setLoggedIn(true);
+                } else {
+                    setPostMsg(msg);
+                }
+            } catch (error) {
+                setPostMsg(error);
+            }
+        }
+    };
     const navigate = useNavigate();
     const handleBackToApp = () => {
         navigate(PATHS.HOME);
     }
+
+    useEffect(() => {
+        if (loggedIn) {
+            navigate(PATHS.DASHBOARD);
+        }
+    })
     return (
         <Hero size={'fullheight'} color={'primary'}>
             <Body>
@@ -20,43 +79,42 @@ export default function LoginPage() {
                     <Columns centered vCentered>
                         <Column className="is-one-half-tablet is-one-third-widescreen">
                             <Box>
-                                <Field>
-                                    <Label htmlFor="inputEmail">
-                                        Email
-                                    </Label>
-                                    <Control>
-                                        <Input id="inputEmail" type="email" placeholder="gastropay@vse.cz" required />
-                                        <Icon align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
-                                    </Control>
-                                </Field>
-                                <Field>
-                                    <Label htmlFor="inputPassword">
-                                        Heslo
-                                    </Label>
-                                    <Control>
-                                        <Input id="inputPassword" type="password" placeholder="*************" required />
-                                        <Icon align="left">  <FontAwesomeIcon icon={faLock} /></Icon>
-                                    </Control>
-                                </Field>
-                                <p className="py-2">Nemáte účet? <Link to={PATHS.REGISTRATION} className="is-underlined">Zaregistrujte</Link></p>
-                                <p>Zapoměl(a) jste heslo? <Link to={PATHS.FORGOTTEN_PASS} className="is-underlined">Obnovte heslo</Link></p>
-                                <Field py={2}>
-                                    <Control>
-                                        <Checkbox id="rememberMeCheckBox">&nbsp;Zapamatovat si</Checkbox>
-                                    </Control>
-                                </Field>
-                                <Columns>
-                                    <Column size={"half"}>
-                                        <Button fullwidth color={'success'}>
-                                            Přihlásit se
-                                        </Button>
-                                    </Column>
-                                    <Column size={"half"}>
-                                        <Button onClick={handleBackToApp} fullwidth color={'warning'}>
-                                            Zpět do aplikace
-                                        </Button>
-                                    </Column>
-                                </Columns>
+                                <form onSubmit={handleSubmit}>
+                                    <Field>
+                                        <Label htmlFor="inputEmail">
+                                            Email
+                                        </Label>
+                                        <Control>
+                                            <Input color={isEmailValid !== null && !isEmailValid && "danger"} name={"email"} value={email} onChange={handleChange} id="inputEmail" type={"email"} placeholder="gastropay@vse.cz" required />
+                                            <Icon color={isEmailValid !== null && !isEmailValid && "danger"} align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
+                                            {isEmailValid !== null && !isEmailValid && <Help color="danger">Nesprávný email formát</Help>}
+                                        </Control>
+                                    </Field>
+                                    <Field>
+                                        <Label htmlFor="inputPassword">
+                                            Heslo
+                                        </Label>
+                                        <Control>
+                                            <Input value={password} onChange={(event) => setPassword(event.target.value)} id="inputPassword" type="password" placeholder="*************" required />
+                                            <Icon align="left">  <FontAwesomeIcon icon={faLock} /></Icon>
+                                        </Control>
+                                    </Field>
+                                    <p className="py-2">Nemáte účet? <Link to={PATHS.REGISTRATION} className="is-underlined">Zaregistrujte</Link></p>
+                                    <p>Zapoměl(a) jste heslo? <Link to={PATHS.FORGOTTEN_PASS} className="is-underlined">Obnovte heslo</Link></p>
+                                    <Columns pt={4}>
+                                        <Column size={"half"}>
+                                            <Button submit fullwidth color={'success'}>
+                                                Přihlásit se
+                                            </Button>
+                                        </Column>
+                                        <Column size={"half"}>
+                                            <Button onClick={handleBackToApp} fullwidth color={'warning'}>
+                                                Zpět do aplikace
+                                            </Button>
+                                        </Column>
+                                    </Columns>
+                                </form>
+                                {postMsg !== '' && <p className="has-text-danger">{postMsg}</p>}
                             </Box>
                         </Column>
                     </Columns>

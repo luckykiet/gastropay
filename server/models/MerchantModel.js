@@ -37,15 +37,6 @@ MerchantSchema.pre('save', function (next) {
     });
 });
 
-MerchantSchema.methods.comparePassword = function (passwordToCheck, callback) {
-    bcrypt.compare(passwordToCheck, this.password, (err, isMatch) => {
-        if (err) {
-            return callback(err);
-        }
-        callback(null, isMatch);
-    });
-};
-
 const MerchantModel = mongoose.model('Merchant', MerchantSchema);
 
 module.exports = {
