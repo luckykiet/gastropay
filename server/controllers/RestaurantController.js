@@ -161,7 +161,6 @@ const searchRestaurants = async (req, res) => {
             .status(200)
             .json({ success: false, msg: `Restaurants not found` });
     }
-    console.log(restaurants)
     editTodayAndNextOpeningTime(restaurants);
     return res.status(200).json({ success: true, msg: restaurants });
 };

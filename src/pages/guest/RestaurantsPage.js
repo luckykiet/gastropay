@@ -36,6 +36,7 @@ export default function RestaurantsPage() {
     const [sortField, setSortField] = useState({ value: sortableFields[0]?.value ? sortableFields[0].value : "" });
     const [sortOrder, setSortOrder] = useState('asc');
     const [searchQuery, setSearchQuery] = useState('');
+    const [searchMsg, setSearchMsg] = useState('');
     const navigate = useNavigate();
 
     const handleSelectChange = (event) => {
@@ -69,13 +70,15 @@ export default function RestaurantsPage() {
                 }
 
                 const { data: { success, msg } } = await axios.get(apiUrl);
-                if (!success) {
-                    throw new Error(msg);
+                if (success) {
+                    setRestaurants(msg);
+                    setSearchMsg('');
+                } else {
+                    setRestaurants({});
+                    setSearchMsg("Žádný výsledek nenašlo!");
                 }
-                setRestaurants(msg);
                 setLoading(false);
             } catch (err) {
-                console.log(err);
                 setLoading(false);
             }
         }
@@ -110,7 +113,7 @@ export default function RestaurantsPage() {
                         <Container>
                             <Columns centered vCentered>
                                 <TextContent textAlign={"center"}>
-                                    <p>Momentálně není žádná restaurace aktivní</p>
+                                    <p>{searchMsg !== '' ? searchMsg : "Momentálně není žádná restaurace aktivní :("}</p>
                                 </TextContent>
                             </Columns>
                         </Container>

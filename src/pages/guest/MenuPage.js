@@ -42,8 +42,8 @@ export default function MenuPage() {
                     }));
                     const newMenu = Object.entries(msg.menu).map(([ean, item]) => ({ ean, ...item }));
                     setMenu({ tabs, menu: newMenu });
-                } catch (error) {
-                    console.log(error);
+                } catch (err) {
+                    console.log(err);
                 } finally {
                     setLoading(false);
                 }
