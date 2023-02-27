@@ -90,10 +90,10 @@ export const isValidUrl = (url) => {
     }
 }
 
-export const getIdFromToken = (token = localStorage.getItem('token')) => {
+export const getItemsFromToken = (token = localStorage.getItem('token')) => {
     try {
         const payload = jwtDecode(token, '@ThIS iS Sup3rb s3creT!');
-        return payload.userId;
+        return payload;
     } catch (error) {
         console.error('Error decoding token:', error);
         return "Invalid";

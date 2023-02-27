@@ -13,7 +13,7 @@ const login = async (req, res) => {
     if (!isPasswordValid) {
         return res.status(401).json({ success: false, msg: 'Nesprávná kombinace' });
     }
-    const token = jwt.sign({ userId: user._id }, config.JWT_SECRET, { expiresIn: '1h' });
+    const token = signUserToken(user, "1h");
     return res.status(201).json({
         success: true,
         msg: { token: token },
@@ -54,7 +54,7 @@ const register = async (req, res) => {
     const merchant = new MerchantModel(body);
 
     await merchant.save().then(() => {
-        const token = jwt.sign({ userId: merchant._id }, config.JWT_SECRET, { expiresIn: '1h' });
+        const token = signUserToken(merchant, "1h");
         return res.status(201).json({
             success: true,
             msg: { token: token },
@@ -74,6 +74,9 @@ const checkMerchantByIcoOrEmail = async (req, res) => {
     return res.status(200).json({ success: true, msg: merchant ? true : false });
 };
 
+const signUserToken = (user, time) => {
+    return jwt.sign({ userId: user._id, ico: user.ico }, config.JWT_SECRET, { expiresIn: time })
+}
 
 module.exports = {
     login,

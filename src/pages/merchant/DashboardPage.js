@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { createAxios, addSlashAfterUrl, API_URL, getIdFromToken, PATHS } from '../../utils';
+import { createAxios, addSlashAfterUrl, API_URL, getItemsFromToken, PATHS } from '../../utils';
 import { Promise } from 'bluebird';
+import { Columns, Heading, Hero } from 'react-bulma-components';
+import RestaurantCard from '../../components/merchant/RestaurantCard';
+import { Outlet } from 'react-router-dom';
+
+const { Column } = Columns;
+const { Body } = Hero;
 export default function DashboardPage() {
-    const userId = getIdFromToken();
-    const [restaurants, setRestaurants] = useState({});
+    const userId = getItemsFromToken().userId;
+    const [restaurants, setRestaurants] = useState([]);
 
     useEffect(() => {
         const fetchRestaurants = async () => {
@@ -15,7 +21,6 @@ export default function DashboardPage() {
                     }
                 })
                 if (success) {
-                    console.log(msg)
                     setRestaurants(msg)
                 }
             } catch (err) {
@@ -26,6 +31,26 @@ export default function DashboardPage() {
     }, [userId])
 
     return (
-        <div>DashboardPage</div>
+        <Columns style={{ height: "calc(80vh)" }} centered vCentered>
+            <Column style={{ height: "calc(100vh)" }} className='is-one-thirds-desktop'>
+                <Hero color="info" size="small">
+                    <Body>
+                        <Heading size={4}>Restaurace</Heading>
+                    </Body>
+                </Hero>
+                <Column style={{ height: "calc(60vh)", overflowY: 'scroll' }}>
+                    {restaurants.length === 0 ?
+                        <Heading size={5} renderAs='p'>Nemáte ještě žádnou restauraci.</Heading>
+                        :
+                        restaurants.map((restaurant) => (
+                            <RestaurantCard key={restaurant._id} restaurant={restaurant} />
+                        ))
+                    }
+                </Column>
+            </Column>
+            <Column style={{ height: "calc(100vh)" }} className='is-two-thirds-desktop'>
+                <Outlet />
+            </Column>
+        </Columns>
     )
 }
