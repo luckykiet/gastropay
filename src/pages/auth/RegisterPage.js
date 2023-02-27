@@ -73,7 +73,7 @@ export default function RegisterPage() {
     const checkEmailExist = useCallback(async () => {
         try {
             const axios = createAxios(addSlashAfterUrl(API_URL));
-            const { data: { success, msg } } = await axios.get(`api/${PATHS.API.AUTH}/check?email=${email}`);
+            const { data: { success, msg } } = await axios.get(`${PATHS.API.AUTH}/check?email=${email}`);
             if (success) {
                 setEmailCheckMsg(msg ? "Email je již používán!" : 'OK');
             } else {
@@ -89,7 +89,7 @@ export default function RegisterPage() {
     const checkIcoExist = useCallback(async () => {
         try {
             const axios = createAxios(addSlashAfterUrl(API_URL));
-            const { data: { success, msg } } = await axios.get(`api/${PATHS.API.AUTH}/check?ico=${ico}`);
+            const { data: { success, msg } } = await axios.get(`${PATHS.API.AUTH}/check?ico=${ico}`);
             if (success) {
                 setIcoCheckMsg(msg ? "IČO je již registrováno!" : 'OK');
             } else {
