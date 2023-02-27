@@ -8,11 +8,11 @@ const login = async (req, res) => {
     const { email, password } = req.body;
     const user = await MerchantModel.findOne({ email });
     if (!user) {
-        return res.status(401).json({ success: false, msg: 'Invalid credentials' });
+        return res.status(401).json({ success: false, msg: 'Nesprávná kombinace' });
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-        return res.status(401).json({ success: false, msg: 'Invalid credentials' });
+        return res.status(401).json({ success: false, msg: 'Nesprávná kombinace' });
     }
     const token = jwt.sign({ userId: user._id }, config.JWT_SECRET, { expiresIn: '1h' });
     return res.status(201).json({
@@ -63,7 +63,21 @@ const register = async (req, res) => {
     });
 };
 
+const checkMerchantByIcoOrEmail = async (req, res) => {
+    let merchant = null;
+    if (req.query.ico) {
+        merchant = await MerchantModel.findOne({ ico: req.query.ico }).select("ico").exec();
+    } else if (req.query.email) {
+        merchant = await MerchantModel.findOne({ email: req.query.email }).select("email").exec();
+    } else {
+        return res.status(400).json({ success: false, msg: "Nesprávný parametr!" });
+    }
+    return res.status(200).json({ success: true, msg: merchant ? true : false });
+};
+
+
 module.exports = {
     login,
-    register
+    register,
+    checkMerchantByIcoOrEmail
 }

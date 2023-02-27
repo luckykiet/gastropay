@@ -25,14 +25,18 @@ const config = {
             RESTAURANT: '/restaurant',
             MENU: '/menu',
             ID_RESTAURANT: ':idRestaurant',
-            DASHBOARD: "/merchant"
+            DASHBOARD: "/merchant",
+            RESTAURANT_EDIT: "restaurant/edit",
+            RESTAURANT_TRANSACTION: "restaurant/transaction",
         },
         API: {
+            AUTH: "auth",
             RESTAURANT: "restaurant",
             MERCHANT: "merchant",
             LOGIN: "login",
             PROTECTED: "protected",
-            REGISTER: "register"
+            REGISTER: "register",
+            ADMIN: "admin",
         }
     },
     LANGUAGES: {

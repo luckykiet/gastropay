@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createAxios, addSlashAfterUrl, API_URL } from '../../utils';
 import { Promise } from 'bluebird';
-import { PATHS } from '../../config/config';
+import { PATHS } from '../../utils';
 
 const useAuth = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);

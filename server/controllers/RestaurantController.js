@@ -1,108 +1,23 @@
 const { isObjectIdOrHexString } = require("mongoose");
 const Restaurant = require("../models/RestaurantModel");
 const RestaurantModel = Restaurant.RestaurantModel;
-const ObjectId = require("mongoose").Types.ObjectId;
-
-const createRestaurant = async (req, res) => {
-    const body = req.body;
-    if (!body) {
-        return res.status(400).json({
-            success: false,
-            msg: "You must provide a restaurant",
-        });
-    }
-
-    const foundRestaurant = await RestaurantModel.findOne({
-        idOwner: ObjectId(body.idOwner),
-        name: body.name,
-        address: body.address,
-    }).select("name").exec();
-
-    if (foundRestaurant) {
-        return res.status(400).json({
-            success: false,
-            msg: "Restaurant " + foundRestaurant.name + " already exists!",
-        });
-    }
-
-    const restaurant = new RestaurantModel(body);
-
-    await restaurant.save().then(() => {
-        return res.status(201).json({
-            success: true,
-            msg: "Restaurant " + restaurant.name + " created!",
-        });
-    });
-};
-
-const updateRestaurant = async (req, res) => {
-    if (!isObjectIdOrHexString(req.params.id)) {
-        return res.status(400).json({
-            success: false,
-            msg: "Invalid ID.",
-        });
-    }
-
-    const body = req.body;
-
-    if (!body) {
-        return res.status(400).json({
-            success: false,
-            msg: "You must provide a body to update",
-        });
-    }
-
-    const restaurant = await RestaurantModel.findByIdAndUpdate(req.params.id, body, {
-        new: true,
-    });
-
-    if (!restaurant) {
-        return res
-            .status(404)
-            .json({ success: false, msg: `Restaurant not found` });
-    }
-
-    return res.status(200).json({
-        success: true,
-        msg: "Restaurant " + restaurant.name + " updated!",
-    });
-};
-
-const deleteRestaurant = async (req, res) => {
-    if (!isObjectIdOrHexString(req.params.id)) {
-        return res.status(400).json({
-            success: false,
-            msg: "Invalid ID.",
-        });
-    }
-    const restaurant = await RestaurantModel.findByIdAndDelete(req.params.id);
-    if (!restaurant) {
-        return res
-            .status(404)
-            .json({ success: false, msg: `Restaurant not found` });
-    }
-
-    return res
-        .status(200)
-        .json({
-            success: true,
-            msg: "Deleted restaurant " + restaurant.name + " successfully!",
-        });
-};
 
 const getRestaurantById = async (req, res) => {
-    if (!isObjectIdOrHexString(req.params.id)) {
+    if (!isObjectIdOrHexString(req.params.restaurantId)) {
         return res.status(400).json({
             success: false,
             msg: "Invalid ID.",
         });
     }
 
-    const restaurant = await RestaurantModel.findById(req.params.id);
+    const query = RestaurantModel.findById(req.params.restaurantId);
+    query.select("_id address name openingTime image api isAvailable");
+    query.where({ isAvailable: true })
+    const restaurant = await query.exec();
 
     if (!restaurant) {
         return res
-            .status(200)
+            .status(404)
             .json({ success: false, msg: `Restaurant not found` });
     }
     return res.status(200).json({ success: true, msg: restaurant });
@@ -124,19 +39,6 @@ const getRestaurants = async (req, res) => {
             .json({ success: false, msg: `Restaurants not found` });
     }
     editTodayAndNextOpeningTime(restaurants);
-    return res.status(200).json({ success: true, msg: restaurants });
-};
-
-const getRestaurantsByMerchantID = async (req, res) => {
-    const query = RestaurantModel.find({ idOwner: req.params.merchantId });
-    query.sort({ createdAt: "desc" })
-    query.select("_id name openingTime image isAvailable");
-    const restaurants = await query.lean().exec();
-    if (!restaurants.length) {
-        return res
-            .status(200)
-            .json({ success: false, msg: `Restaurants not found` });
-    }
     return res.status(200).json({ success: true, msg: restaurants });
 };
 
@@ -198,11 +100,7 @@ const editTodayAndNextOpeningTime = (restaurants) => {
 }
 
 module.exports = {
-    createRestaurant,
-    updateRestaurant,
-    deleteRestaurant,
     getRestaurants,
     getRestaurantById,
-    searchRestaurants,
-    getRestaurantsByMerchantID
+    searchRestaurants
 };

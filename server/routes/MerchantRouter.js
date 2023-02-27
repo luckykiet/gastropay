@@ -2,16 +2,18 @@ const express = require('express');
 const config = require('../../src/config/config');
 const MerchantController = require('../controllers/MerchantController');
 const MERCHANT = config.PATHS.API.MERCHANT;
+const RESTAURANT = config.PATHS.API.RESTAURANT;
 const router = express.Router();
-const authMiddleware = require('./AuthMiddleware');
+const authMiddleware = require('./AuthMiddlewares');
 
-router.post('/' + MERCHANT, authMiddleware, MerchantController.createMerchant);
-router.put('/' + MERCHANT + '/:id', authMiddleware, MerchantController.updateMerchant);
-router.delete('/' + MERCHANT + '/:id', authMiddleware, MerchantController.deleteMerchant);
-router.get('/' + MERCHANT + '/check?', authMiddleware, MerchantController.checkMerchantByIcoOrEmail);
-router.get('/' + MERCHANT + '?', authMiddleware, MerchantController.getMerchantByIdOrIco);
-router.get('/' + MERCHANT + 's', authMiddleware, MerchantController.getMerchants);
-router.get('/' + MERCHANT + 's?', authMiddleware, MerchantController.getMerchants);
-router.get('/' + MERCHANT + 's/search?', authMiddleware, MerchantController.searchMerchants);
+router.post('/' + MERCHANT + '/' + RESTAURANT, authMiddleware.authMiddleware, MerchantController.createRestaurant);
+
+router.put('/' + MERCHANT, authMiddleware.authMiddleware, MerchantController.updateMerchant);
+router.put('/' + MERCHANT + '/' + RESTAURANT + '/:restaurantId', authMiddleware.authMiddleware, MerchantController.updateRestaurant);
+
+router.delete('/' + MERCHANT + '/' + RESTAURANT + '/:restaurantId', authMiddleware.authMiddleware, MerchantController.deleteRestaurant);
+
+router.get('/' + MERCHANT + '/' + RESTAURANT + 's', authMiddleware.authMiddleware, MerchantController.getRestaurants);
+router.get('/' + MERCHANT + '/' + RESTAURANT + '/:restaurantId', authMiddleware.authMiddleware, MerchantController.getRestaurantByID);
 
 module.exports = router;

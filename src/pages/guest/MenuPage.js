@@ -70,7 +70,7 @@ export default function MenuPage() {
                                     Výskytla se chyba
                                 </Heading>
                                 <p>
-                                    Vraťte se na <Link to={PATHS.ROUTERS.RESTAURANTS}>výběr restaurací.</Link>
+                                    Restaurace nevložila menu. Vraťte se na <Link to={PATHS.ROUTERS.RESTAURANTS}>výběr restaurací.</Link>
                                 </p>
                             </Content>
                         ) : (

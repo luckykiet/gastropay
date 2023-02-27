@@ -9,12 +9,13 @@ export default function DashboardPage() {
         const fetchRestaurants = async () => {
             const axios = createAxios(addSlashAfterUrl(API_URL));
             try {
-                const { data: { success, msg } } = await axios.get(`api/${PATHS.API.RESTAURANT}s/${userId}`, {
+                const { data: { success, msg } } = await axios.get(`api/${PATHS.API.MERCHANT}/${PATHS.API.RESTAURANT}s`, {
                     headers: {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }
                 })
                 if (success) {
+                    console.log(msg)
                     setRestaurants(msg)
                 }
             } catch (err) {
