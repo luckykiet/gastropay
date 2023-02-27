@@ -1,5 +1,4 @@
-const Merchant = require("../models/MerchantModel");
-const MerchantModel = Merchant.MerchantModel;
+const MerchantModel = require("../models/MerchantModel");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../../src/config/config');

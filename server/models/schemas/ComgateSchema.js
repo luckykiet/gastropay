@@ -11,6 +11,4 @@ const ComgateSchema = new Schema({
     isAvailable: { type: Boolean, required: true, default: false }
 });
 
-module.exports = {
-    ComgateSchema
-};
+module.exports = ComgateSchema;

@@ -7,6 +7,4 @@ const AddressSchema = new Schema({
     postalCode: { type: String, required: true, match: [/^\d{3} ?\d{2}$/, "Postal code must be: 11000 or 110 00"] }
 });
 
-module.exports = {
-    AddressSchema
-};
+module.exports = AddressSchema;

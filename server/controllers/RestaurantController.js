@@ -1,6 +1,5 @@
 const { isObjectIdOrHexString } = require("mongoose");
-const Restaurant = require("../models/RestaurantModel");
-const RestaurantModel = Restaurant.RestaurantModel;
+const RestaurantModel = require("../models/RestaurantModel");
 
 const getRestaurantById = async (req, res) => {
     if (!isObjectIdOrHexString(req.params.restaurantId)) {

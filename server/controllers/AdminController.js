@@ -1,8 +1,6 @@
 const { isObjectIdOrHexString } = require("mongoose");
-const Merchant = require("../models/MerchantModel");
-const MerchantModel = Merchant.MerchantModel;
-const Restaurant = require("../models/RestaurantModel");
-const RestaurantModel = Restaurant.RestaurantModel;
+const MerchantModel = require("../models/MerchantModel");
+const RestaurantModel = require("../models/RestaurantModel");
 const ObjectId = require("mongoose").Types.ObjectId;
 
 const createMerchant = async (req, res) => {
