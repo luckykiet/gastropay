@@ -14,7 +14,7 @@ export default function RestaurantCard({ restaurant }) {
 
     return (
         <Column fullwidth="true">
-            <Card style={{ cursor: 'pointer' }} onClick={handleOnClick}>
+            <Card className='is-clickable' onClick={handleOnClick}>
                 <Header>
                     <Header.Title>{restaurant.name}</Header.Title>
                     <Header.Title>
