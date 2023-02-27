@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, API_URL, PATHS, daysOfWeeksCzech } from '../../../utils';
 import { Box, Heading, Form, Button, Container, Hero, Block } from "react-bulma-components";
 import { Promise } from 'bluebird';
@@ -18,7 +18,7 @@ export default function EditPage() {
     const [restaurant, setRestaurant] = useState({});
     const [postMsg, setPostMsg] = useState(null);
     const [loading, setLoading] = useState(true);
-
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchRestaurant = async () => {
             const axios = createAxios(addSlashAfterUrl(API_URL));
@@ -30,7 +30,6 @@ export default function EditPage() {
                 })
                 if (success) {
                     setRestaurant(msg);
-                    console.log(msg)
                 }
             } catch (err) {
                 console.log(err)
@@ -54,12 +53,37 @@ export default function EditPage() {
                 parent[lastKey] = value;
             })
         );
-        console.log(restaurant)
     };
 
 
-    const handleSubmit = () => {
-
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        if (restaurant.name === '' || restaurant.address.street === '' || restaurant.address.city === '' || restaurant.address.postalCode === '') {
+            setPostMsg("Zkontrolujte vyplněné údaje!");
+        } else {
+            try {
+                const axios = createAxios(addSlashAfterUrl(API_URL));
+                const { data: { success, msg } } = await axios.put(
+                    `api/${PATHS.API.MERCHANT}/${PATHS.API.RESTAURANT}/${idRestaurant}`,
+                    JSON.stringify(restaurant), {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        "Authorization": "Bearer " + localStorage.getItem('token')
+                    }
+                });
+                if (success) {
+                    console.log(msg);
+                    navigate(PATHS.ROUTERS.DASHBOARD + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + idRestaurant);
+                } else {
+                    setPostMsg(msg);
+                }
+            } catch (err) {
+                setPostMsg(err.response.data.msg);
+            } finally {
+                setLoading(false);
+            }
+        }
     }
 
     const OpeningTimes = ({ day }) => {
@@ -86,7 +110,7 @@ export default function EditPage() {
                         <TimePicker
                             onChange={(time) => {
                                 setRestaurant(produce((draft) => {
-                                    draft.openingTime[day].from = time;
+                                    draft.openingTime[day].from = moment(time).format("HH:mm");;
                                 }));
                             }}
                             name={"openingTime." + day + ".from"}
@@ -108,7 +132,7 @@ export default function EditPage() {
                         <TimePicker
                             onChange={(time) => {
                                 setRestaurant(produce((draft) => {
-                                    draft.openingTime[day].to = time;
+                                    draft.openingTime[day].to = moment(time).format("HH:mm");
                                 }));
                             }}
                             name={"openingTime." + day + ".to"}
