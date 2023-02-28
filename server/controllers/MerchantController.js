@@ -2,6 +2,7 @@ const { isObjectIdOrHexString } = require("mongoose");
 const MerchantModel = require("../models/MerchantModel");
 const RestaurantModel = require("../models/RestaurantModel");
 const ObjectId = require("mongoose").Types.ObjectId;
+const bcrypt = require('bcrypt');
 
 const createRestaurant = async (req, res, next) => {
     const authorizedMerchantId = req.userId;
@@ -29,7 +30,8 @@ const createRestaurant = async (req, res, next) => {
         const restaurant = new RestaurantModel({
             ...body,
             idOwner: ObjectId(authorizedMerchantId),
-            openingTime: {}
+            openingTime: {},
+            paymentGates: { comgate: {} }
         });
         await restaurant.save().then(() => {
             return res.status(200).json({
@@ -126,7 +128,6 @@ const deleteRestaurant = async (req, res) => {
 };
 
 const getRestaurantByID = async (req, res) => {
-
     const query = RestaurantModel.findOne({ _id: ObjectId(req.params.restaurantId), idOwner: ObjectId(req.userId) });
     query.select("_id name address openingTime image api isAvailable");
     const restaurant = await query.lean().exec();
@@ -138,39 +139,72 @@ const getRestaurantByID = async (req, res) => {
     return res.status(200).json({ success: true, msg: restaurant });
 };
 
-const updateMerchant = async (req, res, next) => {
-    const merchantId = req.userId;
-
-    if (!isObjectIdOrHexString(merchantId)) {
+const getSelf = async (req, res, next) => {
+    const authorizedMerchantId = req.userId;
+    if (!isObjectIdOrHexString(authorizedMerchantId)) {
         return res.status(400).json({
             success: false,
             msg: "Invalid ID.",
         });
     }
+    try {
+        const merchant = await MerchantModel.findById(authorizedMerchantId);
 
+        if (!merchant) {
+            return res
+                .status(404)
+                .json({ success: false, msg: `Merchant not found` });
+        }
+
+        if (!merchant.paymentGates.comgate) {
+            merchant.paymentGates.comgate = {};
+            await merchant.save();
+        }
+
+        return res.status(200).json({ success: true, msg: merchant });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const updateMerchant = async (req, res, next) => {
+    const merchantId = req.userId;
     const body = req.body;
 
-    if (!body) {
+    if (!body || !body.password) {
         return res.status(400).json({
             success: false,
-            msg: "You must provide a body to update",
+            msg: "You must provide a body and password to update",
         });
     }
 
     const merchant = await MerchantModel.findById(merchantId);
+    const isPasswordValid = await bcrypt.compare(body.password, merchant.password);
+
+    if (!isPasswordValid) {
+        return res.status(400).json({
+            success: false, msg: {
+                password: 'Nesprávné heslo'
+            }
+        });
+    }
+
+    delete body['password'];
 
     if (!merchant) {
         return res.status(404).json({ success: false, msg: `Merchant not found` });
     }
 
     try {
+        const updatedMerchant = await MerchantModel.findByIdAndUpdate(merchantId, body, { runValidators: true, new: true });
+
         if (typeof body.isAvailable === 'boolean' && !body.isAvailable && merchant.isAvailable) {
             await RestaurantModel.updateMany({ idOwner: ObjectId(merchantId) }, { isAvailable: false });
         }
-        await merchant.updateOne(body, { runValidators: true });
+
         return res.status(200).json({
             success: true,
-            msg: `Merchant ${merchant.name} updated!`,
+            msg: updatedMerchant,
         });
     } catch (err) {
         next(err);
@@ -183,5 +217,6 @@ module.exports = {
     deleteRestaurant,
     getRestaurants,
     getRestaurantByID,
-    updateRestaurant
+    updateRestaurant,
+    getSelf
 };

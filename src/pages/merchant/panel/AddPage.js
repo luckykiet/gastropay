@@ -64,7 +64,7 @@ export default function AddPage() {
 
                 if (success) {
                     setChoosenRestaurant(msg);
-                    navigate(PATHS.ROUTERS.DASHBOARD + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + msg._id)
+                    navigate(PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + msg._id)
                 } else {
                     setPostMsg(msg);
                 }
@@ -84,7 +84,7 @@ export default function AddPage() {
                 <Box style={{ margin: 'auto' }}>
                     <form onSubmit={handleSubmit}>
                         <Block>
-                            <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Profil:</Heading>
+                            <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Profile:</Heading>
                             <Field>
                                 <Label htmlFor="inputName">
                                     Název

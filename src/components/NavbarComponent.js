@@ -30,7 +30,6 @@ const items = [
 ];
 
 const NavItems = () => {
-
     return items.map(({ path, name, dividerAfter }, index) => (
         <div key={index}>
             <NavLink className={({ isActive }) =>

@@ -42,7 +42,7 @@ export default function EditPage() {
             if (success) {
                 console.log(msg);
                 setChoosenRestaurant({});
-                navigate(PATHS.ROUTERS.DASHBOARD);
+                navigate(PATHS.ROUTERS.MERCHANT);
             } else {
                 setPostMsg(msg);
             }
@@ -230,7 +230,7 @@ export default function EditPage() {
                             <Box style={{ margin: 'auto' }}>
                                 <form onSubmit={handleSubmit}>
                                     <Block>
-                                        <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Profil:</Heading>
+                                        <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Profile:</Heading>
                                         <div className='is-pulled-right'>
                                             <Heading renderAs='label' htmlFor={'checkBoxIsAvailable'} size={5} mr={4} className='has-text-weight-bold is-inline-block'>Aktivní: </Heading>
                                             <Toggle

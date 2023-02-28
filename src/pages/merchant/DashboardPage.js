@@ -38,7 +38,7 @@ export default function DashboardPage() {
                 <Hero color="info" size="small">
                     <Body>
                         <Heading size={4} className='is-inline-block'>Restaurace</Heading>
-                        <Button color={'warning'} size={'medium'} className='is-pulled-right' renderAs={Link} to={PATHS.ROUTERS.DASHBOARD + '/' + PATHS.ROUTERS.RESTAURANT_ADD}>Přidat</Button>
+                        <Button color={'warning'} size={'medium'} className='is-pulled-right' renderAs={Link} to={PATHS.ROUTERS.MERCHANT + '/' + PATHS.ROUTERS.RESTAURANT_ADD}>Přidat</Button>
                     </Body>
                 </Hero>
                 <Column style={{ height: "calc(60vh)", overflowY: 'scroll' }}>

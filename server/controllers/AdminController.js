@@ -74,14 +74,15 @@ const updateMerchant = async (req, res, next) => {
     }
 
     try {
+        const updatedMerchant = await MerchantModel.findByIdAndUpdate(merchantId, body, { runValidators: true, new: true });
+
         if (typeof body.isAvailable === 'boolean' && !body.isAvailable && merchant.isAvailable) {
             await RestaurantModel.updateMany({ idOwner: ObjectId(merchantId) }, { isAvailable: false });
         }
 
-        await merchant.updateOne(body, { runValidators: true });
         return res.status(200).json({
             success: true,
-            msg: `Merchant ${merchant.name} updated!`,
+            msg: updatedMerchant,
         });
     } catch (err) {
         next(err);

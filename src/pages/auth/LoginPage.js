@@ -37,7 +37,7 @@ export default function LoginPage() {
                 });
                 if (success) {
                     localStorage.setItem('token', msg.token);
-                    navigate(PATHS.ROUTERS.DASHBOARD);
+                    navigate(PATHS.ROUTERS.MERCHANT);
                 } else {
                     setPostMsg(msg);
                 }

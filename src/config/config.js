@@ -25,9 +25,11 @@ const config = {
             RESTAURANT: '/restaurant',
             MENU: '/menu',
             ID_RESTAURANT: ':idRestaurant',
-            DASHBOARD: "/merchant",
-            RESTAURANT_EDIT: "restaurant/edit",
-            RESTAURANT_ADD: "restaurant",
+            MERCHANT: "/merchant",
+            DASHBOARD: "dashboard",
+            PROFILE: "profile",
+            RESTAURANT_EDIT: "edit",
+            RESTAURANT_ADD: "add",
             RESTAURANT_TRANSACTION: "restaurant/transaction",
         },
         API: {
@@ -45,6 +47,11 @@ const config = {
         EN: 'en'
     },
     JWT_SECRET: "@ThIS iS Sup3rb s3creT!",
+    COMGATE: {
+        COUNTRIES: ['ALL', 'AT', 'BE', 'CY', 'CZ', 'DE', 'EE', 'EL', 'ES', 'FI', 'FR', 'GB', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SL', 'SK', 'SV', 'US'],
+        CURRENCIES: ['CZK', 'EUR', 'PLN', 'HUF', 'USD', 'GBP', 'RON', 'NOK', 'SEK'],
+        METHODS: ['ALL', 'CARD_ALL', 'BANK_ALL']
+    }
 };
 
 module.exports = config;

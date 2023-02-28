@@ -26,6 +26,7 @@ import DashboardPage from './pages/merchant/DashboardPage';
 import { PATHS } from './utils';
 import EditPage from './pages/merchant/panel/EditPage';
 import AddPage from './pages/merchant/panel/AddPage';
+import ProfilePage from './pages/merchant/ProfilePage';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -41,7 +42,7 @@ const ProtectedRoute = ({ children }) => {
 const AuthRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
   if (isAuthenticated) {
-    return <Navigate to={PATHS.ROUTERS.DASHBOARD} replace />
+    return <Navigate to={PATHS.ROUTERS.MERCHANT} replace />
   }
   return children;
 }
@@ -102,7 +103,7 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: PATHS.ROUTERS.DASHBOARD,
+    path: PATHS.ROUTERS.MERCHANT,
     element: <ProtectedRoute><MerchantLayout /></ProtectedRoute>,
     children: [{
       path: "",
@@ -115,6 +116,9 @@ const router = createBrowserRouter([
         path: PATHS.ROUTERS.RESTAURANT_ADD,
         element: <AddPage />,
       }]
+    }, {
+      path: PATHS.ROUTERS.PROFILE,
+      element: <ProfilePage />
     }],
     errorElement: <ErrorPage />,
   }

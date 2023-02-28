@@ -13,10 +13,10 @@ export default function RestaurantCard({ restaurant }) {
     const handleOnClick = () => {
         if (choosenRestaurant._id === restaurant._id) {
             setChoosenRestaurant({});
-            navigate(PATHS.ROUTERS.DASHBOARD);
+            navigate(PATHS.ROUTERS.MERCHANT);
         } else {
             setChoosenRestaurant(restaurant);
-            navigate(PATHS.ROUTERS.DASHBOARD + '/' + PATHS.ROUTERS.RESTAURANT_EDIT + '/' + restaurant._id)
+            navigate(PATHS.ROUTERS.MERCHANT + '/' + PATHS.ROUTERS.RESTAURANT_EDIT + '/' + restaurant._id)
         }
     }
 

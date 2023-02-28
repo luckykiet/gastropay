@@ -13,6 +13,7 @@ router.put('/' + MERCHANT + '/' + RESTAURANT + '/:restaurantId', authMiddleware.
 
 router.delete('/' + MERCHANT + '/' + RESTAURANT + '/:restaurantId', authMiddleware.authMiddleware, MerchantController.deleteRestaurant);
 
+router.get('/' + MERCHANT, authMiddleware.authMiddleware, MerchantController.getSelf, authMiddleware.validationHandlerMiddleware);
 router.get('/' + MERCHANT + '/' + RESTAURANT + 's', authMiddleware.authMiddleware, MerchantController.getRestaurants);
 router.get('/' + MERCHANT + '/' + RESTAURANT + '/:restaurantId', authMiddleware.authMiddleware, MerchantController.getRestaurantByID);
 
