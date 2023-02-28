@@ -15,7 +15,7 @@ const MerchantSchema = new Schema({
         comgate: { type: Comgate }
     },
     isAvailable: { type: Boolean, required: true, default: true }
-}, { timestamps: true });
+}, { strict: true }, { timestamps: true });
 
 MerchantSchema.pre('save', function (next) {
     const user = this;

@@ -9,8 +9,8 @@ const AUTH = config.PATHS.API.AUTH;
 const router = express.Router();
 const authMiddleware = require('./AuthMiddlewares');
 
-router.post('/' + AUTH + '/' + LOGIN, AuthenticateController.login);
-router.post('/' + AUTH + '/' + REGISTER, AuthenticateController.register);
+router.post('/' + AUTH + '/' + LOGIN, AuthenticateController.login, authMiddleware.validationHandlerMiddleware);
+router.post('/' + AUTH + '/' + REGISTER, AuthenticateController.register, authMiddleware.validationHandlerMiddleware);
 
 router.get('/' + AUTH + '/check?', AuthenticateController.checkMerchantByIcoOrEmail);
 router.get('/' + PROTECTED, authMiddleware.authMiddleware, (req, res) => {

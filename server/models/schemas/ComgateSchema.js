@@ -9,6 +9,6 @@ const ComgateSchema = new Schema({
     secret: { type: String, trim: true },
     currency: { type: String, required: true, default: 'CZK', enum: ['CZK', 'EUR', 'PLN', 'HUF', 'USD', 'GBP', 'RON', 'NOK', 'SEK'] },
     isAvailable: { type: Boolean, required: true, default: false }
-});
+}, { strict: true, _id: false });
 
 module.exports = ComgateSchema;

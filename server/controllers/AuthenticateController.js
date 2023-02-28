@@ -20,7 +20,7 @@ const login = async (req, res) => {
     });
 }
 
-const register = async (req, res) => {
+const register = async (req, res, next) => {
     const body = req.body;
     if (!body) {
         return res.status(400).json({
@@ -51,15 +51,18 @@ const register = async (req, res) => {
         });
     }
 
-    const merchant = new MerchantModel(body);
-
-    await merchant.save().then(() => {
-        const token = signUserToken(merchant, "1h");
-        return res.status(201).json({
-            success: true,
-            msg: { token: token },
+    try {
+        const merchant = new MerchantModel(body);
+        await merchant.save().then(() => {
+            const token = signUserToken(merchant, "1h");
+            return res.status(201).json({
+                success: true,
+                msg: { token: token },
+            });
         });
-    });
+    } catch (error) {
+        next(error);
+    }
 };
 
 const checkMerchantByIcoOrEmail = async (req, res) => {

@@ -8,25 +8,39 @@
   },
   "openingTime": {
     "monday": {
-      "isOpen": false
+      "isOpen": false,
+      "from": "08:00",
+      "to": "20:00"
     },
     "tuesday": {
-      "isOpen": false
+      "isOpen": false,
+      "from": "08:00",
+      "to": "20:00"
     },
     "wednesday": {
-      "isOpen": false
+      "isOpen": false,
+      "from": "08:00",
+      "to": "20:00"
     },
     "thursday": {
-      "isOpen": false
+      "isOpen": false,
+      "from": "08:00",
+      "to": "20:00"
     },
     "friday": {
-      "isOpen": false
+      "isOpen": false,
+      "from": "08:00",
+      "to": "20:00"
     },
     "saturday": {
-      "isOpen": false
+      "isOpen": false,
+      "from": "08:00",
+      "to": "20:00"
     },
     "sunday": {
-      "isOpen": false
+      "isOpen": false,
+      "from": "08:00",
+      "to": "20:00"
     }
   },
   "isAvailable": true

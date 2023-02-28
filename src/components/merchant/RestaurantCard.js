@@ -3,7 +3,7 @@ import { Columns, Card, Media, Content as TextContent, Heading } from 'react-bul
 import { IMAGE_BASE_URL, addSlashAfterUrl, PATHS, isValidUrl } from "../../utils";
 import { useNavigate } from 'react-router-dom';
 const { Item } = Media;
-const { Header, Content } = Card;
+const { Header, Content, Footer } = Card;
 const { Column } = Columns;
 
 export default function RestaurantCard({ restaurant }) {
@@ -17,9 +17,6 @@ export default function RestaurantCard({ restaurant }) {
             <Card className='is-clickable' onClick={handleOnClick}>
                 <Header>
                     <Header.Title>{restaurant.name}</Header.Title>
-                    <Header.Title>
-                        {restaurant.isAvailable ? <Heading renderAs='span' className='has-text-success is-size-4 is-size-4-tablet is-size-5-mobile'>Aktivní</Heading> : <Heading renderAs='span' size={4} className='has-text-danger'>Neaktivní</Heading>}
-                    </Header.Title>
                 </Header>
                 <Content>
                     <Media size={"4by3"}>
@@ -47,6 +44,11 @@ export default function RestaurantCard({ restaurant }) {
                         </Item>
                     </Media>
                 </Content>
+                <Footer>
+                    <Footer.Item>
+                        {restaurant.isAvailable ? <Heading renderAs='span' className='has-text-success is-size-4 is-size-4-tablet is-size-5-mobile'>Aktivní</Heading> : <Heading renderAs='span' size={4} className='has-text-danger'>Neaktivní</Heading>}
+                    </Footer.Item>
+                </Footer>
             </Card>
         </Column>
     );

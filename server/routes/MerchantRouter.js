@@ -6,10 +6,10 @@ const RESTAURANT = config.PATHS.API.RESTAURANT;
 const router = express.Router();
 const authMiddleware = require('./AuthMiddlewares');
 
-router.post('/' + MERCHANT + '/' + RESTAURANT, authMiddleware.authMiddleware, MerchantController.createRestaurant);
+router.post('/' + MERCHANT + '/' + RESTAURANT, authMiddleware.authMiddleware, MerchantController.createRestaurant, authMiddleware.validationHandlerMiddleware);
 
-router.put('/' + MERCHANT, authMiddleware.authMiddleware, MerchantController.updateMerchant);
-router.put('/' + MERCHANT + '/' + RESTAURANT + '/:restaurantId', authMiddleware.authMiddleware, MerchantController.updateRestaurant);
+router.put('/' + MERCHANT, authMiddleware.authMiddleware, MerchantController.updateMerchant, authMiddleware.validationHandlerMiddleware);
+router.put('/' + MERCHANT + '/' + RESTAURANT + '/:restaurantId', authMiddleware.authMiddleware, MerchantController.updateRestaurant, authMiddleware.validationHandlerMiddleware);
 
 router.delete('/' + MERCHANT + '/' + RESTAURANT + '/:restaurantId', authMiddleware.authMiddleware, MerchantController.deleteRestaurant);
 

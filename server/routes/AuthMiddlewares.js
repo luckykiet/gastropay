@@ -1,4 +1,3 @@
-
 const jwt = require('jsonwebtoken');
 const config = require('../../src/config/config');
 
@@ -35,8 +34,31 @@ const authAdminMiddleware = (requiredRole) => (req, res, next) => {
     });
 };
 
+const validationHandlerMiddleware = (err, req, res, next) => {
+    if (err.name === 'ValidationError' || err.name === 'ValidatorError') {
+        return res.status(422).json({
+            success: false,
+            msg: Object.keys(err.errors).reduce((errors, key) => {
+                errors[key] = err.errors[key].message;
+                return errors;
+            }, {})
+        });
+    } else {
+        if (err.code === 11000) {
+            return res.status(500).json({
+                success: false,
+                msg: "Duplicate value!"
+            });
+        }
+        return res.status(500).json({
+            success: false,
+            msg: err.message
+        });
+    }
+};
 
 module.exports = {
     authMiddleware,
-    authAdminMiddleware
+    authAdminMiddleware,
+    validationHandlerMiddleware
 };

@@ -3,7 +3,7 @@ const MerchantModel = require("../models/MerchantModel");
 const RestaurantModel = require("../models/RestaurantModel");
 const ObjectId = require("mongoose").Types.ObjectId;
 
-const createRestaurant = async (req, res) => {
+const createRestaurant = async (req, res, next) => {
     const authorizedMerchantId = req.userId;
     const body = req.body;
     if (!body) {
@@ -15,8 +15,7 @@ const createRestaurant = async (req, res) => {
 
     const foundRestaurant = await RestaurantModel.findOne({
         idOwner: ObjectId(authorizedMerchantId),
-        name: body.name,
-        address: body.address,
+        name: body.name
     }).select("name").exec();
 
     if (foundRestaurant) {
@@ -26,17 +25,21 @@ const createRestaurant = async (req, res) => {
         });
     }
 
-    const restaurant = new RestaurantModel({
-        ...body,
-        idOwner: ObjectId(authorizedMerchantId),
-    });
-
-    await restaurant.save().then(() => {
-        return res.status(201).json({
-            success: true,
-            msg: "Restaurant " + restaurant.name + " created!",
+    try {
+        const restaurant = new RestaurantModel({
+            ...body,
+            idOwner: ObjectId(authorizedMerchantId),
         });
-    });
+        await restaurant.save().then(() => {
+            return res.status(201).json({
+                success: true,
+                msg: "Restaurant " + restaurant.name + " created!",
+            });
+        });
+    } catch (error) {
+        next(error);
+    }
+
 };
 
 const getRestaurants = async (req, res) => {
@@ -52,7 +55,7 @@ const getRestaurants = async (req, res) => {
     return res.status(200).json({ success: true, msg: restaurants });
 };
 
-const updateRestaurant = async (req, res) => {
+const updateRestaurant = async (req, res, next) => {
     if (!isObjectIdOrHexString(req.params.restaurantId)) {
         return res.status(400).json({
             success: false,
@@ -69,20 +72,34 @@ const updateRestaurant = async (req, res) => {
         });
     }
 
-    const restaurant = await RestaurantModel.findOneAndUpdate({ _id: ObjectId(req.params.restaurantId), idOwner: ObjectId(req.userId) }, body, {
-        new: true,
-    });
+    const foundRestaurants = await RestaurantModel.find({
+        idOwner: ObjectId(body.idOwner),
+        name: body.name
+    }).select("name").exec();
 
-    if (!restaurant) {
-        return res
-            .status(404)
-            .json({ success: false, msg: `Restaurant not found` });
+    if (foundRestaurants.length > 1) {
+        return res.status(400).json({
+            success: false,
+            msg: "Restaurant " + foundRestaurants[0].name + " already exists!",
+        });
     }
 
-    return res.status(200).json({
-        success: true,
-        msg: "Restaurant " + restaurant.name + " updated!",
-    });
+    try {
+        const restaurant = await RestaurantModel.findOneAndUpdate({ _id: ObjectId(req.params.restaurantId), idOwner: ObjectId(req.userId) }, body, { new: true, runValidators: true });
+
+        if (!restaurant) {
+            return res
+                .status(404)
+                .json({ success: false, msg: `Restaurant not found` });
+        }
+
+        return res.status(200).json({
+            success: true,
+            msg: "Restaurant " + restaurant.name + " updated!",
+        });
+    } catch (error) {
+        next(error);
+    }
 };
 
 const deleteRestaurant = async (req, res) => {
@@ -120,7 +137,7 @@ const getRestaurantByID = async (req, res) => {
     return res.status(200).json({ success: true, msg: restaurant });
 };
 
-const updateMerchant = async (req, res) => {
+const updateMerchant = async (req, res, next) => {
     const merchantId = req.userId;
 
     if (!isObjectIdOrHexString(merchantId)) {
@@ -145,18 +162,17 @@ const updateMerchant = async (req, res) => {
         return res.status(404).json({ success: false, msg: `Merchant not found` });
     }
 
-    if (typeof body.isAvailable === 'boolean' && !body.isAvailable && merchant.isAvailable) {
-        await RestaurantModel.updateMany({ idOwner: ObjectId(merchantId) }, { isAvailable: false });
-    }
-
     try {
-        await merchant.updateOne(body);
+        if (typeof body.isAvailable === 'boolean' && !body.isAvailable && merchant.isAvailable) {
+            await RestaurantModel.updateMany({ idOwner: ObjectId(merchantId) }, { isAvailable: false });
+        }
+        await merchant.updateOne(body, { runValidators: true });
         return res.status(200).json({
             success: true,
             msg: `Merchant ${merchant.name} updated!`,
         });
     } catch (err) {
-        return res.status(400).json({ success: false, msg: err.message });
+        next(err);
     }
 };
 

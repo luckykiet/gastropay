@@ -16,10 +16,13 @@ const { Field, Label, Control, Input } = Form;
 export default function EditPage() {
     const idRestaurant = useParams().idRestaurant;
     const [restaurant, setRestaurant] = useState({});
+    const [titleName, setTitleName] = useState("Restaurace");
     const [postMsg, setPostMsg] = useState(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     useEffect(() => {
+        setLoading(true);
+        setPostMsg(null);
         const fetchRestaurant = async () => {
             const axios = createAxios(addSlashAfterUrl(API_URL));
             try {
@@ -30,6 +33,7 @@ export default function EditPage() {
                 })
                 if (success) {
                     setRestaurant(msg);
+                    setTitleName(msg.name)
                 }
             } catch (err) {
                 console.log(err)
@@ -37,7 +41,7 @@ export default function EditPage() {
                 setLoading(false);
             }
         }
-        Promise.delay(0).then(fetchRestaurant);
+        Promise.delay(300).then(fetchRestaurant);
     }, [idRestaurant]);
 
     const handleChange = (e) => {
@@ -59,6 +63,7 @@ export default function EditPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setPostMsg(null);
         if (restaurant.name === '' || restaurant.address.street === '' || restaurant.address.city === '' || restaurant.address.postalCode === '') {
             setPostMsg("Zkontrolujte vyplněné údaje!");
         } else {
@@ -79,6 +84,7 @@ export default function EditPage() {
                     setPostMsg(msg);
                 }
             } catch (err) {
+                console.log(err)
                 setPostMsg(err.response.data.msg);
             } finally {
                 setLoading(false);
@@ -117,9 +123,10 @@ export default function EditPage() {
                             minuteStep={5}
                             id={"input" + day + "From"}
                             format={'HH:mm'}
-                            defaultValue={restaurant.openingTime[day].from ? moment(restaurant.openingTime[day].from, "HH:mm") : moment("00:00", "HH:mm")}
+                            value={restaurant.openingTime[day].from ? moment(restaurant.openingTime[day].from, "HH:mm") : moment("00:00", "HH:mm")}
                             showSecond={false}
                             placeholder="Vyberte čas"
+                            allowEmpty={false}
                         />
                     </Control>
                 </Field>
@@ -139,9 +146,10 @@ export default function EditPage() {
                             minuteStep={5}
                             id={"input" + day + "To"}
                             format={'HH:mm'}
-                            defaultValue={restaurant.openingTime[day].to ? moment(restaurant.openingTime[day].to, "HH:mm") : moment("00:00", "HH:mm")}
+                            value={restaurant.openingTime[day].to ? moment(restaurant.openingTime[day].to, "HH:mm") : moment("00:00", "HH:mm")}
                             showSecond={false}
                             placeholder="Vyberte čas"
+                            allowEmpty={false}
                         />
                     </Control>
                 </Field>
@@ -152,101 +160,109 @@ export default function EditPage() {
     return (
         <Fragment>{loading ? (
             <LoadingComponent />
-        ) :
-            (<Fragment><Hero color="link" size="small">
-                <Body>
-                    <Heading size={4}>{restaurant.name}</Heading>
-                </Body>
-            </Hero>
-                <Container pt={5} breakpoint={'fluid'} style={{ height: "calc(60vh)", overflowY: 'scroll' }}>
-                    <Box style={{ margin: 'auto' }}>
-                        <form onSubmit={handleSubmit}>
-                            <Block>
-                                <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Profil:</Heading>
-                                <div className='is-pulled-right'>
-                                    <Heading renderAs='label' htmlFor={'checkBoxIsAvailable'} size={5} mr={4} className='has-text-weight-bold is-inline-block'>Aktivní: </Heading>
-                                    <Toggle
-                                        id='checkBoxIsAvailable'
-                                        name={"isAvailable"}
-                                        checked={restaurant.isAvailable}
-                                        onChange={(e) => {
-                                            handleChange({ target: { name: "isAvailable", value: e.target.checked } });
-                                        }}
-                                    />
-                                </div>
-                                <Field>
-                                    <Label htmlFor="inputName">
-                                        Název
-                                    </Label>
-                                    <Control>
-                                        <Input onChange={handleChange} name={"name"} defaultValue={restaurant?.name} type={"text"} id="inputName" placeholder="Gastro bistro" required />
-                                    </Control>
-                                </Field>
-                                <Field>
-                                    <Label htmlFor="inputImage">
-                                        Obrázek
-                                    </Label>
-                                    <Control>
-                                        <Input onChange={handleChange} name={"image"} defaultValue={restaurant?.image} type={"text"} id="inputImage" placeholder="Image URL" />
-                                    </Control>
-                                </Field>
-                            </Block>
-                            <Block>
-                                <Heading renderAs='p' size={4} className='has-text-weight-bold'>Adresa:</Heading>
-                                <Field>
-                                    <Label htmlFor="inputStreet">
-                                        Ulice
-                                    </Label>
-                                    <Control>
-                                        <Input onChange={handleChange} name={"address.street"} defaultValue={restaurant.address?.street} type={"text"} id="inputStreet" placeholder="Na Porici 81" required />
-                                    </Control>
-                                </Field>
-                                <Field>
-                                    <Label htmlFor="inputCity">
-                                        Město
-                                    </Label>
-                                    <Control>
-                                        <Input onChange={handleChange} name={"address.city"} defaultValue={restaurant.address?.city} type={"text"} id="inputCity" placeholder="Praha 1" required />
-                                    </Control>
-                                </Field>
-                                <Field>
-                                    <Label htmlFor="inputPsc">
-                                        PSČ
-                                    </Label>
-                                    <Control>
-                                        <Input onChange={handleChange} name={"address.postalCode"} defaultValue={restaurant.address?.postalCode} type={"text"} id="inputPsc" placeholder="11000" required />
-                                    </Control>
-                                </Field>
-                            </Block>
-                            <Block>
-                                <Heading renderAs='p' size={4} className='has-text-weight-bold'>Menu API:</Heading>
-                                <Field>
-                                    <Label htmlFor="inputApiBaseUrl">
-                                        Base URL
-                                    </Label>
-                                    <Control>
-                                        <Input onChange={handleChange} name={"api.baseUrl"} defaultValue={restaurant.api?.baseUrl} type={"text"} id="inputApiBaseUrl" placeholder="https://api.npoint.io/" />
-                                    </Control>
-                                </Field>
-                                <Field>
-                                    <Label htmlFor="inputApiParam">
-                                        Parametry
-                                    </Label>
-                                    <Control>
-                                        <Input onChange={handleChange} name={"api.params"} defaultValue={restaurant.api?.params} type={"text"} id="inputApiParam" placeholder="API Params" />
-                                    </Control>
-                                </Field>
-                            </Block>
-                            <Heading renderAs='p' size={4} className='has-text-weight-bold'>Otevírací doba:</Heading>
-                            {Object.keys(restaurant.openingTime).map((key) => {
-                                return <OpeningTimes key={key} day={key} />
-                            })}
-                            <Button submit fullwidth color={'warning'}>Uložit</Button>
-                        </form>
-                        {postMsg !== '' && <p className="has-text-danger">{postMsg}</p>}
-                    </Box>
-                </Container>
-            </Fragment>)}
-        </Fragment>
+        ) : (
+            Object.keys(restaurant).length === 0 ?
+                (
+                    <Fragment>
+                        <Heading renderAs='p' size={5} className='has-text-weight-bold'>Chyba načítání restaurace, obnovte stránku</Heading>
+                    </Fragment>
+                )
+                :
+                (<Fragment><Hero color="link" size="small">
+                    <Body>
+                        <Heading size={4}>{titleName}</Heading>
+                    </Body>
+                </Hero>
+                    <Container pt={5} breakpoint={'fluid'} style={{ height: "calc(60vh)", overflowY: 'scroll' }}>
+                        <Box style={{ margin: 'auto' }}>
+                            <form onSubmit={handleSubmit}>
+                                <Block>
+                                    <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Profil:</Heading>
+                                    <div className='is-pulled-right'>
+                                        <Heading renderAs='label' htmlFor={'checkBoxIsAvailable'} size={5} mr={4} className='has-text-weight-bold is-inline-block'>Aktivní: </Heading>
+                                        <Toggle
+                                            id='checkBoxIsAvailable'
+                                            name={"isAvailable"}
+                                            checked={restaurant.isAvailable}
+                                            onChange={(e) => {
+                                                handleChange({ target: { name: "isAvailable", value: e.target.checked } });
+                                            }}
+                                        />
+                                    </div>
+                                    <Field>
+                                        <Label htmlFor="inputName">
+                                            Název
+                                        </Label>
+                                        <Control>
+                                            <Input onChange={handleChange} name={"name"} value={restaurant?.name} type={"text"} id="inputName" placeholder="Gastro bistro" required />
+                                        </Control>
+                                    </Field>
+                                    <Field>
+                                        <Label htmlFor="inputImage">
+                                            Obrázek
+                                        </Label>
+                                        <Control>
+                                            <Input onChange={handleChange} name={"image"} value={restaurant?.image} type={"text"} id="inputImage" placeholder="Image URL" />
+                                        </Control>
+                                    </Field>
+                                </Block>
+                                <Block>
+                                    <Heading renderAs='p' size={4} className='has-text-weight-bold'>Adresa:</Heading>
+                                    <Field>
+                                        <Label htmlFor="inputStreet">
+                                            Ulice
+                                        </Label>
+                                        <Control>
+                                            <Input onChange={handleChange} name={"address.street"} value={restaurant.address?.street} type={"text"} id="inputStreet" placeholder="Na Porici 81" required />
+                                        </Control>
+                                    </Field>
+                                    <Field>
+                                        <Label htmlFor="inputCity">
+                                            Město
+                                        </Label>
+                                        <Control>
+                                            <Input onChange={handleChange} name={"address.city"} value={restaurant.address?.city} type={"text"} id="inputCity" placeholder="Praha 1" required />
+                                        </Control>
+                                    </Field>
+                                    <Field>
+                                        <Label htmlFor="inputPsc">
+                                            PSČ
+                                        </Label>
+                                        <Control>
+                                            <Input onChange={handleChange} name={"address.postalCode"} value={restaurant.address?.postalCode} type={"text"} id="inputPsc" placeholder="11000" required />
+                                        </Control>
+                                    </Field>
+                                </Block>
+                                <Block>
+                                    <Heading renderAs='p' size={4} className='has-text-weight-bold'>Menu API:</Heading>
+                                    <Field>
+                                        <Label htmlFor="inputApiBaseUrl">
+                                            Base URL
+                                        </Label>
+                                        <Control>
+                                            <Input onChange={handleChange} name={"api.baseUrl"} value={restaurant.api?.baseUrl} type={"text"} id="inputApiBaseUrl" placeholder="https://api.npoint.io/" />
+                                        </Control>
+                                    </Field>
+                                    <Field>
+                                        <Label htmlFor="inputApiParam">
+                                            Parametry
+                                        </Label>
+                                        <Control>
+                                            <Input onChange={handleChange} name={"api.params"} value={restaurant.api?.params} type={"text"} id="inputApiParam" placeholder="API Params" />
+                                        </Control>
+                                    </Field>
+                                </Block>
+                                <Heading renderAs='p' size={4} className='has-text-weight-bold'>Otevírací doba:</Heading>
+                                {Object.keys(restaurant.openingTime).map((key) => {
+                                    return <OpeningTimes key={key} day={key} />
+                                })}
+                                <Button submit fullwidth color={'warning'}>Uložit</Button>
+                            </form>
+                            {postMsg !== '' && <p className="has-text-danger">{postMsg}</p>}
+                        </Box>
+                    </Container>
+                </Fragment>)
+        )
+        }</Fragment>
     )
 }

@@ -3,7 +3,7 @@ const MerchantModel = require("../models/MerchantModel");
 const RestaurantModel = require("../models/RestaurantModel");
 const ObjectId = require("mongoose").Types.ObjectId;
 
-const createMerchant = async (req, res) => {
+const createMerchant = async (req, res, next) => {
     const body = req.body;
     if (!body) {
         return res.status(400).json({
@@ -34,17 +34,21 @@ const createMerchant = async (req, res) => {
         });
     }
 
-    const merchant = new MerchantModel(body);
+    try {
+        const merchant = new MerchantModel(body);
 
-    await merchant.save().then(() => {
-        return res.status(201).json({
-            success: true,
-            msg: "Merchant with ICO: " + merchant.ico + " created!",
+        await merchant.save().then(() => {
+            return res.status(201).json({
+                success: true,
+                msg: "Merchant with ICO: " + merchant.ico + " created!",
+            });
         });
-    });
+    } catch (error) {
+        next(error);
+    }
 };
 
-const updateMerchant = async (req, res) => {
+const updateMerchant = async (req, res, next) => {
     const merchantId = req.params.id;
 
     if (!isObjectIdOrHexString(merchantId)) {
@@ -69,18 +73,18 @@ const updateMerchant = async (req, res) => {
         return res.status(404).json({ success: false, msg: `Merchant not found` });
     }
 
-    if (typeof body.isAvailable === 'boolean' && !body.isAvailable && merchant.isAvailable) {
-        await RestaurantModel.updateMany({ idOwner: ObjectId(merchantId) }, { isAvailable: false });
-    }
-
     try {
-        await merchant.updateOne(body);
+        if (typeof body.isAvailable === 'boolean' && !body.isAvailable && merchant.isAvailable) {
+            await RestaurantModel.updateMany({ idOwner: ObjectId(merchantId) }, { isAvailable: false });
+        }
+
+        await merchant.updateOne(body, { runValidators: true });
         return res.status(200).json({
             success: true,
             msg: `Merchant ${merchant.name} updated!`,
         });
     } catch (err) {
-        return res.status(500).json({ success: false, msg: err.message });
+        next(err);
     }
 };
 
