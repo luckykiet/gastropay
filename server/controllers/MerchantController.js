@@ -29,11 +29,12 @@ const createRestaurant = async (req, res, next) => {
         const restaurant = new RestaurantModel({
             ...body,
             idOwner: ObjectId(authorizedMerchantId),
+            openingTime: {}
         });
         await restaurant.save().then(() => {
-            return res.status(201).json({
+            return res.status(200).json({
                 success: true,
-                msg: "Restaurant " + restaurant.name + " created!",
+                msg: restaurant,
             });
         });
     } catch (error) {

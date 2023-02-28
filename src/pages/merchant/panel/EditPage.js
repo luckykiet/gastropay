@@ -174,7 +174,7 @@ export default function EditPage() {
                         <Heading size={4}>{choosenRestaurant.name}</Heading>
                     </Body>
                 </Hero>
-                    <Container pt={5} breakpoint={'fluid'} style={{ height: "calc(60vh)", overflowY: 'scroll' }}>
+                    <Container py={5} breakpoint={'fluid'} style={{ height: "calc(60vh)", overflowY: 'scroll' }}>
                         <Box style={{ margin: 'auto' }}>
                             <form onSubmit={handleSubmit}>
                                 <Block>

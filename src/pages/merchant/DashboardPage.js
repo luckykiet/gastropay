@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { createAxios, addSlashAfterUrl, API_URL, getItemsFromToken, PATHS } from '../../utils';
 import { Promise } from 'bluebird';
-import { Columns, Heading, Hero } from 'react-bulma-components';
+import { Columns, Heading, Hero, Button } from 'react-bulma-components';
 import RestaurantCard from '../../components/merchant/RestaurantCard';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { useChoosenRestaurant } from '../../stores/MerchantStores';
 
 const { Column } = Columns;
@@ -37,7 +37,8 @@ export default function DashboardPage() {
             <Column style={{ height: "calc(100vh)" }} className='is-one-thirds-desktop'>
                 <Hero color="info" size="small">
                     <Body>
-                        <Heading size={4}>Restaurace</Heading>
+                        <Heading size={4} className='is-inline-block' >Restaurace</Heading>
+                        <Button color={'warning'} size={'medium'} className='is-pulled-right' renderAs={Link} to={PATHS.ROUTERS.DASHBOARD + '/' + PATHS.ROUTERS.RESTAURANT_ADD}>Přidat</Button>
                     </Body>
                 </Hero>
                 <Column style={{ height: "calc(60vh)", overflowY: 'scroll' }}>

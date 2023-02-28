@@ -25,6 +25,7 @@ import LoadingComponent from './components/LoadingComponent';
 import DashboardPage from './pages/merchant/DashboardPage';
 import { PATHS } from './utils';
 import EditPage from './pages/merchant/panel/EditPage';
+import AddPage from './pages/merchant/panel/AddPage';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
       children: [{
         path: PATHS.ROUTERS.RESTAURANT_EDIT + '/' + PATHS.ROUTERS.ID_RESTAURANT,
         element: <EditPage />,
+      },
+      {
+        path: PATHS.ROUTERS.RESTAURANT_ADD,
+        element: <AddPage />,
       }]
     }],
     errorElement: <ErrorPage />,

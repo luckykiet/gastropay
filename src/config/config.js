@@ -27,6 +27,7 @@ const config = {
             ID_RESTAURANT: ':idRestaurant',
             DASHBOARD: "/merchant",
             RESTAURANT_EDIT: "restaurant/edit",
+            RESTAURANT_ADD: "restaurant",
             RESTAURANT_TRANSACTION: "restaurant/transaction",
         },
         API: {
