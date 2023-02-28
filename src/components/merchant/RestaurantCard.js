@@ -2,19 +2,27 @@ import React from 'react';
 import { Columns, Card, Media, Content as TextContent, Heading } from 'react-bulma-components';
 import { IMAGE_BASE_URL, addSlashAfterUrl, PATHS, isValidUrl } from "../../utils";
 import { useNavigate } from 'react-router-dom';
+import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/MerchantStores';
 const { Item } = Media;
 const { Header, Content, Footer } = Card;
 const { Column } = Columns;
 
 export default function RestaurantCard({ restaurant }) {
     const navigate = useNavigate();
+    const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
     const handleOnClick = () => {
-        navigate(PATHS.ROUTERS.DASHBOARD + '/' + PATHS.ROUTERS.RESTAURANT_EDIT + '/' + restaurant._id)
+        if (choosenRestaurant._id === restaurant._id) {
+            setChoosenRestaurant({});
+            navigate(PATHS.ROUTERS.DASHBOARD);
+        } else {
+            setChoosenRestaurant(restaurant);
+            navigate(PATHS.ROUTERS.DASHBOARD + '/' + PATHS.ROUTERS.RESTAURANT_EDIT + '/' + restaurant._id)
+        }
     }
 
     return (
         <Column fullwidth="true">
-            <Card className='is-clickable' onClick={handleOnClick}>
+            <Card className={"is-clickable" + (choosenRestaurant._id === restaurant._id ? " has-background-light" : "")} onClick={handleOnClick}>
                 <Header>
                     <Header.Title>{restaurant.name}</Header.Title>
                 </Header>

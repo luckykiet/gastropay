@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, API_URL, PATHS, daysOfWeeksCzech } from '../../../utils';
 import { Box, Heading, Form, Button, Container, Hero, Block } from "react-bulma-components";
 import { Promise } from 'bluebird';
@@ -10,16 +10,17 @@ import "react-toggle/style.css";
 import LoadingComponent from '../../../components/LoadingComponent';
 import produce from 'immer';
 import moment from 'moment';
+import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../../stores/MerchantStores';
 
 const { Body } = Hero;
 const { Field, Label, Control, Input } = Form;
 export default function EditPage() {
     const idRestaurant = useParams().idRestaurant;
     const [restaurant, setRestaurant] = useState({});
-    const [titleName, setTitleName] = useState("Restaurace");
     const [postMsg, setPostMsg] = useState(null);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+    const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
+
     useEffect(() => {
         setLoading(true);
         setPostMsg(null);
@@ -33,7 +34,7 @@ export default function EditPage() {
                 })
                 if (success) {
                     setRestaurant(msg);
-                    setTitleName(msg.name)
+                    setChoosenRestaurant(msg);
                 }
             } catch (err) {
                 console.log(err)
@@ -42,7 +43,7 @@ export default function EditPage() {
             }
         }
         Promise.delay(300).then(fetchRestaurant);
-    }, [idRestaurant]);
+    }, [setChoosenRestaurant, idRestaurant]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -79,7 +80,7 @@ export default function EditPage() {
                 });
                 if (success) {
                     console.log(msg);
-                    navigate(PATHS.ROUTERS.DASHBOARD + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + idRestaurant);
+                    setChoosenRestaurant(restaurant);
                 } else {
                     setPostMsg(msg);
                 }
@@ -170,7 +171,7 @@ export default function EditPage() {
                 :
                 (<Fragment><Hero color="link" size="small">
                     <Body>
-                        <Heading size={4}>{titleName}</Heading>
+                        <Heading size={4}>{choosenRestaurant.name}</Heading>
                     </Body>
                 </Hero>
                     <Container pt={5} breakpoint={'fluid'} style={{ height: "calc(60vh)", overflowY: 'scroll' }}>

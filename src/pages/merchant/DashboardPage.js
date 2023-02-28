@@ -4,12 +4,14 @@ import { Promise } from 'bluebird';
 import { Columns, Heading, Hero } from 'react-bulma-components';
 import RestaurantCard from '../../components/merchant/RestaurantCard';
 import { Outlet } from 'react-router-dom';
+import { useChoosenRestaurant } from '../../stores/MerchantStores';
 
 const { Column } = Columns;
 const { Body } = Hero;
 export default function DashboardPage() {
     const userId = getItemsFromToken().userId;
     const [restaurants, setRestaurants] = useState([]);
+    const choosenRestaurant = useChoosenRestaurant();
 
     useEffect(() => {
         const fetchRestaurants = async () => {
@@ -28,7 +30,7 @@ export default function DashboardPage() {
             }
         }
         Promise.delay(0).then(fetchRestaurants);
-    }, [userId])
+    }, [userId, choosenRestaurant])
 
     return (
         <Columns style={{ height: "calc(80vh)" }} centered vCentered>
