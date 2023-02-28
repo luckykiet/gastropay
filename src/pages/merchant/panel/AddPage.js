@@ -104,7 +104,7 @@ export default function AddPage() {
                                 <Control>
                                     <Input onChange={handleChange} name={"address.street"} value={restaurant.address?.street} type={"text"} id="inputStreet" placeholder="Na Porici 81" />
                                 </Control>
-                                {postMsg !== null && postMsg['address.street'] !== null && <Help color={'danger'}>{postMsg['address.street']}</Help>}
+                                {((postMsg?.['address.street'] ?? null) !== null) && <Help color={'danger'}>{postMsg['address.street']}</Help>}
                             </Field>
                             <Field>
                                 <Label htmlFor="inputCity">
@@ -113,7 +113,7 @@ export default function AddPage() {
                                 <Control>
                                     <Input onChange={handleChange} name={"address.city"} value={restaurant.address?.city} type={"text"} id="inputCity" placeholder="Praha 1" />
                                 </Control>
-                                {postMsg !== null && postMsg['address.city'] !== null && <Help color={'danger'}>{postMsg['address.city']}</Help>}
+                                {((postMsg?.['address.city'] ?? null) !== null) && <Help color={'danger'}>{postMsg['address.city']}</Help>}
                             </Field>
                             <Field>
                                 <Label htmlFor="inputPsc">
@@ -123,7 +123,7 @@ export default function AddPage() {
                                     <Input onChange={handleChange} name={"address.postalCode"} value={restaurant.address?.postalCode} type={"text"} id="inputPsc" placeholder="11000" />
                                 </Control>
                             </Field>
-                            {postMsg !== null && postMsg['address.postalCode'] !== null && <Help color={'danger'}>{postMsg['address.postalCode']}</Help>}
+                            {((postMsg?.['address.postalCode'] ?? null) !== null) && <Help color={'danger'}>{postMsg['address.postalCode']}</Help>}
                         </Block>
                         <Button submit fullwidth color={'success'}>Přidat</Button>
                     </form>

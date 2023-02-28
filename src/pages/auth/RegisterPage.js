@@ -32,6 +32,9 @@ export default function RegisterPage() {
         } else {
             try {
                 const axios = createAxios(addSlashAfterUrl(API_URL));
+
+                formData.email = formData.email.toLowerCase();
+
                 const { data: { success, msg } } = await axios.post(
                     `${PATHS.API.AUTH}/${PATHS.API.REGISTER}`,
                     JSON.stringify(formData), {
@@ -73,7 +76,7 @@ export default function RegisterPage() {
     const checkEmailExist = useCallback(async () => {
         try {
             const axios = createAxios(addSlashAfterUrl(API_URL));
-            const { data: { success, msg } } = await axios.get(`${PATHS.API.AUTH}/check?email=${email}`);
+            const { data: { success, msg } } = await axios.get(`${PATHS.API.AUTH}/check?email=${email.toLowerCase()}`);
             if (success) {
                 setEmailCheckMsg(msg ? "Email je již používán!" : 'OK');
             } else {

@@ -10,7 +10,7 @@ export default function MerchantNavbar() {
     return (
         <Navbar color={'dark'} role="navigation" aria-label="menu navigation" className='is-spaced has-shadow'>
             <Brand>
-                <Item className='is-size-4 has-text-weight-bold' renderAs={Link} to={PATHS.ROUTERS.HOME}>
+                <Item className='is-size-4 has-text-weight-bold' renderAs={Link} to={PATHS.ROUTERS.DASHBOARD}>
                     IČO: {ico}
                 </Item>
             </Brand>

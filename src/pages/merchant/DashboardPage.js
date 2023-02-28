@@ -37,7 +37,7 @@ export default function DashboardPage() {
             <Column style={{ height: "calc(100vh)" }} className='is-one-thirds-desktop'>
                 <Hero color="info" size="small">
                     <Body>
-                        <Heading size={4} className='is-inline-block' >Restaurace</Heading>
+                        <Heading size={4} className='is-inline-block'>Restaurace</Heading>
                         <Button color={'warning'} size={'medium'} className='is-pulled-right' renderAs={Link} to={PATHS.ROUTERS.DASHBOARD + '/' + PATHS.ROUTERS.RESTAURANT_ADD}>Přidat</Button>
                     </Body>
                 </Hero>

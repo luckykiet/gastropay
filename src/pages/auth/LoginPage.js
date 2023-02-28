@@ -30,7 +30,7 @@ export default function LoginPage() {
                 const axios = createAxios(addSlashAfterUrl(API_URL));
                 const { data: { success, msg } } = await axios.post(
                     `${PATHS.API.AUTH}/${PATHS.API.LOGIN}`,
-                    JSON.stringify({ email: email, password: password }), {
+                    JSON.stringify({ email: email.toLowerCase(), password: password }), {
                     headers: {
                         'Content-Type': 'application/json'
                     }

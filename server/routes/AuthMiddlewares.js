@@ -43,13 +43,17 @@ const validationHandlerMiddleware = (err, req, res, next) => {
                 return errors;
             }, {})
         });
+    } else if (err.code === 11000) {
+        const fields = Object.keys(err.keyValue);
+        const errorMsgs = {};
+        fields.forEach(field => {
+            errorMsgs[field] = `Duplicate ${field}`;
+        });
+        return res.status(400).json({
+            success: false,
+            msg: errorMsgs,
+        });
     } else {
-        if (err.code === 11000) {
-            return res.status(500).json({
-                success: false,
-                msg: "Duplicate value!"
-            });
-        }
         return res.status(500).json({
             success: false,
             msg: err.message
