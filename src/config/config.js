@@ -24,6 +24,7 @@ const config = {
             RESTAURANTS: '/restaurants',
             RESTAURANT: '/restaurant',
             MENU: '/menu',
+            PAYMENT: '/payment',
             TRANSACTION: '/transaction',
             ID_TRANSACTION: 'idTransaction',
             ID_RESTAURANT: ':idRestaurant',

@@ -28,6 +28,7 @@ import EditPage from './pages/merchant/panel/EditPage';
 import AddPage from './pages/merchant/panel/AddPage';
 import ProfilePage from './pages/merchant/ProfilePage';
 import TransactionPage from './pages/guest/TransactionPage';
+import PaymentPage from './pages/guest/PaymentPage';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -109,6 +110,15 @@ const router = createBrowserRouter([
     children: [{
       path: "",
       element: <TransactionPage />,
+    }],
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: PATHS.ROUTERS.PAYMENT,
+    element: <RootLayout />,
+    children: [{
+      path: "",
+      element: <PaymentPage />,
     }],
     errorElement: <ErrorPage />,
   },

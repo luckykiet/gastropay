@@ -21,12 +21,12 @@ export default function CollapsibleSidebar() {
     }
     const handleCheckOutClick = () => {
         if (Object.keys(cartItems).length > 0) {
-            navigate(PATHS.ROUTERS.TRANSACTION);
+            navigate(PATHS.ROUTERS.PAYMENT);
         }
     }
     return (
-        <div className={`collapsible-sidebar ${!isSidebarShowed ? "is-hidden" : ""}`}>
-            <Card>
+        <div className={`collapsible-sidebar ${!isSidebarShowed ? "is-hidden" : ""} has-background-grey-light`}>
+            <Card mx={3} mt={3}>
                 <Header>
                     <Title>
                         <Heading size={3}>Košík &nbsp;<FontAwesomeIcon icon={faCartShopping} /></Heading>
