@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, API_URL, PATHS, daysOfWeeksCzech } from '../../../utils';
 import { Box, Heading, Form, Button, Container, Hero, Block } from "react-bulma-components";
 import { Promise } from 'bluebird';
@@ -17,9 +17,8 @@ const { Body } = Hero;
 const { Field, Label, Control, Input, Help } = Form;
 export default function EditPage() {
     const idRestaurant = useParams().idRestaurant;
-    const navigate = useNavigate();
     const [restaurant, setRestaurant] = useState({});
-    const [postMsg, setPostMsg] = useState(null);
+    const [postMsg, setPostMsg] = useState({});
     const [loading, setLoading] = useState(true);
     const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
     const [showConfirmBox, setShowConfirmBox] = useState(false);
@@ -42,13 +41,23 @@ export default function EditPage() {
             if (success) {
                 console.log(msg);
                 setChoosenRestaurant({});
-                navigate(PATHS.ROUTERS.MERCHANT);
+                setPostMsg({
+                    success: true,
+                    msg: msg
+                });
+                //navigate(PATHS.ROUTERS.MERCHANT);
             } else {
-                setPostMsg(msg);
+                setPostMsg({
+                    success: false,
+                    msg: msg
+                });
             }
         } catch (err) {
             console.log(err.response.data.msg)
-            setPostMsg(err.response.data.msg);
+            setPostMsg({
+                success: false,
+                msg: err.response.data.msg
+            });
         }
         setShowConfirmBox(false);
     };
@@ -59,7 +68,7 @@ export default function EditPage() {
 
     useEffect(() => {
         setLoading(true);
-        setPostMsg(null);
+        setPostMsg({});
         const fetchRestaurant = async () => {
             const axios = createAxios(addSlashAfterUrl(API_URL));
             try {
@@ -99,7 +108,7 @@ export default function EditPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setPostMsg(null);
+        setPostMsg({});
         if (restaurant.name === '' || restaurant.address.street === '' || restaurant.address.city === '' || restaurant.address.postalCode === '') {
             setPostMsg("Zkontrolujte vyplněné údaje!");
         } else {
@@ -115,13 +124,23 @@ export default function EditPage() {
                 });
                 if (success) {
                     console.log(msg);
+                    setPostMsg({
+                        success: true,
+                        msg: msg
+                    });
                     setChoosenRestaurant(restaurant);
                 } else {
-                    setPostMsg(msg);
+                    setPostMsg({
+                        success: false,
+                        msg: msg
+                    });
                 }
             } catch (err) {
                 console.log(err.response.data.msg)
-                setPostMsg(err.response.data.msg);
+                setPostMsg({
+                    success: false,
+                    msg: err.response.data.msg
+                });
             } finally {
                 setLoading(false);
             }
@@ -249,7 +268,7 @@ export default function EditPage() {
                                             <Control>
                                                 <Input onChange={handleChange} name={"name"} value={restaurant?.name} type={"text"} id="inputName" placeholder="Gastro bistro" required />
                                             </Control>
-                                            {postMsg?.name && <Help color={'danger'}>{postMsg.name}</Help>}
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg.name && <Help color={'danger'}>{postMsg.msg.name}</Help>}
                                         </Field>
                                         <Field>
                                             <Label htmlFor="inputImage">
@@ -258,7 +277,7 @@ export default function EditPage() {
                                             <Control>
                                                 <Input onChange={handleChange} name={"image"} value={restaurant?.image} type={"text"} id="inputImage" placeholder="Image URL" />
                                             </Control>
-                                            {postMsg?.image && <Help color={'danger'}>{postMsg.image}</Help>}
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg.image && <Help color={'danger'}>{postMsg.msg.image}</Help>}
                                         </Field>
                                     </Block>
                                     <Block>
@@ -270,7 +289,7 @@ export default function EditPage() {
                                             <Control>
                                                 <Input onChange={handleChange} name={"address.street"} value={restaurant.address?.street} type={"text"} id="inputStreet" placeholder="Na Porici 81" required />
                                             </Control>
-                                            {((postMsg?.['address.street'] ?? null) !== null) && <Help color={'danger'}>{postMsg['address.street']}</Help>}
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.street'] && <Help color={'danger'}>{postMsg.msg['address.street']}</Help>}
                                         </Field>
                                         <Field>
                                             <Label htmlFor="inputCity">
@@ -279,7 +298,7 @@ export default function EditPage() {
                                             <Control>
                                                 <Input onChange={handleChange} name={"address.city"} value={restaurant.address?.city} type={"text"} id="inputCity" placeholder="Praha 1" required />
                                             </Control>
-                                            {((postMsg?.['address.city'] ?? null) !== null) && <Help color={'danger'}>{postMsg['address.city']}</Help>}
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.city'] && <Help color={'danger'}>{postMsg.msg['address.city']}</Help>}
                                         </Field>
                                         <Field>
                                             <Label htmlFor="inputPsc">
@@ -288,7 +307,7 @@ export default function EditPage() {
                                             <Control>
                                                 <Input onChange={handleChange} name={"address.postalCode"} value={restaurant.address?.postalCode} type={"text"} id="inputPsc" placeholder="11000" required />
                                             </Control>
-                                            {((postMsg?.['address.postalCode'] ?? null) !== null) && <Help color={'danger'}>{postMsg['address.postalCodes']}</Help>}
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.postalCode'] && <Help color={'danger'}>{postMsg.msg['address.postalCode']}</Help>}
                                         </Field>
                                     </Block>
                                     <Block>
@@ -300,7 +319,7 @@ export default function EditPage() {
                                             <Control>
                                                 <Input onChange={handleChange} name={"api.baseUrl"} value={restaurant.api?.baseUrl} type={"text"} id="inputApiBaseUrl" placeholder="https://api.npoint.io/" />
                                             </Control>
-                                            {((postMsg?.['api.baseUrl'] ?? null) !== null) && <Help color={'danger'}>{postMsg['api.baseUrl']}</Help>}
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.baseUrl'] && <Help color={'danger'}>{postMsg.msg['api.baseUrl']}</Help>}
                                         </Field>
                                         <Field>
                                             <Label htmlFor="inputApiParam">
@@ -309,16 +328,19 @@ export default function EditPage() {
                                             <Control>
                                                 <Input onChange={handleChange} name={"api.params"} value={restaurant.api?.params} type={"text"} id="inputApiParam" placeholder="API Params" />
                                             </Control>
-                                            {((postMsg?.['api.params'] ?? null) !== null) && <Help color={'danger'}>{postMsg['api.params']}</Help>}
-                                        </Field>
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.params'] && <Help color={'danger'}>{postMsg.msg['api.params']}</Help>}</Field>
                                     </Block>
                                     <Heading renderAs='p' size={4} className='has-text-weight-bold'>Otevírací doba:</Heading>
                                     {Object.keys(restaurant.openingTime).map((key) => {
                                         return <OpeningTimes key={key} day={key} />
                                     })}
-                                    <Button submit fullwidth color={'warning'}>Uložit</Button>
+                                    <Button id={"submitButton"} submit fullwidth color={'warning'}>Uložit</Button>
                                 </form>
-                                {postMsg !== null && Object.keys(postMsg).length === 0 && <p className="has-text-danger">{postMsg}</p>}
+                                {postMsg && typeof postMsg.msg === "string" && (
+                                    <p className={postMsg.success ? "has-text-success" : "has-text-danger"}>
+                                        {postMsg.msg}
+                                    </p>
+                                )}
                             </Box>
                         </Container>
                     </Fragment>)

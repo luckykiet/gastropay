@@ -11,7 +11,7 @@ const { Body } = Hero;
 const { Field, Label, Control, Input, Help } = Form;
 export default function AddPage() {
     const navigate = useNavigate();
-    const [postMsg, setPostMsg] = useState(null);
+    const [postMsg, setPostMsg] = useState({});
     const [restaurant, setRestaurant] = useState({
         name: "",
         address: {
@@ -43,7 +43,7 @@ export default function AddPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setPostMsg(null);
+        setPostMsg({});
         if (restaurant.name === '' || restaurant.address.street === '' || restaurant.address.city === '' || restaurant.address.postalCode === '') {
             setPostMsg("Zkontrolujte vyplněné údaje!");
         } else {
@@ -66,11 +66,17 @@ export default function AddPage() {
                     setChoosenRestaurant(msg);
                     navigate(PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + msg._id)
                 } else {
-                    setPostMsg(msg);
+                    setPostMsg({
+                        success: false,
+                        msg: msg
+                    });
                 }
             } catch (err) {
                 console.log(err.response.data.msg)
-                setPostMsg(err.response.data.msg);
+                setPostMsg({
+                    success: false,
+                    msg: err.response.data.msg
+                });
             }
         }
     }
@@ -92,7 +98,7 @@ export default function AddPage() {
                                 <Control>
                                     <Input onChange={handleChange} name={"name"} value={restaurant?.name} type={"text"} id="inputName" placeholder="Gastro bistro" />
                                 </Control>
-                                {postMsg?.name && <Help color={'danger'}>{postMsg.name}</Help>}
+                                {postMsg && typeof postMsg.msg === "object" && postMsg.msg.name && <Help color={'danger'}>{postMsg.msg.name}</Help>}
                             </Field>
                         </Block>
                         <Block>
@@ -104,7 +110,7 @@ export default function AddPage() {
                                 <Control>
                                     <Input onChange={handleChange} name={"address.street"} value={restaurant.address?.street} type={"text"} id="inputStreet" placeholder="Na Porici 81" />
                                 </Control>
-                                {((postMsg?.['address.street'] ?? null) !== null) && <Help color={'danger'}>{postMsg['address.street']}</Help>}
+                                {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.street'] && <Help color={'danger'}>{postMsg.msg['address.street']}</Help>}
                             </Field>
                             <Field>
                                 <Label htmlFor="inputCity">
@@ -113,7 +119,7 @@ export default function AddPage() {
                                 <Control>
                                     <Input onChange={handleChange} name={"address.city"} value={restaurant.address?.city} type={"text"} id="inputCity" placeholder="Praha 1" />
                                 </Control>
-                                {((postMsg?.['address.city'] ?? null) !== null) && <Help color={'danger'}>{postMsg['address.city']}</Help>}
+                                {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.city'] && <Help color={'danger'}>{postMsg.msg['address.city']}</Help>}
                             </Field>
                             <Field>
                                 <Label htmlFor="inputPsc">
@@ -123,11 +129,15 @@ export default function AddPage() {
                                     <Input onChange={handleChange} name={"address.postalCode"} value={restaurant.address?.postalCode} type={"text"} id="inputPsc" placeholder="11000" />
                                 </Control>
                             </Field>
-                            {((postMsg?.['address.postalCode'] ?? null) !== null) && <Help color={'danger'}>{postMsg['address.postalCode']}</Help>}
+                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.postalCode'] && <Help color={'danger'}>{postMsg.msg['address.postalCode']}</Help>}
                         </Block>
                         <Button submit fullwidth color={'success'}>Přidat</Button>
                     </form>
-                    {postMsg !== null && Object.keys(postMsg).length === 0 && <p className="has-text-danger">{postMsg}</p>}
+                    {postMsg && typeof postMsg.msg === "string" && (
+                        <p className={"has-text-danger"}>
+                            {postMsg.msg}
+                        </p>
+                    )}
                 </Box>
             </Container>
         </Fragment>

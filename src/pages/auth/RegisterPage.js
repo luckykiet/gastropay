@@ -136,8 +136,8 @@ export default function RegisterPage() {
             <Content textAlign={"center"}>
                 <Heading pt={5} spaced>Registrační formulář</Heading>
             </Content>
-            <Container className="has-text-left">
-                <Box style={{ width: "400px", margin: 'auto' }}>
+            <Container className="has-text-left is-max-desktop">
+                <Box>
                     <form onSubmit={handleSubmit}>
                         <Field>
                             <Label htmlFor="inputIco">

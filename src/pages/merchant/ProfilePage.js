@@ -12,7 +12,7 @@ import { Promise } from "bluebird";
 const { Field, Label, Control, Input, Select, Help } = Form;
 
 export default function ProfilePage() {
-    const [postMsg, setPostMsg] = useState('');
+    const [postMsg, setPostMsg] = useState({});
     const [loading, setLoading] = useState(true);
     const [password, setPassword] = useState('');
     const [comgate, setComgate] = useState({});
@@ -20,7 +20,7 @@ export default function ProfilePage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setPostMsg(null);
+        setPostMsg({});
         if (comgate.merchant === '' || comgate.secret === '' || comgate.label === '') {
             setPostMsg("Zkontrolujte vyplněné údaje!");
         } else {
@@ -41,15 +41,24 @@ export default function ProfilePage() {
                     }
                 });
                 if (success) {
-                    console.log(msg);
-                    setPassword('')
+                    setPassword('');
+                    setPostMsg({
+                        success: true,
+                        msg: "Úspěšně aktualizováno!"
+                    });
                     setComgate(msg.paymentGates.comgate);
                 } else {
-                    setPostMsg(msg);
+                    setPostMsg({
+                        success: false,
+                        msg: msg
+                    });
                 }
             } catch (err) {
                 console.log(err.response.data.msg)
-                setPostMsg(err.response.data.msg);
+                setPostMsg({
+                    success: false,
+                    msg: err.response.data.msg
+                });
             } finally {
                 setLoading(false);
             }
@@ -73,7 +82,7 @@ export default function ProfilePage() {
 
     useEffect(() => {
         setLoading(true);
-        setPostMsg(null);
+        setPostMsg({});
         const fetchRestaurant = async () => {
             const axios = createAxios(addSlashAfterUrl(API_URL));
             try {
@@ -102,8 +111,8 @@ export default function ProfilePage() {
                 <Content textAlign={"center"}>
                     <Heading pt={5} spaced>Profile</Heading>
                 </Content>
-                <Container className="has-text-left">
-                    <Box style={{ width: "400px", margin: 'auto' }}>
+                <Container className="has-text-left is-max-desktop">
+                    <Box>
                         <Block>
                             <form onSubmit={handleSubmit}>
                                 <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Comgate:</Heading>
@@ -121,7 +130,7 @@ export default function ProfilePage() {
                                 <Block>
                                     <Button.Group>
                                         <Button renderAs="a" color={"info"} target="_blank" href="https://portal.comgate.cz">Portál</Button>
-                                        <Button renderAs="a" color={"link"} target="_blank" href="https://help.comgate.cz/docs/api-protokol">API Dokumentace</Button>
+                                        <Button renderAs="a" color={"link"} target="_blank" href="https://help.comgate.cz/docs/api-https://help.comgate.cz/docs/api-protokol#založen%C3%AD-platby">API Dokumentace</Button>
                                     </Button.Group>
                                 </Block>
                                 <Field>
@@ -131,7 +140,7 @@ export default function ProfilePage() {
                                     <Control>
                                         <Input name={"merchant"} value={comgate.merchant} onChange={handleChange} id="inputMerchant" type="text" placeholder="Merchant ID" required />
                                     </Control>
-                                    {postMsg?.merchant && <Help color={'danger'}>{postMsg.merchant}</Help>}
+                                    {postMsg && typeof postMsg.msg === "object" && postMsg?.msg?.merchant && <Help color={'danger'}>{postMsg.msg.merchant}</Help>}
                                 </Field>
                                 <Field>
                                     <Label htmlFor="checkBoxIsTestMode">
@@ -165,7 +174,7 @@ export default function ProfilePage() {
                                     <Control>
                                         <Input name={"label"} value={comgate.label} onChange={handleChange} id="inputLabel" type="text" placeholder="Popis produktu" required />
                                     </Control>
-                                    {postMsg?.label && <Help color={'danger'}>{postMsg.label}</Help>}
+                                    {postMsg && typeof postMsg.msg === "object" && postMsg?.msg?.label && <Help color={'danger'}>{postMsg.msg.label}</Help>}
                                 </Field>
                                 <Field>
                                     <Label htmlFor="selectMethods">
@@ -186,7 +195,7 @@ export default function ProfilePage() {
                                     <Control>
                                         <Input name={"secret"} value={comgate.secret} onChange={handleChange} id="inputSecret" type="text" placeholder="Secret" required />
                                     </Control>
-                                    {postMsg?.secret && <Help color={'danger'}>{postMsg.secret}</Help>}
+                                    {postMsg && typeof postMsg.msg === "object" && postMsg?.msg?.secret && <Help color={'danger'}>{postMsg.msg.secret}</Help>}
                                 </Field>
                                 <Field>
                                     <Label htmlFor="selectCurrency">
@@ -208,11 +217,15 @@ export default function ProfilePage() {
                                         <Input name={"password"} value={password} onChange={(e) => setPassword(e.target.value)} id="inputPassword" type="password" placeholder="*************" required />
                                         <Icon align="left"><FontAwesomeIcon icon={faLock} /></Icon>
                                     </Control>
-                                    {postMsg?.password && <Help color={'danger'}>{postMsg.password}</Help>}
+                                    {postMsg && typeof postMsg.msg === "object" && postMsg?.msg?.password && <Help color={'danger'}>{postMsg?.msg?.password}</Help>}
                                 </Field>
                                 <Button submit fullwidth color={'warning'}>Uložit</Button>
                             </form>
-                            {postMsg !== null && Object.keys(postMsg).length === 0 && <p className="has-text-danger">{postMsg}</p>}
+                            {postMsg && typeof postMsg.msg === "string" && (
+                                <p className={postMsg.success ? "has-text-success" : "has-text-danger"}>
+                                    {postMsg.msg}
+                                </p>
+                            )}
                         </Block>
                     </Box>
                 </Container>
