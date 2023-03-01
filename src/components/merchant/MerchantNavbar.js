@@ -35,7 +35,7 @@ export default function MerchantNavbar() {
     return (
         <Navbar color={'dark'} role="navigation" aria-label="menu navigation" className='is-spaced has-shadow'>
             <Brand>
-                <Item className='is-size-4 has-text-weight-bold' renderAs={RouterLink} to={PATHS.ROUTERS.MERCHANT}>
+                <Item className='is-size-3 has-text-weight-bold' renderAs={RouterLink} to={PATHS.ROUTERS.MERCHANT}>
                     IČO: {ico}
                 </Item>
                 <Container align='left'>

@@ -5,25 +5,16 @@ import { createAxios, addSlashAfterUrl, PATHS } from '../../utils';
 import { Link, useNavigate } from 'react-router-dom';
 import LoadingComponent from '../../components/LoadingComponent';
 import { Promise } from 'bluebird';
-import { useChoosenRestaurant, useSetCartItems, useSetChoosenRestaurant } from '../../stores/ZustandStores';
+import { useChoosenRestaurant } from '../../stores/ZustandStores';
 
 const { Content } = Card;
 
 export default function MenuPage() {
-    const [restaurant, setRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
-    const setCart = useSetCartItems();
+    const restaurant = useChoosenRestaurant();
     const navigate = useNavigate();
     const apiUrl = addSlashAfterUrl(restaurant?.api?.baseUrl);
     const [menu, setMenu] = useState({});
     const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        return () => {
-            setRestaurant({});
-            setCart([]);
-        };
-    }, [navigate, setCart, setRestaurant]);
-
 
     useEffect(() => {
         if (Object.keys(restaurant).length === 0) {

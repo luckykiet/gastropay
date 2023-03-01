@@ -1,11 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Block, Button, Columns, Container, Content, Heading, Image } from 'react-bulma-components';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { createAxios, API_URL, isOpening, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl, BASE_URL, removeSlashFromUrl, isValidUrl } from "../../utils";
 import Promise from "bluebird";
 import moment from 'moment';
 import LoadingComponent from '../../components/LoadingComponent';
-import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/ZustandStores';
+import { useChoosenRestaurant, useSetCartItems, useSetChoosenRestaurant } from '../../stores/ZustandStores';
 import DownloadableQRCode from '../../components/restaurants/DownloadableQRCode';
 import { PATHS } from '../../utils';
 
@@ -18,11 +18,13 @@ const currentOpeningTimeStyle = (day) => {
 };
 
 export default function RestaurantPage() {
-    const [business, setBusiness] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
+    const [business, setBusiness] = useState({});
+    const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
     const [loading, setLoading] = useState(true);
     const { idRestaurant } = useParams();
-
+    const setCartItems = useSetCartItems();
     const todayDay = moment().day();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,8 +34,7 @@ export default function RestaurantPage() {
                 if (!success) {
                     throw new Error(msg);
                 }
-                const restaurant = msg;
-                setBusiness(restaurant);
+                setBusiness(msg);
                 setLoading(false);
             } catch (err) {
                 setBusiness({});
@@ -44,6 +45,13 @@ export default function RestaurantPage() {
         Promise.delay(500).then(fetchData);
     }, [idRestaurant, setBusiness]);
 
+    const handleChooseClick = () => {
+        if (choosenRestaurant && choosenRestaurant._id !== business._id) {
+            setCartItems([]);
+        }
+        setChoosenRestaurant(business);
+        navigate(PATHS.ROUTERS.MENU);
+    }
 
     return (
         <Fragment>
@@ -110,7 +118,7 @@ export default function RestaurantPage() {
                                 </Columns>
                                 <Block pt={5}>
                                     <Container className='has-text-centered' >
-                                        <Button className='has-text-weight-bold' rounded color={'success'} style={{ width: "300px" }} size={'large'} renderAs={Link} to={PATHS.ROUTERS.MENU}>Objednat jídlo</Button>
+                                        <Button className='has-text-weight-bold' rounded color={'success'} style={{ width: "300px" }} size={'large'} onClick={handleChooseClick}>Objednat jídlo</Button>
                                     </Container>
                                 </Block>
                             </Fragment>

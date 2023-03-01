@@ -9,19 +9,19 @@ import { PATHS } from '../../utils';
 
 const { Brand, Item } = Navbar;
 
-export default function MenuNavbar() {
+export default function MenuNavbar({ showSidebar }) {
     const cartItems = useCartItems();
 
     return (
         <Navbar color={'primary'} role="navigation" aria-label="menu navigation" className='is-spaced has-shadow'>
             <Brand>
-                <Item className='is-size-4 has-text-weight-bold' renderAs={Link} to={PATHS.ROUTERS.HOME}>
+                <Item className='is-size-3 has-text-weight-bold' renderAs={Link} to={PATHS.ROUTERS.HOME}>
                     {packageJson.app.name}
                 </Item>
             </Brand>
             <Navbar.Container align='right'>
                 <Container className='has-text-right'>
-                    <CartButton numItems={calculateCart(cartItems).totalQuantity} />
+                    <CartButton showSidebar={showSidebar} numItems={calculateCart(cartItems).totalQuantity} />
                 </Container>
             </Navbar.Container>
         </Navbar>

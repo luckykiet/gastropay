@@ -1,7 +1,7 @@
 import React from "react";
 import "../../assets/scss/CollapsibleSidebar.scss";
 import { Button, Card, Heading } from "react-bulma-components";
-import { useCartItems, useIsSidebarShowed, useSetIsSidebarShowed, useTips } from "../../stores/ZustandStores";
+import { useCartItems, useTips } from "../../stores/ZustandStores";
 import Cart from "./Cart";
 import { calculateCart, PATHS } from '../../utils';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,21 +11,18 @@ import { useNavigate } from "react-router-dom";
 const { Header, Content, Footer } = Card;
 const { Title, Icon } = Header;
 const { Item } = Footer;
-export default function CollapsibleSidebar() {
-    const [isSidebarShowed, setIsSidebarShowed] = [useIsSidebarShowed(), useSetIsSidebarShowed()];
+export default function CollapsibleSidebar({ show, handleCloseSidebar }) {
     const cartItems = useCartItems();
     const tips = useTips();
     const navigate = useNavigate();
-    const handleCloseSidebar = () => {
-        setIsSidebarShowed(!isSidebarShowed);
-    }
+
     const handleCheckOutClick = () => {
         if (Object.keys(cartItems).length > 0) {
             navigate(PATHS.ROUTERS.PAYMENT);
         }
     }
     return (
-        <div className={`collapsible-sidebar ${!isSidebarShowed ? "is-hidden" : ""} has-background-grey-light`}>
+        <div className={`collapsible-sidebar ${!show ? "is-hidden" : ""} has-background-grey-light`}>
             <Card mx={3} mt={3}>
                 <Header>
                     <Title>
