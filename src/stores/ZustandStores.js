@@ -13,6 +13,9 @@ const useStore = create((set) => ({
     isSidebarShowed: false,
     setIsSidebarShowed: (isSidebarShowed) => set({ isSidebarShowed }),
 
+    tips: 0,
+    setTips: (tips) => set({ tips }),
+
     cartItems: [],
     setCartItems: (cartItems) => set({ cartItems }),
     addToCartItems: (item, quantity) =>
@@ -73,3 +76,6 @@ export const useSetChoosenRestaurant = () => useStore(useCallback((state) => sta
 
 export const useIsSidebarShowed = () => useStore(useCallback((state) => state.isSidebarShowed, []));
 export const useSetIsSidebarShowed = () => useStore(useCallback((state) => state.setIsSidebarShowed, []));
+
+export const useTips = () => useStore(useCallback((state) => state.tips, []));
+export const useSetTips = () => useStore(useCallback((state) => state.setTips, []));

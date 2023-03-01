@@ -1,35 +1,46 @@
 import React from "react";
 import "../../assets/scss/CollapsibleSidebar.scss";
 import { Button, Card, Heading } from "react-bulma-components";
-import { useIsSidebarShowed, useSetIsSidebarShowed } from "../../stores/ZustandStores";
+import { useCartItems, useIsSidebarShowed, useSetIsSidebarShowed, useTips } from "../../stores/ZustandStores";
 import Cart from "./Cart";
-const CollapsibleSidebar = () => {
+import { calculateCart } from '../../utils';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping, faWallet } from "@fortawesome/free-solid-svg-icons";
+
+const { Header, Content, Footer } = Card;
+const { Title, Icon } = Header;
+const { Item } = Footer;
+export default function CollapsibleSidebar() {
     const [isSidebarShowed, setIsSidebarShowed] = [useIsSidebarShowed(), useSetIsSidebarShowed()];
+    const cartItems = useCartItems();
+    const tips = useTips();
     const handleCloseSidebar = () => {
         setIsSidebarShowed(!isSidebarShowed);
     }
     return (
         <div className={`collapsible-sidebar ${!isSidebarShowed ? "is-hidden" : ""}`}>
             <Card>
-                <Card.Header>
-                    <Card.Header.Title>
-                        <Heading size={3}>Košík</Heading>
-                    </Card.Header.Title>
-                    <Card.Header.Icon>
+                <Header>
+                    <Title>
+                        <Heading size={3}>Košík &nbsp;<FontAwesomeIcon icon={faCartShopping} /></Heading>
+                    </Title>
+                    <Icon>
                         <Button size={"large"} onClick={handleCloseSidebar} remove />
-                    </Card.Header.Icon>
-                </Card.Header>
-                <Card.Content>
+                    </Icon>
+                </Header>
+                <Content>
                     <Cart />
-                </Card.Content>
-                <Card.Footer>
-                    <Card.Footer.Item>
-                        <Button color={"success"}>Checkout</Button>
-                    </Card.Footer.Item>
-                </Card.Footer>
+                </Content>
+                <Footer>
+                    <Item>
+                        <Heading size={4} renderAs="p">Celkem: {Math.round(calculateCart(cartItems).totalPrice + tips) + " Kč"}</Heading>
+                    </Item>
+                    <Item>
+                        <Button className="has-text-weight-bold" color={"success"}><FontAwesomeIcon icon={faWallet} />&nbsp;Přejít k platbě</Button>
+                    </Item>
+                </Footer>
             </Card>
         </div>
     );
 };
 
-export default CollapsibleSidebar;
