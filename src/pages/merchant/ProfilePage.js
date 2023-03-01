@@ -130,7 +130,7 @@ export default function ProfilePage() {
                                 <Block>
                                     <Button.Group>
                                         <Button renderAs="a" color={"info"} target="_blank" href="https://portal.comgate.cz">Portál</Button>
-                                        <Button renderAs="a" color={"link"} target="_blank" href="https://help.comgate.cz/docs/api-https://help.comgate.cz/docs/api-protokol#založen%C3%AD-platby">API Dokumentace</Button>
+                                        <Button renderAs="a" color={"link"} target="_blank" href="https://help.comgate.cz/docs/api-protokol#založen%C3%AD-platby">API Dokumentace</Button>
                                     </Button.Group>
                                 </Block>
                                 <Field>
