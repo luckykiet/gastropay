@@ -1,0 +1,77 @@
+{
+  "resp": [
+    {
+      "success": true,
+      "msg": {
+        "refId": "9KwKQEaq",
+        "idRestaurant": "63fdcb058c4664432f5dc15a",
+        "status": "PENDING",
+        "cart": {
+          "orders": [
+            {
+              "ean": "1",
+              "name": "Bun bo nam bo",
+              "price": 110,
+              "amount": 2
+            },
+            {
+              "ean": "2",
+              "name": "Bun ca",
+              "price": 112,
+              "amount": 2
+            }
+          ],
+          "isConfirmed": false
+        },
+        "tips": 40,
+        "paymentMethod": {
+          "comgate": {
+            "transId": "Y2ZQ-HTT8-84CO",
+            "status": "PENDING"
+          },
+          "gopay": {
+            "transId": "",
+            "status": "PENDING"
+          }
+        },
+        "_id": "63ffd63643b4e2fb6f301a5b",
+        "__v": 0
+      }
+    },
+
+    {
+      "success": true,
+      "msg": {
+        "refId": "ca2ns6gP",
+        "idRestaurant": "63fdcb058c4664432f5dc15a",
+        "status": "PENDING",
+        "cart": {
+          "orders": [
+            {
+              "ean": "1",
+              "name": "Bun bo nam bo",
+              "price": 110,
+              "amount": 2
+            },
+            {
+              "ean": "2",
+              "name": "Bun ca",
+              "price": 112,
+              "amount": 2
+            }
+          ],
+          "isConfirmed": false
+        },
+        "tips": 40,
+        "paymentMethod": {
+          "comgate": {
+            "transId": "GSSV-EB7R-T4W1"
+          }
+        },
+        "_id": "63ffdc10796f2ebbcedf356a",
+        "__v": 0
+      },
+      "url": "https://payments.comgate.cz/client/instructions/index?id=GSSV-EB7R-T4W1"
+    }
+  ]
+}

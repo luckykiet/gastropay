@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { nanoid } = require('nanoid');
 const Order = require("./OrderSchema");
+const uppercaseNumberAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 const TransactionSchema = new Schema({
-    refId: { type: String, required: true, unique: true },
+    refId: { type: String, required: true, unique: true, default: () => nanoid(8, uppercaseNumberAlphabet) },
     idRestaurant: { type: Schema.Types.ObjectId, required: true },
     status: { type: String, required: true, default: 'PENDING', enum: ['PENDING', 'CANCELLED', 'PAID'] },
     cart: {
@@ -19,6 +21,15 @@ const TransactionSchema = new Schema({
     },
     tips: { type: Number, required: true, default: 0 },
     paymentMethod: {
+        type: Object,
+        required: true,
+        validate: {
+            validator: function (value) {
+                const paymentMethods = Object.keys(value);
+                return paymentMethods.length === 1 && ['comgate', 'gopay'].includes(paymentMethods[0]);
+            },
+            message: 'Payment method must be only 1'
+        },
         comgate: {
             transId: { type: String, default: "" },
             status: { type: String, required: true, default: 'PENDING', enum: ['PENDING', 'CANCELLED', 'PAID'] },
@@ -29,9 +40,5 @@ const TransactionSchema = new Schema({
         }
     }
 }, { strict: true }, { timestamps: true });
-
-TransactionSchema.path('paymentMethod').validate(function (value) {
-    return (value.comgate.transId && !value.gopay.transId) || (!value.comgate.transId && value.gopay.transId);
-}, 'Only one payment method can be chosen.');
 
 module.exports = TransactionSchema;

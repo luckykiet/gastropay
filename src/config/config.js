@@ -43,6 +43,7 @@ const config = {
             PROTECTED: "protected",
             REGISTER: "register",
             ADMIN: "admin",
+            TRANSACTION: "transaction",
         }
     },
     LANGUAGES: {
