@@ -6,7 +6,7 @@ export default function OpeningTimeStatus({ todayOpeningTime, nextOpenTime }) {
     const { isOpen, from, to } = todayOpeningTime.today;
     const todayMoment = moment();
     const nextDay = Object.keys(nextOpenTime)[0];
-    if (!isOpen && !nextOpenTime.isOpen) {
+    if (!isOpen && !nextOpenTime[nextDay]?.isOpen) {
         return (
             <p>
                 <strong className="has-text-danger">Dočasně uzavřeno</strong>

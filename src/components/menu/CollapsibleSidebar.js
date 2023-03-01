@@ -3,9 +3,10 @@ import "../../assets/scss/CollapsibleSidebar.scss";
 import { Button, Card, Heading } from "react-bulma-components";
 import { useCartItems, useIsSidebarShowed, useSetIsSidebarShowed, useTips } from "../../stores/ZustandStores";
 import Cart from "./Cart";
-import { calculateCart } from '../../utils';
+import { calculateCart, PATHS } from '../../utils';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faWallet } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const { Header, Content, Footer } = Card;
 const { Title, Icon } = Header;
@@ -14,8 +15,14 @@ export default function CollapsibleSidebar() {
     const [isSidebarShowed, setIsSidebarShowed] = [useIsSidebarShowed(), useSetIsSidebarShowed()];
     const cartItems = useCartItems();
     const tips = useTips();
+    const navigate = useNavigate();
     const handleCloseSidebar = () => {
         setIsSidebarShowed(!isSidebarShowed);
+    }
+    const handleCheckOutClick = () => {
+        if (Object.keys(cartItems).length > 0) {
+            navigate(PATHS.ROUTERS.TRANSACTION);
+        }
     }
     return (
         <div className={`collapsible-sidebar ${!isSidebarShowed ? "is-hidden" : ""}`}>
@@ -36,7 +43,7 @@ export default function CollapsibleSidebar() {
                         <Heading size={4} renderAs="p">Celkem: {Math.round(calculateCart(cartItems).totalPrice + tips) + " Kč"}</Heading>
                     </Item>
                     <Item>
-                        <Button className="has-text-weight-bold" color={"success"}><FontAwesomeIcon icon={faWallet} />&nbsp;Přejít k platbě</Button>
+                        <Button onClick={handleCheckOutClick} disabled={Object.keys(cartItems).length === 0 ? true : false} className="has-text-weight-bold" color={"success"}><FontAwesomeIcon icon={faWallet} />&nbsp;Přejít k platbě</Button>
                     </Item>
                 </Footer>
             </Card>

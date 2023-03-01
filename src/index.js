@@ -27,6 +27,7 @@ import { PATHS } from './utils';
 import EditPage from './pages/merchant/panel/EditPage';
 import AddPage from './pages/merchant/panel/AddPage';
 import ProfilePage from './pages/merchant/ProfilePage';
+import TransactionPage from './pages/guest/TransactionPage';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -100,6 +101,15 @@ const router = createBrowserRouter([
   {
     path: PATHS.ROUTERS.MENU,
     element: <MenuLayout />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: PATHS.ROUTERS.TRANSACTION,
+    element: <RootLayout />,
+    children: [{
+      path: "",
+      element: <TransactionPage />,
+    }],
     errorElement: <ErrorPage />,
   },
   {
