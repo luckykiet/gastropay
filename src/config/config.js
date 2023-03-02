@@ -33,7 +33,7 @@ const config = {
             PROFILE: "profile",
             RESTAURANT_EDIT: "edit",
             RESTAURANT_ADD: "add",
-            RESTAURANT_TRANSACTION: "restaurant/transaction",
+            RESTAURANT_TRANSACTION: "transaction",
         },
         API: {
             AUTH: "auth",

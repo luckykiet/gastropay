@@ -73,12 +73,16 @@ export default function ProfilePage() {
                 const lastKey = keys.pop();
                 let parent = draft;
                 keys.forEach((key) => {
+                    if (!parent[key]) {
+                        parent[key] = {};
+                    }
                     parent = parent[key];
                 });
                 parent[lastKey] = value;
             })
         );
     };
+
 
     useEffect(() => {
         setLoading(true);

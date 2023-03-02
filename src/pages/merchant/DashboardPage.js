@@ -33,15 +33,15 @@ export default function DashboardPage() {
     }, [userId, choosenRestaurant])
 
     return (
-        <Columns style={{ height: "calc(80vh)" }} centered vCentered>
-            <Column style={{ height: "calc(100vh)" }} className='is-one-thirds-desktop'>
+        <Columns centered>
+            <Column className='is-one-thirds-desktop'>
                 <Hero color="info" size="small">
                     <Body>
                         <Heading size={4} className='is-inline-block'>Restaurace</Heading>
                         <Button color={'warning'} size={'medium'} className='is-pulled-right' renderAs={Link} to={PATHS.ROUTERS.MERCHANT + '/' + PATHS.ROUTERS.RESTAURANT_ADD}>Přidat</Button>
                     </Body>
                 </Hero>
-                <Column style={{ height: "calc(60vh)", overflowY: 'scroll' }}>
+                <Column>
                     {restaurants.length === 0 ?
                         <Heading size={5} renderAs='p'>Nemáte ještě žádnou restauraci.</Heading>
                         :
@@ -51,7 +51,7 @@ export default function DashboardPage() {
                     }
                 </Column>
             </Column>
-            <Column style={{ height: "calc(100vh)" }} className='is-two-thirds-desktop'>
+            <Column className='is-two-thirds-desktop'>
                 <Outlet />
             </Column>
         </Columns>

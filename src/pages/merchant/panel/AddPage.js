@@ -28,18 +28,23 @@ export default function AddPage() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
         setRestaurant(
             produce((draft) => {
                 const keys = name.split(".");
                 const lastKey = keys.pop();
                 let parent = draft;
                 keys.forEach((key) => {
+                    if (!parent[key]) {
+                        parent[key] = {};
+                    }
                     parent = parent[key];
                 });
                 parent[lastKey] = value;
             })
         );
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -86,8 +91,8 @@ export default function AddPage() {
                 <Heading size={4}>Přidat novou restauraci</Heading>
             </Body>
         </Hero>
-            <Container py={5} breakpoint={'fluid'} style={{ height: "calc(60vh)", overflowY: 'scroll' }}>
-                <Box style={{ margin: 'auto' }}>
+            <Container py={5} breakpoint={'fluid'}>
+                <Box>
                     <form onSubmit={handleSubmit}>
                         <Block>
                             <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Profile:</Heading>

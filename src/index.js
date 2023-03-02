@@ -29,6 +29,7 @@ import AddPage from './pages/merchant/panel/AddPage';
 import ProfilePage from './pages/merchant/ProfilePage';
 import TransactionPage from './pages/guest/TransactionPage';
 import PaymentPage from './pages/guest/PaymentPage';
+import TransactionPanelPage from './pages/merchant/panel/TransactionPanelPage';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -135,6 +136,10 @@ const router = createBrowserRouter([
       {
         path: PATHS.ROUTERS.RESTAURANT_ADD,
         element: <AddPage />,
+      },
+      {
+        path: PATHS.ROUTERS.RESTAURANT_TRANSACTION + '/' + PATHS.ROUTERS.ID_RESTAURANT,
+        element: <TransactionPanelPage />,
       }]
     }, {
       path: PATHS.ROUTERS.PROFILE,

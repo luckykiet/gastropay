@@ -1,20 +1,20 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { createAxios, addSlashAfterUrl, API_URL, PATHS, daysOfWeeksCzech } from '../../../utils';
-import { Box, Heading, Form, Button, Container, Hero, Block } from "react-bulma-components";
+import { useNavigate, useParams } from 'react-router-dom';
+import { createAxios, addSlashAfterUrl, API_URL, PATHS } from '../../../utils';
+import { Box, Heading, Form, Button, Container, Hero, Block, Tabs } from "react-bulma-components";
 import { Promise } from 'bluebird';
-import TimePicker from 'rc-time-picker';
 import 'rc-time-picker/assets/index.css';
 import Toggle from 'react-toggle';
 import "react-toggle/style.css";
 import LoadingComponent from '../../../components/LoadingComponent';
 import produce from 'immer';
-import moment from 'moment';
 import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../../stores/MerchantStores';
 import ConfirmBox from '../../../components/merchant/ConfirmBox';
+import OpeningTimeInputs from '../../../components/merchant/OpeningTimeInputs';
 
 const { Body } = Hero;
 const { Field, Label, Control, Input, Help } = Form;
+const { Tab } = Tabs;
 export default function EditPage() {
     const idRestaurant = useParams().idRestaurant;
     const [restaurant, setRestaurant] = useState({});
@@ -22,6 +22,32 @@ export default function EditPage() {
     const [loading, setLoading] = useState(true);
     const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
     const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setLoading(true);
+        setPostMsg({});
+        const fetchRestaurant = async () => {
+            const axios = createAxios(addSlashAfterUrl(API_URL));
+            try {
+                const { data: { success, msg } } = await axios.get(`api/${PATHS.API.MERCHANT}/${PATHS.API.RESTAURANT}/${idRestaurant}`, {
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem('token')
+                    }
+                })
+                if (success) {
+                    console.log(msg)
+                    setRestaurant(msg);
+                    setChoosenRestaurant(msg);
+                }
+            } catch (err) {
+                console.log(err)
+            } finally {
+                setLoading(false);
+            }
+        }
+        Promise.delay(0).then(fetchRestaurant);
+    }, [setChoosenRestaurant, idRestaurant]);
 
     const handleDeleteButtonClick = (e) => {
         e.preventDefault();
@@ -39,13 +65,11 @@ export default function EditPage() {
             });
 
             if (success) {
-                console.log(msg);
                 setChoosenRestaurant({});
                 setPostMsg({
                     success: true,
                     msg: msg
                 });
-                //navigate(PATHS.ROUTERS.MERCHANT);
             } else {
                 setPostMsg({
                     success: false,
@@ -66,44 +90,25 @@ export default function EditPage() {
         setShowConfirmBox(false);
     };
 
-    useEffect(() => {
-        setLoading(true);
-        setPostMsg({});
-        const fetchRestaurant = async () => {
-            const axios = createAxios(addSlashAfterUrl(API_URL));
-            try {
-                const { data: { success, msg } } = await axios.get(`api/${PATHS.API.MERCHANT}/${PATHS.API.RESTAURANT}/${idRestaurant}`, {
-                    headers: {
-                        "Authorization": "Bearer " + localStorage.getItem('token')
-                    }
-                })
-                if (success) {
-                    setRestaurant(msg);
-                    setChoosenRestaurant(msg);
-                }
-            } catch (err) {
-                console.log(err)
-            } finally {
-                setLoading(false);
-            }
-        }
-        Promise.delay(300).then(fetchRestaurant);
-    }, [setChoosenRestaurant, idRestaurant]);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
+
         setRestaurant(
             produce((draft) => {
                 const keys = name.split(".");
                 const lastKey = keys.pop();
                 let parent = draft;
                 keys.forEach((key) => {
+                    if (!parent[key]) {
+                        parent[key] = {};
+                    }
                     parent = parent[key];
                 });
                 parent[lastKey] = value;
             })
         );
     };
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -147,74 +152,6 @@ export default function EditPage() {
         }
     }
 
-
-    const OpeningTimes = ({ day }) => {
-        return (
-            <Block>
-                <Heading renderAs='p' size={5} className='has-text-weight-bold is-inline-block'>{daysOfWeeksCzech[day].name}:</Heading>
-                <div className='is-pulled-right'>
-                    <Heading renderAs='label' htmlFor={'checkBox' + day + 'IsOpen'} size={5} mr={4} className='has-text-weight-bold is-inline-block'>Otevřeno: </Heading>
-                    <Toggle
-                        id={'checkBox' + day + 'IsOpen'}
-                        name={"openingTime." + day + ".isOpen"}
-                        checked={restaurant.openingTime[day].isOpen}
-                        onChange={(e) => {
-                            handleChange({ target: { name: "openingTime." + day + ".isOpen", value: e.target.checked } });
-                        }}
-                    />
-                </div>
-                <br />
-                <Field className='is-inline-block' mr={5}>
-                    <Label htmlFor={"input" + day + "From"}>
-                        Od
-                    </Label>
-                    <Control>
-                        <TimePicker
-                            onChange={(time) => {
-                                setRestaurant(produce((draft) => {
-                                    draft.openingTime[day].from = moment(time).format("HH:mm");;
-                                }));
-                            }}
-                            name={"openingTime." + day + ".from"}
-                            minuteStep={5}
-                            id={"input" + day + "From"}
-                            format={'HH:mm'}
-                            value={restaurant.openingTime[day].from ? moment(restaurant.openingTime[day].from, "HH:mm") : moment("00:00", "HH:mm")}
-                            showSecond={false}
-                            placeholder="Vyberte čas"
-                            allowEmpty={false}
-                            disabled={!restaurant.openingTime[day].isOpen}
-                        />
-                    </Control>
-                </Field>
-
-                <Field className='is-inline-block'>
-                    <Label htmlFor={"input" + day + "To"}>
-                        Do
-                    </Label>
-                    <Control>
-                        <TimePicker
-                            onChange={(time) => {
-                                setRestaurant(produce((draft) => {
-                                    draft.openingTime[day].to = moment(time).format("HH:mm");
-                                }));
-                            }}
-                            name={"openingTime." + day + ".to"}
-                            minuteStep={5}
-                            id={"input" + day + "To"}
-                            format={'HH:mm'}
-                            value={restaurant.openingTime[day].to ? moment(restaurant.openingTime[day].to, "HH:mm") : moment("00:00", "HH:mm")}
-                            showSecond={false}
-                            placeholder="Vyberte čas"
-                            allowEmpty={false}
-                            disabled={!restaurant.openingTime[day].isOpen}
-                        />
-                    </Control>
-                </Field>
-            </Block>
-        )
-    }
-
     return (
         <Fragment>{loading ? (
             <LoadingComponent />
@@ -238,15 +175,22 @@ export default function EditPage() {
                                 onCancel={handleCancel}
                             />
                         )}
-
                         <Hero color="link" size="small">
                             <Body>
                                 <Heading size={4} className='is-inline-block'>{choosenRestaurant.name}</Heading>
                                 <Button color={'danger'} size={'medium'} className='is-pulled-right' onClick={handleDeleteButtonClick}>Smazat</Button>
                             </Body>
                         </Hero>
-                        <Container py={5} breakpoint={'fluid'} style={{ height: "calc(60vh)", overflowY: 'scroll' }}>
-                            <Box style={{ margin: 'auto' }}>
+                        <Container py={5} breakpoint={'fluid'}>
+                            <Tabs size={'large'}>
+                                <Tab active>
+                                    Edit
+                                </Tab>
+                                <Tab onClick={() => navigate(PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_TRANSACTION + "/" + idRestaurant)}>
+                                    Transakce
+                                </Tab>
+                            </Tabs>
+                            <Box>
                                 <form onSubmit={handleSubmit}>
                                     <Block>
                                         <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Profile:</Heading>
@@ -332,7 +276,7 @@ export default function EditPage() {
                                     </Block>
                                     <Heading renderAs='p' size={4} className='has-text-weight-bold'>Otevírací doba:</Heading>
                                     {Object.keys(restaurant.openingTime).map((key) => {
-                                        return <OpeningTimes key={key} day={key} />
+                                        return <OpeningTimeInputs handleChange={handleChange} restaurant={restaurant} setRestaurant={setRestaurant} key={key} day={key} />
                                     })}
                                     <Button id={"submitButton"} submit fullwidth color={'warning'}>Uložit</Button>
                                 </form>

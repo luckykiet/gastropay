@@ -1,6 +1,7 @@
 const { isObjectIdOrHexString } = require("mongoose");
 const MerchantModel = require("../models/MerchantModel");
 const RestaurantModel = require("../models/RestaurantModel");
+const TransactionModel = require("../models/TransactionModel");
 const ObjectId = require("mongoose").Types.ObjectId;
 const bcrypt = require('bcrypt');
 
@@ -139,6 +140,19 @@ const getRestaurantByID = async (req, res) => {
     return res.status(200).json({ success: true, msg: restaurant });
 };
 
+const getRestaurantTransactions = async (req, res) => {
+    const query = TransactionModel.find({ idRestaurant: ObjectId(req.params.restaurantId) });
+    query.sort({ createdAt: 'asc' });
+
+    const transactions = await query.lean().exec();
+    if (!transactions) {
+        return res
+            .status(200)
+            .json({ success: false, msg: `Transactions not found` });
+    }
+    return res.status(200).json({ success: true, msg: transactions });
+};
+
 const getSelf = async (req, res, next) => {
     const authorizedMerchantId = req.userId;
     if (!isObjectIdOrHexString(authorizedMerchantId)) {
@@ -218,5 +232,6 @@ module.exports = {
     getRestaurants,
     getRestaurantByID,
     updateRestaurant,
-    getSelf
+    getSelf,
+    getRestaurantTransactions
 };
