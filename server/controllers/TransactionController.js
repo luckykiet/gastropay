@@ -17,8 +17,6 @@ const createTransaction = async (req, res, next) => {
         });
     }
 
-
-
     const restaurant = await RestaurantModel.findById(body.restaurant._id).select("idOwner").exec();
 
     if (!restaurant) {
@@ -41,7 +39,27 @@ const createTransaction = async (req, res, next) => {
 
     if (paymentGate === 'comgate' && owner.paymentGates[paymentGate] && owner.paymentGates[paymentGate].isAvailable) {
         try {
-            const refId = nanoid(8, uppercaseNumberAlphabet);
+            let isIDUnique = false;
+            const maxAttempts = 3;
+            let attempts = 0;
+            let refId = nanoid(8, uppercaseNumberAlphabet);
+            while (!isIDUnique && attempts < maxAttempts) {
+                const existingDoc = await TransactionModel.findOne({ refId: refId });
+                if (existingDoc) {
+                    refId = nanoid(8, uppercaseNumberAlphabet);
+                    attempts++;
+                } else {
+                    isIDUnique = true;
+                }
+            }
+
+            if (!isIDUnique) {
+                res.status(400).json({
+                    success: false,
+                    msg: `Failed to generate a unique ID after ${maxAttempts} attempts`
+                });
+            }
+
             const comgate = owner.paymentGates[paymentGate];
             const { merchant, curr, method, secret, label, test, country } = comgate;
             let totalPrice = 0;
@@ -50,12 +68,12 @@ const createTransaction = async (req, res, next) => {
             body.orders.forEach((item) => {
                 const order = {
                     ean: item.ean,
-                    amount: item.quantity,
+                    quantity: item.quantity,
                     price: parseFloat(item.price),
                     name: item.name
                 };
                 orders.push(order);
-                totalPrice += order.amount * order.price;
+                totalPrice += order.quantity * order.price;
             });
 
             totalPrice += body.tips;
@@ -134,6 +152,28 @@ const createTransaction = async (req, res, next) => {
     }
 };
 
+const getTransaction = async (req, res) => {
+    const { idTransaction } = req.params;
+
+    const transaction = await TransactionModel.findOne({ refId: idTransaction });
+    if (!transaction) {
+        return res
+            .status(404)
+            .json({ success: false, msg: `Transaction not found` });
+    }
+
+    const restaurant = await RestaurantModel.findById(transaction.idRestaurant).select("name address").exec();
+
+    if (!restaurant) {
+        return res
+            .status(404)
+            .json({ success: false, msg: `Restaurant not found` });
+    }
+
+    return res.status(200).json({ success: true, msg: { transaction: transaction, restaurant: restaurant } });
+}
+
 module.exports = {
     createTransaction,
+    getTransaction
 }

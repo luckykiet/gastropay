@@ -7,7 +7,7 @@ const uppercaseNumberAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const TransactionSchema = new Schema({
     refId: { type: String, required: true, unique: true, default: () => nanoid(8, uppercaseNumberAlphabet) },
     idRestaurant: { type: Schema.Types.ObjectId, required: true },
-    status: { type: String, required: true, default: 'PENDING', enum: ['PENDING', 'CANCELLED', 'PAID'] },
+    status: { type: String, required: true, default: 'PENDING', enum: ['PENDING', 'CANCELLED', 'PAID', 'COMPLETED'] },
     cart: {
         orders: {
             type: [Order], required: true, validate: {
@@ -39,6 +39,6 @@ const TransactionSchema = new Schema({
             status: { type: String, required: true, default: 'PENDING', enum: ['PENDING', 'CANCELLED', 'PAID'] },
         }
     }
-}, { strict: true }, { timestamps: true });
+}, { strict: true }, { timestamps: true, _id: false });
 
 module.exports = TransactionSchema;

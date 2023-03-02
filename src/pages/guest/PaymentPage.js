@@ -23,29 +23,27 @@ export default function PaymentPage() {
                 paymentGate: 'comgate'
             }
 
-            console.log(transaction)
+            const { data: { success, msg } } = await axios.post(
+                `${PATHS.API.TRANSACTION}`,
+                JSON.stringify(transaction), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
-            // const { data: { success, msg } } = await axios.post(
-            //     `${PATHS.API.TRANSACTION}`,
-            //     JSON.stringify(transaction), {
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // });
-
-            // if (success) {
-            //     localStorage.setItem('token', msg.token);
-            //     setPostMsg({
-            //         success: true,
-            //         msg: msg
-            //     });
-            //     //navigate(PATHS.ROUTERS.MERCHANT);
-            // } else {
-            //     setPostMsg({
-            //         success: false,
-            //         msg: msg
-            //     });
-            // }
+            if (success) {
+                localStorage.setItem('token', msg.token);
+                setPostMsg({
+                    success: true,
+                    msg: msg
+                });
+                //navigate(PATHS.ROUTERS.MERCHANT);
+            } else {
+                setPostMsg({
+                    success: false,
+                    msg: msg
+                });
+            }
         } catch (error) {
             setPostMsg({
                 success: false,

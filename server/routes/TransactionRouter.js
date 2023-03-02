@@ -8,4 +8,6 @@ const authMiddleware = require('./AuthMiddlewares');
 
 router.post('/' + TRANSACTION, TransactionController.createTransaction, authMiddleware.validationHandlerMiddleware);
 
+router.get('/' + TRANSACTION + '/:idTransaction', TransactionController.getTransaction);
+
 module.exports = router;

@@ -12,13 +12,13 @@
               "ean": "1",
               "name": "Bun bo nam bo",
               "price": 110,
-              "amount": 2
+              "quantity": 2
             },
             {
               "ean": "2",
               "name": "Bun ca",
               "price": 112,
-              "amount": 2
+              "quantity": 2
             }
           ],
           "isConfirmed": false
@@ -51,13 +51,13 @@
               "ean": "1",
               "name": "Bun bo nam bo",
               "price": 110,
-              "amount": 2
+              "quantity": 2
             },
             {
               "ean": "2",
               "name": "Bun ca",
               "price": 112,
-              "amount": 2
+              "quantity": 2
             }
           ],
           "isConfirmed": false

@@ -107,11 +107,11 @@ const router = createBrowserRouter([
   {
     path: PATHS.ROUTERS.TRANSACTION,
     element: <RootLayout />,
-    children: [{
-      path: "",
-      element: <TransactionPage />,
-    }],
     errorElement: <ErrorPage />,
+    children: [{
+      path: PATHS.ROUTERS.ID_TRANSACTION,
+      element: <TransactionPage />,
+    }]
   },
   {
     path: PATHS.ROUTERS.PAYMENT,

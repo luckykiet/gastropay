@@ -1,0 +1,12 @@
+#comgate-container {
+    display: block;
+}
+#comgate-iframe {
+    width: 504px;
+    height: 679px;
+}
+@media (max-height: 700px) {
+    #comgate-iframe {
+        top: 0px;
+    }
+}
