@@ -14,6 +14,6 @@ const RestaurantSchema = new Schema({
     image: { type: String, trim: true },
     openingTime: { type: OpeningTime, required: true },
     isAvailable: { type: Boolean, required: true, default: false }
-}, { strict: true }, { timestamps: true });
+}, { strict: true, timestamps: true });
 
 module.exports = RestaurantSchema;

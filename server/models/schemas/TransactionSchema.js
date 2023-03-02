@@ -23,13 +23,15 @@ const TransactionSchema = new Schema({
     paymentMethod: {
         type: Object,
         required: true,
-        validate: {
-            validator: function (value) {
-                const paymentMethods = Object.keys(value);
-                return paymentMethods.length === 1 && ['comgate', 'gopay'].includes(paymentMethods[0]);
-            },
-            message: 'Payment method must be only 1'
-        },
+        validate: [
+            {
+                validator: function (value) {
+                    const paymentMethods = Object.keys(value);
+                    return paymentMethods.length === 1 && ['comgate', 'gopay'].includes(paymentMethods[0]);
+                },
+                message: 'Payment method must be only 1'
+            }
+        ],
         comgate: {
             transId: { type: String, default: "" },
             status: { type: String, required: true, default: 'PENDING', enum: ['PENDING', 'CANCELLED', 'PAID'] },
@@ -39,6 +41,6 @@ const TransactionSchema = new Schema({
             status: { type: String, required: true, default: 'PENDING', enum: ['PENDING', 'CANCELLED', 'PAID'] },
         }
     }
-}, { strict: true }, { timestamps: true, _id: false });
+}, { strict: true, timestamps: true });
 
 module.exports = TransactionSchema;

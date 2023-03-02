@@ -1,18 +1,24 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Content, Heading, Container, Box, Table, Button, Block } from 'react-bulma-components';
 import { useCartItems, useChoosenRestaurant, useTips } from '../../stores/ZustandStores';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PATHS, calculateCart, IMAGE_BASE_URL, addSlashAfterUrl, createAxios, API_URL } from '../../utils'
 import TipsInput from '../../components/menu/TipsInput';
+import LoadingComponent from '../../components/LoadingComponent';
+import { Promise } from 'bluebird';
 
 export default function PaymentPage() {
     const cartItems = useCartItems();
     const choosenRestaurant = useChoosenRestaurant();
     const [postMsg, setPostMsg] = useState({});
     const tips = useTips();
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
+    const [merchantPaymentMethods, setMerchantPaymentMethods] = useState([]);
 
     const handleComgateClick = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         try {
             const axios = createAxios(addSlashAfterUrl(API_URL));
 
@@ -24,7 +30,7 @@ export default function PaymentPage() {
             }
 
             const { data: { success, msg } } = await axios.post(
-                `${PATHS.API.TRANSACTION}`,
+                `api/${PATHS.API.TRANSACTION}`,
                 JSON.stringify(transaction), {
                 headers: {
                     'Content-Type': 'application/json'
@@ -32,12 +38,7 @@ export default function PaymentPage() {
             });
 
             if (success) {
-                localStorage.setItem('token', msg.token);
-                setPostMsg({
-                    success: true,
-                    msg: msg
-                });
-                //navigate(PATHS.ROUTERS.MERCHANT);
+                navigate(PATHS.ROUTERS.TRANSACTION + "/" + msg.refId);
             } else {
                 setPostMsg({
                     success: false,
@@ -49,8 +50,32 @@ export default function PaymentPage() {
                 success: false,
                 msg: error.response.data.msg
             });
+        } finally {
+            setIsLoading(false);
         }
     }
+
+    useEffect(() => {
+        if (Object.keys(choosenRestaurant).length !== 0) {
+            const axios = createAxios(addSlashAfterUrl(API_URL));
+            const fetchTransaction = async () => {
+                try {
+                    const { data: { success, msg } } = await axios.get(`api/${PATHS.API.TRANSACTION}/${PATHS.API.PAYMENT_METHODS}/${choosenRestaurant._id}`);
+                    if (success) {
+                        setMerchantPaymentMethods(msg);
+                    } else {
+                        console.log(msg);
+                    }
+                } catch (error) {
+                    console.log(error.response.data.msg)
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+            Promise.delay(0).then(fetchTransaction);
+        }
+    }, [choosenRestaurant])
+
 
     return (
         <Fragment>
@@ -89,20 +114,39 @@ export default function PaymentPage() {
                         <hr />
                         <Block>
                             <Heading renderAs='h3' size={4}>Zvolte si způsob platby</Heading>
-                            <Button onClick={handleComgateClick} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
-                                <img
-                                    alt='comgate'
-                                    src={addSlashAfterUrl(IMAGE_BASE_URL) + "logo/logo-comgate.png"}
-                                    style={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'fill'
-                                    }}
-                                />
-                            </Button>
+                            {isLoading
+                                ?
+                                <LoadingComponent />
+                                :
+                                merchantPaymentMethods.length === 0
+                                    ?
+                                    <Heading renderAs='p' size={5}>Obchodník nemá nastavenou platební metodu.</Heading>
+                                    :
+                                    merchantPaymentMethods.map((method) => {
+                                        if (method === 'comgate') {
+                                            return (
+                                                <Button key={method} onClick={handleComgateClick} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
+                                                    <img
+                                                        alt='comgate'
+                                                        src={addSlashAfterUrl(IMAGE_BASE_URL) + "logo/logo-comgate.png"}
+                                                        style={{
+                                                            position: 'absolute',
+                                                            top: 0,
+                                                            left: 0,
+                                                            width: '100%',
+                                                            height: '100%',
+                                                            objectFit: 'fill'
+                                                        }}
+                                                    />
+                                                </Button>
+                                            );
+                                        } else if (method === 'gopay') {
+                                            return <Button key={method} color={'warning'}>GoPay</Button>;
+                                        }
+                                        return "";
+                                    })
+                                // add more methods later
+                            }
                         </Block>
                         {postMsg && typeof postMsg.msg === "string" && (
                             <p className={postMsg.success ? "has-text-success" : "has-text-danger"}>

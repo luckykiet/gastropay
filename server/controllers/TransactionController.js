@@ -128,7 +128,8 @@ const createTransaction = async (req, res, next) => {
                     tips: body.tips,
                     paymentMethod: {
                         comgate: {
-                            transId: transId
+                            transId: transId,
+                            status: "PENDING"
                         }
                     }
                 }
@@ -173,7 +174,39 @@ const getTransaction = async (req, res) => {
     return res.status(200).json({ success: true, msg: { transaction: transaction, restaurant: restaurant } });
 }
 
+const getPaymentMethods = async (req, res) => {
+    const { idRestaurant } = req.params;
+
+    const restaurant = await RestaurantModel.findById(idRestaurant).select("idOwner").exec();
+
+    if (!restaurant) {
+        return res
+            .status(404)
+            .json({ success: false, msg: `Restaurant not found` });
+    }
+
+    const merchant = await MerchantModel.findById(restaurant.idOwner).select("paymentGates").exec();
+
+    if (!merchant) {
+        return res
+            .status(404)
+            .json({ success: false, msg: `Merchant not found` });
+    }
+
+    const availableGates = [];
+
+    const paymentGates = Object.keys(merchant.paymentGates);
+
+    paymentGates.forEach(gate => {
+        if (merchant.paymentGates[gate].isAvailable) {
+            availableGates.push(gate);
+        }
+    });
+
+    return res.status(200).json({ success: true, msg: availableGates });
+}
 module.exports = {
     createTransaction,
-    getTransaction
+    getTransaction,
+    getPaymentMethods
 }

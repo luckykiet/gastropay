@@ -38,13 +38,11 @@ export default function TransactionPage() {
                 if (success) {
                     setResult(msg);
                     setPaymentMethod(msg.transaction.paymentMethod);
-                    console.log(msg.transaction.paymentMethod)
-                    console.log(msg)
                 } else {
                     console.log(msg);
                 }
             } catch (error) {
-                console.log(error)
+                console.log(error.response.data.msg)
             } finally {
                 setIsLoading(false);
             }
@@ -56,7 +54,7 @@ export default function TransactionPage() {
         <Fragment>
             {isLoading ? (
                 <LoadingComponent />
-            ) : Object.keys(result) === 0 ?
+            ) : Object.keys(result).length === 0 ?
                 (
                     <Fragment>
                         <Content textAlign={"center"}>

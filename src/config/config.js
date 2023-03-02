@@ -44,6 +44,7 @@ const config = {
             REGISTER: "register",
             ADMIN: "admin",
             TRANSACTION: "transaction",
+            PAYMENT_METHODS: "paymentMethods"
         }
     },
     LANGUAGES: {

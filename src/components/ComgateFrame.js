@@ -3,7 +3,7 @@ import { Container, Modal } from 'react-bulma-components'
 import '../assets/scss/comgate.scss'
 
 const { Card } = Modal;
-const { Header, Body, Title } = Card;
+const { Body } = Card;
 export default function ComgateFrame({ paymentMethod, onClose }) {
     const [showModal, setShowModal] = useState(true);
 
