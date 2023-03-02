@@ -13,6 +13,9 @@ const MerchantRouter = require('./routes/MerchantRouter');
 const AuthenticateRouter = require('./routes/AuthenticateRouter');
 const TransactionRouter = require('./routes/TransactionRouter');
 
+const TransactionController = require('./controllers/TransactionController');
+setInterval(TransactionController.runAutoCheckPayment, 20000);
+
 // Inits
 const app = express();
 app.use(helmet());

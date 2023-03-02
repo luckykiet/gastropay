@@ -6,7 +6,6 @@ const RestaurantModel = require('../models/RestaurantModel');
 const qs = require('qs');
 const uppercaseNumberAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
-
 const createTransaction = async (req, res, next) => {
     const body = req.body;
 
@@ -93,7 +92,8 @@ const createTransaction = async (req, res, next) => {
                 country: country,
                 refId: refId,
                 price: totalPrice,
-                prepareOnly: true
+                prepareOnly: true,
+                expirationTime: "1h"
             }
 
             const options = {
@@ -106,12 +106,13 @@ const createTransaction = async (req, res, next) => {
 
             const params = new URLSearchParams(response.data);
             const code = params.get('code');
-            const message = decodeURIComponent(params.get('message'));
+
 
             if (code !== '0') {
+                const message = decodeURIComponent(params.get('message'));
                 res.status(400).json({
                     success: false,
-                    msg: message
+                    msg: message ? message : "Payment create failed!"
                 });
             } else {
                 const transId = params.get('transId');
@@ -152,6 +153,96 @@ const createTransaction = async (req, res, next) => {
         });
     }
 };
+
+// BATCH PROCESSING
+const BATCH_SIZE = 50;
+
+const runAutoCheckPayment = async () => {
+    let page = 1;
+    let transactions = [];
+
+    while (true) {
+        const pendings = await TransactionModel.find({
+            $or: [
+                { 'paymentMethod.comgate.status': 'PENDING' },
+                { 'paymentMethod.gopay.status': 'PENDING' }
+            ]
+        }).sort({ createAt: 'desc' }).select("refId").skip((page - 1) * BATCH_SIZE).limit(BATCH_SIZE).exec();
+
+        if (pendings.length === 0) {
+            break;
+        }
+
+        transactions = transactions.concat(pendings);
+        page++;
+    }
+
+    console.log(`Checking ${transactions.length} pending transactions...`);
+
+    for (let i = 0; i < transactions.length; i += BATCH_SIZE) {
+        const batch = transactions.slice(i, i + BATCH_SIZE);
+
+        const promises = batch.map(async (transaction) => {
+            await checkPayment(transaction.refId);
+        });
+
+        await Promise.all(promises);
+    }
+};
+
+
+const checkPayment = async (refId) => {
+    const transaction = await TransactionModel.findOne({ refId: refId });
+    if (!transaction) {
+        return { success: false, msg: `Transaction not found` };
+    }
+    const restaurant = await RestaurantModel.findById(transaction.idRestaurant).select("idOwner").exec();
+    if (!restaurant) {
+        return { success: false, msg: `Restaurant not found` };
+    }
+    const merchant = await MerchantModel.findById(restaurant.idOwner).select("paymentGates").exec();
+
+    if (!merchant) {
+        return { success: false, msg: `Merchant not found` };
+    }
+
+    const paymentMethodName = Object.keys(transaction.paymentMethod)[0];
+
+    if (paymentMethodName === 'comgate') {
+        const comgate = merchant.paymentGates.comgate;
+        const dataToPaymentGate = {
+            merchant: comgate.merchant,
+            secret: comgate.secret,
+            transId: transaction.paymentMethod.comgate.transId,
+        }
+
+        const options = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        };
+
+        const response = await axios.post('https://payments.comgate.cz/v1.0/status', qs.stringify(dataToPaymentGate), options);
+
+        const params = new URLSearchParams(response.data);
+
+        const code = params.get('code');
+        if (code !== '0') {
+            const message = decodeURIComponent(params.get('message'));
+            return { success: false, msg: message ? message : "Failed to get a status!" };
+        } else {
+            const status = decodeURIComponent(params.get('status'));
+            if (status === 'PAID') {
+                await transaction.updateOne({ 'paymentMethod.comgate.status': status });
+                //TODO POST TO POS
+
+            } else if (status === 'CANCELLED') {
+                await transaction.updateOne({ 'paymentMethod.comgate.status': status, status: status });
+            }
+            return { success: true, msg: status };
+        }
+    }
+}
 
 const getTransaction = async (req, res) => {
     const { idTransaction } = req.params;
@@ -208,5 +299,6 @@ const getPaymentMethods = async (req, res) => {
 module.exports = {
     createTransaction,
     getTransaction,
-    getPaymentMethods
+    getPaymentMethods,
+    runAutoCheckPayment
 }

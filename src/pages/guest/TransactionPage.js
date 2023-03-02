@@ -2,9 +2,9 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { Content, Heading, Container, Box, Block, Table, Columns, Button } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, API_URL, PATHS, calculateCart } from '../../utils';
-import { Promise } from 'bluebird';
 import LoadingComponent from '../../components/LoadingComponent';
 import ComgateFrame from '../../components/ComgateFrame';
+import { Promise } from 'bluebird';
 const { Column } = Columns;
 export default function TransactionPage() {
     const { idTransaction } = useParams();
@@ -47,7 +47,12 @@ export default function TransactionPage() {
                 setIsLoading(false);
             }
         };
+
         Promise.delay(300).then(fetchTransaction);
+        const interval = setInterval(() => {
+            fetchTransaction();
+        }, 10000);
+        return () => clearInterval(interval);
     }, [idTransaction]);
 
     return (
@@ -82,7 +87,7 @@ export default function TransactionPage() {
                                             <Heading renderAs='h2' size={4}>Status</Heading>
                                             {result.transaction.status === 'PENDING'
                                                 ?
-                                                (paymentMethod[Object.keys(paymentMethod)[0]].status === 'PENDING' &&
+                                                (paymentMethod[Object.keys(paymentMethod)[0]].status === 'PENDING' ?
                                                     <Fragment>
                                                         <Heading renderAs='p' className={'has-text-danger'} size={5}>Nemáte zaplacenou objednávku</Heading>
                                                         <Button color={'warning'} onClick={handlePayClick}>Zaplatit</Button>
@@ -93,7 +98,15 @@ export default function TransactionPage() {
                                                                     onClose={handlePaymentBoxClose}
                                                                 />
                                                             ))
+                                                            //Add another payment gates
                                                             : ""}
+
+                                                    </Fragment>
+                                                    :
+                                                    <Fragment>
+                                                        <Heading renderAs='p' className={'has-text-success'} size={5}>Máte zaplacenou objednávku, počkejte na potvrzení obchodníka.</Heading>
+                                                        <Heading renderAs='span' size={5}>Obchodník: </Heading>
+                                                        {!result.transaction.cart.isConfirmed ? <LoadingComponent /> : <Heading renderAs='span' className={'has-text-success'} size={5}>POTVRZENO</Heading>}
                                                     </Fragment>
                                                 )
                                                 :
