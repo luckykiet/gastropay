@@ -21,15 +21,15 @@ import MenuLayout from './components/layouts/MenuLayout';
 import MerchantLayout from './components/layouts/MerchantLayout';
 import LogoutPage from './pages/auth/LogoutPage';
 import useAuth from './pages/auth/useAuth';
-import LoadingComponent from './components/LoadingComponent';
 import DashboardPage from './pages/merchant/DashboardPage';
 import { PATHS } from './utils';
-import EditPage from './pages/merchant/panel/EditPage';
-import AddPage from './pages/merchant/panel/AddPage';
 import ProfilePage from './pages/merchant/ProfilePage';
 import TransactionPage from './pages/guest/TransactionPage';
 import PaymentPage from './pages/guest/PaymentPage';
 import TransactionPanelPage from './pages/merchant/panel/TransactionPanelPage';
+import ProgressBar from './components/ProgressBar';
+import AddPanelPage from './pages/merchant/panel/AddPanelPage';
+import EditPanelPage from './pages/merchant/panel/EditPanelPage';
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
@@ -37,7 +37,7 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to={PATHS.ROUTERS.LOGIN} replace />
   }
   if (isLoading) {
-    return <LoadingComponent />;
+    return <ProgressBar />;
   }
   return children;
 }
@@ -131,11 +131,11 @@ const router = createBrowserRouter([
       element: <DashboardPage />,
       children: [{
         path: PATHS.ROUTERS.RESTAURANT_EDIT + '/' + PATHS.ROUTERS.ID_RESTAURANT,
-        element: <EditPage />,
+        element: <EditPanelPage />,
       },
       {
         path: PATHS.ROUTERS.RESTAURANT_ADD,
-        element: <AddPage />,
+        element: <AddPanelPage />,
       },
       {
         path: PATHS.ROUTERS.RESTAURANT_TRANSACTION + '/' + PATHS.ROUTERS.ID_RESTAURANT,

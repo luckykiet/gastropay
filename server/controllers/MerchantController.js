@@ -142,7 +142,7 @@ const getRestaurantByID = async (req, res) => {
 
 const getRestaurantTransactions = async (req, res) => {
     const query = TransactionModel.find({ idRestaurant: ObjectId(req.params.restaurantId) });
-    query.sort({ createdAt: 'asc' });
+    query.sort({ createdAt: 'desc' });
 
     const transactions = await query.lean().exec();
     if (!transactions) {

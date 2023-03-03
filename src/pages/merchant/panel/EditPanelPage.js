@@ -15,7 +15,7 @@ import OpeningTimeInputs from '../../../components/merchant/OpeningTimeInputs';
 const { Body } = Hero;
 const { Field, Label, Control, Input, Help } = Form;
 const { Tab } = Tabs;
-export default function EditPage() {
+export default function EditPanelPage() {
     const idRestaurant = useParams().idRestaurant;
     const [restaurant, setRestaurant] = useState({});
     const [postMsg, setPostMsg] = useState({});

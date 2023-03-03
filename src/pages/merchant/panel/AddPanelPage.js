@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const { Body } = Hero;
 const { Field, Label, Control, Input, Help } = Form;
-export default function AddPage() {
+export default function AddPanelPage() {
     const navigate = useNavigate();
     const [postMsg, setPostMsg] = useState({});
     const [restaurant, setRestaurant] = useState({

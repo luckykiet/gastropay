@@ -3,9 +3,9 @@ import { Card, Container, Heading } from 'react-bulma-components';
 import TabsList from '../../components/menu/TabsList';
 import { createAxios, addSlashAfterUrl, PATHS } from '../../utils';
 import { Link, useNavigate } from 'react-router-dom';
-import LoadingComponent from '../../components/LoadingComponent';
 import { Promise } from 'bluebird';
 import { useChoosenRestaurant } from '../../stores/ZustandStores';
+import ProgressBar from '../../components/ProgressBar';
 
 const { Content } = Card;
 
@@ -46,7 +46,7 @@ export default function MenuPage() {
     return (
         <Fragment>
             {loading ? (
-                <LoadingComponent />
+                <ProgressBar />
             ) : (
                 <Fragment>
                     <Content textAlign="center">
