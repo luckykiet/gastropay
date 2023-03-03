@@ -13,7 +13,7 @@ const { Body } = Hero;
 const { Tab } = Tabs;
 export default function TransactionPanelPage() {
     const idRestaurant = useParams().idRestaurant;
-    const [transactions, setTransactions] = useState([]);
+    const [transactions, setTransactions] = useState(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
     const choosenRestaurant = useChoosenRestaurant();
@@ -45,11 +45,11 @@ export default function TransactionPanelPage() {
         <Fragment>{loading ? (
             <LoadingComponent />
         ) : (
-            Object.keys(transactions).length === 0 ?
+            Object.keys(transactions).length === null ?
                 (
-                    <Fragment>
+                    <Container py={5} breakpoint={'fluid'}>
                         <Heading renderAs='p' size={5} className='has-text-weight-bold'>Chyba načítání transakcí, obnovte stránku</Heading>
-                    </Fragment>
+                    </Container>
                 )
                 :
                 (
@@ -68,35 +68,39 @@ export default function TransactionPanelPage() {
                                     Transakce
                                 </Tab>
                             </Tabs>
-                            <Box style={{ overflow: "auto" }}>
-                                <Table size={'fullwidth'}>
-                                    <thead className='is-size-4'>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Status</th>
-                                            <th>Cena</th>
-                                            <th>Tips</th>
-                                            <th>Platební metoda</th>
-                                            <th>Datum</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className='is-size-5'>
-                                        {transactions.map((item) => {
-                                            const paymentMethod = Object.keys(item.paymentMethod)[0];
-                                            return (
-                                                <tr key={item.refId}>
-                                                    <td><Link to={PATHS.ROUTERS.TRANSACTION + '/' + item.refId} target="_blank">{item.refId}</Link></td>
-                                                    <td>{item.status}</td>
-                                                    <td>{calculateCart(item.cart.orders).totalPrice} Kč</td>
-                                                    <td>{item.tips} Kč</td>
-                                                    <td>{paymentMethod}: {item.paymentMethod[paymentMethod].transId} - {item.paymentMethod[paymentMethod].status} </td>
-                                                    <td>{moment.utc(item.createdAt).format('DD/MM/YYYY HH:mm:ss')}</td>
-                                                </tr>
-                                            )
-                                        })}
-                                    </tbody>
-                                </Table>
-                            </Box>
+                            {Object.keys(transactions).length === 0
+                                ?
+                                <Heading renderAs='p' size={5} className='has-text-weight-bold'>Nemáte ještě žádnou transakci.</Heading>
+                                :
+                                <Box style={{ overflow: "auto" }}>
+                                    <Table size={'fullwidth'}>
+                                        <thead className='is-size-4'>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Status</th>
+                                                <th>Cena</th>
+                                                <th>Tips</th>
+                                                <th>Platební metoda</th>
+                                                <th>Datum</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className='is-size-5'>
+                                            {transactions.map((item) => {
+                                                const paymentMethod = Object.keys(item.paymentMethod)[0];
+                                                return (
+                                                    <tr key={item.refId}>
+                                                        <td><Link to={PATHS.ROUTERS.TRANSACTION + '/' + item.refId} target="_blank">{item.refId}</Link></td>
+                                                        <td>{item.status}</td>
+                                                        <td>{calculateCart(item.cart.orders).totalPrice} Kč</td>
+                                                        <td>{item.tips} Kč</td>
+                                                        <td>{paymentMethod}: {item.paymentMethod[paymentMethod].transId} - {item.paymentMethod[paymentMethod].status} </td>
+                                                        <td>{moment.utc(item.createdAt).format('DD/MM/YYYY HH:mm:ss')}</td>
+                                                    </tr>
+                                                )
+                                            })}
+                                        </tbody>
+                                    </Table>
+                                </Box>}
                         </Container>
                     </Fragment>)
         )
