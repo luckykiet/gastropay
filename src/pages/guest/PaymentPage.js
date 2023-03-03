@@ -1,20 +1,33 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Content, Heading, Container, Box, Table, Button, Block } from 'react-bulma-components';
+import { Content, Heading, Container, Box, Table, Button, Block, Form, Icon } from 'react-bulma-components';
 import { useCartItems, useChoosenRestaurant, useTips } from '../../stores/ZustandStores';
 import { Link, useNavigate } from 'react-router-dom';
 import { PATHS, calculateCart, IMAGE_BASE_URL, addSlashAfterUrl, createAxios, API_URL } from '../../utils'
 import TipsInput from '../../components/menu/TipsInput';
 import LoadingComponent from '../../components/LoadingComponent';
 import { Promise } from 'bluebird';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+
+const { Field, Input, Label, Help, Control } = Form;
 
 export default function PaymentPage() {
+    const [isLoading, setIsLoading] = useState(true);
+    const [postMsg, setPostMsg] = useState({});
+    const [emailInput, setEmailInput] = useState("");
+    const [isEmailValid, setIsEmailValid] = useState(null);
+    const [merchantPaymentMethods, setMerchantPaymentMethods] = useState([]);
     const cartItems = useCartItems();
     const choosenRestaurant = useChoosenRestaurant();
-    const [postMsg, setPostMsg] = useState({});
     const tips = useTips();
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
-    const [merchantPaymentMethods, setMerchantPaymentMethods] = useState([]);
+
+    const handleEmailChange = (e) => {
+        const { value } = e.target;
+        setEmailInput(value);
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        setIsEmailValid(emailRegex.test(value) || value.length === 0);
+    }
 
     const handleComgateClick = async (e) => {
         e.preventDefault();
@@ -26,7 +39,8 @@ export default function PaymentPage() {
                 tips: tips,
                 restaurant: choosenRestaurant,
                 orders: cartItems,
-                paymentGate: 'comgate'
+                paymentGate: 'comgate',
+                email: emailInput
             }
 
             const { data: { success, msg } } = await axios.post(
@@ -76,7 +90,6 @@ export default function PaymentPage() {
         }
     }, [choosenRestaurant])
 
-
     return (
         <Fragment>
             <Content textAlign={"center"}>
@@ -111,6 +124,21 @@ export default function PaymentPage() {
                             <TipsInput />
                         </Block>
                         <Heading size={4} renderAs="p">Celkem: {Math.round(calculateCart(cartItems).totalPrice + tips) + " Kč"}</Heading>
+                        <hr />
+                        <Block>
+                            <Field>
+                                <Label className='is-normal' htmlFor='inputEmail'>Email:</Label>
+                                <Control>
+                                    <Field className='has-addons'>
+                                        <Control>
+                                            <Input color={isEmailValid !== null && !isEmailValid && "danger"} value={emailInput} onChange={handleEmailChange} id='inputEmail' type='email' required placeholder='Email pro zasílání účtenky' />
+                                            <Icon color={isEmailValid !== null && !isEmailValid && "danger"} align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
+                                            {isEmailValid !== null && !isEmailValid && <Help color="danger">Nesprávný email formát</Help>}
+                                        </Control>
+                                    </Field>
+                                </Control>
+                            </Field>
+                        </Block>
                         <hr />
                         <Block>
                             <Heading renderAs='h3' size={4}>Zvolte si způsob platby</Heading>

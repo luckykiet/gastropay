@@ -82,8 +82,10 @@ export default function TransactionPage() {
                                             <Heading renderAs='h2' size={4}>{result.restaurant.name}</Heading>
                                             <Heading renderAs='p' className='has-text-weight-normal' size={5}>{result.restaurant.address.street}</Heading>
                                             <Heading renderAs='p' className='has-text-weight-normal' size={5}>{result.restaurant.address.postalCode} {result.restaurant.address.city}</Heading>
+                                            <Heading renderAs='h2' size={4}>IČO: {result.merchant.ico}</Heading>
                                         </Column>
                                         <Column>
+                                            <Heading renderAs='h2' size={4}>Email plátce: <span className='has-text-weight-normal'>{result.transaction.email}</span></Heading>
                                             <Heading renderAs='h2' size={4}>Status</Heading>
                                             {result.transaction.status === 'PENDING'
                                                 ?

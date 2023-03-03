@@ -93,6 +93,7 @@ const createTransaction = async (req, res, next) => {
                 refId: refId,
                 price: totalPrice,
                 prepareOnly: true,
+                email: body.email,
                 expirationTime: "1h"
             }
 
@@ -132,7 +133,8 @@ const createTransaction = async (req, res, next) => {
                             transId: transId,
                             status: "PENDING"
                         }
-                    }
+                    },
+                    email: body.email
                 }
 
                 const transaction = new TransactionModel(data);
@@ -254,7 +256,7 @@ const getTransaction = async (req, res) => {
             .json({ success: false, msg: `Transaction not found` });
     }
 
-    const restaurant = await RestaurantModel.findById(transaction.idRestaurant).select("name address").exec();
+    const restaurant = await RestaurantModel.findById(transaction.idRestaurant).select("idOwner name address").exec();
 
     if (!restaurant) {
         return res
@@ -262,7 +264,15 @@ const getTransaction = async (req, res) => {
             .json({ success: false, msg: `Restaurant not found` });
     }
 
-    return res.status(200).json({ success: true, msg: { transaction: transaction, restaurant: restaurant } });
+    const merchant = await MerchantModel.findById(restaurant.idOwner).select("ico").exec();
+
+    if (!merchant) {
+        return res
+            .status(404)
+            .json({ success: false, msg: `Merchant not found` });
+    }
+
+    return res.status(200).json({ success: true, msg: { transaction: transaction, restaurant: restaurant, merchant: merchant } });
 }
 
 const getPaymentMethods = async (req, res) => {
