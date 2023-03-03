@@ -134,7 +134,8 @@ const createTransaction = async (req, res, next) => {
                             status: "PENDING"
                         }
                     },
-                    email: body.email
+                    email: body.email,
+                    deliveryMethod: body.deliveryMethod
                 }
 
                 const transaction = new TransactionModel(data);

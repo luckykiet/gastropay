@@ -13,6 +13,9 @@ const useStore = create((set) => ({
     tips: 0,
     setTips: (tips) => set({ tips }),
 
+    tables: [],
+    setTables: (tables) => set({ tables }),
+
     cartItems: [],
     setCartItems: (cartItems) => set({ cartItems }),
     addToCartItems: (item, quantity) =>
@@ -67,6 +70,9 @@ export const useIncrementCartItem = () => useStore(useCallback((state) => state.
 
 export const useSettings = () => useStore(useCallback((state) => state.settings, []));
 export const useSetSettings = () => useStore(useCallback((state) => state.setSettings, []));
+
+export const useTables = () => useStore(useCallback((state) => state.tables, []));
+export const useSetTables = () => useStore(useCallback((state) => state.setTables, []));
 
 export const useChoosenRestaurant = () => useStore(useCallback((state) => state.choosenRestaurant, []));
 export const useSetChoosenRestaurant = () => useStore(useCallback((state) => state.setChoosenRestaurant, []));

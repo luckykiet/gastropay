@@ -14,7 +14,7 @@ export default function TransactionPage() {
     const [showPaymentBox, setShowPaymentBox] = useState(false);
 
     const checkStatus = () => {
-
+        //to check after redirecting
         console.log("checking")
     }
 
@@ -86,6 +86,8 @@ export default function TransactionPage() {
                                         </Column>
                                         <Column>
                                             <Heading renderAs='h2' size={4}>Email plátce: <span className='has-text-weight-normal'>{result.transaction.email}</span></Heading>
+                                            <Heading renderAs='h2' size={4}>Stůl: <span className='has-text-weight-normal'>{result.transaction.deliveryMethod}</span></Heading>
+                                            <hr />
                                             <Heading renderAs='h2' size={4}>Status</Heading>
                                             {result.transaction.status === 'PENDING'
                                                 ?

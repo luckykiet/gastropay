@@ -20,6 +20,7 @@ const TransactionSchema = new Schema({
         isConfirmed: { type: Boolean, required: true, default: false }
     },
     tips: { type: Number, required: true, default: 0 },
+    deliveryMethod: { type: String, required: true, default: "" },
     email: { type: String, trim: true, match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/], required: true },
     paymentMethod: {
         type: Object,

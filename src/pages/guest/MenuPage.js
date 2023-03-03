@@ -4,17 +4,18 @@ import TabsList from '../../components/menu/TabsList';
 import { createAxios, addSlashAfterUrl, PATHS } from '../../utils';
 import { Link, useNavigate } from 'react-router-dom';
 import { Promise } from 'bluebird';
-import { useChoosenRestaurant } from '../../stores/ZustandStores';
+import { useChoosenRestaurant, useSetTables } from '../../stores/ZustandStores';
 import ProgressBar from '../../components/ProgressBar';
 
 const { Content } = Card;
 
 export default function MenuPage() {
     const restaurant = useChoosenRestaurant();
-    const navigate = useNavigate();
-    const apiUrl = addSlashAfterUrl(restaurant?.api?.baseUrl);
+    const setTables = useSetTables();
     const [menu, setMenu] = useState({});
     const [loading, setLoading] = useState(true);
+    const apiUrl = addSlashAfterUrl(restaurant?.api?.baseUrl);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (Object.keys(restaurant).length === 0) {
@@ -32,6 +33,7 @@ export default function MenuPage() {
                         name: tab.name,
                     }));
                     const newMenu = Object.entries(msg.menu).map(([ean, item]) => ({ ean, ...item }));
+                    setTables(msg.tables);
                     setMenu({ tabs, menu: newMenu });
                 } catch (err) {
                     console.log(err);
@@ -41,7 +43,7 @@ export default function MenuPage() {
             };
             Promise.delay(500).then(fetchData);
         }
-    }, [navigate, restaurant, apiUrl]);
+    }, [navigate, restaurant, apiUrl, setTables]);
 
     return (
         <Fragment>

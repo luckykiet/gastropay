@@ -12,6 +12,7 @@
         "name": "Pho"
       }
     ],
+    "tables": ["3", "6", "8", "U Okna"],
     "menu": {
       "1": {
         "unit": "ks",

@@ -11,6 +11,7 @@ const config = {
     BASE_URL: DEV_MODE ? "http://localhost:" + APP_PORT : "https://gastropay.ruano.cz",
     IMAGE_BASE_URL: DEV_MODE ? "http://localhost:" + APP_PORT + "/images" : "https://gastropay.ruano.cz/images",
     MONGODB_URI: DEV_MODE ? 'mongodb+srv://luckykiet:51224999@gastropay.k4ezqgk.mongodb.net' : 'mongodb+srv://luckykiet:51224999@gastropay.k4ezqgk.mongodb.net',
+    // 'mongodb://localhost:27017/gastropay'
     PATHS: {
         ROUTERS: {
             HOME: '/',

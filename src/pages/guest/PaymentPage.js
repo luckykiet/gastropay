@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Content, Heading, Container, Box, Table, Button, Block, Form, Icon } from 'react-bulma-components';
-import { useCartItems, useChoosenRestaurant, useTips } from '../../stores/ZustandStores';
+import { Content, Heading, Container, Box, Table, Button, Block, Form, Icon, Columns } from 'react-bulma-components';
+import { useCartItems, useChoosenRestaurant, useTables, useTips } from '../../stores/ZustandStores';
 import { Link, useNavigate } from 'react-router-dom';
 import { PATHS, calculateCart, IMAGE_BASE_URL, addSlashAfterUrl, createAxios, API_URL } from '../../utils'
 import TipsInput from '../../components/menu/TipsInput';
@@ -9,15 +9,18 @@ import { Promise } from 'bluebird';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
-const { Field, Input, Label, Help, Control } = Form;
+const { Field, Input, Label, Help, Control, Select } = Form;
+const { Column } = Columns;
 
 export default function PaymentPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [postMsg, setPostMsg] = useState({});
+    const [selectedTable, setSelectedTable] = useState('');
     const [emailInput, setEmailInput] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(null);
     const [merchantPaymentMethods, setMerchantPaymentMethods] = useState([]);
     const cartItems = useCartItems();
+    const tables = useTables();
     const choosenRestaurant = useChoosenRestaurant();
     const tips = useTips();
     const navigate = useNavigate();
@@ -27,6 +30,10 @@ export default function PaymentPage() {
         setEmailInput(value);
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         setIsEmailValid(emailRegex.test(value) || value.length === 0);
+    }
+
+    const handleSelectChange = (e) => {
+        setSelectedTable(e.target.value);
     }
 
     const handleComgateClick = async (e) => {
@@ -40,7 +47,8 @@ export default function PaymentPage() {
                 restaurant: choosenRestaurant,
                 orders: cartItems,
                 paymentGate: 'comgate',
-                email: emailInput
+                email: emailInput,
+                deliveryMethod: selectedTable
             }
 
             const { data: { success, msg } } = await axios.post(
@@ -126,18 +134,38 @@ export default function PaymentPage() {
                         <Heading size={4} renderAs="p">Celkem: {Math.round(calculateCart(cartItems).totalPrice + tips) + " Kč"}</Heading>
                         <hr />
                         <Block>
-                            <Field>
-                                <Label className='is-normal' htmlFor='inputEmail'>Email:</Label>
-                                <Control>
-                                    <Field className='has-addons'>
+                            <Columns>
+                                <Column>
+                                    <Field>
+                                        <Label className='is-normal' htmlFor='inputEmail'><span className='has-text-danger'>*</span> Email</Label>
                                         <Control>
-                                            <Input color={isEmailValid !== null && !isEmailValid && "danger"} value={emailInput} onChange={handleEmailChange} id='inputEmail' type='email' required placeholder='Email pro zasílání účtenky' />
-                                            <Icon color={isEmailValid !== null && !isEmailValid && "danger"} align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
-                                            {isEmailValid !== null && !isEmailValid && <Help color="danger">Nesprávný email formát</Help>}
+                                            <Field className='has-addons'>
+                                                <Control>
+                                                    <Input color={isEmailValid !== null && !isEmailValid && "danger"} value={emailInput} onChange={handleEmailChange} id='inputEmail' type='email' required placeholder='Email pro zasílání účtenky' />
+                                                    <Icon color={isEmailValid !== null && !isEmailValid && "danger"} align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
+                                                    {isEmailValid !== null && !isEmailValid && <Help color="danger">Nesprávný email formát</Help>}
+                                                </Control>
+                                            </Field>
                                         </Control>
                                     </Field>
-                                </Control>
-                            </Field>
+                                </Column>
+                                <Column>
+                                    <Field>
+                                        <Label className='is-normal' htmlFor='inputTables'><span className='has-text-danger'>*</span> Stůl</Label>
+                                        <Control>
+                                            {tables.length > 0 &&
+                                                <Select id='inputTables' onChange={handleSelectChange} value={selectedTable} required>
+                                                    {tables.map((table) => {
+                                                        return (
+                                                            <option value={table} key={table}>{table}</option>
+                                                        )
+                                                    })}
+                                                </Select>
+                                            }
+                                        </Control>
+                                    </Field>
+                                </Column>
+                            </Columns>
                         </Block>
                         <hr />
                         <Block>
