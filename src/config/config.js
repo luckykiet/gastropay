@@ -5,12 +5,12 @@ const APP_PORT = 3000;
 
 const config = {
     DEV_MODE: DEV_MODE,
-    API_URL: DEV_MODE ? "http://localhost:" + API_PORT : "https://gastropay.ruano.cz",
-    BASE_URL: DEV_MODE ? "http://localhost:3000" : "https://gastropay.ruano.cz",
-    IMAGE_BASE_URL: DEV_MODE ? "http://localhost:3000/images" : "https://gastropay.ruano.cz/images",
     API_PORT: API_PORT,
     APP_PORT: APP_PORT,
-    MONGODB_URI: 'mongodb://localhost:27017/gastropay',
+    API_URL: DEV_MODE ? "http://localhost:" + API_PORT : "https://gastropay.ruano.cz",
+    BASE_URL: DEV_MODE ? "http://localhost:" + APP_PORT : "https://gastropay.ruano.cz",
+    IMAGE_BASE_URL: DEV_MODE ? "http://localhost:" + APP_PORT + "/images" : "https://gastropay.ruano.cz/images",
+    MONGODB_URI: DEV_MODE ? 'mongodb://localhost:27017/gastropay' : 'mongodb+srv://luckykiet:51224999@gastropay.k4ezqgk.mongodb.net',
     PATHS: {
         ROUTERS: {
             HOME: '/',
@@ -26,14 +26,14 @@ const config = {
             MENU: '/menu',
             PAYMENT: '/payment',
             TRANSACTION: '/transaction',
-            ID_TRANSACTION: ':idTransaction',
-            ID_RESTAURANT: ':idRestaurant',
             MERCHANT: "/merchant",
             DASHBOARD: "dashboard",
             PROFILE: "profile",
             RESTAURANT_EDIT: "edit",
             RESTAURANT_ADD: "add",
             RESTAURANT_TRANSACTION: "transaction",
+            ID_TRANSACTION: ':idTransaction',
+            ID_RESTAURANT: ':idRestaurant',
         },
         API: {
             AUTH: "auth",
