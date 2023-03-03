@@ -1,5 +1,5 @@
 // config.js
-const DEV_MODE = true;
+const DEV_MODE = false;
 const API_PORT = 4000;
 const APP_PORT = 3000;
 
