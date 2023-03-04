@@ -119,7 +119,6 @@ const createTransaction = async (req, res, next) => {
                 const transId = params.get('transId');
                 const redirectUrl = decodeURIComponent(params.get('redirect'));
                 console.log(redirectUrl);
-
                 const data = {
                     refId: refId,
                     idRestaurant: body.restaurant._id,
@@ -135,7 +134,7 @@ const createTransaction = async (req, res, next) => {
                         }
                     },
                     email: body.email,
-                    deliveryMethod: body.deliveryMethod
+                    deliveryMethod: body.deliveryMethod || ""
                 }
 
                 const transaction = new TransactionModel(data);
@@ -193,7 +192,6 @@ const runAutoCheckPayment = async () => {
     }
 };
 
-
 const checkPayment = async (refId) => {
     const transaction = await TransactionModel.findOne({ refId: refId });
     if (!transaction) {
@@ -249,6 +247,8 @@ const checkPayment = async (refId) => {
 
 const getTransaction = async (req, res) => {
     const { idTransaction } = req.params;
+
+    await checkPayment(idTransaction);
 
     const transaction = await TransactionModel.findOne({ refId: idTransaction });
     if (!transaction) {

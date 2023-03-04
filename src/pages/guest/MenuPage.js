@@ -33,7 +33,7 @@ export default function MenuPage() {
                         name: tab.name,
                     }));
                     const newMenu = Object.entries(msg.menu).map(([ean, item]) => ({ ean, ...item }));
-                    setTables(msg.tables);
+                    setTables(msg.tables ? msg.tables : []);
                     setMenu({ tabs, menu: newMenu });
                 } catch (err) {
                     console.log(err);

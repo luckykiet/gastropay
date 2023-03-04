@@ -98,6 +98,12 @@ export default function PaymentPage() {
         }
     }, [choosenRestaurant])
 
+    useEffect(() => {
+        if (tables.length > 0) {
+            setSelectedTable(tables[0]);
+        }
+    }, [tables]);
+
     return (
         <Fragment>
             <Content textAlign={"center"}>
@@ -149,11 +155,11 @@ export default function PaymentPage() {
                                         </Control>
                                     </Field>
                                 </Column>
-                                <Column>
-                                    <Field>
-                                        <Label className='is-normal' htmlFor='inputTables'><span className='has-text-danger'>*</span> Stůl</Label>
-                                        <Control>
-                                            {tables.length > 0 &&
+                                {tables.length > 0 &&
+                                    <Column>
+                                        <Field>
+                                            <Label className='is-normal' htmlFor='inputTables'><span className='has-text-danger'>*</span> Stůl</Label>
+                                            <Control>
                                                 <Select id='inputTables' onChange={handleSelectChange} value={selectedTable} required>
                                                     {tables.map((table) => {
                                                         return (
@@ -161,10 +167,10 @@ export default function PaymentPage() {
                                                         )
                                                     })}
                                                 </Select>
-                                            }
-                                        </Control>
-                                    </Field>
-                                </Column>
+                                            </Control>
+                                        </Field>
+                                    </Column>
+                                }
                             </Columns>
                         </Block>
                         <hr />

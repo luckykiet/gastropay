@@ -13,14 +13,8 @@ export default function TransactionPage() {
     const [result, setResult] = useState({});
     const [showPaymentBox, setShowPaymentBox] = useState(false);
 
-    const checkStatus = () => {
-        //to check after redirecting
-        console.log("checking")
-    }
-
     const handlePaymentBoxClose = () => {
         setShowPaymentBox(false);
-        checkStatus();
     }
 
     const handlePayClick = (e) => {
@@ -49,11 +43,15 @@ export default function TransactionPage() {
         };
 
         Promise.delay(300).then(fetchTransaction);
-        const interval = setInterval(() => {
-            fetchTransaction();
-        }, 10000);
-        return () => clearInterval(interval);
-    }, [idTransaction]);
+
+        if (result?.transaction?.status === 'PENDING') {
+            const interval = setInterval(() => {
+                fetchTransaction();
+            }, 10000);
+            return () => clearInterval(interval);
+        }
+
+    }, [idTransaction, result?.transaction?.status]);
 
     return (
         <Fragment>
@@ -86,7 +84,7 @@ export default function TransactionPage() {
                                         </Column>
                                         <Column>
                                             <Heading renderAs='h2' size={4}>Email plátce: <span className='has-text-weight-normal'>{result.transaction.email}</span></Heading>
-                                            <Heading renderAs='h2' size={4}>Stůl: <span className='has-text-weight-normal'>{result.transaction.deliveryMethod}</span></Heading>
+                                            {result.transaction.deliveryMethod !== '' && <Heading renderAs='h2' size={4}>Stůl: <span className='has-text-weight-normal'>{result.transaction.deliveryMethod}</span></Heading>}
                                             <hr />
                                             <Heading renderAs='h2' size={4}>Status</Heading>
                                             {result.transaction.status === 'PENDING'
