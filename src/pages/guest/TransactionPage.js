@@ -123,7 +123,7 @@ export default function TransactionPage() {
                                     </Columns>
                                 </Block>
                                 <hr />
-                                <Block>
+                                <Block style={{ overflow: "auto" }}>
                                     <Table size={'fullwidth'}>
                                         <thead className='is-size-4'>
                                             <tr>

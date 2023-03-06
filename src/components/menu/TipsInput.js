@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { calculateCart } from '../../utils';
 import { useCartItems, useSetTips, useTips } from '../../stores/ZustandStores';
-import { Button, Form } from 'react-bulma-components';
+import { Block, Button, Form } from 'react-bulma-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 const { Group } = Button;
@@ -24,7 +24,7 @@ export default function TipsInput() {
     }
 
     return (
-        <Fragment>
+        <Block>
             <Field>
                 <Control>
                     <Label className='is-normal' mr={5} htmlFor='inputTips'>Tips:</Label>
@@ -53,6 +53,6 @@ export default function TipsInput() {
                     <Button key={tip} onClick={() => handleAdjustTip(tip)} color={'warning'}>+ {tip}</Button>
                 ))}
             </Group>
-        </Fragment>
+        </Block>
     )
 }

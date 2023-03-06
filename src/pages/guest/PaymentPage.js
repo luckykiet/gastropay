@@ -113,7 +113,7 @@ export default function PaymentPage() {
                 :
                 <Container className="has-text-left is-max-desktop">
                     <Box>
-                        <Block>
+                        <Block style={{ overflow: "auto" }}>
                             <Table size={'fullwidth'}>
                                 <thead className='is-size-4'>
                                     <tr>
@@ -132,8 +132,8 @@ export default function PaymentPage() {
                                     ))}
                                 </tbody>
                             </Table>
-                            <TipsInput />
                         </Block>
+                        <TipsInput />
                         <Heading size={4} renderAs="p">Celkem: {Math.round(calculateCart(cartItems).totalPrice + tips) + " Kč"}</Heading>
                         <hr />
                         <Block>
