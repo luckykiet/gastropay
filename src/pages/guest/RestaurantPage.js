@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Block, Button, Columns, Container, Content, Heading, Image } from 'react-bulma-components';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { createAxios, API_URL, isOpening, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl, BASE_URL, removeSlashFromUrl, isValidUrl } from "../../utils";
+import { createAxios, API_URL, isOpening, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl, BASE_URL, removeSlashFromUrl, isValidUrl, daysOfWeeks } from "../../utils";
 import Promise from "bluebird";
 import moment from 'moment';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -24,6 +24,7 @@ export default function RestaurantPage() {
     const { idRestaurant } = useParams();
     const setCartItems = useSetCartItems();
     const todayDay = moment().day();
+    const todayDayText = daysOfWeeks[todayDay];
     const navigate = useNavigate();
 
     const handleChooseClick = () => {
@@ -118,7 +119,11 @@ export default function RestaurantPage() {
                                 </Columns>
                                 <Block pt={5}>
                                     <Container className='has-text-centered' >
-                                        <Button className='has-text-weight-bold' rounded color={'success'} style={{ width: "300px" }} size={'large'} onClick={handleChooseClick}>Objednat jídlo</Button>
+                                        {!business.openingTime[todayDayText].isOpen || !isOpening(business.openingTime[todayDayText].from, business.openingTime[todayDayText].to) ?
+                                            <Button className='has-text-weight-bold' rounded color={'danger'} style={{ width: "300px" }} size={'large'} disabled>Mimo otevírací doby</Button>
+                                            :
+                                            <Button className='has-text-weight-bold' rounded color={'success'} style={{ width: "300px" }} size={'large'} onClick={handleChooseClick}>Objednat jídlo</Button>
+                                        }
                                     </Container>
                                 </Block>
                             </Fragment>
