@@ -22,8 +22,8 @@ export default function RegisterPage() {
         email: '',
         password: ''
     });
-    const navigate = useNavigate();
     const { ico, email, password } = formData;
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,14 +42,13 @@ export default function RegisterPage() {
                         'Content-Type': 'application/json'
                     }
                 });
-                if (success) {
-                    localStorage.setItem('token', msg.token);
-                    navigate(PATHS.ROUTERS.MERCHANT);
-                } else {
-                    setPostMsg(msg);
+                if (!success) {
+                    throw new Error(msg);
                 }
+                localStorage.setItem('token', msg.token);
+                navigate(PATHS.ROUTERS.MERCHANT);
             } catch (err) {
-                setPostMsg(err.response.data.msg);
+                setPostMsg(err.response?.data.msg ? err.response.data.msg : err);
             }
         }
     }
@@ -186,7 +185,7 @@ export default function RegisterPage() {
                         </Field>
                         <Button submit fullwidth color={'warning'}>Zaregistrovat se</Button>
                     </form>
-                    {postMsg !== '' && <p className="has-text-danger">{postMsg}</p>}
+                    {postMsg && (<p className="has-text-danger">{postMsg instanceof Error ? postMsg.message : postMsg}</p>)}
                 </Box>
             </Container>
         </Fragment>

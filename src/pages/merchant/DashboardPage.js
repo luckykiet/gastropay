@@ -22,9 +22,10 @@ export default function DashboardPage() {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }
                 })
-                if (success) {
-                    setRestaurants(msg)
+                if (!success) {
+                    throw new Error(msg);
                 }
+                setRestaurants(msg)
             } catch (err) {
                 console.log(err)
             }

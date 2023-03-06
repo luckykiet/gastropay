@@ -40,24 +40,21 @@ export default function ProfilePage() {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }
                 });
-                if (success) {
-                    setPassword('');
-                    setPostMsg({
-                        success: true,
-                        msg: "Úspěšně aktualizováno!"
-                    });
-                    setComgate(msg.paymentGates.comgate);
-                } else {
-                    setPostMsg({
-                        success: false,
-                        msg: msg
-                    });
+
+                if (!success) {
+                    throw new Error(msg);
                 }
+                setPassword('');
+                setPostMsg({
+                    success: true,
+                    msg: "Úspěšně aktualizováno!"
+                });
+                setComgate(msg.paymentGates.comgate);
             } catch (err) {
-                console.log(err.response.data.msg)
+                console.log(err)
                 setPostMsg({
                     success: false,
-                    msg: err.response.data.msg
+                    msg: err?.response?.data.msg ? err?.response?.data.msg : err
                 });
             } finally {
                 setLoading(false);
@@ -95,9 +92,13 @@ export default function ProfilePage() {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }
                 })
-                if (success) {
-                    setComgate(msg.paymentGates.comgate);
+
+                if (!success) {
+                    throw new Error(msg)
                 }
+
+                setComgate(msg.paymentGates.comgate);
+                //add more payment gates
             } catch (err) {
                 console.log(err)
             } finally {
@@ -225,9 +226,9 @@ export default function ProfilePage() {
                                 </Field>
                                 <Button submit fullwidth color={'warning'}>Uložit</Button>
                             </form>
-                            {postMsg && typeof postMsg.msg === "string" && (
+                            {postMsg && postMsg.msg && (
                                 <p className={postMsg.success ? "has-text-success" : "has-text-danger"}>
-                                    {postMsg.msg}
+                                    {postMsg.msg instanceof Error ? postMsg.msg.message : typeof postMsg.msg === "string" && postMsg.msg}
                                 </p>
                             )}
                         </Block>

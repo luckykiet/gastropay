@@ -35,11 +35,12 @@ export default function EditPanelPage() {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }
                 })
-                if (success) {
-                    console.log(msg)
-                    setRestaurant(msg);
-                    setChoosenRestaurant(msg);
+
+                if (!success) {
+                    throw new Error(msg);
                 }
+                setRestaurant(msg);
+                setChoosenRestaurant(msg);
             } catch (err) {
                 console.log(err)
             } finally {
@@ -64,30 +65,24 @@ export default function EditPanelPage() {
                 }
             });
 
-            if (success) {
-                setChoosenRestaurant({});
-                setPostMsg({
-                    success: true,
-                    msg: msg
-                });
-            } else {
-                setPostMsg({
-                    success: false,
-                    msg: msg
-                });
+            if (!success) {
+                throw new Error(msg);
             }
+
+            setChoosenRestaurant({});
+            setPostMsg({
+                success: true,
+                msg: msg
+            });
         } catch (err) {
-            console.log(err.response.data.msg)
+            console.log(err)
             setPostMsg({
                 success: false,
-                msg: err.response.data.msg
+                msg: err?.response?.data.msg ? err.response.data.msg : err
             });
+        } finally {
+            setShowConfirmBox(false);
         }
-        setShowConfirmBox(false);
-    };
-
-    const handleCancel = () => {
-        setShowConfirmBox(false);
     };
 
     const handleChange = (e) => {
@@ -172,7 +167,7 @@ export default function EditPanelPage() {
                                 noText={"Zrušit"}
                                 title={"Smazat restauraci"}
                                 onConfirm={handleConfirm}
-                                onCancel={handleCancel}
+                                onCancel={() => setShowConfirmBox(false)}
                             />
                         )}
                         <Hero color="link" size="small">

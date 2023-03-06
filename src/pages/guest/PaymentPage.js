@@ -32,14 +32,13 @@ export default function PaymentPage() {
         setIsEmailValid(emailRegex.test(value) || value.length === 0);
     }
 
-    const handleSelectChange = (e) => {
-        setSelectedTable(e.target.value);
-    }
-
     const handleComgateClick = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         try {
+            if (isEmailValid === null || !isEmailValid) {
+                throw new Error("Nesprávný email formát");
+            }
             const axios = createAxios(addSlashAfterUrl(API_URL));
 
             const transaction = {
@@ -59,18 +58,16 @@ export default function PaymentPage() {
                 }
             });
 
-            if (success) {
-                navigate(PATHS.ROUTERS.TRANSACTION + "/" + msg.refId);
-            } else {
-                setPostMsg({
-                    success: false,
-                    msg: msg
-                });
+            if (!success) {
+                throw new Error(msg);
             }
+
+            navigate(PATHS.ROUTERS.TRANSACTION + "/" + msg.refId);
         } catch (error) {
+            console.log(error)
             setPostMsg({
                 success: false,
-                msg: error.response.data.msg
+                msg: error.response?.data?.msg ? error.response.data.msg : error
             });
         } finally {
             setIsLoading(false);
@@ -160,7 +157,7 @@ export default function PaymentPage() {
                                         <Field>
                                             <Label className='is-normal' htmlFor='inputTables'><span className='has-text-danger'>*</span> Stůl</Label>
                                             <Control>
-                                                <Select id='inputTables' onChange={handleSelectChange} value={selectedTable} required>
+                                                <Select id='inputTables' onChange={(e) => setSelectedTable(e.target.value)} value={selectedTable} required>
                                                     {tables.map((table) => {
                                                         return (
                                                             <option value={table} key={table}>{table}</option>
@@ -210,9 +207,9 @@ export default function PaymentPage() {
                                 // add more methods later
                             }
                         </Block>
-                        {postMsg && typeof postMsg.msg === "string" && (
+                        {postMsg && postMsg.msg && (
                             <p className={postMsg.success ? "has-text-success" : "has-text-danger"}>
-                                {postMsg.msg}
+                                {postMsg.msg instanceof Error ? postMsg.msg.message : typeof postMsg.msg === "string" && postMsg.msg}
                             </p>
                         )}
                     </Box>

@@ -3,9 +3,6 @@ import { Notification, Button } from 'react-bulma-components';
 
 export default function FoodNotification({ isShowed, msg, color }) {
     const [showNotification, setShowNotification] = useState(isShowed);
-    const handleCloseNotification = () => {
-        setShowNotification(false);
-    }
 
     useEffect(() => {
         setShowNotification(isShowed);
@@ -15,7 +12,7 @@ export default function FoodNotification({ isShowed, msg, color }) {
         <Fragment>
             {showNotification && (
                 <Notification color={color}>
-                    {msg}<Button onClick={handleCloseNotification} remove />
+                    {msg}<Button onClick={() => setShowNotification(false)} remove />
                 </Notification>
             )}
         </Fragment>

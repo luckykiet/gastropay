@@ -67,20 +67,16 @@ export default function AddPanelPage() {
                     }
                 });
 
-                if (success) {
-                    setChoosenRestaurant(msg);
-                    navigate(PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + msg._id)
-                } else {
-                    setPostMsg({
-                        success: false,
-                        msg: msg
-                    });
+                if (!success) {
+                    throw new Error(msg);
                 }
+
+                setChoosenRestaurant(msg);
+                navigate(PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + msg._id);
             } catch (err) {
-                console.log(err.response.data.msg)
                 setPostMsg({
                     success: false,
-                    msg: err.response.data.msg
+                    msg: err?.response?.data.msg ? err.response.data.msg : err
                 });
             }
         }
@@ -138,9 +134,9 @@ export default function AddPanelPage() {
                         </Block>
                         <Button submit fullwidth color={'success'}>Přidat</Button>
                     </form>
-                    {postMsg && typeof postMsg.msg === "string" && (
-                        <p className={"has-text-danger"}>
-                            {postMsg.msg}
+                    {postMsg && postMsg.msg && (
+                        <p className={postMsg.success ? "has-text-success" : "has-text-danger"}>
+                            {postMsg.msg instanceof Error ? postMsg.msg.message : typeof postMsg.msg === "string" && postMsg.msg}
                         </p>
                     )}
                 </Box>

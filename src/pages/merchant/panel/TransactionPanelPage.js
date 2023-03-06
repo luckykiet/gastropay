@@ -12,11 +12,12 @@ import moment from 'moment';
 const { Body } = Hero;
 const { Tab } = Tabs;
 export default function TransactionPanelPage() {
-    const idRestaurant = useParams().idRestaurant;
+    const { idRestaurant } = useParams();
     const [transactions, setTransactions] = useState(null);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
     const choosenRestaurant = useChoosenRestaurant();
+    const navigate = useNavigate();
+
     useEffect(() => {
         setLoading(true);
         const fetchTransactions = async () => {
@@ -27,10 +28,11 @@ export default function TransactionPanelPage() {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }
                 })
-                if (success) {
-                    console.log(msg)
-                    setTransactions(msg);
+
+                if (!success) {
+                    throw new Error(msg);
                 }
+                setTransactions(msg);
             } catch (err) {
                 console.log(err)
             } finally {

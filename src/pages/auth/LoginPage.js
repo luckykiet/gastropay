@@ -35,14 +35,13 @@ export default function LoginPage() {
                         'Content-Type': 'application/json'
                     }
                 });
-                if (success) {
-                    localStorage.setItem('token', msg.token);
-                    navigate(PATHS.ROUTERS.MERCHANT);
-                } else {
-                    setPostMsg(msg);
+                if (!success) {
+                    throw new Error(msg);
                 }
+                localStorage.setItem('token', msg.token);
+                navigate(PATHS.ROUTERS.MERCHANT);
             } catch (err) {
-                setPostMsg(err.response.data.msg);
+                setPostMsg(err?.response?.data.msg ? err.response.data.msg : err);
             }
         }
     };
@@ -93,7 +92,7 @@ export default function LoginPage() {
                                         </Column>
                                     </Columns>
                                 </form>
-                                {postMsg !== '' && <p className="has-text-danger">{postMsg}</p>}
+                                {postMsg && (<p className="has-text-danger">{postMsg instanceof Error ? postMsg.message : postMsg}</p>)}
                             </Box>
                         </Column>
                     </Columns>

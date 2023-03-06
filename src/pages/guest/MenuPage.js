@@ -36,6 +36,7 @@ export default function MenuPage() {
                     setTables(msg.tables ? msg.tables : []);
                     setMenu({ tabs, menu: newMenu });
                 } catch (err) {
+                    setMenu({});
                     console.log(err);
                 } finally {
                     setLoading(false);

@@ -13,10 +13,6 @@ export default function TransactionPage() {
     const [result, setResult] = useState({});
     const [showPaymentBox, setShowPaymentBox] = useState(false);
 
-    const handlePaymentBoxClose = () => {
-        setShowPaymentBox(false);
-    }
-
     const handlePayClick = (e) => {
         e.preventDefault();
         if (Object.keys(paymentMethod)[0] === 'comgate') {
@@ -97,7 +93,7 @@ export default function TransactionPage() {
                                                             (showPaymentBox && (
                                                                 <ComgateFrame
                                                                     paymentMethod={paymentMethod['comgate']}
-                                                                    onClose={handlePaymentBoxClose}
+                                                                    onClose={() => setShowPaymentBox(false)}
                                                                 />
                                                             ))
                                                             //Add another payment gates

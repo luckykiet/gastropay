@@ -6,10 +6,10 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 export default function BackButtonComponent({ backNavigations }) {
     const { pathname } = useLocation();
-
     const backButtonPaths = [];
     const restaurantPath = pathname.split('/')[1];
     backButtonPaths.push(restaurantPath);
+
     return (
         <Fragment>
             {backNavigations[backButtonPaths] ?
