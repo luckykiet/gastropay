@@ -20,6 +20,8 @@ export default function EditPanelPage() {
     const [restaurant, setRestaurant] = useState({});
     const [postMsg, setPostMsg] = useState({});
     const [loading, setLoading] = useState(true);
+    const [apiTestLoading, setApiTestLoading] = useState(false);
+    const [apiTestMsg, setApiTestMsg] = useState({});
     const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
     const [showConfirmBox, setShowConfirmBox] = useState(false);
     const navigate = useNavigate();
@@ -27,6 +29,7 @@ export default function EditPanelPage() {
     useEffect(() => {
         setLoading(true);
         setPostMsg({});
+        setApiTestMsg({});
         const fetchRestaurant = async () => {
             const axios = createAxios(addSlashAfterUrl(API_URL));
             try {
@@ -134,7 +137,10 @@ export default function EditPanelPage() {
         setLoading(true);
         setPostMsg({});
         if (restaurant.name === '' || restaurant.address.street === '' || restaurant.address.city === '' || restaurant.address.postalCode === '') {
-            setPostMsg("Zkontrolujte vyplněné údaje!");
+            setPostMsg({
+                success: false,
+                msg: "Zkontrolujte vyplněné údaje!"
+            });
         } else {
             try {
                 const axios = createAxios(addSlashAfterUrl(API_URL));
@@ -146,27 +152,63 @@ export default function EditPanelPage() {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }
                 });
-                if (success) {
-                    console.log(msg);
-                    setPostMsg({
-                        success: true,
-                        msg: msg
-                    });
-                    setChoosenRestaurant(restaurant);
-                } else {
-                    setPostMsg({
-                        success: false,
-                        msg: msg
-                    });
+                if (!success) {
+                    throw new Error(msg);
                 }
+                console.log(msg);
+                setPostMsg({
+                    success: true,
+                    msg: msg
+                });
+                setChoosenRestaurant(restaurant);
+
             } catch (err) {
-                console.log(err.response.data.msg)
+                console.log(err)
                 setPostMsg({
                     success: false,
-                    msg: err.response.data.msg
+                    msg: err?.response?.data.msg ? err.response.data.msg : err
                 });
             } finally {
                 setLoading(false);
+            }
+        }
+    }
+
+    const handleTestApiClick = async (e) => {
+        e.preventDefault();
+        setApiTestMsg({});
+        if (restaurant.api.baseUrl === '' || restaurant.api.params === '') {
+            setApiTestMsg({
+                success: false,
+                msg: "API url a parametry nesmí být prázdné"
+            });
+        } else {
+            setApiTestLoading(true);
+            try {
+                const axios = createAxios(addSlashAfterUrl(restaurant.api.baseUrl));
+                const { data: { success } } = await axios.get(`${restaurant.api.params}`,
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    });
+
+                if (!success) {
+                    throw new Error("Nepovedlo se připojit k API!")
+                }
+
+                setApiTestMsg({
+                    success: true,
+                    msg: "OK"
+                });
+            } catch (err) {
+                console.log(err)
+                setApiTestMsg({
+                    success: false,
+                    msg: err?.response?.data.msg ? err.response.data.msg : err
+                });
+            } finally {
+                setApiTestLoading(false);
             }
         }
     }
@@ -274,7 +316,9 @@ export default function EditPanelPage() {
                                         </Field>
                                     </Block>
                                     <Block>
-                                        <Heading renderAs='p' size={4} className='has-text-weight-bold'>Menu API:</Heading>
+                                        <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Menu API:</Heading>
+                                        <Button className='is-pulled-right' color={'warning'} onClick={handleTestApiClick}>Test API</Button>
+                                        {apiTestLoading && <LoadingComponent />}
                                         <Field>
                                             <Label htmlFor="inputApiBaseUrl">
                                                 Base URL
@@ -291,7 +335,13 @@ export default function EditPanelPage() {
                                             <Control>
                                                 <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.params'] ? "danger" : undefined} onChange={handleChange} name={"api.params"} value={restaurant.api.params} type={"text"} id="inputApiParam" placeholder="API Params" />
                                             </Control>
-                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.params'] && <Help color={'danger'}>{postMsg.msg['api.params']}</Help>}</Field>
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.params'] && <Help color={'danger'}>{postMsg.msg['api.params']}</Help>}
+                                        </Field>
+                                        {apiTestMsg && apiTestMsg.msg && (
+                                            <p className={apiTestMsg.success ? "has-text-success" : "has-text-danger"}>
+                                                {apiTestMsg.msg instanceof Error ? apiTestMsg.msg.message : typeof apiTestMsg.msg === "string" && apiTestMsg.msg}
+                                            </p>
+                                        )}
                                     </Block>
                                     <Heading renderAs='p' size={4} className='has-text-weight-bold'>Otevírací doba:</Heading>
                                     {Object.keys(restaurant.openingTime).map((key) => {
@@ -299,9 +349,9 @@ export default function EditPanelPage() {
                                     })}
                                     <Button id={"submitButton"} submit fullwidth color={'warning'}>Uložit</Button>
                                 </form>
-                                {postMsg && typeof postMsg.msg === "string" && (
+                                {postMsg && postMsg.msg && (
                                     <p className={postMsg.success ? "has-text-success" : "has-text-danger"}>
-                                        {postMsg.msg}
+                                        {postMsg.msg instanceof Error ? postMsg.msg.message : typeof postMsg.msg === "string" && postMsg.msg}
                                     </p>
                                 )}
                             </Box>
