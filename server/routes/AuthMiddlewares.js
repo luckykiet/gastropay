@@ -7,13 +7,16 @@ const authMiddleware = (req, res, next) => {
     if (!token) {
         return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
-    jwt.verify(token, config.JWT_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ success: false, message: 'Unauthorized' });
+    try {
+        const decoded = jwt.verify(token, config.JWT_SECRET);
+        if (decoded.exp < Date.now() / 1000) {
+            return res.status(401).json({ success: false, message: 'Token expired' });
         }
         req.userId = decoded.userId;
         next();
-    });
+    } catch (err) {
+        return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
 };
 
 const authAdminMiddleware = (requiredRole) => (req, res, next) => {
@@ -22,10 +25,17 @@ const authAdminMiddleware = (requiredRole) => (req, res, next) => {
     if (!token) {
         return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
+
     jwt.verify(token, config.JWT_SECRET, (err, decoded) => {
         if (err) {
             return res.status(401).json({ success: false, message: 'Unauthorized' });
         }
+
+        const now = Date.now() / 1000; // convert to seconds
+        if (decoded.exp && decoded.exp < now) {
+            return res.status(401).json({ success: false, message: 'Token expired' });
+        }
+
         req.userId = decoded.userId;
         if (requiredRole && decoded.role !== requiredRole) {
             return res.status(403).json({ success: false, message: 'Forbidden' });

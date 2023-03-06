@@ -31,18 +31,34 @@ import ProgressBar from './components/ProgressBar';
 import AddPanelPage from './pages/merchant/panel/AddPanelPage';
 import EditPanelPage from './pages/merchant/panel/EditPanelPage';
 
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  if (!isAuthenticated && !isLoading) {
-    return <Navigate to={PATHS.ROUTERS.LOGIN} replace />
+const ProtectedRoute = ({ children, ...rest }) => {
+  const { isAuthenticated, isLoading, error, expirationTime } = useAuth();
+  const currentTime = Date.now() / 1000;
+
+  if (error) {
+    return <div>Authentication failed: {error.message}</div>;
   }
+
+  if (!isAuthenticated && !isLoading) {
+    return <Navigate to={PATHS.ROUTERS.LOGIN} replace />;
+  }
+
+  if (expirationTime && expirationTime < currentTime) {
+    localStorage.removeItem('token');
+    return <Navigate to={PATHS.ROUTERS.LOGIN} replace />;
+  }
+
   if (isLoading) {
     return <ProgressBar />;
   }
-  return children;
-}
 
-const AuthRoute = ({ children }) => {
+  return children;
+};
+
+export default ProtectedRoute;
+
+
+const AuthRoute = ({ children, ...rest }) => {
   const { isAuthenticated } = useAuth();
   if (isAuthenticated) {
     return <Navigate to={PATHS.ROUTERS.MERCHANT} replace />
@@ -126,25 +142,30 @@ const router = createBrowserRouter([
   {
     path: PATHS.ROUTERS.MERCHANT,
     element: <ProtectedRoute><MerchantLayout /></ProtectedRoute>,
-    children: [{
-      path: "",
-      element: <DashboardPage />,
-      children: [{
-        path: PATHS.ROUTERS.RESTAURANT_EDIT + '/' + PATHS.ROUTERS.ID_RESTAURANT,
-        element: <EditPanelPage />,
+    children: [
+      {
+        path: "",
+        element: <DashboardPage />,
+        children: [
+          {
+            path: PATHS.ROUTERS.RESTAURANT_EDIT + '/' + PATHS.ROUTERS.ID_RESTAURANT,
+            element: <EditPanelPage />,
+          },
+          {
+            path: PATHS.ROUTERS.RESTAURANT_ADD,
+            element: <AddPanelPage />,
+          },
+          {
+            path: PATHS.ROUTERS.RESTAURANT_TRANSACTION + '/' + PATHS.ROUTERS.ID_RESTAURANT,
+            element: <TransactionPanelPage />,
+          }
+        ]
       },
       {
-        path: PATHS.ROUTERS.RESTAURANT_ADD,
-        element: <AddPanelPage />,
-      },
-      {
-        path: PATHS.ROUTERS.RESTAURANT_TRANSACTION + '/' + PATHS.ROUTERS.ID_RESTAURANT,
-        element: <TransactionPanelPage />,
-      }]
-    }, {
-      path: PATHS.ROUTERS.PROFILE,
-      element: <ProfilePage />
-    }],
+        path: PATHS.ROUTERS.PROFILE,
+        element: <ProfilePage />
+      }
+    ],
     errorElement: <ErrorPage />,
   }
 ]);
