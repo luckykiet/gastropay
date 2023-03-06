@@ -143,9 +143,9 @@ export default function ProfilePage() {
                                         Merchant ID - merchant
                                     </Label>
                                     <Control>
-                                        <Input name={"merchant"} value={comgate.merchant} onChange={handleChange} id="inputMerchant" type="text" placeholder="Merchant ID" required />
+                                        <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.merchant ? "danger" : undefined} name={"merchant"} value={comgate.merchant} onChange={handleChange} id="inputMerchant" type="text" placeholder="Merchant ID" required />
                                     </Control>
-                                    {postMsg && typeof postMsg.msg === "object" && postMsg?.msg?.merchant && <Help color={'danger'}>{postMsg.msg.merchant}</Help>}
+                                    {postMsg && typeof postMsg.msg === "object" && postMsg.msg.merchant && <Help color={'danger'}>{postMsg.msg.merchant}</Help>}
                                 </Field>
                                 <Field>
                                     <Label htmlFor="checkBoxIsTestMode">
@@ -177,9 +177,9 @@ export default function ProfilePage() {
                                         Popis produktu - popis
                                     </Label>
                                     <Control>
-                                        <Input name={"label"} value={comgate.label} onChange={handleChange} id="inputLabel" type="text" placeholder="Popis produktu" required />
+                                        <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.label ? "danger" : undefined} name={"label"} value={comgate.label} onChange={handleChange} id="inputLabel" type="text" placeholder="Popis produktu" required />
                                     </Control>
-                                    {postMsg && typeof postMsg.msg === "object" && postMsg?.msg?.label && <Help color={'danger'}>{postMsg.msg.label}</Help>}
+                                    {postMsg && typeof postMsg.msg === "object" && postMsg.msg.label && <Help color={'danger'}>{postMsg.msg.label}</Help>}
                                 </Field>
                                 <Field>
                                     <Label htmlFor="selectMethods">
@@ -198,9 +198,9 @@ export default function ProfilePage() {
                                         Secret - secret
                                     </Label>
                                     <Control>
-                                        <Input name={"secret"} value={comgate.secret} onChange={handleChange} id="inputSecret" type="text" placeholder="Secret" required />
+                                        <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.secret ? "danger" : undefined} name={"secret"} value={comgate.secret} onChange={handleChange} id="inputSecret" type="text" placeholder="Secret" required />
                                     </Control>
-                                    {postMsg && typeof postMsg.msg === "object" && postMsg?.msg?.secret && <Help color={'danger'}>{postMsg.msg.secret}</Help>}
+                                    {postMsg && typeof postMsg.msg === "object" && postMsg.msg.secret && <Help color={'danger'}>{postMsg.msg.secret}</Help>}
                                 </Field>
                                 <Field>
                                     <Label htmlFor="selectCurrency">
@@ -219,10 +219,10 @@ export default function ProfilePage() {
                                         Heslo
                                     </Label>
                                     <Control>
-                                        <Input name={"password"} value={password} onChange={(e) => setPassword(e.target.value)} id="inputPassword" type="password" placeholder="*************" required />
-                                        <Icon align="left"><FontAwesomeIcon icon={faLock} /></Icon>
+                                        <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.password ? "danger" : undefined} name={"password"} value={password} onChange={(e) => setPassword(e.target.value)} id="inputPassword" type="password" placeholder="*************" required />
+                                        <Icon color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.password ? "danger" : undefined} align="left"><FontAwesomeIcon icon={faLock} /></Icon>
                                     </Control>
-                                    {postMsg && typeof postMsg.msg === "object" && postMsg?.msg?.password && <Help color={'danger'}>{postMsg?.msg?.password}</Help>}
+                                    {postMsg && typeof postMsg.msg === "object" && postMsg.msg.password && <Help color={'danger'}>{postMsg.msg.password}</Help>}
                                 </Field>
                                 <Button submit fullwidth color={'warning'}>Uložit</Button>
                             </form>

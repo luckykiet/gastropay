@@ -8,10 +8,10 @@ const RestaurantSchema = new Schema({
     name: { type: String, trim: true, required: true, unique: true },
     address: { type: Address, required: true },
     api: {
-        baseUrl: { type: String, trim: true },
-        params: { type: String, trim: true }
+        baseUrl: { type: String, trim: true, default: "" },
+        params: { type: String, trim: true, default: "" }
     },
-    image: { type: String, trim: true },
+    image: { type: String, trim: true, default: "" },
     openingTime: { type: OpeningTime, required: true },
     isAvailable: { type: Boolean, required: true, default: false }
 }, { strict: true, timestamps: true });

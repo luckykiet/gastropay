@@ -97,7 +97,7 @@ export default function AddPanelPage() {
                                     Název
                                 </Label>
                                 <Control>
-                                    <Input onChange={handleChange} name={"name"} value={restaurant?.name} type={"text"} id="inputName" placeholder="Gastro bistro" />
+                                    <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.name ? "danger" : undefined} onChange={handleChange} name={"name"} value={restaurant?.name} type={"text"} id="inputName" placeholder="Gastro bistro" />
                                 </Control>
                                 {postMsg && typeof postMsg.msg === "object" && postMsg.msg.name && <Help color={'danger'}>{postMsg.msg.name}</Help>}
                             </Field>
@@ -109,7 +109,7 @@ export default function AddPanelPage() {
                                     Ulice
                                 </Label>
                                 <Control>
-                                    <Input onChange={handleChange} name={"address.street"} value={restaurant.address?.street} type={"text"} id="inputStreet" placeholder="Na Porici 81" />
+                                    <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.street'] ? "danger" : undefined} onChange={handleChange} name={"address.street"} value={restaurant.address?.street} type={"text"} id="inputStreet" placeholder="Na Porici 81" />
                                 </Control>
                                 {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.street'] && <Help color={'danger'}>{postMsg.msg['address.street']}</Help>}
                             </Field>
@@ -118,7 +118,7 @@ export default function AddPanelPage() {
                                     Město
                                 </Label>
                                 <Control>
-                                    <Input onChange={handleChange} name={"address.city"} value={restaurant.address?.city} type={"text"} id="inputCity" placeholder="Praha 1" />
+                                    <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.city'] ? "danger" : undefined} onChange={handleChange} name={"address.city"} value={restaurant.address?.city} type={"text"} id="inputCity" placeholder="Praha 1" />
                                 </Control>
                                 {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.city'] && <Help color={'danger'}>{postMsg.msg['address.city']}</Help>}
                             </Field>
@@ -127,7 +127,7 @@ export default function AddPanelPage() {
                                     PSČ
                                 </Label>
                                 <Control>
-                                    <Input onChange={handleChange} name={"address.postalCode"} value={restaurant.address?.postalCode} type={"text"} id="inputPsc" placeholder="11000" />
+                                    <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.postalCode'] ? "danger" : undefined} onChange={handleChange} name={"address.postalCode"} value={restaurant.address?.postalCode} type={"text"} id="inputPsc" placeholder="11000" />
                                 </Control>
                             </Field>
                             {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.postalCode'] && <Help color={'danger'}>{postMsg.msg['address.postalCode']}</Help>}

@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { createAxios, addSlashAfterUrl, API_URL, PATHS } from '../../../utils';
+import { createAxios, addSlashAfterUrl, API_URL, PATHS, isValidImageUrl, isValidUrl } from '../../../utils';
 import { Box, Heading, Form, Button, Container, Hero, Block, Tabs } from "react-bulma-components";
 import { Promise } from 'bluebird';
 import 'rc-time-picker/assets/index.css';
@@ -87,6 +87,31 @@ export default function EditPanelPage() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        if (name === "image") {
+            if (!isValidImageUrl(value) && value !== '') {
+                setPostMsg({
+                    success: false,
+                    msg: { image: "Nesprávný url pro obrázek" }
+                })
+            } else {
+                setPostMsg({
+                    success: true,
+                    msg: {}
+                })
+            }
+        } else if (name === "api.baseUrl") {
+            if (!isValidUrl(value) && value !== '') {
+                setPostMsg({
+                    success: false,
+                    msg: { "api.baseUrl": "Nesprávný url" }
+                })
+            } else {
+                setPostMsg({
+                    success: true,
+                    msg: {}
+                })
+            }
+        }
 
         setRestaurant(
             produce((draft) => {
@@ -103,7 +128,6 @@ export default function EditPanelPage() {
             })
         );
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -205,7 +229,7 @@ export default function EditPanelPage() {
                                                 Název
                                             </Label>
                                             <Control>
-                                                <Input onChange={handleChange} name={"name"} value={restaurant?.name} type={"text"} id="inputName" placeholder="Gastro bistro" required />
+                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.name ? "danger" : undefined} onChange={handleChange} name={"name"} value={restaurant.name} type={"text"} id="inputName" placeholder="Gastro bistro" required />
                                             </Control>
                                             {postMsg && typeof postMsg.msg === "object" && postMsg.msg.name && <Help color={'danger'}>{postMsg.msg.name}</Help>}
                                         </Field>
@@ -214,7 +238,7 @@ export default function EditPanelPage() {
                                                 Obrázek
                                             </Label>
                                             <Control>
-                                                <Input onChange={handleChange} name={"image"} value={restaurant?.image} type={"text"} id="inputImage" placeholder="Image URL" />
+                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.image ? "danger" : undefined} onChange={handleChange} name={"image"} value={restaurant.image} type={"text"} id="inputImage" placeholder="Image URL" />
                                             </Control>
                                             {postMsg && typeof postMsg.msg === "object" && postMsg.msg.image && <Help color={'danger'}>{postMsg.msg.image}</Help>}
                                         </Field>
@@ -226,7 +250,7 @@ export default function EditPanelPage() {
                                                 Ulice
                                             </Label>
                                             <Control>
-                                                <Input onChange={handleChange} name={"address.street"} value={restaurant.address?.street} type={"text"} id="inputStreet" placeholder="Na Porici 81" required />
+                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.street'] ? "danger" : undefined} onChange={handleChange} name={"address.street"} value={restaurant.address.street} type={"text"} id="inputStreet" placeholder="Na Porici 81" required />
                                             </Control>
                                             {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.street'] && <Help color={'danger'}>{postMsg.msg['address.street']}</Help>}
                                         </Field>
@@ -235,7 +259,7 @@ export default function EditPanelPage() {
                                                 Město
                                             </Label>
                                             <Control>
-                                                <Input onChange={handleChange} name={"address.city"} value={restaurant.address?.city} type={"text"} id="inputCity" placeholder="Praha 1" required />
+                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.city'] ? "danger" : undefined} onChange={handleChange} name={"address.city"} value={restaurant.address.city} type={"text"} id="inputCity" placeholder="Praha 1" required />
                                             </Control>
                                             {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.city'] && <Help color={'danger'}>{postMsg.msg['address.city']}</Help>}
                                         </Field>
@@ -244,7 +268,7 @@ export default function EditPanelPage() {
                                                 PSČ
                                             </Label>
                                             <Control>
-                                                <Input onChange={handleChange} name={"address.postalCode"} value={restaurant.address?.postalCode} type={"text"} id="inputPsc" placeholder="11000" required />
+                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.postalCode'] ? "danger" : undefined} onChange={handleChange} name={"address.postalCode"} value={restaurant.address.postalCode} type={"text"} id="inputPsc" placeholder="11000" required />
                                             </Control>
                                             {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.postalCode'] && <Help color={'danger'}>{postMsg.msg['address.postalCode']}</Help>}
                                         </Field>
@@ -256,7 +280,7 @@ export default function EditPanelPage() {
                                                 Base URL
                                             </Label>
                                             <Control>
-                                                <Input onChange={handleChange} name={"api.baseUrl"} value={restaurant.api?.baseUrl} type={"text"} id="inputApiBaseUrl" placeholder="https://api.npoint.io/" />
+                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.baseUrl'] ? "danger" : undefined} onChange={handleChange} name={"api.baseUrl"} value={restaurant.api.baseUrl} type={"text"} id="inputApiBaseUrl" placeholder="https://api.npoint.io/" />
                                             </Control>
                                             {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.baseUrl'] && <Help color={'danger'}>{postMsg.msg['api.baseUrl']}</Help>}
                                         </Field>
@@ -265,7 +289,7 @@ export default function EditPanelPage() {
                                                 Parametry
                                             </Label>
                                             <Control>
-                                                <Input onChange={handleChange} name={"api.params"} value={restaurant.api?.params} type={"text"} id="inputApiParam" placeholder="API Params" />
+                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.params'] ? "danger" : undefined} onChange={handleChange} name={"api.params"} value={restaurant.api.params} type={"text"} id="inputApiParam" placeholder="API Params" />
                                             </Control>
                                             {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.params'] && <Help color={'danger'}>{postMsg.msg['api.params']}</Help>}</Field>
                                     </Block>
