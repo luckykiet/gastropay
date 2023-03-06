@@ -90,6 +90,17 @@ export const isValidUrl = (url) => {
     }
 }
 
+export const isValidImageUrl = (url) => {
+    try {
+        const urlObj = new URL(url);
+        const pattern = /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i;
+        const isImage = pattern.test(urlObj.pathname);
+        return isImage;
+    } catch (error) {
+        return false;
+    }
+}
+
 export const getItemsFromToken = (token = localStorage.getItem('token')) => {
     try {
         const payload = jwtDecode(token, '@ThIS iS Sup3rb s3creT!');

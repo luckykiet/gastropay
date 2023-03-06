@@ -1,6 +1,6 @@
 import React from 'react';
 import { Columns, Card, Media, Image, Content as TextContent, Button } from 'react-bulma-components';
-import { IMAGE_BASE_URL, addSlashAfterUrl, isValidUrl } from "../../utils";
+import { IMAGE_BASE_URL, addSlashAfterUrl, isValidImageUrl } from "../../utils";
 import OpeningTimeStatus from "../../components/restaurants/OpeningTimeStatus";
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../utils';
@@ -24,8 +24,8 @@ export default function RestaurantCard({ restaurant }) {
                             <Image
                                 alt={restaurant.name}
                                 src={
-                                    restaurant.image
-                                        ? isValidUrl(restaurant.image) ? restaurant.image : addSlashAfterUrl(IMAGE_BASE_URL) + restaurant.image
+                                    isValidImageUrl(restaurant.image)
+                                        ? restaurant.image
                                         : addSlashAfterUrl(IMAGE_BASE_URL) + '/restaurants/default.jpg'
                                 }
                                 size={128}

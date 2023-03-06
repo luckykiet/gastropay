@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { Block, Button, Columns, Container, Content, Heading, Image } from 'react-bulma-components';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { createAxios, API_URL, isOpening, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl, BASE_URL, removeSlashFromUrl, isValidUrl, daysOfWeeks } from "../../utils";
+import { createAxios, API_URL, isOpening, daysOfWeeksCzech, IMAGE_BASE_URL, addSlashAfterUrl, BASE_URL, removeSlashFromUrl, daysOfWeeks, isValidImageUrl } from "../../utils";
 import Promise from "bluebird";
 import moment from 'moment';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -84,8 +84,8 @@ export default function RestaurantPage() {
                                             <Image
                                                 size={"3by2"}
                                                 alt={business.name}
-                                                src={business.image
-                                                    ? isValidUrl(business.image) ? business.image : addSlashAfterUrl(IMAGE_BASE_URL) + business.image
+                                                src={isValidImageUrl(business.image)
+                                                    ? business.image
                                                     : addSlashAfterUrl(IMAGE_BASE_URL) + '/restaurants/default.jpg'}
                                             />
                                         </Container>

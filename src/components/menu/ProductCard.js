@@ -3,7 +3,7 @@ import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Card, Content as TextContent, Heading, Columns, Button, Container } from 'react-bulma-components';
 import { useAddToCartItem } from '../../stores/ZustandStores';
-import { IMAGE_BASE_URL, addSlashAfterUrl } from '../../utils';
+import { IMAGE_BASE_URL, addSlashAfterUrl, isValidImageUrl } from '../../utils';
 import FoodNotification from './FoodNotification';
 const { Column } = Columns;
 const { Image, Content } = Card;
@@ -17,7 +17,7 @@ export default function ProductCard({ product, showNotification }) {
     return (
         <Column narrow size="is-5-touch is-4-tablet is-3-desktop" className='is-one-quarter'>
             <Card key={product.ean}>
-                <Image size="16by9" src={product.image ? product.image : addSlashAfterUrl(IMAGE_BASE_URL) + 'foods/food_default.png'} />
+                <Image size="16by9" src={isValidImageUrl(product.image) ? product.image : addSlashAfterUrl(IMAGE_BASE_URL) + 'foods/food_default.png'} />
                 <Content>
                     <Columns className="is-mobile">
                         <Column color="primary" size="three-fifths">
