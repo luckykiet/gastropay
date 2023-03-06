@@ -8,6 +8,7 @@ import { PATHS } from '../../utils';
 export default function RestaurantCard({ restaurant }) {
     const { Item } = Media;
     const { Header, Content, Footer } = Card;
+    const { Title } = Header;
     const { Column } = Columns;
     const navigate = useNavigate();
 
@@ -15,7 +16,7 @@ export default function RestaurantCard({ restaurant }) {
         <Column narrow>
             <Card>
                 <Header>
-                    <Header.Title>{restaurant.name}</Header.Title>
+                    <Title>{restaurant.name}</Title>
                 </Header>
                 <Content>
                     <Media>

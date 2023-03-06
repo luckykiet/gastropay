@@ -1,15 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Button, Container, Content as TextContent, Heading, Columns, Form } from "react-bulma-components";
+import { Container, Content as TextContent, Heading, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
 import { API_URL, createAxios, addSlashAfterUrl, PATHS } from "../../utils";
 import LoadingComponent from "../../components/LoadingComponent";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUpAZ, faArrowDownAZ } from '@fortawesome/free-solid-svg-icons';
 import RestaurantCard from "../../components/restaurants/RestaurantCard";
 import { Promise } from "bluebird";
 import SearchBar from "../../components/restaurants/SearchBar";
-
-const { Select } = Form;
 
 const sortableFields = [
     {
@@ -21,14 +17,6 @@ const sortableFields = [
         "value": "address.city"
     }
 ];
-
-const SelectItems = () => {
-    return sortableFields.map((item) => (
-        <option key={item.value} value={item.value}>
-            {item.name}
-        </option>
-    ));
-}
 
 export default function RestaurantsPage() {
     const [loading, setLoading] = useState(true);
@@ -70,15 +58,18 @@ export default function RestaurantsPage() {
                 }
 
                 const { data: { success, msg } } = await axios.get(apiUrl);
-                if (success) {
-                    setRestaurants(msg);
-                    setSearchMsg('');
-                } else {
-                    setRestaurants({});
-                    setSearchMsg("Žádný výsledek nenašlo!");
+
+                if (!success) {
+                    throw new Error(msg);
                 }
-                setLoading(false);
+
+                setRestaurants(msg);
+                setSearchMsg('');
             } catch (err) {
+                setRestaurants({});
+                setSearchMsg("Žádný výsledek nenašlo!");
+                console.log(err)
+            } finally {
                 setLoading(false);
             }
         }
@@ -89,21 +80,14 @@ export default function RestaurantsPage() {
         <Fragment>
             <TextContent textAlign={"center"}>
                 <Heading size={2} pt={5} spaced>Zvolte restauraci</Heading>
-                <Container>
-                    <Columns centered vCentered>
-                        {sortableFields.length === 0 ? ""
-                            :
-                            <Fragment>
-                                <label htmlFor={"sortFieldSelect"} className="is-size-4">Seřadit podle:&nbsp;</label>
-                                <Select id="sortFieldSelect" value={sortField.value} onChange={handleSelectChange} size={"medium"}>
-                                    <SelectItems />
-                                </Select>
-                                <Button onClick={handleSortOrderClick} size={"large"} color={"white"}><FontAwesomeIcon icon={sortOrder === 'asc' ? faArrowDownAZ : faArrowUpAZ} /></Button>
-                                <SearchBar handleSearch={handleSearch} width={"300px"} />
-                            </Fragment>
-                        }
-                    </Columns>
-                </Container>
+                <SearchBar
+                    sortableFields={sortableFields}
+                    sortField={sortField}
+                    sortOrder={sortOrder}
+                    handleSelectChange={handleSelectChange}
+                    handleSortOrderClick={handleSortOrderClick}
+                    handleSearch={handleSearch}
+                    width={"300px"} />
             </TextContent>
             {loading ? (
                 <LoadingComponent />

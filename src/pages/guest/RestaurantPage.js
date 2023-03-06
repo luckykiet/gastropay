@@ -26,6 +26,14 @@ export default function RestaurantPage() {
     const todayDay = moment().day();
     const navigate = useNavigate();
 
+    const handleChooseClick = () => {
+        if (choosenRestaurant && choosenRestaurant._id !== business._id) {
+            setCartItems([]);
+        }
+        setChoosenRestaurant(business);
+        navigate(PATHS.ROUTERS.MENU);
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -35,23 +43,15 @@ export default function RestaurantPage() {
                     throw new Error(msg);
                 }
                 setBusiness(msg);
-                setLoading(false);
             } catch (err) {
                 setBusiness({});
-                setLoading(false);
                 console.log(err);
+            } finally {
+                setLoading(false);
             }
         }
         Promise.delay(500).then(fetchData);
     }, [idRestaurant, setBusiness]);
-
-    const handleChooseClick = () => {
-        if (choosenRestaurant && choosenRestaurant._id !== business._id) {
-            setCartItems([]);
-        }
-        setChoosenRestaurant(business);
-        navigate(PATHS.ROUTERS.MENU);
-    }
 
     return (
         <Fragment>
