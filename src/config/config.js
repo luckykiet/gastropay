@@ -35,6 +35,7 @@ const config = {
             RESTAURANT_TRANSACTION: "transaction",
             ID_TRANSACTION: ':idTransaction',
             ID_RESTAURANT: ':idRestaurant',
+            COMGATE: 'comgate',
         },
         API: {
             AUTH: "auth",
@@ -45,7 +46,8 @@ const config = {
             REGISTER: "register",
             ADMIN: "admin",
             TRANSACTION: "transaction",
-            PAYMENT_METHODS: "paymentMethods"
+            PAYMENT_METHODS: "paymentMethods",
+            CHANGE_PASSWORD: 'changepassword'
         }
     },
     LANGUAGES: {
@@ -56,7 +58,10 @@ const config = {
     COMGATE: {
         COUNTRIES: ['ALL', 'AT', 'BE', 'CY', 'CZ', 'DE', 'EE', 'EL', 'ES', 'FI', 'FR', 'GB', 'HR', 'HU', 'IE', 'IT', 'LT', 'LU', 'LV', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SL', 'SK', 'SV', 'US'],
         CURRENCIES: ['CZK', 'EUR', 'PLN', 'HUF', 'USD', 'GBP', 'RON', 'NOK', 'SEK'],
-        METHODS: ['ALL', 'CARD_ALL', 'BANK_ALL']
+        METHODS: ['ALL', 'CARD_ALL', 'BANK_ALL'],
+        COUNTRIES_DISABLED: true,
+        CURRENCIES_DISABLED: true,
+        METHODS_DISABLED: true,
     }
 };
 

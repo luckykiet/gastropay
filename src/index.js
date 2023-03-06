@@ -30,6 +30,8 @@ import TransactionPanelPage from './pages/merchant/panel/TransactionPanelPage';
 import ProgressBar from './components/ProgressBar';
 import AddPanelPage from './pages/merchant/panel/AddPanelPage';
 import EditPanelPage from './pages/merchant/panel/EditPanelPage';
+import ProfilePanel from './pages/merchant/profile/ProfilePanel';
+import ComgatePanel from './pages/merchant/profile/ComgatePanel';
 
 const ProtectedRoute = ({ children, ...rest }) => {
   const { isAuthenticated, isLoading, error, expirationTime } = useAuth();
@@ -163,7 +165,16 @@ const router = createBrowserRouter([
       },
       {
         path: PATHS.ROUTERS.PROFILE,
-        element: <ProfilePage />
+        element: <ProfilePage />,
+        children: [{
+          path: "",
+          element: <ProfilePanel />,
+        },
+        {
+          path: PATHS.ROUTERS.COMGATE,
+          element: <ComgatePanel />,
+        }
+        ]
       }
     ],
     errorElement: <ErrorPage />,

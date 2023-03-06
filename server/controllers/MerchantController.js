@@ -193,6 +193,14 @@ const updateMerchant = async (req, res, next) => {
     }
 
     const merchant = await MerchantModel.findById(merchantId);
+
+    if (!merchant) {
+        return res.status(404).json({
+            success: false,
+            msg: "Merchant not found"
+        });
+    }
+
     const isPasswordValid = await bcrypt.compare(body.password, merchant.password);
 
     if (!isPasswordValid) {
@@ -204,10 +212,6 @@ const updateMerchant = async (req, res, next) => {
     }
 
     delete body['password'];
-
-    if (!merchant) {
-        return res.status(404).json({ success: false, msg: `Merchant not found` });
-    }
 
     try {
         const updatedMerchant = await MerchantModel.findByIdAndUpdate(merchantId, body, { runValidators: true, new: true });
@@ -225,6 +229,56 @@ const updateMerchant = async (req, res, next) => {
     }
 };
 
+const updatePassword = async (req, res, next) => {
+    const merchantId = req.userId;
+    const body = req.body;
+
+    if (!body || !body.currentPassword || !body.newPassword || !body.confirmNewPassword) {
+        return res.status(400).json({
+            success: false,
+            msg: "You must provide a body and password to update",
+        });
+    }
+
+    if (body.newPassword !== body.confirmNewPassword) {
+        return res.status(400).json({
+            success: false,
+            msg: { confirmNewPassword: "New passwords not matching" },
+        });
+    }
+
+    const merchant = await MerchantModel.findById(merchantId);
+
+    if (!merchant) {
+        return res.status(404).json({
+            success: false,
+            msg: "Merchant not exist"
+        });
+    }
+
+    const isPasswordValid = await bcrypt.compare(body.currentPassword, merchant.password);
+
+    if (!isPasswordValid) {
+        return res.status(400).json({
+            success: false,
+            msg: {
+                currentPassword: 'Incorrect password'
+            }
+        });
+    }
+
+    try {
+        merchant.password = body.newPassword;
+        await merchant.save();
+        return res.status(200).json({
+            success: true,
+            msg: "Password successfully changed",
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     createRestaurant,
     updateMerchant,
@@ -233,5 +287,6 @@ module.exports = {
     getRestaurantByID,
     updateRestaurant,
     getSelf,
-    getRestaurantTransactions
+    getRestaurantTransactions,
+    updatePassword
 };
