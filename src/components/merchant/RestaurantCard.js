@@ -12,7 +12,6 @@ export default function RestaurantCard({ restaurant }) {
     const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
     const handleOnClick = () => {
         if (choosenRestaurant._id === restaurant._id) {
-            setChoosenRestaurant({});
             navigate(PATHS.ROUTERS.MERCHANT);
         } else {
             setChoosenRestaurant(restaurant);

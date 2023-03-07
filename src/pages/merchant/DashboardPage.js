@@ -40,6 +40,12 @@ export default function DashboardPage() {
         Promise.delay(0).then(fetchRestaurants);
     }, [userId, choosenRestaurant, navigate]);
 
+    useEffect(() => {
+        if (location.pathname === PATHS.ROUTERS.MERCHANT) {
+            setChoosenRestaurant({});
+        }
+    }, [location.pathname, setChoosenRestaurant])
+
     const handleDeleteButtonClick = (e) => {
         e.preventDefault();
         setShowConfirmBox(true);
@@ -58,8 +64,6 @@ export default function DashboardPage() {
             if (!success) {
                 throw new Error(msg);
             }
-
-            setChoosenRestaurant({});
             navigate(PATHS.ROUTERS.MERCHANT);
         } catch (err) {
             console.log(err)
