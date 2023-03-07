@@ -1,7 +1,7 @@
 const MerchantModel = require("../models/MerchantModel");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const config = require('../../src/config/config');
+const config = require('../config/config').CONFIG;
 
 const login = async (req, res) => {
     const { email, password } = req.body;

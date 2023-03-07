@@ -1,10 +1,9 @@
 const express = require('express');
-const config = require('../../src/config/config');
 const MerchantController = require('../controllers/MerchantController');
-const MERCHANT = config.PATHS.API.MERCHANT;
-const RESTAURANT = config.PATHS.API.RESTAURANT;
-const TRANSACTION = config.PATHS.API.TRANSACTION;
-const CHANGE_PASSWORD = config.PATHS.API.CHANGE_PASSWORD;
+const MERCHANT = require('../config/api').API.MERCHANT;
+const RESTAURANT = require('../config/api').API.RESTAURANT;
+const TRANSACTION = require('../config/api').API.TRANSACTION;
+const CHANGE_PASSWORD = require('../config/api').API.CHANGE_PASSWORD;
 const router = express.Router();
 const authMiddleware = require('./AuthMiddlewares');
 

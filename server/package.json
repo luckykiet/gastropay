@@ -9,6 +9,9 @@
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "esm": "^3.2.25",
+    "express": "^4.18.2",
     "helmet": "^6.0.1",
     "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
@@ -20,6 +23,6 @@
   },
   "scripts": {
     "start": "node index.js",
-    "server-start": "nodemon index.js"
+    "start-local": "nodemon index.js"
   }
 }
