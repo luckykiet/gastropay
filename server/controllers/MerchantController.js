@@ -4,6 +4,7 @@ const RestaurantModel = require("../models/RestaurantModel");
 const TransactionModel = require("../models/TransactionModel");
 const ObjectId = require("mongoose").Types.ObjectId;
 const bcrypt = require('bcrypt');
+const moment = require('moment');
 
 const createRestaurant = async (req, res, next) => {
     const authorizedMerchantId = req.userId;
@@ -74,6 +75,19 @@ const updateRestaurant = async (req, res, next) => {
             success: false,
             msg: "You must provide a body to update",
         });
+    }
+
+    for (const key in body.openingTime) {
+        if (Object.hasOwnProperty.call(body.openingTime, key)) {
+            const closingTime = moment(body.openingTime[key].to, "HH:mm");
+            const openingTime = moment(body.openingTime[key].from, "HH:mm");
+            if (closingTime.isSameOrBefore(openingTime)) {
+                return res.status(400).json({
+                    success: false,
+                    msg: "Čas otevření nesmí být starší než zavření",
+                });
+            }
+        }
     }
 
     const foundRestaurants = await RestaurantModel.find({
@@ -185,7 +199,7 @@ const updateMerchant = async (req, res, next) => {
     const merchantId = req.userId;
     const body = req.body;
 
-    if (!body || !body.password) {
+    if (!body || !body.password || !body.openingTime) {
         return res.status(400).json({
             success: false,
             msg: "You must provide a body and password to update",

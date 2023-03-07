@@ -38,7 +38,7 @@ const ProtectedRoute = ({ children, ...rest }) => {
   const currentTime = Date.now() / 1000;
 
   if (error) {
-    return <div>Authentication failed: {error.message}</div>;
+    throw new Response("Login expired", { status: 400 })
   }
 
   if (!isAuthenticated && !isLoading) {

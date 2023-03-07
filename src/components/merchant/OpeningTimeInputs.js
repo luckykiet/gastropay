@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { daysOfWeeksCzech } from '../../utils';
 import { Block, Heading, Form } from 'react-bulma-components';
 import Toggle from 'react-toggle';
 import TimePicker from 'rc-time-picker';
 import moment from 'moment';
 import produce from 'immer';
-const { Field, Label, Control } = Form;
+const { Field, Label, Control, Help } = Form;
 export default function OpeningTimeInputs({ day, handleChange, restaurant, setRestaurant }) {
+    const [timePickerMsg, setTimePickerMsg] = useState({});
+
     return (
         <Block>
             <Heading renderAs='p' size={5} className='has-text-weight-bold is-inline-block'>{daysOfWeeksCzech[day].name}:</Heading>
@@ -53,6 +55,19 @@ export default function OpeningTimeInputs({ day, handleChange, restaurant, setRe
                 <Control>
                     <TimePicker
                         onChange={(time) => {
+                            const newClosingTime = moment(time, "HH:mm");
+                            const openingTime = moment(restaurant.openingTime[day].from, "HH:mm");
+                            if (newClosingTime.isSameOrBefore(openingTime)) {
+                                setTimePickerMsg(produce((draft) => {
+                                    draft[day] = "Čas otevření nesmí být starší než zavření";
+                                }))
+                                return;
+                            } else {
+                                setTimePickerMsg(produce((draft) => {
+                                    draft[day] = "";
+                                }))
+                            }
+
                             setRestaurant(produce((draft) => {
                                 draft.openingTime[day].to = moment(time).format("HH:mm");
                             }));
@@ -69,6 +84,7 @@ export default function OpeningTimeInputs({ day, handleChange, restaurant, setRe
                     />
                 </Control>
             </Field>
+            {timePickerMsg.hasOwnProperty(day) && timePickerMsg[day] !== '' && <Help color="danger">{timePickerMsg[day]}</Help>}
         </Block>
     )
 }
