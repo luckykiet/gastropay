@@ -3,8 +3,9 @@ import { createAxios, addSlashAfterUrl, API_URL, getItemsFromToken, PATHS } from
 import { Promise } from 'bluebird';
 import { Columns, Heading, Hero, Button, Tabs } from 'react-bulma-components';
 import RestaurantCard from '../../components/merchant/RestaurantCard';
-import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
-import { useChoosenRestaurant } from '../../stores/MerchantStores';
+import { Link, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/MerchantStores';
+import ConfirmBox from '../../components/merchant/ConfirmBox';
 
 const { Column } = Columns;
 const { Body } = Hero;
@@ -13,9 +14,11 @@ const { Tab } = Tabs;
 export default function DashboardPage() {
     const userId = getItemsFromToken().userId;
     const [restaurants, setRestaurants] = useState([]);
-    const choosenRestaurant = useChoosenRestaurant();
+    const [showConfirmBox, setShowConfirmBox] = useState(false);
     const { idRestaurant } = useParams();
+    const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
     const location = useLocation();
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchRestaurants = async () => {
@@ -29,13 +32,41 @@ export default function DashboardPage() {
                 if (!success) {
                     throw new Error(msg);
                 }
-                setRestaurants(msg)
+                setRestaurants(msg);
             } catch (err) {
                 console.log(err)
             }
         }
         Promise.delay(0).then(fetchRestaurants);
-    }, [userId, choosenRestaurant])
+    }, [userId, choosenRestaurant, navigate]);
+
+    const handleDeleteButtonClick = (e) => {
+        e.preventDefault();
+        setShowConfirmBox(true);
+    };
+
+    const handleConfirm = async () => {
+        try {
+            const axios = createAxios(addSlashAfterUrl(API_URL));
+            const { data: { success, msg } } = await axios.delete(
+                `api/${PATHS.API.MERCHANT}/${PATHS.API.RESTAURANT}/${idRestaurant}`, {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('token')
+                }
+            });
+
+            if (!success) {
+                throw new Error(msg);
+            }
+
+            setChoosenRestaurant({});
+            navigate(PATHS.ROUTERS.MERCHANT);
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setShowConfirmBox(false);
+        }
+    };
 
     return (
         <Columns centered>
@@ -60,10 +91,28 @@ export default function DashboardPage() {
                 {location.pathname !== PATHS.ROUTERS.MERCHANT &&
                     <Fragment>
                         {location.pathname !== PATHS.ROUTERS.MERCHANT + '/' + PATHS.ROUTERS.RESTAURANT_ADD &&
-                            <Tabs size={"large"} align="center">
-                                <Tab active={location.pathname === PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + idRestaurant} renderAs={Link} to={PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + idRestaurant}>Edit</Tab>
-                                <Tab active={location.pathname === PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_TRANSACTION + "/" + idRestaurant} renderAs={Link} to={PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_TRANSACTION + "/" + idRestaurant}>Transakce</Tab>
-                            </Tabs>
+                            <Fragment>
+                                {showConfirmBox && (
+                                    <ConfirmBox
+                                        message={'Chcete smazat ' + choosenRestaurant.name + '?'}
+                                        yesText={"Smazat"}
+                                        noText={"Zrušit"}
+                                        title={"Smazat restauraci"}
+                                        onConfirm={handleConfirm}
+                                        onCancel={() => setShowConfirmBox(false)}
+                                    />
+                                )}
+                                <Hero color="link" size="small">
+                                    <Body>
+                                        <Heading size={4} className='is-inline-block'>{choosenRestaurant.name}</Heading>
+                                        <Button color={'danger'} size={'medium'} className='is-pulled-right' onClick={handleDeleteButtonClick}>Smazat</Button>
+                                    </Body>
+                                </Hero>
+                                <Tabs size={"large"} align="center">
+                                    <Tab active={location.pathname === PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + idRestaurant} renderAs={Link} to={PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + idRestaurant}>Edit</Tab>
+                                    <Tab active={location.pathname === PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_TRANSACTION + "/" + idRestaurant} renderAs={Link} to={PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_TRANSACTION + "/" + idRestaurant}>Transakce</Tab>
+                                </Tabs>
+                            </Fragment>
                         }
                         <Outlet />
                     </Fragment>

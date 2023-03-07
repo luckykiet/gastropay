@@ -1,18 +1,16 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, API_URL, PATHS, isValidImageUrl, isValidUrl } from '../../../utils';
-import { Box, Heading, Form, Button, Container, Hero, Block } from "react-bulma-components";
+import { Box, Heading, Form, Button, Container, Block } from "react-bulma-components";
 import { Promise } from 'bluebird';
 import 'rc-time-picker/assets/index.css';
 import Toggle from 'react-toggle';
 import "react-toggle/style.css";
 import LoadingComponent from '../../../components/LoadingComponent';
 import produce from 'immer';
-import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../../stores/MerchantStores';
-import ConfirmBox from '../../../components/merchant/ConfirmBox';
+import { useSetChoosenRestaurant } from '../../../stores/MerchantStores';
 import OpeningTimeInputs from '../../../components/merchant/OpeningTimeInputs';
 
-const { Body } = Hero;
 const { Field, Label, Control, Input, Help } = Form;
 export default function EditPanelPage() {
     const idRestaurant = useParams().idRestaurant;
@@ -21,8 +19,7 @@ export default function EditPanelPage() {
     const [loading, setLoading] = useState(true);
     const [apiTestLoading, setApiTestLoading] = useState(false);
     const [apiTestMsg, setApiTestMsg] = useState({});
-    const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
-    const [showConfirmBox, setShowConfirmBox] = useState(false);
+    const setChoosenRestaurant = useSetChoosenRestaurant();
 
     useEffect(() => {
         setLoading(true);
@@ -50,41 +47,6 @@ export default function EditPanelPage() {
         }
         Promise.delay(0).then(fetchRestaurant);
     }, [setChoosenRestaurant, idRestaurant]);
-
-    const handleDeleteButtonClick = (e) => {
-        e.preventDefault();
-        setShowConfirmBox(true);
-    };
-
-    const handleConfirm = async () => {
-        try {
-            const axios = createAxios(addSlashAfterUrl(API_URL));
-            const { data: { success, msg } } = await axios.delete(
-                `api/${PATHS.API.MERCHANT}/${PATHS.API.RESTAURANT}/${idRestaurant}`, {
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem('token')
-                }
-            });
-
-            if (!success) {
-                throw new Error(msg);
-            }
-
-            setChoosenRestaurant({});
-            setPostMsg({
-                success: true,
-                msg: msg
-            });
-        } catch (err) {
-            console.log(err)
-            setPostMsg({
-                success: false,
-                msg: err?.response?.data.msg ? err.response.data.msg : err
-            });
-        } finally {
-            setShowConfirmBox(false);
-        }
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -134,6 +96,7 @@ export default function EditPanelPage() {
         e.preventDefault();
         setLoading(true);
         setPostMsg({});
+        setApiTestMsg({});
         if (restaurant.name === '' || restaurant.address.street === '' || restaurant.address.city === '' || restaurant.address.postalCode === '') {
             setPostMsg({
                 success: false,
@@ -224,22 +187,6 @@ export default function EditPanelPage() {
                 :
                 (
                     <Fragment>
-                        {showConfirmBox && (
-                            <ConfirmBox
-                                message={'Chcete smazat ' + choosenRestaurant.name + '?'}
-                                yesText={"Smazat"}
-                                noText={"Zrušit"}
-                                title={"Smazat restauraci"}
-                                onConfirm={handleConfirm}
-                                onCancel={() => setShowConfirmBox(false)}
-                            />
-                        )}
-                        <Hero color="link" size="small">
-                            <Body>
-                                <Heading size={4} className='is-inline-block'>{choosenRestaurant.name}</Heading>
-                                <Button color={'danger'} size={'medium'} className='is-pulled-right' onClick={handleDeleteButtonClick}>Smazat</Button>
-                            </Body>
-                        </Hero>
                         <Container py={5} breakpoint={'fluid'}>
                             <Box>
                                 <form onSubmit={handleSubmit}>
