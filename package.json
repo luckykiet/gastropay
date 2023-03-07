@@ -39,7 +39,9 @@
     "zustand": "^4.3.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run start-react & npm run start-server",
+    "start-react": "react-scripts start",
+    "start-server": "cd server && npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",

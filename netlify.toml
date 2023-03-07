@@ -1,4 +1,16 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+
+[dev]
+  command = "npm run start"
+  
 [[redirects]]
   from = "/*"
   to = "/"
+  status = 200
+  
+[[redirects]]
+  from = "/api/*"
+  to = "http://localhost:4000/:splat"
   status = 200

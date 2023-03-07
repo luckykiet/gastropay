@@ -19,6 +19,7 @@
     "qs": "^6.11.0"
   },
   "scripts": {
+    "start": "node index.js",
     "server-start": "nodemon index.js"
   }
 }
