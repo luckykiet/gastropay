@@ -38,7 +38,7 @@ const ProtectedRoute = ({ children, ...rest }) => {
   const currentTime = Date.now() / 1000;
 
   if (error) {
-    throw new Response("Login expired", { status: 400 })
+    return <Navigate to={PATHS.ROUTERS.LOGIN} replace />;
   }
 
   if (!isAuthenticated && !isLoading) {
@@ -110,11 +110,11 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: PATHS.ROUTERS.RESTAURANT,
+    path: "",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [{
-      path: PATHS.ROUTERS.ID_RESTAURANT,
+      path: PATHS.ROUTERS.RESTAURANT + "/" + PATHS.ROUTERS.ID_RESTAURANT,
       element: <RestaurantPage />,
     }]
   },
@@ -124,11 +124,11 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: PATHS.ROUTERS.TRANSACTION,
+    path: "",
     element: <RootLayout />,
     errorElement: <ErrorPage />,
     children: [{
-      path: PATHS.ROUTERS.ID_TRANSACTION,
+      path: PATHS.ROUTERS.TRANSACTION + "/" + PATHS.ROUTERS.ID_TRANSACTION,
       element: <TransactionPage />,
     }]
   },
