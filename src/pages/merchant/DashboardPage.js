@@ -1,17 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { createAxios, addSlashAfterUrl, API_URL, getItemsFromToken, PATHS } from '../../utils';
 import { Promise } from 'bluebird';
-import { Columns, Heading, Hero, Button } from 'react-bulma-components';
+import { Columns, Heading, Hero, Button, Tabs } from 'react-bulma-components';
 import RestaurantCard from '../../components/merchant/RestaurantCard';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { useChoosenRestaurant } from '../../stores/MerchantStores';
 
 const { Column } = Columns;
 const { Body } = Hero;
+const { Tab } = Tabs;
+
 export default function DashboardPage() {
     const userId = getItemsFromToken().userId;
     const [restaurants, setRestaurants] = useState([]);
     const choosenRestaurant = useChoosenRestaurant();
+    const { idRestaurant } = useParams();
+    const location = useLocation();
 
     useEffect(() => {
         const fetchRestaurants = async () => {
@@ -53,7 +57,17 @@ export default function DashboardPage() {
                 </Column>
             </Column>
             <Column className='is-two-thirds-desktop'>
-                <Outlet />
+                {location.pathname !== PATHS.ROUTERS.MERCHANT &&
+                    <Fragment>
+                        {location.pathname !== PATHS.ROUTERS.MERCHANT + '/' + PATHS.ROUTERS.RESTAURANT_ADD &&
+                            <Tabs size={"large"} align="center">
+                                <Tab active={location.pathname === PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + idRestaurant} renderAs={Link} to={PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + idRestaurant}>Edit</Tab>
+                                <Tab active={location.pathname === PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_TRANSACTION + "/" + idRestaurant} renderAs={Link} to={PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_TRANSACTION + "/" + idRestaurant}>Transakce</Tab>
+                            </Tabs>
+                        }
+                        <Outlet />
+                    </Fragment>
+                }
             </Column>
         </Columns>
     )

@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, API_URL, PATHS, calculateCart } from '../../../utils';
-import { Box, Heading, Container, Hero, Tabs, Table } from "react-bulma-components";
+import { Box, Heading, Container, Hero, Table } from "react-bulma-components";
 import { Promise } from 'bluebird';
 import 'rc-time-picker/assets/index.css';
 import "react-toggle/style.css";
@@ -10,13 +10,11 @@ import { useChoosenRestaurant } from '../../../stores/MerchantStores';
 import moment from 'moment';
 
 const { Body } = Hero;
-const { Tab } = Tabs;
 export default function TransactionPanelPage() {
     const { idRestaurant } = useParams();
     const [transactions, setTransactions] = useState(null);
     const [loading, setLoading] = useState(true);
     const choosenRestaurant = useChoosenRestaurant();
-    const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
@@ -62,14 +60,6 @@ export default function TransactionPanelPage() {
                             </Body>
                         </Hero>
                         <Container py={5} breakpoint={'fluid'}>
-                            <Tabs size={'large'}>
-                                <Tab onClick={() => navigate(PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_EDIT + "/" + idRestaurant)}>
-                                    Edit
-                                </Tab>
-                                <Tab active>
-                                    Transakce
-                                </Tab>
-                            </Tabs>
                             {Object.keys(transactions).length === 0
                                 ?
                                 <Heading renderAs='p' size={5} className='has-text-weight-bold'>Nemáte ještě žádnou transakci.</Heading>

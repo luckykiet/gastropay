@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, API_URL, PATHS, isValidImageUrl, isValidUrl } from '../../../utils';
-import { Box, Heading, Form, Button, Container, Hero, Block, Tabs } from "react-bulma-components";
+import { Box, Heading, Form, Button, Container, Hero, Block } from "react-bulma-components";
 import { Promise } from 'bluebird';
 import 'rc-time-picker/assets/index.css';
 import Toggle from 'react-toggle';
@@ -14,7 +14,6 @@ import OpeningTimeInputs from '../../../components/merchant/OpeningTimeInputs';
 
 const { Body } = Hero;
 const { Field, Label, Control, Input, Help } = Form;
-const { Tab } = Tabs;
 export default function EditPanelPage() {
     const idRestaurant = useParams().idRestaurant;
     const [restaurant, setRestaurant] = useState({});
@@ -24,7 +23,6 @@ export default function EditPanelPage() {
     const [apiTestMsg, setApiTestMsg] = useState({});
     const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
     const [showConfirmBox, setShowConfirmBox] = useState(false);
-    const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
@@ -243,14 +241,6 @@ export default function EditPanelPage() {
                             </Body>
                         </Hero>
                         <Container py={5} breakpoint={'fluid'}>
-                            <Tabs size={'large'}>
-                                <Tab active>
-                                    Edit
-                                </Tab>
-                                <Tab onClick={() => navigate(PATHS.ROUTERS.MERCHANT + "/" + PATHS.ROUTERS.RESTAURANT_TRANSACTION + "/" + idRestaurant)}>
-                                    Transakce
-                                </Tab>
-                            </Tabs>
                             <Box>
                                 <form onSubmit={handleSubmit}>
                                     <Block>
