@@ -27,7 +27,7 @@ export default function RestaurantCard({ restaurant }) {
                                 src={
                                     isValidImageUrl(restaurant.image)
                                         ? restaurant.image
-                                        : addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + '/restaurants/default.jpg'
+                                        : addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + 'restaurants/default.jpg'
                                 }
                                 size={128}
                             />

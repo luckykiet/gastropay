@@ -32,4 +32,5 @@ app.use('', AuthenticateRouter);
 app.use('/api', TransactionRouter);
 
 // Start api
-app.listen(config.API_PORT, () => console.log(`Server running on port ${config.API_PORT}`));
+const PORT = process.env.REACT_APP_API_PORT || config.API_PORT;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

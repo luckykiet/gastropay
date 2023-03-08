@@ -1,7 +1,7 @@
 // config.js
 const DEV_MODE = true;
-const API_PORT = 4000;
-const APP_PORT = 3000;
+const API_PORT = process.env.REACT_APP_API_PORT || 4000;
+const APP_PORT = process.env.REACT_APP_APP_PORT || 3000;
 
 const config = {
     DEV_MODE: DEV_MODE,

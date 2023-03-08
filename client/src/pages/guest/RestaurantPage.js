@@ -88,7 +88,7 @@ export default function RestaurantPage() {
                                                 alt={business.name}
                                                 src={isValidImageUrl(business.image)
                                                     ? business.image
-                                                    : addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + '/restaurants/default.jpg'}
+                                                    : addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + 'restaurants/default.jpg'}
                                             />
                                         </Container>
                                     </Column>
