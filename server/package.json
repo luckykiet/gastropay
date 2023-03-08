@@ -18,7 +18,8 @@
     "mongoose": "^6.10.0",
     "morgan": "^1.10.0",
     "nanoid": "3.3.4",
-    "qs": "^6.11.0"
+    "qs": "^6.11.0",
+    "serverless-http": "^3.1.1"
   },
   "scripts": {
     "start": "node index.js",
