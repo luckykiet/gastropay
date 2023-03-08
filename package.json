@@ -1,11 +1,18 @@
 {
   "name": "gastropay",
+  "app": {
+    "name": "Gastro Pay",
+    "www": "gastropay.ruano.cz",
+    "provider": "Tuan Kiet Nguyen"
+  },
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "cd client && yarn build && cd ../server && yarn start",
-    "start-local": "cd client && yarn start && cd ../server && yarn start-local",
+    "start-local": "npm-run-all --parallel start-react-local start-server-local",
+    "start-react-local": "cd client && yarn start",
+    "start-server-local": "cd server && yarn start-local",
     "install": "cd client && yarn install && cd ../server && yarn install",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,8 +21,8 @@
     "url": "git+https://github.com/luckykiet/gastropay.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Tuan Kiet Nguyen",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/luckykiet/gastropay/issues"
   },
