@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { Button } from 'react-bulma-components';
+import React from 'react';
+import { Button, Container } from 'react-bulma-components';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -11,10 +11,9 @@ export default function BackButtonComponent({ backNavigations }) {
     backButtonPaths.push(restaurantPath);
 
     return (
-        <Fragment>
-            {backNavigations[backButtonPaths] ?
-                <Button id='fixedBackButton' renderAs={Link} rounded color={'warning'} size={'medium'} className='is-responsive' to={backNavigations[backButtonPaths]} preventScrollReset={true}><FontAwesomeIcon icon={faArrowLeft} /></Button>
-                : undefined}
-        </Fragment>
+        backNavigations[backButtonPaths] &&
+        <Container my={3} breakpoint={'fluid'} className='has-text-right'>
+            <Button renderAs={Link} rounded color={'warning'} size={'large'} to={backNavigations[backButtonPaths]} preventScrollReset={true}><FontAwesomeIcon icon={faArrowLeft} /></Button>
+        </Container>
     )
 }

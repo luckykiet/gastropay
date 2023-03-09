@@ -54,7 +54,7 @@ export default function MenuPage() {
             ) : (
                 <Fragment>
                     <Content textAlign="center">
-                        <Heading pt={5} spaced>
+                        <Heading spaced>
                             {restaurant.name} - Menu
                         </Heading>
                     </Content>

@@ -48,14 +48,14 @@ export default function NavbarComponent() {
                 <Item className='is-size-4 has-text-weight-bold' renderAs={RouterLink} to={PATHS.HOME}>
                     {packageJson.app.name}
                 </Item>
-                <Container align='left'>
-                    <Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
-                        setBurgerActive(!isBurgerActive);
-                    }} className={
-                        isBurgerActive ? activeClassName : undefined
-                    } />
-                </Container>
             </Brand>
+            <Container align='right'>
+                <Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
+                    setBurgerActive(!isBurgerActive);
+                }} className={
+                    isBurgerActive ? activeClassName : undefined
+                } />
+            </Container>
             <Menu id='navbarMain' className={
                 isBurgerActive ? activeClassName : undefined
             }>

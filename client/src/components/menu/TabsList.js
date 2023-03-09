@@ -15,7 +15,7 @@ export default function TabsList({ listOfTabs, content }) {
           </Tab>
         ))}
       </Tabs>
-      <Columns centered vCentered>
+      <Columns centered>
         {listOfTabs.map((tab) => (
           activeTab === tab.id && <ProductList key={tab.id} group={tab.id} content={content} />
         ))}
