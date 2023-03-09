@@ -26,7 +26,7 @@ export default function ProfilePanel() {
         const fetchRestaurant = async () => {
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
             try {
-                const { data: { success, msg } } = await axios.get(`api/${API.MERCHANT}`, {
+                const { data: { success, msg } } = await axios.get(`${API.MERCHANT}`, {
                     headers: {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }
@@ -67,7 +67,7 @@ export default function ProfilePanel() {
                 }
                 console.log(modifiedData)
                 const { data: { success, msg } } = await axios.put(
-                    `api/${API.MERCHANT}/${API.CHANGE_PASSWORD}`,
+                    `${API.MERCHANT}/${API.CHANGE_PASSWORD}`,
                     JSON.stringify(modifiedData), {
                     headers: {
                         'Content-Type': 'application/json',

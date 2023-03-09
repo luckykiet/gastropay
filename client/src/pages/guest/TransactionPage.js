@@ -28,7 +28,7 @@ export default function TransactionPage() {
         const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
         const fetchTransaction = async () => {
             try {
-                const { data: { success, msg } } = await axios.get(`api/${API.TRANSACTION}/${idTransaction}`);
+                const { data: { success, msg } } = await axios.get(`${API.TRANSACTION}/${idTransaction}`);
                 if (success) {
                     setResult(msg);
                     setPaymentMethod(msg.transaction.paymentMethod);

@@ -48,7 +48,7 @@ export default function RestaurantsPage() {
         let delayTime = searchQuery ? 0 : 500;
         const fetchData = async () => {
             try {
-                let apiUrl = `api/${API.RESTAURANT}s`;
+                let apiUrl = `${API.RESTAURANT}s`;
 
                 if (searchQuery) {
                     apiUrl += '/search?text=' + searchQuery;

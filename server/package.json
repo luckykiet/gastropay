@@ -26,7 +26,6 @@
     "start-local": "nodemon index.js"
   },
   "devDependencies": {
-    "netlify-cli": "^13.0.1",
     "nodemon": "^2.0.21"
   }
 }

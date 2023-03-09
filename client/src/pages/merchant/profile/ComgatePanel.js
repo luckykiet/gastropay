@@ -39,7 +39,7 @@ export default function ComgatePanel() {
                     password: password
                 }
                 const { data: { success, msg } } = await axios.put(
-                    `api/${API.MERCHANT}`,
+                    `${API.MERCHANT}`,
                     JSON.stringify(modifiedData), {
                     headers: {
                         'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ export default function ComgatePanel() {
         const fetchRestaurant = async () => {
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
             try {
-                const { data: { success, msg } } = await axios.get(`api/${API.MERCHANT}`, {
+                const { data: { success, msg } } = await axios.get(`${API.MERCHANT}`, {
                     headers: {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }

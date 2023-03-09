@@ -62,7 +62,7 @@ export default function AddPanelPage() {
                 }
 
                 const { data: { success, msg } } = await axios.post(
-                    `api/${API.MERCHANT}/${API.RESTAURANT}`,
+                    `${API.MERCHANT}/${API.RESTAURANT}`,
                     JSON.stringify(modifiedData), {
                     headers: {
                         'Content-Type': 'application/json',

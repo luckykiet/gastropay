@@ -28,7 +28,7 @@ connectDB();
 // Define api
 app.use('/api', RestaurantRouter);
 app.use('/api', MerchantRouter);
-app.use('', AuthenticateRouter);
+app.use('/api', AuthenticateRouter);
 app.use('/api', TransactionRouter);
 
 app.use('/.netlify/functions/server', RestaurantRouter);

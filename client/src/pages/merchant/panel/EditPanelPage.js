@@ -30,7 +30,7 @@ export default function EditPanelPage() {
         const fetchRestaurant = async () => {
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
             try {
-                const { data: { success, msg } } = await axios.get(`api/${API.MERCHANT}/${API.RESTAURANT}/${idRestaurant}`, {
+                const { data: { success, msg } } = await axios.get(`${API.MERCHANT}/${API.RESTAURANT}/${idRestaurant}`, {
                     headers: {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }
@@ -108,7 +108,7 @@ export default function EditPanelPage() {
             try {
                 const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
                 const { data: { success, msg } } = await axios.put(
-                    `api/${API.MERCHANT}/${API.RESTAURANT}/${idRestaurant}`,
+                    `${API.MERCHANT}/${API.RESTAURANT}/${idRestaurant}`,
                     JSON.stringify(restaurant), {
                     headers: {
                         'Content-Type': 'application/json',

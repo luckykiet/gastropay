@@ -24,7 +24,7 @@ export default function TransactionPanelPage() {
         const fetchTransactions = async () => {
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
             try {
-                const { data: { success, msg } } = await axios.get(`api/${API.MERCHANT}/${API.RESTAURANT}/${API.TRANSACTION}/${idRestaurant}`, {
+                const { data: { success, msg } } = await axios.get(`${API.MERCHANT}/${API.RESTAURANT}/${API.TRANSACTION}/${idRestaurant}`, {
                     headers: {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }

@@ -27,7 +27,7 @@ export default function DashboardPage() {
         const fetchRestaurants = async () => {
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
             try {
-                const { data: { success, msg } } = await axios.get(`api/${API.MERCHANT}/${API.RESTAURANT}s`, {
+                const { data: { success, msg } } = await axios.get(`${API.MERCHANT}/${API.RESTAURANT}s`, {
                     headers: {
                         "Authorization": "Bearer " + localStorage.getItem('token')
                     }
@@ -58,7 +58,7 @@ export default function DashboardPage() {
         try {
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
             const { data: { success, msg } } = await axios.delete(
-                `api/${API.MERCHANT}/${API.RESTAURANT}/${idRestaurant}`, {
+                `${API.MERCHANT}/${API.RESTAURANT}/${idRestaurant}`, {
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem('token')
                 }

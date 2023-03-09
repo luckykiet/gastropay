@@ -54,7 +54,7 @@ export default function PaymentPage() {
             }
 
             const { data: { success, msg } } = await axios.post(
-                `api/${API.TRANSACTION}`,
+                `${API.TRANSACTION}`,
                 JSON.stringify(transaction), {
                 headers: {
                     'Content-Type': 'application/json'
@@ -82,7 +82,7 @@ export default function PaymentPage() {
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
             const fetchTransaction = async () => {
                 try {
-                    const { data: { success, msg } } = await axios.get(`api/${API.TRANSACTION}/${API.PAYMENT_METHODS}/${choosenRestaurant._id}`);
+                    const { data: { success, msg } } = await axios.get(`${API.TRANSACTION}/${API.PAYMENT_METHODS}/${choosenRestaurant._id}`);
                     if (success) {
                         setMerchantPaymentMethods(msg);
                     } else {
