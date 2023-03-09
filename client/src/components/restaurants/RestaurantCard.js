@@ -1,5 +1,5 @@
 import React from 'react';
-import { Columns, Card, Media, Image, Content as TextContent, Button } from 'react-bulma-components';
+import { Columns, Card, Media, Content as TextContent, Button, Block } from 'react-bulma-components';
 import { addSlashAfterUrl, isValidImageUrl } from "../../utils";
 import OpeningTimeStatus from "../../components/restaurants/OpeningTimeStatus";
 import { useNavigate } from 'react-router-dom';
@@ -21,36 +21,31 @@ export default function RestaurantCard({ restaurant }) {
                 </Header>
                 <Content>
                     <Media>
-                        <Item align="left">
-                            <Image
-                                alt={restaurant.name}
+                        <figure className="image is-128x128 is-fullwidth mr-3">
+                            <img style={{ height: "100%" }} alt={restaurant.name}
                                 src={
                                     isValidImageUrl(restaurant.image)
                                         ? restaurant.image
                                         : addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + 'restaurants/default.jpg'
-                                }
-                                size={128}
-                            />
-                        </Item>
+                                } />
+                        </figure>
                         <Item align="center">
                             <TextContent>
                                 <dl>
                                     <dt>
                                         <strong>Adresa:</strong>
                                     </dt>
-                                    <dd>{restaurant.address.street}</dd>
-                                    <dd>
-                                        {restaurant.address.postalCode} {restaurant.address.city}
-                                    </dd>
-                                </dl>
-                                <dl>
+                                    <dt>{restaurant.address.street}</dt>
                                     <dt>
-                                        <OpeningTimeStatus todayOpeningTime={restaurant.openingTime} nextOpenTime={restaurant.nextOpenTime} />
+                                        {restaurant.address.postalCode} {restaurant.address.city}
                                     </dt>
                                 </dl>
                             </TextContent>
                         </Item>
                     </Media>
+                    <Block className='has-text-centered'>
+                        <OpeningTimeStatus todayOpeningTime={restaurant.openingTime} nextOpenTime={restaurant.nextOpenTime} />
+                    </Block>
                 </Content>
                 <Footer>
                     <Footer.Item>

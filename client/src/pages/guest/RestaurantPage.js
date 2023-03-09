@@ -63,7 +63,7 @@ export default function RestaurantPage() {
             ) : (
                 <Fragment>
                     <Content textAlign={"center"}>
-                        <Heading pt={5} spaced>
+                        <Heading spaced>
                             {business.name}
                         </Heading>
                     </Content>
