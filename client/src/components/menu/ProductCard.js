@@ -25,7 +25,7 @@ export default function ProductCard({ product, showNotification }) {
                 </Content>
                 <Footer>
                     <Footer.Item>
-                        <Button fullwidth className='is-size-1-mobile' color="white" size={"large"} onClick={() => handleAddToCartClick(product)}>
+                        <Button fullwidth color="white" size={"large"} onClick={() => handleAddToCartClick(product)}>
                             <FontAwesomeIcon icon={faCartShopping} />
                         </Button>
                     </Footer.Item>
