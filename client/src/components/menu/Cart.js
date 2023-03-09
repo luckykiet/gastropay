@@ -27,7 +27,13 @@ export default function Cart() {
                                 <td>{item.name}</td>
                                 <td>x {item.quantity}</td>
                                 <td>{item.quantity * parseFloat(item.price)} Kč</td>
-                                <td><Button onClick={() => incrementCartItem(item.id)} size={'small'} color={'white'}><FontAwesomeIcon icon={faPlus} /></Button><Button onClick={() => decrementCartItem(item.id)} size={'small'} color={'white'}><FontAwesomeIcon icon={faMinus} /></Button><Button onClick={() => removeCartItem(item.id)} size={'small'} color={'white'}><FontAwesomeIcon icon={faTrash} /></Button></td>
+                                <td>
+                                    <Button.Group>
+                                        <Button onClick={() => incrementCartItem(item.id)} size={'small'} color={'white'}><FontAwesomeIcon icon={faPlus} /></Button>
+                                        <Button onClick={() => decrementCartItem(item.id)} size={'small'} color={'white'}><FontAwesomeIcon icon={faMinus} /></Button>
+                                        <Button onClick={() => removeCartItem(item.id)} size={'small'} color={'white'}><FontAwesomeIcon icon={faTrash} /></Button>
+                                    </Button.Group>
+                                </td>
                             </tr>
                         ))}
                     </tbody>

@@ -70,10 +70,10 @@ const updateRestaurant = async (req, res, next) => {
 
     const body = req.body;
 
-    if (!body) {
+    if (!body || !body.openingTime) {
         return res.status(400).json({
             success: false,
-            msg: "You must provide a body to update",
+            msg: "You must provide body and opening time to update",
         });
     }
 
@@ -199,7 +199,7 @@ const updateMerchant = async (req, res, next) => {
     const merchantId = req.userId;
     const body = req.body;
 
-    if (!body || !body.password || !body.openingTime) {
+    if (!body || !body.password) {
         return res.status(400).json({
             success: false,
             msg: "You must provide a body and password to update",
