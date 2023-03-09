@@ -1,7 +1,7 @@
 const express = require('express');
 const TransactionController = require('../controllers/TransactionController');
-const TRANSACTION = require('../config/api').API.TRANSACTION;
-const PAYMENT_METHODS = require('../config/api').API.PAYMENT_METHODS;
+const TRANSACTION = require('../config/api').TRANSACTION;
+const PAYMENT_METHODS = require('../config/api').PAYMENT_METHODS;
 const router = express.Router();
 const authMiddleware = require('./AuthMiddlewares');
 

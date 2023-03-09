@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const { nanoid } = require('nanoid');
 const Order = require("./OrderSchema");
+const { customAlphabet } = require('nanoid');
 const uppercaseNumberAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const nanoid = customAlphabet(uppercaseNumberAlphabet, 8);
 
 const TransactionSchema = new Schema({
-    refId: { type: String, required: true, unique: true, default: () => nanoid(8, uppercaseNumberAlphabet) },
+    refId: { type: String, required: true, unique: true, default: () => nanoid() },
     idRestaurant: { type: Schema.Types.ObjectId, required: true },
     status: { type: String, required: true, default: 'PENDING', enum: ['PENDING', 'CANCELLED', 'PAID', 'COMPLETED'] },
     cart: {

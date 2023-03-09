@@ -9,6 +9,7 @@ const config = {
     API_URL: DEV_MODE ? "http://localhost:" + API_PORT + "/api" : "https://gastropay.ruano.cz/.netlify/functions/server",
     BASE_URL: DEV_MODE ? "http://localhost:" + APP_PORT : "https://gastropay.ruano.cz",
     IMAGE_BASE_URL: DEV_MODE ? "http://localhost:" + APP_PORT + "/images" : "https://gastropay.ruano.cz/images",
+    PROXY_URL: "https://cors-proxy.itake.cz",
     LANGUAGES: {
         CS: 'cs',
         EN: 'en'

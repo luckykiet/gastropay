@@ -5,6 +5,8 @@ const comgate = {
     COUNTRIES_DISABLED: true,
     CURRENCIES_DISABLED: true,
     METHODS_DISABLED: true,
+    CREATE_URL: "https://payments.comgate.cz/v1.0/create",
+    STATUS_URL: "https://payments.comgate.cz/v1.0/status"
 }
 
 export { comgate as COMGATE };

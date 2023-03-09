@@ -1,9 +1,12 @@
 const axios = require('axios');
 const MerchantModel = require("../models/MerchantModel");
 const TransactionModel = require("../models/TransactionModel");
-const { nanoid } = require('nanoid');
+const { customAlphabet } = require('nanoid');
 const RestaurantModel = require('../models/RestaurantModel');
 const qs = require('qs');
+const comgateConfig = require('../config/comgate');
+const config = require('../config/config');
+require('../dotenv_loader');
 const uppercaseNumberAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 const createTransaction = async (req, res, next) => {
@@ -41,11 +44,12 @@ const createTransaction = async (req, res, next) => {
             let isIDUnique = false;
             const maxAttempts = 3;
             let attempts = 0;
-            let refId = nanoid(8, uppercaseNumberAlphabet);
+            const nanoid = customAlphabet(uppercaseNumberAlphabet, 8);
+            let refId = nanoid();
             while (!isIDUnique && attempts < maxAttempts) {
                 const existingDoc = await TransactionModel.findOne({ refId: refId });
                 if (existingDoc) {
-                    refId = nanoid(8, uppercaseNumberAlphabet);
+                    refId = nanoid();
                     attempts++;
                 } else {
                     isIDUnique = true;
@@ -97,18 +101,36 @@ const createTransaction = async (req, res, next) => {
                 expirationTime: "1h"
             }
 
-            const options = {
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+            const useProxy = process.env.USE_PROXY;
+            let response = '';
+            let params = '';
+
+            if (useProxy) {
+                const options = {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+                const prepareData = {
+                    "url": comgateConfig.CREATE_URL,
+                    "data": JSON.stringify(dataToPaymentGate),
+                    "headers": JSON.stringify({
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    })
                 }
-            };
+                response = await axios.post(config.PROXY_URL, JSON.stringify(prepareData), options);
+                params = new URLSearchParams(response.data.data);
+            } else {
+                const options = {
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                };
+                response = await axios.post(comgateConfig.CREATE_URL, qs.stringify(dataToPaymentGate), options);
+                params = new URLSearchParams(response.data);
+            }
 
-            const response = await axios.post('https://payments.comgate.cz/v1.0/create', qs.stringify(dataToPaymentGate), options);
-
-            const params = new URLSearchParams(response.data);
             const code = params.get('code');
-
-
             if (code !== '0') {
                 const message = decodeURIComponent(params.get('message'));
                 res.status(400).json({
@@ -217,15 +239,34 @@ const checkPayment = async (refId) => {
             transId: transaction.paymentMethod.comgate.transId,
         }
 
-        const options = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+        const useProxy = process.env.USE_PROXY;
+        let response = '';
+        let params = '';
+
+        if (useProxy) {
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            const prepareData = {
+                "url": comgateConfig.STATUS_URL,
+                "data": JSON.stringify(dataToPaymentGate),
+                "headers": JSON.stringify({
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                })
             }
-        };
-
-        const response = await axios.post('https://payments.comgate.cz/v1.0/status', qs.stringify(dataToPaymentGate), options);
-
-        const params = new URLSearchParams(response.data);
+            response = await axios.post(config.PROXY_URL, JSON.stringify(prepareData), options);
+            params = new URLSearchParams(response.data.data);
+        } else {
+            const options = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            };
+            response = await axios.post(comgateConfig.STATUS_URL, qs.stringify(dataToPaymentGate), options);
+            params = new URLSearchParams(response.data);
+        }
 
         const code = params.get('code');
         if (code !== '0') {
