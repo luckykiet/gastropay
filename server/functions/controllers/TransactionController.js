@@ -101,8 +101,6 @@ const createTransaction = async (req, res, next) => {
                 expirationTime: "1h"
             }
 
-
-
             const useProxy = process.env.USE_PROXY;
             let response = '';
             let params = '';
@@ -122,7 +120,6 @@ const createTransaction = async (req, res, next) => {
                 }
                 response = await axios.post(config.PROXY_URL, JSON.stringify(prepareData), options);
                 params = new URLSearchParams(response.data.data);
-
             } else {
                 const options = {
                     headers: {
@@ -131,7 +128,6 @@ const createTransaction = async (req, res, next) => {
                 };
                 response = await axios.post(comgateConfig.CREATE_URL, qs.stringify(dataToPaymentGate), options);
                 params = new URLSearchParams(response.data);
-                code = params.get('code');
             }
 
             const code = params.get('code');
@@ -243,15 +239,34 @@ const checkPayment = async (refId) => {
             transId: transaction.paymentMethod.comgate.transId,
         }
 
-        const options = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+        const useProxy = process.env.USE_PROXY;
+        let response = '';
+        let params = '';
+
+        if (useProxy) {
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            const prepareData = {
+                "url": comgateConfig.STATUS_URL,
+                "data": JSON.stringify(dataToPaymentGate),
+                "headers": JSON.stringify({
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                })
             }
-        };
-
-        const response = await axios.post(comgateConfig.STATUS_URL, qs.stringify(dataToPaymentGate), options);
-
-        const params = new URLSearchParams(response.data);
+            response = await axios.post(config.PROXY_URL, JSON.stringify(prepareData), options);
+            params = new URLSearchParams(response.data.data);
+        } else {
+            const options = {
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                }
+            };
+            response = await axios.post(comgateConfig.STATUS_URL, qs.stringify(dataToPaymentGate), options);
+            params = new URLSearchParams(response.data);
+        }
 
         const code = params.get('code');
         if (code !== '0') {
