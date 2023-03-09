@@ -1,0 +1,46 @@
+{
+  "1": {
+    "name": "Saigon Bistro",
+    "address": {
+      "street": "Na porici 81",
+      "city": "Praha 1",
+      "postalCode": "11000"
+    },
+    "openingTime": {
+      "today": {
+        "from": "08:00",
+        "to": "20:00"
+      }
+    },
+    "image": "/images/restaurants/saigon_bistro.jpg"
+  },
+  "2": {
+    "name": "Hanoi Bistro",
+    "address": {
+      "street": "K Trebonicum 85",
+      "city": "Praha 5",
+      "postalCode": "15500"
+    },
+    "openingTime": {
+      "today": {
+        "from": "10:00",
+        "to": "16:00"
+      }
+    },
+    "image": "/images/restaurants/hanoi_bistro.jpg"
+  },
+  "3": {
+    "name": "Pho 24",
+    "address": {
+      "street": "Vodickova 2",
+      "city": "Praha 2",
+      "postalCode": "12000"
+    },
+    "openingTime": {
+      "today": {
+        "from": "08:00",
+        "to": "23:00"
+      }
+    }
+  }
+}

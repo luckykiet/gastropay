@@ -1,0 +1,94 @@
+{
+  "success": true,
+  "msg": {
+    "categories": [
+      {
+        "name": "Rýže"
+      },
+      {
+        "name": "Pho"
+      }
+    ],
+    "menu": {
+      "5": {
+        "unit": "ks",
+        "amount": 1,
+        "group": 1,
+        "price": "114.00",
+        "name": "Com chien ga",
+        "description": "RIZITO S KUŘECÍM MASEM, ZELENINA",
+        "image": "https://cdn.tgdd.vn/Files/2020/06/17/1263673/cach-lam-com-chien-ga-xe-thap-cam-gion-toi-hap-da-18.jpg"
+      },
+      "6": {
+        "unit": "ks",
+        "amount": 1,
+        "group": 1,
+        "price": "109.00",
+        "name": "Com dui ga",
+        "description": "KŘUPAVÉ KUŘECÍ STEHNO SE ZELENINOU, RÝŽE, SÓJOVÁ OMÁČKA",
+        "allergens": [6],
+        "image": "https://toplist.vn/images/800px/quan-com-dui-ga-ngon-nhat-ha-noi-284152.jpg"
+      },
+      "7": {
+        "unit": "ks",
+        "amount": 1,
+        "group": 1,
+        "price": "114.00",
+        "name": "Com muc",
+        "description": "SÉPIE VE SLADKOKYSELÉ OMÁČCE, ZELENINA A RÝŽE",
+        "allergens": [4]
+      },
+      "8": {
+        "unit": "ks",
+        "amount": 1,
+        "group": 1,
+        "price": "114.00",
+        "name": "Com bo xao",
+        "description": "SMAŽENÉ HOVĚZÍ MASO SE ZELENINOU V OMÁČCE A RÝŽE"
+      },
+      "9": {
+        "unit": "ks",
+        "amount": 1,
+        "group": 1,
+        "price": "109.00",
+        "name": "Com nhong",
+        "description": "OBALOVANÉ KUŘECÍ MASO S RÝŽÍ, ZELENINA"
+      },
+      "10": {
+        "unit": "ks",
+        "amount": 1,
+        "group": 1,
+        "price": "114.00",
+        "name": "Grilované kuřecí prso",
+        "description": "OBALOVANÉ KUŘECÍ MASO S RÝŽÍ, ZELENINA",
+        "allergens": [6]
+      },
+      "11": {
+        "unit": "ks",
+        "amount": 1,
+        "group": 2,
+        "price": "119.00",
+        "name": "Pho bo",
+        "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S HOVĚZÍM MASEM",
+        "image": "http://www.sushitime.cz/image-cache/1280x1280/_files_products_727-pho-bo-A.jpg"
+      },
+      "12": {
+        "unit": "ks",
+        "amount": 1,
+        "group": 2,
+        "price": "119.00",
+        "name": "Pho ga",
+        "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S UŘECÍM MASO",
+        "image": "https://www.hungrywanderlust.com/wp-content/uploads/2020/01/Chicken-Pho-Recipe_0206-1024x683.jpg"
+      },
+      "13": {
+        "unit": "ks",
+        "amount": 1,
+        "group": 2,
+        "price": "119.00",
+        "name": "Pho bo vien",
+        "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S HOVĚZÍMI MASOVÝMI KOULEMI"
+      }
+    }
+  }
+}

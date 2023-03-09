@@ -1,0 +1,52 @@
+{
+  "idOwner": "63f7e0b997b797e7b98916f7",
+  "name": "Saigon Bistro",
+  "address": {
+    "street": "Na porici 81",
+    "city": "Praha 1",
+    "postalCode": "11000"
+  },
+  "api": {
+    "baseUrl": "https://api.npoint.io/",
+    "params": "445a2a2f2e28ef43b7ca"
+  },
+  "image": "restaurants/saigon_bistro.jpg",
+  "openingTime": {
+    "monday": {
+      "isOpen": true,
+      "from": "08:00",
+      "to": "21:00"
+    },
+    "tuesday": {
+      "isOpen": true,
+      "from": "08:00",
+      "to": "20:00"
+    },
+    "wednesday": {
+      "isOpen": true,
+      "from": "08:00",
+      "to": "23:00"
+    },
+    "thursday": {
+      "isOpen": false,
+      "from": "08:00",
+      "to": "23:00"
+    },
+    "friday": {
+      "isOpen": true,
+      "from": "08:00",
+      "to": "20:00"
+    },
+    "saturday": {
+      "isOpen": true,
+      "from": "11:00",
+      "to": "19:00"
+    },
+    "sunday": {
+      "isOpen": true,
+      "from": "11:00",
+      "to": "20:00"
+    }
+  },
+  "isAvailable": true
+}
