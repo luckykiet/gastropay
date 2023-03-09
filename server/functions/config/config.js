@@ -1,2 +1,2 @@
 require = require("esm")(module);
-module.exports = require("../../../client/src/config/config");
+module.exports = require("../../../client/src/config/config").CONFIG;

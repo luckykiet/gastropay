@@ -1,2 +1,2 @@
 require = require("esm")(module);
-module.exports = require("../../../client/src/config/api");
+module.exports = require("../../../client/src/config/api").API;

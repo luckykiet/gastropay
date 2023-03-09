@@ -1,10 +1,10 @@
 const express = require('express');
 const AuthenticateController = require('../controllers/AuthenticateController');
-const LOGIN = require('../config/api').API.LOGIN;
-const PROTECTED = require('../config/api').API.PROTECTED;
-const REGISTER = require('../config/api').API.REGISTER;
-const ADMIN = require('../config/api').API.ADMIN;
-const AUTH = require('../config/api').API.AUTH;
+const LOGIN = require('../config/api').LOGIN;
+const PROTECTED = require('../config/api').PROTECTED;
+const REGISTER = require('../config/api').REGISTER;
+const ADMIN = require('../config/api').ADMIN;
+const AUTH = require('../config/api').AUTH;
 const router = express.Router();
 const authMiddleware = require('./AuthMiddlewares');
 

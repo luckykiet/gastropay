@@ -1,6 +1,6 @@
 const express = require('express');
 const RestaurantController = require('../controllers/RestaurantController');
-const RESTAURANT = require('../config/api').API.RESTAURANT;
+const RESTAURANT = require('../config/api').RESTAURANT;
 const router = express.Router();
 
 router.get('/' + RESTAURANT + '/:restaurantId', RestaurantController.getRestaurantById);

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const comgate = require('../../config/comgate').COMGATE
+const comgate = require('../../config/comgate')
 
 const ComgateSchema = new Schema({
     merchant: { type: String, trim: true, default: "merchant" },
