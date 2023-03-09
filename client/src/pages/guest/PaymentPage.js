@@ -16,7 +16,8 @@ const { Field, Input, Label, Help, Control, Select } = Form;
 const { Column } = Columns;
 
 export default function PaymentPage() {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isPaymentLoading, setIsPaymentLoading] = useState(true);
+    const [isPageLoading, setIsPageLoading] = useState(true);
     const [postMsg, setPostMsg] = useState({});
     const [selectedTable, setSelectedTable] = useState('');
     const [emailInput, setEmailInput] = useState("");
@@ -37,7 +38,7 @@ export default function PaymentPage() {
 
     const handleComgateClick = async (e) => {
         e.preventDefault();
-        setIsLoading(true);
+        setIsPaymentLoading(true);
         try {
             if (isEmailValid === null || !isEmailValid) {
                 throw new Error("Nesprávný email formát");
@@ -73,7 +74,7 @@ export default function PaymentPage() {
                 msg: error.response?.data?.msg ? error.response.data.msg : error
             });
         } finally {
-            setIsLoading(false);
+            setIsPaymentLoading(false);
         }
     }
 
@@ -91,10 +92,11 @@ export default function PaymentPage() {
                 } catch (error) {
                     console.log(error.response.data.msg)
                 } finally {
-                    setIsLoading(false);
+                    setIsPageLoading(false);
+                    setIsPaymentLoading(false);
                 }
             };
-            Promise.delay(0).then(fetchTransaction);
+            Promise.delay(1000).then(fetchTransaction);
         }
     }, [choosenRestaurant])
 
@@ -109,114 +111,117 @@ export default function PaymentPage() {
             <Content textAlign={"center"}>
                 <Heading pt={5} spaced>Platba</Heading>
             </Content>
-            {Object.keys(cartItems).length === 0 ?
-                <Container className="has-text-centered">
-                    <Heading size={5} renderAs='p'>Nemáte co platit. Vraťte se na <Link to={PATHS.RESTAURANTS}>výběr restaurací</Link>.</Heading>
-                </Container>
-                :
-                <Container className="has-text-left is-max-desktop">
-                    <Box>
-                        <Block style={{ overflow: "auto" }}>
-                            <Table size={'fullwidth'}>
-                                <thead className='is-size-4'>
-                                    <tr>
-                                        <th>Název</th>
-                                        <th>Množství</th>
-                                        <th colSpan={2}>Cena</th>
-                                    </tr>
-                                </thead>
-                                <tbody className='is-size-5'>
-                                    {cartItems.map((item) => (
-                                        <tr key={item.id}>
-                                            <td>{item.name}</td>
-                                            <td>x {item.quantity}</td>
-                                            <td>{item.quantity * parseFloat(item.price)} Kč</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
-                        </Block>
-                        <TipsInput />
-                        <Heading size={4} renderAs="p">Celkem: {Math.round(calculateCart(cartItems).totalPrice + tips) + " Kč"}</Heading>
-                        <hr />
-                        <Block>
-                            <Columns>
-                                <Column>
-                                    <Field>
-                                        <Label className='is-normal' htmlFor='inputEmail'><span className='has-text-danger'>*</span> Email</Label>
-                                        <Control>
-                                            <Field className='has-addons'>
+            {isPageLoading ? <LoadingComponent /> :
+                (
+                    Object.keys(cartItems).length === 0 ?
+                        <Container className="has-text-centered">
+                            <Heading size={5} renderAs='p'>Nemáte co platit. Vraťte se na <Link to={PATHS.RESTAURANTS}>výběr restaurací</Link>.</Heading>
+                        </Container>
+                        :
+                        <Container className="has-text-left is-max-desktop">
+                            <Box>
+                                <Block style={{ overflow: "auto" }}>
+                                    <Table size={'fullwidth'}>
+                                        <thead className='is-size-4'>
+                                            <tr>
+                                                <th>Název</th>
+                                                <th>Množství</th>
+                                                <th colSpan={2}>Cena</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className='is-size-5'>
+                                            {cartItems.map((item) => (
+                                                <tr key={item.id}>
+                                                    <td>{item.name}</td>
+                                                    <td>x {item.quantity}</td>
+                                                    <td>{item.quantity * parseFloat(item.price)} Kč</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </Table>
+                                </Block>
+                                <TipsInput />
+                                <Heading size={4} renderAs="p">Celkem: {Math.round(calculateCart(cartItems).totalPrice + tips) + " Kč"}</Heading>
+                                <hr />
+                                <Block>
+                                    <Columns>
+                                        <Column>
+                                            <Field>
+                                                <Label className='is-normal' htmlFor='inputEmail'><span className='has-text-danger'>*</span> Email</Label>
                                                 <Control>
-                                                    <Input color={isEmailValid !== null && !isEmailValid && "danger"} value={emailInput} onChange={handleEmailChange} id='inputEmail' type='email' required placeholder='Email pro zasílání účtenky' />
-                                                    <Icon color={isEmailValid !== null && !isEmailValid && "danger"} align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
-                                                    {isEmailValid !== null && !isEmailValid && <Help color="danger">Nesprávný email formát</Help>}
+                                                    <Field className='has-addons'>
+                                                        <Control>
+                                                            <Input color={isEmailValid !== null && !isEmailValid && "danger"} value={emailInput} onChange={handleEmailChange} id='inputEmail' type='email' required placeholder='Email pro zasílání účtenky' />
+                                                            <Icon color={isEmailValid !== null && !isEmailValid && "danger"} align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
+                                                            {isEmailValid !== null && !isEmailValid && <Help color="danger">Nesprávný email formát</Help>}
+                                                        </Control>
+                                                    </Field>
                                                 </Control>
                                             </Field>
-                                        </Control>
-                                    </Field>
-                                </Column>
-                                {tables.length > 0 &&
-                                    <Column>
-                                        <Field>
-                                            <Label className='is-normal' htmlFor='inputTables'><span className='has-text-danger'>*</span> Stůl</Label>
-                                            <Control>
-                                                <Select id='inputTables' onChange={(e) => setSelectedTable(e.target.value)} value={selectedTable} required>
-                                                    {tables.map((table) => {
-                                                        return (
-                                                            <option value={table} key={table}>{table}</option>
-                                                        )
-                                                    })}
-                                                </Select>
-                                            </Control>
-                                        </Field>
-                                    </Column>
-                                }
-                            </Columns>
-                        </Block>
-                        <hr />
-                        <Block>
-                            <Heading renderAs='h3' size={4}>Zvolte si způsob platby</Heading>
-                            {isLoading
-                                ?
-                                <LoadingComponent />
-                                :
-                                merchantPaymentMethods.length === 0
-                                    ?
-                                    <Heading renderAs='p' size={5}>Obchodník nemá nastavenou platební metodu.</Heading>
-                                    :
-                                    merchantPaymentMethods.map((method) => {
-                                        if (method === 'comgate') {
-                                            return (
-                                                <Button key={method} onClick={handleComgateClick} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
-                                                    <img
-                                                        alt='comgate'
-                                                        src={addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + "logo/logo-comgate.png"}
-                                                        style={{
-                                                            position: 'absolute',
-                                                            top: 0,
-                                                            left: 0,
-                                                            width: '100%',
-                                                            height: '100%',
-                                                            objectFit: 'fill'
-                                                        }}
-                                                    />
-                                                </Button>
-                                            );
-                                        } else if (method === 'gopay') {
-                                            return <Button key={method} color={'warning'}>GoPay</Button>;
+                                        </Column>
+                                        {tables.length > 0 &&
+                                            <Column>
+                                                <Field>
+                                                    <Label className='is-normal' htmlFor='inputTables'><span className='has-text-danger'>*</span> Stůl</Label>
+                                                    <Control>
+                                                        <Select id='inputTables' onChange={(e) => setSelectedTable(e.target.value)} value={selectedTable} required>
+                                                            {tables.map((table) => {
+                                                                return (
+                                                                    <option value={table} key={table}>{table}</option>
+                                                                )
+                                                            })}
+                                                        </Select>
+                                                    </Control>
+                                                </Field>
+                                            </Column>
                                         }
-                                        return "";
-                                    })
-                                // add more methods later
-                            }
-                        </Block>
-                        {postMsg && postMsg.msg && (
-                            <p className={postMsg.success ? "has-text-success" : "has-text-danger"}>
-                                {postMsg.msg instanceof Error ? postMsg.msg.message : typeof postMsg.msg === "string" && postMsg.msg}
-                            </p>
-                        )}
-                    </Box>
-                </Container>
+                                    </Columns>
+                                </Block>
+                                <hr />
+                                <Block>
+                                    <Heading renderAs='h3' size={4}>Zvolte si způsob platby</Heading>
+                                    {isPaymentLoading
+                                        ?
+                                        <LoadingComponent />
+                                        :
+                                        merchantPaymentMethods.length === 0
+                                            ?
+                                            <Heading renderAs='p' size={5}>Obchodník nemá nastavenou platební metodu.</Heading>
+                                            :
+                                            merchantPaymentMethods.map((method) => {
+                                                if (method === 'comgate') {
+                                                    return (
+                                                        <Button key={method} onClick={handleComgateClick} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
+                                                            <img
+                                                                alt='comgate'
+                                                                src={addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + "logo/logo-comgate.png"}
+                                                                style={{
+                                                                    position: 'absolute',
+                                                                    top: 0,
+                                                                    left: 0,
+                                                                    width: '100%',
+                                                                    height: '100%',
+                                                                    objectFit: 'fill'
+                                                                }}
+                                                            />
+                                                        </Button>
+                                                    );
+                                                } else if (method === 'gopay') {
+                                                    return <Button key={method} color={'warning'}>GoPay</Button>;
+                                                }
+                                                return "";
+                                            })
+                                        // add more methods later
+                                    }
+                                </Block>
+                                {postMsg && postMsg.msg && (
+                                    <p className={postMsg.success ? "has-text-success" : "has-text-danger"}>
+                                        {postMsg.msg instanceof Error ? postMsg.msg.message : typeof postMsg.msg === "string" && postMsg.msg}
+                                    </p>
+                                )}
+                            </Box>
+                        </Container>
+                )
             }
         </Fragment>
     )

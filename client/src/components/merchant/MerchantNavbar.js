@@ -38,14 +38,14 @@ export default function MerchantNavbar() {
                 <Item className='is-size-4 has-text-weight-bold' renderAs={RouterLink} to={PATHS.MERCHANT}>
                     IČO: {ico}
                 </Item>
-                <Container align='left'>
-                    <Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
-                        setBurgerActive(!isBurgerActive);
-                    }} className={
-                        isBurgerActive ? activeClassName : undefined
-                    } />
-                </Container>
             </Brand>
+            <Container align='right'>
+                <Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
+                    setBurgerActive(!isBurgerActive);
+                }} className={
+                    isBurgerActive ? activeClassName : undefined
+                } />
+            </Container>
             <Menu id='navbarMain' className={
                 isBurgerActive ? activeClassName : undefined
             }>
@@ -57,12 +57,13 @@ export default function MerchantNavbar() {
                         </Dropdown>
                     </Item>
                 </Container>
+                <Container align='right'>
+                    <Button className='is-warning' renderAs={RouterLink} to={PATHS.LOGOUT}>
+                        Odhlásit se
+                    </Button>
+                </Container>
             </Menu>
-            <Container align='right'>
-                <Button className='is-warning' renderAs={RouterLink} to={PATHS.LOGOUT}>
-                    Odhlásit se
-                </Button>
-            </Container>
+
         </Navbar>
     );
 }
