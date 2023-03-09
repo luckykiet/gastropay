@@ -3,7 +3,7 @@ const MerchantModel = require("../models/MerchantModel");
 const RestaurantModel = require("../models/RestaurantModel");
 const TransactionModel = require("../models/TransactionModel");
 const ObjectId = require("mongoose").Types.ObjectId;
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const moment = require('moment');
 
 const createRestaurant = async (req, res, next) => {
