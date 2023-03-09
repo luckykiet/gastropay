@@ -12,7 +12,7 @@ export default function BackButtonComponent({ backNavigations }) {
 
     return (
         backNavigations[backButtonPaths] &&
-        <Container my={3} breakpoint={'fluid'} className='has-text-right'>
+        <Container my={3} breakpoint={'fullhd'} className='has-text-right'>
             <Button renderAs={Link} rounded color={'warning'} size={'large'} to={backNavigations[backButtonPaths]} preventScrollReset={true}><FontAwesomeIcon icon={faArrowLeft} /></Button>
         </Container>
     )

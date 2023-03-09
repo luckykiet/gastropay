@@ -91,12 +91,15 @@ export default function PaymentPage() {
                     }
                 } catch (error) {
                     console.log(error.response.data.msg)
+                } finally {
+                    setIsPaymentLoading(false);
+                    setIsPageLoading(false);
                 }
             };
             Promise.delay(1000).then(fetchTransaction);
+        } else {
+            setIsPageLoading(false);
         }
-        setIsPageLoading(false);
-        setIsPaymentLoading(false);
     }, [choosenRestaurant])
 
     useEffect(() => {
