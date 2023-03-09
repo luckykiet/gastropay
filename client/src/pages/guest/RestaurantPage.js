@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { Block, Button, Columns, Container, Content, Heading, Image } from 'react-bulma-components';
+import { Block, Button, Columns, Container, Content, Heading } from 'react-bulma-components';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { createAxios, isOpening, daysOfWeeksCzech, addSlashAfterUrl, removeSlashFromUrl, daysOfWeeks, isValidImageUrl } from "../../utils";
 import Promise from "bluebird";
@@ -83,13 +83,15 @@ export default function RestaurantPage() {
                                 <Columns>
                                     <Column size={"is-half"}>
                                         <Container className='has-text-left'>
-                                            <Image
-                                                size={"3by2"}
-                                                alt={business.name}
-                                                src={isValidImageUrl(business.image)
-                                                    ? business.image
-                                                    : addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + 'restaurants/default.jpg'}
-                                            />
+                                            <figure className="image is-3by2 is-fullwidth">
+                                                <img
+                                                    alt={business.name}
+                                                    src={isValidImageUrl(business.image)
+                                                        ? business.image
+                                                        : addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + 'restaurants/default.jpg'}
+                                                    style={{ height: '100%' }}
+                                                />
+                                            </figure>
                                         </Container>
                                     </Column>
                                     <Column>

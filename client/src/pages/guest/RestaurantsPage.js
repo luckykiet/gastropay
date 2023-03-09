@@ -97,7 +97,7 @@ export default function RestaurantsPage() {
                 (
                     (!restaurants || Object.keys(restaurants).length === 0) ? (
                         <Container>
-                            <Columns centered vCentered>
+                            <Columns centered>
                                 <TextContent textAlign={"center"}>
                                     <p>{searchMsg !== '' ? searchMsg : "Momentálně není žádná restaurace aktivní :("}</p>
                                 </TextContent>
@@ -105,7 +105,7 @@ export default function RestaurantsPage() {
                         </Container>
                     ) : (
                         <Container>
-                            <Columns centered vCentered>
+                            <Columns centered>
                                 {Object.keys(restaurants).map((index) => (<RestaurantCard key={index} restaurant={restaurants[index]} />))}
                             </Columns>
                         </Container>

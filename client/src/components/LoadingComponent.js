@@ -1,10 +1,10 @@
 import React from 'react'
-import { Columns, Button } from 'react-bulma-components'
+import { Button, Container } from 'react-bulma-components'
 
 export default function LoadingComponent() {
     return (
-        <Columns pt={5} centered vCentered>
+        <Container breakpoint={'fluid'} pt={5} className='has-text-centered'>
             <Button className="is-loading" size={"large"} color="white" />
-        </Columns>
+        </Container>
     )
 }

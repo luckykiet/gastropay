@@ -22,6 +22,7 @@ export default function CollapsibleSidebar({ show, handleCloseSidebar }) {
             navigate(PATHS.PAYMENT);
         }
     }
+
     return (
         <div style={{ overflowY: "auto" }} className={`collapsible-sidebar ${!show ? "is-hidden" : ""} has-background-grey-light`}>
             <Card mx={3} mt={3}>
