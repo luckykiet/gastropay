@@ -6,7 +6,6 @@ const RestaurantModel = require('../models/RestaurantModel');
 const qs = require('qs');
 const comgateConfig = require('../config/comgate');
 const config = require('../config/config');
-require('../dotenv_loader');
 const uppercaseNumberAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 const createTransaction = async (req, res, next) => {
