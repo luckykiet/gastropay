@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Content, Heading, Container, Box, Table, Button, Block, Form, Icon, Columns } from 'react-bulma-components';
-import { useCartItems, useChoosenRestaurant, useTables, useTips } from '../../stores/ZustandStores';
+import { useCartItems, useChoosenRestaurant, useSetCartItems, useSetChoosenRestaurant, useTables, useTips } from '../../stores/ZustandStores';
 import { Link, useNavigate } from 'react-router-dom';
 import { calculateCart, addSlashAfterUrl, createAxios } from '../../utils'
 import TipsInput from '../../components/menu/TipsInput';
@@ -23,9 +23,9 @@ export default function PaymentPage() {
     const [emailInput, setEmailInput] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(null);
     const [merchantPaymentMethods, setMerchantPaymentMethods] = useState([]);
-    const cartItems = useCartItems();
+    const [cartItems, setCartItems] = [useCartItems(), useSetCartItems()];
     const tables = useTables();
-    const choosenRestaurant = useChoosenRestaurant();
+    const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
     const tips = useTips();
     const navigate = useNavigate();
 
@@ -65,7 +65,8 @@ export default function PaymentPage() {
             if (!success) {
                 throw new Error(msg);
             }
-
+            setCartItems([]);
+            setChoosenRestaurant({});
             navigate(PATHS.TRANSACTION + "/" + msg.refId);
         } catch (error) {
             console.log(error)

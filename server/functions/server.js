@@ -20,6 +20,7 @@ const RestaurantRouter = require('./routes/RestaurantRouter');
 const MerchantRouter = require('./routes/MerchantRouter');
 const AuthenticateRouter = require('./routes/AuthenticateRouter');
 const TransactionRouter = require('./routes/TransactionRouter');
+const GuestRouter = require('./routes/GuestRouter');
 
 const TransactionController = require('./controllers/TransactionController');
 setInterval(TransactionController.runAutoCheckPayment, 20000);
@@ -35,11 +36,13 @@ connectDB();
 
 // Define api
 app.use('/api', RestaurantRouter);
+app.use('/api', GuestRouter);
 app.use('/api', cors(corsOnlyAppAllowedOption), MerchantRouter);
 app.use('/api', cors(corsOnlyAppAllowedOption), AuthenticateRouter);
 app.use('/api', cors(corsOnlyAppAllowedOption), TransactionRouter);
 
 app.use(config.SERVERLESS_PATH, RestaurantRouter);
+app.use(config.SERVERLESS_PATH, GuestRouter);
 app.use(config.SERVERLESS_PATH, cors(corsOnlyAppAllowedOption), MerchantRouter);
 app.use(config.SERVERLESS_PATH, cors(corsOnlyAppAllowedOption), AuthenticateRouter);
 app.use(config.SERVERLESS_PATH, cors(corsOnlyAppAllowedOption), TransactionRouter);
