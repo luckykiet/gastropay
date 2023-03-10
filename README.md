@@ -15,11 +15,11 @@ npm i -g yarn npm-run-all
 yarn install
 ```
 
-2. Set up .env file in _client_ folder from **.env.example** file
+2. Set up .env file in _root directory_ using **.env.example** file as example
 3. Run app
 
 ```
-yarn start-local
+yarn start
 ```
 
 4. Deployment on netlify

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
-require('../dotenv_loader');
 
 const connectDB = async () => {
     try {

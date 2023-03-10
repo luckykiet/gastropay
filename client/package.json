@@ -3,6 +3,7 @@
   "app": {
     "name": "Gastro Pay",
     "www": "gastropay.ruano.cz",
+    "url": "https://gastropay.ruano.cz",
     "provider": "Tuan Kiet Nguyen"
   },
   "version": "0.1.0",

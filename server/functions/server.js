@@ -1,4 +1,6 @@
 // Imports
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -6,6 +8,12 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const connectDB = require('./db');
 const serverless = require('serverless-http');
+const config = require('./config/config')
+
+// Cors options
+const corsOnlyAppAllowedOption = {
+    origin: config.BASE_URL,
+}
 
 // Routers
 const RestaurantRouter = require('./routes/RestaurantRouter');
@@ -27,13 +35,13 @@ connectDB();
 
 // Define api
 app.use('/api', RestaurantRouter);
-app.use('/api', MerchantRouter);
-app.use('/api', AuthenticateRouter);
-app.use('/api', TransactionRouter);
+app.use('/api', cors(corsOnlyAppAllowedOption), MerchantRouter);
+app.use('/api', cors(corsOnlyAppAllowedOption), AuthenticateRouter);
+app.use('/api', cors(corsOnlyAppAllowedOption), TransactionRouter);
 
-app.use('/.netlify/functions/server', RestaurantRouter);
-app.use('/.netlify/functions/server', MerchantRouter);
-app.use('/.netlify/functions/server', AuthenticateRouter);
-app.use('/.netlify/functions/server', TransactionRouter);
+app.use(config.SERVERLESS_PATH, RestaurantRouter);
+app.use(config.SERVERLESS_PATH, cors(corsOnlyAppAllowedOption), MerchantRouter);
+app.use(config.SERVERLESS_PATH, cors(corsOnlyAppAllowedOption), AuthenticateRouter);
+app.use(config.SERVERLESS_PATH, cors(corsOnlyAppAllowedOption), TransactionRouter);
 module.exports = app;
 module.exports.handler = serverless(app);
