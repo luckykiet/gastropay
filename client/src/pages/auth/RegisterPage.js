@@ -33,7 +33,7 @@ export default function RegisterPage() {
             setPostMsg("Zkontrolujte vyplněné údaje!")
         } else {
             try {
-                const axios = createAxios(addSlashAfterUrl(CONFIG.CONFIG.API_URL));
+                const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
 
                 formData.email = formData.email.toLowerCase();
 

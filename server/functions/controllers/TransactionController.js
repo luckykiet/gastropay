@@ -232,11 +232,11 @@ const checkPayment = async (refId) => {
     const paymentMethodName = Object.keys(transaction.paymentMethod)[0];
 
     if (paymentMethodName === 'comgate') {
-        const comgate = merchant.paymentGates.comgate;
+        const comgate = merchant.paymentGates[paymentMethodName];
         const dataToPaymentGate = {
             merchant: comgate.merchant,
             secret: comgate.secret,
-            transId: transaction.paymentMethod.comgate.transId,
+            transId: transaction.paymentMethod[paymentMethodName].transId,
         }
 
         const useProxy = process.env.USE_PROXY;
@@ -274,12 +274,13 @@ const checkPayment = async (refId) => {
             return { success: false, msg: message ? message : "Failed to get a status!" };
         } else {
             const status = decodeURIComponent(params.get('status'));
+            const statusField = "paymentMethod." + paymentMethodName + ".status";
             if (status === 'PAID') {
-                await transaction.updateOne({ 'paymentMethod.comgate.status': status });
+                await transaction.updateOne({ [statusField]: status });
                 //TODO POST TO POS
 
             } else if (status === 'CANCELLED') {
-                await transaction.updateOne({ 'paymentMethod.comgate.status': status, status: status });
+                await transaction.updateOne({ [statusField]: status, status: status });
             }
             return { success: true, msg: status };
         }
@@ -289,13 +290,17 @@ const checkPayment = async (refId) => {
 const getTransaction = async (req, res) => {
     const { idTransaction } = req.params;
 
-    await checkPayment(idTransaction);
-
     const transaction = await TransactionModel.findOne({ refId: idTransaction });
     if (!transaction) {
         return res
             .status(404)
             .json({ success: false, msg: `Transaction not found` });
+    }
+
+    const paymentMethodName = Object.keys(transaction.paymentMethod)[0];
+
+    if (transaction.paymentMethod[paymentMethodName].status === 'PENDING') {
+        await checkPayment(idTransaction);
     }
 
     const restaurant = await RestaurantModel.findById(transaction.idRestaurant).select("idOwner name address").exec();
