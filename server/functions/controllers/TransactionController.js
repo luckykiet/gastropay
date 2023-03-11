@@ -100,7 +100,7 @@ const createTransaction = async (req, res, next) => {
                 expirationTime: "1h"
             }
 
-            const useProxy = process.env.USE_PROXY === 'true' ? true : false;
+            const useProxy = process.env.USE_PROXY === 'true';
 
             let response = '';
             let params = '';
@@ -239,7 +239,7 @@ const checkPayment = async (refId) => {
             transId: transaction.paymentMethod[paymentMethodName].transId,
         }
 
-        const useProxy = process.env.USE_PROXY === 'true' ? true : false;
+        const useProxy = process.env.USE_PROXY === 'true';
         let response = '';
         let params = '';
 

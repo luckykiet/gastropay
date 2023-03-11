@@ -1,7 +1,7 @@
 // config.js
 import packageJson from '../../package.json';
 
-const DEV_MODE = process.env.REACT_APP_DEV_MODE === 'true' ? true : false;
+const DEV_MODE = process.env.REACT_APP_DEV_MODE === 'true';
 const API_PORT = process.env.REACT_APP_API_PORT || 4000;
 const APP_PORT = process.env.REACT_APP_APP_PORT || 3000;
 const LOCALHOST = "http://localhost";
