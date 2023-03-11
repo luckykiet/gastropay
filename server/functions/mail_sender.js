@@ -1,25 +1,13 @@
 
-const config = require('./config/config');
 const nodemailer = require('nodemailer');
-
-const transporter = nodemailer.createTransport({
-    host: config.MAIL_HOST,
-    port: 587,
-    secure: true,
-    auth: {
-        user: process.env.MAIL_USERNAME,
-        pass: process.env.MAIL_APP_PASSWORD,
-    },
-});
+const mailConfig = require('./config/mail')
 
 const mailBody = (header, body, footer) => {
     return `
-	<div style="background-color:#fff;margin:30px;box-sizing:border-box;font-size:16px;">
-		<h1 style="padding:40px;box-sizing:border-box;font-size:24px;color:#ffffff;background-color:#50688c;margin:0;">${header}</h1>
-		<div style="box-sizing:border-box;padding:0 40px;">
-            <p>
-	            ${body}
-            </p>
+	<div style="background-color:#363636;color:#f5f5f5;margin:30px;box-sizing:border-box;font-size:20px;">
+		<h1 style="padding:40px;box-sizing:border-box;font-size:24px;color:#ffffff;background-color:#00d1b2;margin:0;">${header}</h1>
+		<div style="box-sizing:border-box;padding:40px 40px;">
+	        ${body}
 		</div>
 		<p style="padding:20px 40px 60px 40px;margin:0;box-sizing:border-box;font-size:16px;">
 			${footer}
@@ -28,21 +16,31 @@ const mailBody = (header, body, footer) => {
         `;
 }
 
-const sendEmail = (to, subject, header, body, footer) => {
-    const mailOptions = {
-        from: process.env.MAIL_USERNAME,
-        to,
-        subject,
-        text: mailBody(header, body, footer),
-    };
+const sendMailWrapper = async (to, subject, header, body, footer) => {
+    try {
+        const transport = nodemailer.createTransport({
+            host: mailConfig.HOST,
+            port: mailConfig.PORT,
+            secure: mailConfig.USE_TLS,
+            auth: {
+                user: mailConfig.USERNAME,
+                pass: mailConfig.PASSWORD,
+            }
+        });
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error(error);
-        } else {
-            console.log(`Email sent: ${info.response}`);
-        }
-    });
+        const options = {
+            from: mailConfig.USERNAME,
+            to: to,
+            subject: subject,
+            html: mailBody(header, body, footer)
+        };
+
+        const result = await transport.sendMail(options);
+        return result;
+    } catch (error) {
+        throw error;
+    }
 }
 
-module.exports = sendEmail;
+
+module.exports = sendMailWrapper;

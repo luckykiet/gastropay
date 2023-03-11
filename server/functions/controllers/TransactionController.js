@@ -1,14 +1,14 @@
 const axios = require('axios');
+const { customAlphabet } = require('nanoid');
+const sendMailWrapper = require('../mail_sender');
+const qs = require('qs');
 const MerchantModel = require("../models/MerchantModel");
 const TransactionModel = require("../models/TransactionModel");
-const { customAlphabet } = require('nanoid');
 const RestaurantModel = require('../models/RestaurantModel');
-const qs = require('qs');
 const comgateConfig = require('../config/comgate');
 const config = require('../config/config');
 const api = require('../config/api');
-const sendMail = require('../mail_sender');
-const package = require('../../../package.json');
+const mail = require('../config/mail');
 const uppercaseNumberAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 const createTransaction = async (req, res, next) => {
@@ -163,14 +163,20 @@ const createTransaction = async (req, res, next) => {
                 }
 
                 const transaction = new TransactionModel(data);
-                await transaction.save().then(() => {
-
-                    const useSendMail = process.env.USE_SEND_MAIL === 'true';
-                    useSendMail && sendMail(body.email,
-                        "Účtenka k objednávce č:" + transaction.refId,
-                        "Děkujeme za použití " + package.app.name, "Zde je <a href='" + config.BASE_URL + "/" + api.TRANSACTION + "/" + transaction.refId + "'>odkaz</a> k účtence.",
-                        "Přejeme Vám dobrou chuť!"
-                    );
+                await transaction.save().then(async () => {
+                    const useSendMail = mail.USE_SEND_MAIL;
+                    if (useSendMail) {
+                        try {
+                            const result = await sendMailWrapper(body.email,
+                                "Účtenka k objednávce č: " + transaction.refId,
+                                "Děkujeme za použití " + config.APP_NAME, "<a href='" + config.BASE_URL + "/" + api.TRANSACTION + "/" + transaction.refId + "' target='_blank' style='background-color: #ff3860;padding: 8px 12px;border-radius: 2px;font-size: 20px; color: #f5f5f5;text-decoration: none;font-weight:bold;display: inline-block;'>Odkaz k účtence</a>",
+                                "Přejeme Vám dobrou chuť!"
+                            );
+                            console.log(result)
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
 
                     return res.status(200).json({
                         success: true,

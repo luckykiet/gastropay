@@ -6,7 +6,8 @@ const API_PORT = process.env.REACT_APP_API_PORT || 4000;
 const APP_PORT = process.env.REACT_APP_APP_PORT || 3000;
 const LOCALHOST = "http://localhost";
 const SERVERLESS_PATH = "/.netlify/functions/server";
-const PUBLIC_APP_URL = packageJson.app.url;
+const PUBLIC_APP_URL = process.env.REACT_APP_BASE_URL || packageJson.app.url;
+const APP_NAME = process.env.REACT_APP_NAME || packageJson.app.name || "Gastro Pay";
 
 const removeSlashFromUrl = (url) => {
     if (url.endsWith('/')) {
@@ -16,6 +17,7 @@ const removeSlashFromUrl = (url) => {
 }
 
 const config = {
+    APP_NAME: APP_NAME,
     API_PORT: API_PORT,
     APP_PORT: APP_PORT,
     SERVERLESS_PATH: SERVERLESS_PATH,
