@@ -19,6 +19,7 @@ const config = {
     API_PORT: API_PORT,
     APP_PORT: APP_PORT,
     SERVERLESS_PATH: SERVERLESS_PATH,
+    MAIL_HOST: "smtp.office365.com",
     API_URL: DEV_MODE ? LOCALHOST + ":" + API_PORT + "/api" : removeSlashFromUrl(PUBLIC_APP_URL) + SERVERLESS_PATH,
     BASE_URL: DEV_MODE ? LOCALHOST + ":" + APP_PORT : removeSlashFromUrl(PUBLIC_APP_URL),
     IMAGE_BASE_URL: DEV_MODE ? LOCALHOST + ":" + APP_PORT + "/images" : removeSlashFromUrl(PUBLIC_APP_URL) + "/images",
