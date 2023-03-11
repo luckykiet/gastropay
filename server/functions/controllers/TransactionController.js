@@ -6,7 +6,6 @@ const RestaurantModel = require('../models/RestaurantModel');
 const qs = require('qs');
 const comgateConfig = require('../config/comgate');
 const config = require('../config/config');
-const { boolean } = require('boolean');
 const uppercaseNumberAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 const createTransaction = async (req, res, next) => {
@@ -101,7 +100,7 @@ const createTransaction = async (req, res, next) => {
                 expirationTime: "1h"
             }
 
-            const useProxy = boolean(process.env.USE_PROXY);
+            const useProxy = process.env.USE_PROXY === 'true' ? true : false;
 
             let response = '';
             let params = '';
@@ -240,7 +239,7 @@ const checkPayment = async (refId) => {
             transId: transaction.paymentMethod[paymentMethodName].transId,
         }
 
-        const useProxy = boolean(process.env.USE_PROXY);
+        const useProxy = process.env.USE_PROXY === 'true' ? true : false;
         let response = '';
         let params = '';
 
