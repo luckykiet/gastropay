@@ -3,21 +3,39 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 
-const login = async (req, res) => {
-    const { email, password } = req.body;
-    const user = await MerchantModel.findOne({ email });
-    if (!user) {
-        return res.status(401).json({ success: false, msg: 'Nesprávná kombinace' });
+const login = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+        const user = await MerchantModel.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ success: false, msg: 'Nesprávná kombinace' });
+        }
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ success: false, msg: 'Nesprávná kombinace' });
+        }
+        const token = signUserToken(user, "1h");
+        await MerchantModel.findByIdAndUpdate(user._id, { $push: { tokens: token } });
+        return res.status(201).json({
+            success: true,
+            msg: { token: token },
+        });
+    } catch (error) {
+        next(error)
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-        return res.status(401).json({ success: false, msg: 'Nesprávná kombinace' });
+}
+
+const logout = async (req, res, next) => {
+    try {
+        const { token } = req.body;
+        await MerchantModel.updateOne({ tokens: token }, { $pull: { tokens: token } });
+        res.json({
+            success: true,
+            msg: "Logout successful"
+        });
+    } catch (error) {
+        next(error)
     }
-    const token = signUserToken(user, "1h");
-    return res.status(201).json({
-        success: true,
-        msg: { token: token },
-    });
 }
 
 const register = async (req, res, next) => {
@@ -83,6 +101,7 @@ const signUserToken = (user, time) => {
 
 module.exports = {
     login,
+    logout,
     register,
     checkMerchantByIcoOrEmail
 }

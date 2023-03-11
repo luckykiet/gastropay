@@ -14,6 +14,10 @@ const MerchantSchema = new Schema({
     paymentGates: {
         comgate: { type: Comgate }
     },
+    tokens: {
+        type: [String],
+        default: [],
+    },
     isAvailable: { type: Boolean, required: true, default: true }
 }, { strict: true, timestamps: true });
 
