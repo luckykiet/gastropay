@@ -5,10 +5,12 @@ const PROTECTED = require('../config/api').PROTECTED;
 const REGISTER = require('../config/api').REGISTER;
 const ADMIN = require('../config/api').ADMIN;
 const AUTH = require('../config/api').AUTH;
+const LOGOUT = require('../config/api').LOGOUT;
 const router = express.Router();
 const authMiddleware = require('./AuthMiddlewares');
 
 router.post('/' + AUTH + '/' + LOGIN, AuthenticateController.login, authMiddleware.validationHandlerMiddleware);
+router.post('/' + AUTH + '/' + LOGOUT, AuthenticateController.logout, authMiddleware.validationHandlerMiddleware);
 router.post('/' + AUTH + '/' + REGISTER, AuthenticateController.register, authMiddleware.validationHandlerMiddleware);
 
 router.get('/' + AUTH + '/check?', AuthenticateController.checkMerchantByIcoOrEmail);

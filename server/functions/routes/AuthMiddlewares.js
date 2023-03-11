@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
+const MerchantModel = require("../models/MerchantModel");
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
     if (!token) {
@@ -13,35 +14,38 @@ const authMiddleware = (req, res, next) => {
             return res.status(401).json({ success: false, message: 'Token expired' });
         }
         req.userId = decoded.userId;
+
+        const user = await MerchantModel.findOne({ _id: req.userId, tokens: token });
+        if (!user) {
+            throw new Error();
+        }
         next();
     } catch (err) {
         return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
 };
 
-const authAdminMiddleware = (requiredRole) => (req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    if (!token) {
-        return res.status(401).json({ success: false, message: 'Unauthorized' });
-    }
-
-    jwt.verify(token, config.JWT_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ success: false, message: 'Unauthorized' });
-        }
-
-        const now = Date.now() / 1000; // convert to seconds
-        if (decoded.exp && decoded.exp < now) {
+const authAdminMiddleware = (requiredRole) => async (req, res, next) => {
+    try {
+        const decoded = jwt.verify(token, config.JWT_SECRET);
+        if (decoded.exp < Date.now() / 1000) {
             return res.status(401).json({ success: false, message: 'Token expired' });
         }
-
+        req.userId = decoded.userId;
         req.userId = decoded.userId;
         if (requiredRole && decoded.role !== requiredRole) {
             return res.status(403).json({ success: false, message: 'Forbidden' });
         }
+
+        const user = await MerchantModel.findOne({ _id: req.userId, tokens: token });
+        if (!user) {
+            throw new Error();
+        }
+
         next();
-    });
+    } catch (err) {
+        return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
 };
 
 const validationHandlerMiddleware = (err, req, res, next) => {
