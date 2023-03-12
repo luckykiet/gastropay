@@ -4,7 +4,7 @@ import { Navbar } from 'react-bulma-components';
 import { useState } from 'react';
 import { PATHS } from '../config/paths';
 
-const { Brand, Item, Burger, Container, Menu, Dropdown, Link } = Navbar;
+const { Brand, Item, Burger, Menu, Dropdown, Link } = Navbar;
 const activeClassName = 'is-active';
 const items = [
     {
@@ -48,25 +48,23 @@ export default function NavbarComponent() {
                 <Item className='is-size-4 has-text-weight-bold' renderAs={RouterLink} to={PATHS.HOME}>
                     {packageJson.app.name}
                 </Item>
-            </Brand>
-            <Container align='right'>
                 <Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
                     setBurgerActive(!isBurgerActive);
                 }} className={
                     isBurgerActive ? activeClassName : undefined
                 } />
-            </Container>
+            </Brand>
             <Menu id='navbarMain' className={
                 isBurgerActive ? activeClassName : undefined
             }>
-                <Container align='left'>
+                <div class="navbar-start">
                     <Item className='is-size-4' hoverable>
                         <Link>Více</Link>
                         <Dropdown boxed>
                             <NavItems />
                         </Dropdown>
                     </Item>
-                </Container>
+                </div>
             </Menu>
         </Navbar>
     )
