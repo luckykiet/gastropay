@@ -3,7 +3,7 @@ import { Button, Navbar } from 'react-bulma-components';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 import { getItemsFromToken } from '../../utils';
 import { PATHS } from '../../config/paths';
-const { Brand, Item, Container, Menu, Dropdown, Burger, Link } = Navbar;
+const { Brand, Item, Menu, Dropdown, Burger, Link } = Navbar;
 const activeClassName = 'is-active';
 
 const items = [
@@ -38,32 +38,32 @@ export default function MerchantNavbar() {
                 <Item className='is-size-4 has-text-weight-bold' renderAs={RouterLink} to={PATHS.MERCHANT}>
                     IČO: {ico}
                 </Item>
-            </Brand>
-            <Container align='right'>
                 <Burger aria-label="menu" aria-expanded="false" data-target="navbarMain" onClick={() => {
                     setBurgerActive(!isBurgerActive);
                 }} className={
                     isBurgerActive ? activeClassName : undefined
                 } />
-            </Container>
+            </Brand>
             <Menu id='navbarMain' className={
                 isBurgerActive ? activeClassName : undefined
             }>
-                <Container align='left'>
+                <div class="navbar-start">
                     <Item className='is-size-4' hoverable>
                         <Link>Více</Link>
                         <Dropdown boxed>
                             <NavItems />
                         </Dropdown>
                     </Item>
-                </Container>
-                <Container align='right'>
-                    <Button className='is-warning' renderAs={RouterLink} to={PATHS.LOGOUT}>
-                        Odhlásit se
-                    </Button>
-                </Container>
-            </Menu>
+                </div>
 
-        </Navbar>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <Button className='is-warning' renderAs={RouterLink} to={PATHS.LOGOUT} >
+                            Odhlásit se
+                        </Button>
+                    </div>
+                </div>
+            </Menu>
+        </Navbar >
     );
 }
