@@ -1,6 +1,7 @@
 
 const nodemailer = require('nodemailer');
 const mailConfig = require('./config/mail')
+const config = require('./config/config')
 
 const mailBody = (header, body, footer) => {
     return `
@@ -29,7 +30,11 @@ const sendMailWrapper = async (to, subject, header, body, footer) => {
         });
 
         const options = {
-            from: mailConfig.USERNAME,
+            from: {
+                name: config.APP_NAME,
+                address: mailConfig.USERNAME
+
+            },
             to: to,
             subject: subject,
             html: mailBody(header, body, footer)
