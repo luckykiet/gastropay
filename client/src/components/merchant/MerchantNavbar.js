@@ -47,7 +47,7 @@ export default function MerchantNavbar() {
             <Menu id='navbarMain' className={
                 isBurgerActive ? activeClassName : undefined
             }>
-                <div class="navbar-start">
+                <div className="navbar-start">
                     <Item className='is-size-4' hoverable>
                         <Link>Více</Link>
                         <Dropdown boxed>
@@ -56,8 +56,8 @@ export default function MerchantNavbar() {
                     </Item>
                 </div>
 
-                <div class="navbar-end">
-                    <div class="navbar-item">
+                <div className="navbar-end">
+                    <div className="navbar-item">
                         <Button className='is-warning' renderAs={RouterLink} to={PATHS.LOGOUT} >
                             Odhlásit se
                         </Button>

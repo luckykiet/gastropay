@@ -11,7 +11,7 @@ https://gastropay.ruano.cz/
 1. Install dependencies
 
 ```
-npm i -g yarn npm-run-all
+npm i -g yarn
 yarn install
 ```
 
