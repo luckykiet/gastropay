@@ -57,7 +57,7 @@ export default function NavbarComponent() {
             <Menu id='navbarMain' className={
                 isBurgerActive ? activeClassName : undefined
             }>
-                <div class="navbar-start">
+                <div className="navbar-start">
                     <Item className='is-size-4' hoverable>
                         <Link>Více</Link>
                         <Dropdown boxed>
