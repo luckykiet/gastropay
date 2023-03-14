@@ -25,29 +25,6 @@ const authMiddleware = async (req, res, next) => {
     }
 };
 
-const authAdminMiddleware = (requiredRole) => async (req, res, next) => {
-    try {
-        const decoded = jwt.verify(token, config.JWT_SECRET);
-        if (decoded.exp < Date.now() / 1000) {
-            return res.status(401).json({ success: false, message: 'Token expired' });
-        }
-        req.userId = decoded.userId;
-        req.userId = decoded.userId;
-        if (requiredRole && decoded.role !== requiredRole) {
-            return res.status(403).json({ success: false, message: 'Forbidden' });
-        }
-
-        const user = await MerchantModel.findOne({ _id: req.userId, tokens: token });
-        if (!user) {
-            throw new Error();
-        }
-
-        next();
-    } catch (err) {
-        return res.status(401).json({ success: false, message: 'Unauthorized' });
-    }
-};
-
 const validationHandlerMiddleware = (err, req, res, next) => {
     if (err.name === 'ValidationError' || err.name === 'ValidatorError') {
         return res.status(422).json({
@@ -77,6 +54,5 @@ const validationHandlerMiddleware = (err, req, res, next) => {
 
 module.exports = {
     authMiddleware,
-    authAdminMiddleware,
     validationHandlerMiddleware
 };

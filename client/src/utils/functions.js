@@ -6,7 +6,6 @@ export const createAxios = (urlAPI) => {
     return Axios.create({ baseURL: urlAPI })
 };
 
-
 export const isOpening = (from, to) => {
     const now = moment();
     const openingTime = moment(from, "HH:mm");

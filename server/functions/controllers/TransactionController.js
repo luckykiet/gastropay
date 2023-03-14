@@ -17,39 +17,40 @@ const numberAlphabet = '0123456789';
 const createTransaction = async (req, res, next) => {
     const body = req.body;
 
-    if (!body || !body.restaurant || !body.paymentGate || !body.orders) {
-        return res.status(400).json({
-            success: false,
-            msg: "You must provide a valid transaction",
-        });
-    }
+    try {
+        if (!body || !body.restaurant || !body.paymentGate || !body.orders) {
+            return res.status(400).json({
+                success: false,
+                msg: "You must provide a valid transaction",
+            });
+        }
 
-    const restaurant = await RestaurantModel.findById(body.restaurant._id).select("idOwner").exec();
+        const restaurant = await RestaurantModel.findById(body.restaurant._id).select("idOwner").exec();
 
-    if (!restaurant) {
-        return res.status(404).json({
-            success: false,
-            msg: "Restaurant not found!",
-        });
-    }
+        if (!restaurant) {
+            return res.status(404).json({
+                success: false,
+                msg: "Restaurant not found!",
+            });
+        }
 
-    const owner = await MerchantModel.findById(restaurant.idOwner).select("paymentGates").exec();
+        const owner = await MerchantModel.findById(restaurant.idOwner).select("paymentGates").exec();
 
-    if (!owner) {
-        return res.status(404).json({
-            success: false,
-            msg: "Merchant not found!",
-        });
-    }
+        if (!owner) {
+            return res.status(404).json({
+                success: false,
+                msg: "Merchant not found!",
+            });
+        }
 
-    const paymentGate = body.paymentGate;
+        const paymentGate = body.paymentGate;
 
-    if (paymentGate !== 'comgate' && paymentGate !== 'csob') {
-        return res.status(400).json({
-            success: false,
-            msg: "Not supported payment gate, please choose another!",
-        });
-    } else {
+        if (paymentGate !== 'comgate' && paymentGate !== 'csob') {
+            return res.status(400).json({
+                success: false,
+                msg: "Not supported payment gate, please choose another!",
+            });
+        }
         let isIDUnique = false;
         const maxAttempts = 3;
         let attempts = 0;
@@ -75,7 +76,7 @@ const createTransaction = async (req, res, next) => {
         const orders = [];
         let totalPrice = 0;
         let totalQuantity = 0;
-        body.orders.forEach((item) => {
+        for (const item of body.orders) {
             const order = {
                 ean: item.ean,
                 quantity: item.quantity,
@@ -85,176 +86,176 @@ const createTransaction = async (req, res, next) => {
             orders.push(order);
             totalQuantity += order.quantity;
             totalPrice += order.price * item.quantity;
-        });
+        }
         totalPrice *= 100;
         let data = {};
-        try {
-            if (paymentGate === 'comgate' && owner.paymentGates[paymentGate] && owner.paymentGates[paymentGate].isAvailable) {
-                const comgate = owner.paymentGates[paymentGate];
-                const { merchant, curr, method, secret, label, test, country } = comgate;
 
-                const dataToPaymentGate = {
-                    merchant: merchant,
-                    curr: curr,
-                    method: method,
-                    secret: secret,
-                    label: label,
-                    test: test,
-                    country: country,
-                    refId: refId,
-                    price: totalPrice + (body.tips * 100),
-                    prepareOnly: true,
-                    email: body.email,
-                    expirationTime: "1h"
-                }
+        if (paymentGate === 'comgate' && owner.paymentGates[paymentGate] && owner.paymentGates[paymentGate].isAvailable) {
+            const comgate = owner.paymentGates[paymentGate];
+            const { merchant, curr, method, secret, label, test, country } = comgate;
 
-                const payment = await comgateFunctions.createPayment(dataToPaymentGate);
-                console.log(payment)
-                if (!payment.success) {
-                    res.status(400).json({
-                        success: false,
-                        msg: payment.msg
-                    });
-                }
+            const dataToPaymentGate = {
+                merchant: merchant,
+                curr: curr,
+                method: method,
+                secret: secret,
+                label: label,
+                test: test,
+                country: country,
+                refId: refId,
+                price: totalPrice + (body.tips * 100),
+                prepareOnly: true,
+                email: body.email,
+                expirationTime: "1h"
+            }
 
-                const params = payment.msg;
+            const payment = await comgateFunctions.createPayment(dataToPaymentGate);
 
-                const code = params.get('code');
-                if (code !== '0') {
-                    const message = decodeURIComponent(params.get('message'));
-                    res.status(400).json({
-                        success: false,
-                        msg: message ? message : "Payment create failed!"
-                    });
-                } else {
-                    const transId = params.get('transId');
-                    const redirectUrl = decodeURIComponent(params.get('redirect'));
-                    console.log(redirectUrl);
-                    data = {
-                        refId: refId,
-                        idRestaurant: body.restaurant._id,
-                        cart:
-                        {
-                            orders: orders
-                        },
-                        tips: body.tips,
-                        paymentMethod: {
-                            comgate: {
-                                transId: transId,
-                                status: "PENDING"
-                            }
-                        },
-                        email: body.email,
-                        deliveryMethod: body.deliveryMethod || ""
-                    }
-                }
-            } else if (paymentGate === 'csob' && owner.paymentGates[paymentGate] && owner.paymentGates[paymentGate].isAvailable) {
-                const csob = owner.paymentGates[paymentGate];
-                const { merchantId, privateKey, passphrases, currency, language, test, payOperation, payMethod, closePayment } = csob;
-
-                const nanoidNumberOnly = customAlphabet(numberAlphabet, 8)
-                const cart = [
-                    {
-                        name: "Menu",
-                        quantity: totalQuantity,
-                        amount: totalPrice,
-                        description: "Celkový košík"
-                    },
-                    {
-                        name: "Tips",
-                        quantity: 1,
-                        amount: body.tips * 100,
-                        description: "Tips pro " + config.APP_NAME
-                    }
-                ];
-
-                const dataToPaymentGate = {
-                    merchantId: merchantId,
-                    orderNo: nanoidNumberOnly(),
-                    dttm: moment().format('YYYYMMDDHHMMss'),
-                    payOperation: payOperation,
-                    payMethod: payMethod,
-                    totalAmount: totalPrice + (body.tips * 100),
-                    currency: currency,
-                    closePayment: closePayment,
-                    returnUrl: config.BASE_URL + paths.TRANSACTION + "/" + refId,
-                    returnMethod: "GET",
-                    cart: cart,
-                    language: language,
-                    ttlSec: csobConfig.TIME_EXPIRATION,
-                }
-
-                const payment = await csobFunctions.createPayment(privateKey, passphrases, dataToPaymentGate, test);
-
-                if (!payment.success) {
-                    res.status(400).json({
-                        success: false,
-                        msg: payment.msg
-                    });
-                } else {
-                    const payId = payment.msg.payId;
-
-                    const respGetUrl = await csobFunctions.getPaymentUrl(privateKey, passphrases, { merchantId: merchantId, payId: payId }, test);
-
-                    if (!respGetUrl.success) {
-                        res.status(400).json({
-                            success: false,
-                            msg: respGetUrl.msg
-                        });
-                    }
-
-                    data = {
-                        refId: refId,
-                        idRestaurant: body.restaurant._id,
-                        cart:
-                        {
-                            orders: orders
-                        },
-                        tips: body.tips,
-                        paymentMethod: {
-                            csob: {
-                                payId: payId,
-                                orderNo: dataToPaymentGate.orderNo,
-                                dttm: dataToPaymentGate.dttm,
-                                status: 2,
-                                url: respGetUrl.msg
-                            }
-                        },
-                        email: body.email,
-                        deliveryMethod: body.deliveryMethod || ""
-                    }
-                }
-            } else {
-                return res.status(400).json({
+            if (!payment.success) {
+                res.status(400).json({
                     success: false,
-                    msg: "Payment gate is not available, please choose another!",
+                    msg: payment.msg
                 });
             }
 
-            const transaction = new TransactionModel(data);
-            await transaction.save().then(async () => {
-                const useSendMail = mail.USE_SEND_MAIL;
-                if (useSendMail) {
-                    try {
-                        const result = await sendMailWrapper(body.email,
-                            "Účtenka k objednávce č: " + transaction.refId,
-                            "Děkujeme za použití " + config.APP_NAME, "<a href='" + config.BASE_URL + "/" + api.TRANSACTION + "/" + transaction.refId + "' target='_blank' style='background-color: #ff3860;padding: 8px 12px;border-radius: 2px;font-size: 20px; color: #f5f5f5;text-decoration: none;font-weight:bold;display: inline-block;'>Odkaz k účtence</a>",
-                            "Přejeme Vám dobrou chuť!"
-                        );
-                        console.log(result)
-                    } catch (error) {
-                        console.log(error);
-                    }
-                }
-                return res.status(200).json({
-                    success: true,
-                    msg: transaction,
+            const params = payment.msg;
+
+            const code = params.get('code');
+            if (code !== '0') {
+                const message = decodeURIComponent(params.get('message'));
+                res.status(400).json({
+                    success: false,
+                    msg: message ? message : "Payment create failed!"
                 });
+            } else {
+                const transId = params.get('transId');
+                const redirectUrl = decodeURIComponent(params.get('redirect'));
+                console.log(redirectUrl);
+                data = {
+                    refId: refId,
+                    idRestaurant: body.restaurant._id,
+                    cart:
+                    {
+                        orders: orders
+                    },
+                    tips: body.tips,
+                    paymentMethod: {
+                        comgate: {
+                            transId: transId,
+                            status: "PENDING"
+                        }
+                    },
+                    email: body.email,
+                    deliveryMethod: body.deliveryMethod || ""
+                }
+            }
+        } else if (paymentGate === 'csob' && owner.paymentGates[paymentGate] && owner.paymentGates[paymentGate].isAvailable) {
+            const csob = owner.paymentGates[paymentGate];
+            const { merchantId, privateKey, passphrases, currency, language, test, payOperation, payMethod, closePayment } = csob;
+
+            const nanoidNumberOnly = customAlphabet(numberAlphabet, 8)
+            const cart = [
+                {
+                    name: "Menu",
+                    quantity: totalQuantity,
+                    amount: totalPrice,
+                    description: "Celkový košík"
+                },
+                {
+                    name: "Tips",
+                    quantity: 1,
+                    amount: body.tips * 100,
+                    description: "Tips pro " + config.APP_NAME
+                }
+            ];
+
+            const dataToPaymentGate = {
+                merchantId: merchantId,
+                orderNo: nanoidNumberOnly(),
+                dttm: moment().format('YYYYMMDDHHMMss'),
+                payOperation: payOperation,
+                payMethod: payMethod,
+                totalAmount: totalPrice + (body.tips * 100),
+                currency: currency,
+                closePayment: closePayment,
+                returnUrl: config.BASE_URL + paths.TRANSACTION + "/" + refId,
+                returnMethod: "GET",
+                cart: cart,
+                language: language,
+                ttlSec: csobConfig.TIME_EXPIRATION,
+            }
+
+            const payment = await csobFunctions.createPayment(privateKey, passphrases, dataToPaymentGate, test);
+
+            if (!payment.success) {
+                res.status(400).json({
+                    success: false,
+                    msg: payment.msg
+                });
+            } else {
+                const payId = payment.msg.payId;
+
+                const respGetUrl = await csobFunctions.getPaymentUrl(privateKey, passphrases, { merchantId: merchantId, payId: payId }, test);
+
+                if (!respGetUrl.success) {
+                    res.status(400).json({
+                        success: false,
+                        msg: respGetUrl.msg
+                    });
+                }
+
+                data = {
+                    refId: refId,
+                    idRestaurant: body.restaurant._id,
+                    cart:
+                    {
+                        orders: orders
+                    },
+                    tips: body.tips,
+                    paymentMethod: {
+                        csob: {
+                            payId: payId,
+                            orderNo: dataToPaymentGate.orderNo,
+                            dttm: dataToPaymentGate.dttm,
+                            status: 2,
+                            url: respGetUrl.msg
+                        }
+                    },
+                    email: body.email,
+                    deliveryMethod: body.deliveryMethod || ""
+                }
+            }
+        } else {
+            return res.status(400).json({
+                success: false,
+                msg: "Payment gate is not available, please choose another!",
             });
-        } catch (error) {
-            next(error);
         }
+
+        const transaction = new TransactionModel(data);
+        await transaction.save().then(async () => {
+            const useSendMail = mail.USE_SEND_MAIL;
+            if (useSendMail) {
+                try {
+                    const result = await sendMailWrapper(body.email,
+                        "Účtenka k objednávce č: " + transaction.refId,
+                        "Děkujeme za použití " + config.APP_NAME, "<a href='" + config.BASE_URL + "/" + api.TRANSACTION + "/" + transaction.refId + "' target='_blank' style='background-color: #ff3860;padding: 8px 12px;border-radius: 2px;font-size: 20px; color: #f5f5f5;text-decoration: none;font-weight:bold;display: inline-block;'>Odkaz k účtence</a>",
+                        "Přejeme Vám dobrou chuť!"
+                    );
+                    console.log(result)
+                } catch (error) {
+                    console.log(error);
+                }
+            }
+            return res.status(200).json({
+                success: true,
+                msg: transaction,
+            });
+        });
+    } catch (error) {
+        next(error);
     }
+
 };
 
 // BATCH PROCESSING
@@ -378,35 +379,38 @@ const checkPayment = async (refId) => {
 }
 
 const getPaymentMethods = async (req, res) => {
-    const { idRestaurant } = req.params;
+    try {
+        const { idRestaurant } = req.params;
 
-    const restaurant = await RestaurantModel.findById(idRestaurant).select("idOwner").exec();
+        const restaurant = await RestaurantModel.findById(idRestaurant).select("idOwner").exec();
 
-    if (!restaurant) {
-        return res
-            .status(404)
-            .json({ success: false, msg: `Restaurant not found` });
-    }
-
-    const merchant = await MerchantModel.findById(restaurant.idOwner).select("paymentGates").exec();
-
-    if (!merchant) {
-        return res
-            .status(404)
-            .json({ success: false, msg: `Merchant not found` });
-    }
-
-    const availableGates = [];
-
-    const paymentGates = Object.keys(merchant.paymentGates);
-
-    paymentGates.forEach(gate => {
-        if (merchant.paymentGates[gate].isAvailable) {
-            availableGates.push(gate);
+        if (!restaurant) {
+            return res
+                .status(404)
+                .json({ success: false, msg: `Restaurant not found` });
         }
-    });
 
-    return res.status(200).json({ success: true, msg: availableGates });
+        const merchant = await MerchantModel.findById(restaurant.idOwner).select("paymentGates").exec();
+
+        if (!merchant) {
+            return res
+                .status(404)
+                .json({ success: false, msg: `Merchant not found` });
+        }
+
+        const availableGates = [];
+
+        const paymentGates = Object.keys(merchant.paymentGates);
+
+        paymentGates.forEach(gate => {
+            if (merchant.paymentGates[gate].isAvailable) {
+                availableGates.push(gate);
+            }
+        });
+        return res.status(200).json({ success: true, msg: availableGates });
+    } catch (error) {
+        return res.status(400).json({ success: false, msg: error });
+    }
 }
 module.exports = {
     createTransaction,
