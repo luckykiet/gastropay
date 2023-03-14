@@ -14,8 +14,8 @@ const getTransaction = async (req, res) => {
     }
 
     const paymentMethodName = Object.keys(transaction.paymentMethod)[0];
-
-    if (transaction.paymentMethod[paymentMethodName].status === 'PENDING') {
+    const status = transaction.paymentMethod[paymentMethodName].status;
+    if (status === 'PENDING' || status === 1 || status === 2) {
         await TransactionController.checkPayment(idTransaction);
     }
 

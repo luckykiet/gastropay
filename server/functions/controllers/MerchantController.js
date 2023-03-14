@@ -189,6 +189,11 @@ const getSelf = async (req, res, next) => {
             await merchant.save();
         }
 
+        if (!merchant.paymentGates.csob) {
+            merchant.paymentGates.csob = {};
+            await merchant.save();
+        }
+
         return res.status(200).json({ success: true, msg: merchant });
     } catch (error) {
         next(error);
@@ -198,7 +203,6 @@ const getSelf = async (req, res, next) => {
 const updateMerchant = async (req, res, next) => {
     const merchantId = req.userId;
     const body = req.body;
-
     if (!body || !body.password) {
         return res.status(400).json({
             success: false,
@@ -227,9 +231,18 @@ const updateMerchant = async (req, res, next) => {
 
     delete body['password'];
 
-    try {
-        const updatedMerchant = await MerchantModel.findByIdAndUpdate(merchantId, body, { runValidators: true, new: true });
+    const paymentGates = merchant.paymentGates || {};
 
+    if (body.paymentGates && body.paymentGates.comgate) {
+        paymentGates.comgate = body.paymentGates.comgate;
+    }
+
+    if (body.paymentGates && body.paymentGates.csob) {
+        paymentGates.csob = body.paymentGates.csob;
+    }
+
+    try {
+        const updatedMerchant = await MerchantModel.findByIdAndUpdate(merchantId, Object.keys(paymentGates).length === 0 ? body : { paymentGates: paymentGates }, { runValidators: true, new: true });
         if (typeof body.isAvailable === 'boolean' && !body.isAvailable && merchant.isAvailable) {
             await RestaurantModel.updateMany({ idOwner: ObjectId(merchantId) }, { isAvailable: false });
         }

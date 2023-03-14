@@ -32,7 +32,7 @@ function LogoutPage() {
         localStorage.removeItem('token');
         navigate(PATHS.LOGIN);
       } catch (err) {
-        console.log(err?.response?.data.msg ? err.response.data.msg : err);
+        console.log(err.response?.data.msg ? err.response.data.msg : err);
       }
     }
     Promise.delay(0).then(logout);

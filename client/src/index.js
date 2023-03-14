@@ -32,6 +32,7 @@ import EditPanelPage from './pages/merchant/panel/EditPanelPage';
 import ProfilePanel from './pages/merchant/profile/ProfilePanel';
 import ComgatePanel from './pages/merchant/profile/ComgatePanel';
 import { PATHS } from './config/paths';
+import CsobPanel from './pages/merchant/profile/CsobPanel';
 
 const ProtectedRoute = ({ children, ...rest }) => {
   const { isAuthenticated, isLoading, error, expirationTime } = useAuth();
@@ -173,6 +174,10 @@ const router = createBrowserRouter([
         {
           path: PATHS.COMGATE,
           element: <ComgatePanel />,
+        },
+        {
+          path: PATHS.CSOB,
+          element: <CsobPanel />,
         }
         ]
       }

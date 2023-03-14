@@ -11,6 +11,7 @@ import moment from 'moment';
 import { PATHS } from '../../../config/paths';
 import { API } from '../../../config/api';
 import { CONFIG } from '../../../config/config';
+import { CSOB } from '../../../config/csob';
 
 const { Body } = Hero;
 export default function TransactionPanelPage() {
@@ -88,7 +89,7 @@ export default function TransactionPanelPage() {
                                                         <td>{item.status}</td>
                                                         <td>{calculateCart(item.cart.orders).totalPrice} Kč</td>
                                                         <td>{item.tips} Kč</td>
-                                                        <td>{paymentMethod}: {item.paymentMethod[paymentMethod].transId} - {item.paymentMethod[paymentMethod].status} </td>
+                                                        <td>{paymentMethod}: {paymentMethod === 'csob' ? item.paymentMethod[paymentMethod].payId : item.paymentMethod[paymentMethod].transId} - {paymentMethod === 'csob' ? CSOB.MICROSTATE[item.paymentMethod[paymentMethod].status] : item.paymentMethod[paymentMethod].status} </td>
                                                         <td>{moment.utc(item.createdAt).format('DD/MM/YYYY HH:mm:ss')}</td>
                                                     </tr>
                                                 )

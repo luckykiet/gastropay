@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 const Address = require("./AddressSchema");
 const Comgate = require("./ComgateSchema");
+const Csob = require("./CsobSchema");
 
 const MerchantSchema = new Schema({
     email: { type: String, trim: true, match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/], required: true, unique: true },
@@ -12,7 +13,8 @@ const MerchantSchema = new Schema({
     address: { type: Address },
     telephone: { type: String, trim: true },
     paymentGates: {
-        comgate: { type: Comgate }
+        comgate: { type: Comgate },
+        csob: { type: Csob }
     },
     tokens: {
         type: [String],

@@ -10,21 +10,21 @@ import ProgressBar from "../../../components/ProgressBar";
 import { Promise } from "bluebird";
 import { API } from '../../../config/api';
 import { CONFIG } from '../../../config/config';
-import { COMGATE } from '../../../config/comgate';
+import { CSOB } from '../../../config/csob';
 
-const { Field, Label, Control, Input, Select, Help } = Form;
+const { Field, Label, Control, Input, Textarea, Help, Select } = Form;
 
-export default function ComgatePanel() {
+export default function CsobPanel() {
     const [postMsg, setPostMsg] = useState({});
     const [loading, setLoading] = useState(true);
     const [password, setPassword] = useState('');
-    const [comgate, setComgate] = useState({});
+    const [csob, setCsob] = useState({});
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setPostMsg({});
-        if (comgate.merchant === '' || comgate.secret === '' || comgate.label === '') {
+        if (csob.merchantId === '' || csob.privateKey === '' || csob.publicKey === '') {
             setPostMsg({
                 success: false,
                 msg: "Zkontrolujte vyplněné údaje!"
@@ -34,7 +34,7 @@ export default function ComgatePanel() {
                 const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
                 const modifiedData = {
                     paymentGates: {
-                        comgate: comgate
+                        csob: csob
                     },
                     password: password
                 }
@@ -55,7 +55,7 @@ export default function ComgatePanel() {
                     success: true,
                     msg: "Úspěšně aktualizováno!"
                 });
-                setComgate(msg.paymentGates.comgate);
+                setCsob(msg.paymentGates.csob);
             } catch (err) {
                 console.log(err)
                 setPostMsg({
@@ -71,7 +71,7 @@ export default function ComgatePanel() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setPostMsg({});
-        setComgate(
+        setCsob(
             produce((draft) => {
                 const keys = name.split(".");
                 const lastKey = keys.pop();
@@ -103,8 +103,7 @@ export default function ComgatePanel() {
                     throw new Error(msg)
                 }
 
-                setComgate(msg.paymentGates.comgate);
-                //add more payment gates
+                setCsob(msg.paymentGates.csob);
             } catch (err) {
                 console.log(err)
             } finally {
@@ -120,19 +119,19 @@ export default function ComgatePanel() {
         ) : (
             <Fragment>
                 <Content textAlign={"center"}>
-                    <Heading pt={5} spaced>Comgate</Heading>
+                    <Heading pt={5} spaced>ČSOB</Heading>
                 </Content>
                 <Container className="has-text-left is-max-desktop">
                     <Box>
                         <Block>
                             <form onSubmit={handleSubmit}>
-                                <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Comgate:</Heading>
+                                <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>ČSOB:</Heading>
                                 <div className='is-pulled-right'>
                                     <Heading renderAs='label' htmlFor={'checkBoxIsAvailable'} size={5} mr={4} className='has-text-weight-bold is-inline-block'>Aktivní: </Heading>
                                     <Toggle
                                         id='checkBoxIsAvailable'
                                         name={"isAvailable"}
-                                        checked={comgate.isAvailable}
+                                        checked={csob.isAvailable}
                                         onChange={(e) => {
                                             handleChange({ target: { name: "isAvailable", value: e.target.checked } });
                                         }}
@@ -140,18 +139,20 @@ export default function ComgatePanel() {
                                 </div>
                                 <Block>
                                     <Button.Group>
-                                        <Button renderAs="a" color={"info"} target="_blank" href="https://portal.comgate.cz">Portál</Button>
-                                        <Button renderAs="a" color={"link"} target="_blank" href="https://help.comgate.cz/docs/api-protokol#založen%C3%AD-platby">API Dokumentace</Button>
+                                        <Button renderAs="a" color={"info"} target="_blank" href="https://posman.csob.cz/posmerchant">Portál</Button>
+                                        <Button renderAs="a" color={"link"} target="_blank" href="https://github.com/csob/platebnibrana/wiki/Základn%C3%AD-metody">API Dokumentace</Button>
+                                        <Button renderAs="a" color={"primary"} target="_blank" href="https://platebnibrana.csob.cz/keygen/">Generování klíčů</Button>
+                                        <Button renderAs="a" color={"warning"} target="_blank" href="https://iplatebnibrana.csob.cz/keygen/">Generování testovacích klíčů</Button>
                                     </Button.Group>
                                 </Block>
                                 <Field>
-                                    <Label htmlFor="inputMerchant">
-                                        Merchant ID - merchant
+                                    <Label htmlFor="inputMerchantId">
+                                        Merchant ID - merchantId
                                     </Label>
                                     <Control>
-                                        <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.merchant ? "danger" : undefined} name={"merchant"} value={comgate.merchant} onChange={handleChange} id="inputMerchant" type="text" placeholder="Merchant ID" required />
+                                        <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.merchantId ? "danger" : undefined} name={"merchantId"} value={csob.merchantId} onChange={handleChange} id="inputMerchantId" type="text" placeholder="Merchant ID" required />
                                     </Control>
-                                    {postMsg && typeof postMsg.msg === "object" && postMsg.msg.merchant && <Help color={'danger'}>{postMsg.msg.merchant}</Help>}
+                                    {postMsg && typeof postMsg.msg === "object" && postMsg.msg.merchantId && <Help color={'danger'}>{postMsg.msg.merchantId}</Help>}
                                 </Field>
                                 <Field>
                                     <Label htmlFor="checkBoxIsTestMode">
@@ -160,62 +161,87 @@ export default function ComgatePanel() {
                                     <Toggle
                                         id='checkBoxIsTestMode'
                                         name={"test"}
-                                        checked={comgate.test}
+                                        checked={csob.test}
                                         onChange={(e) => {
                                             handleChange({ target: { name: "test", value: e.target.checked } });
                                         }}
                                     />
                                 </Field>
                                 <Field>
-                                    <Label htmlFor="selectCountries">
-                                        Státy - country
+                                    <Label htmlFor="inputPrivateKey">
+                                        Privátní klíč - privateKey
                                     </Label>
                                     <Control>
-                                        <Select disabled={COMGATE.COUNTRIES_DISABLED} name="country" onChange={handleChange} defaultValue={comgate.country} id="selectCountries">
-                                            {COMGATE.COUNTRIES.map((country) => (
-                                                <option value={country} key={country}>{country}</option>
+                                        <Textarea color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.p ? "danger" : undefined} name={"privateKey"} value={csob.privateKey} onChange={handleChange} id="inputPrivateKey" type="text" placeholder={"-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----"} required />
+                                    </Control>
+                                    {postMsg && typeof postMsg.msg === "object" && postMsg.msg.privateKey && <Help color={'danger'}>{postMsg.msg.privateKey}</Help>}
+                                </Field>
+                                <Field>
+                                    <Label htmlFor="inputPublicKey">
+                                        Veřejný klíč - publicKey
+                                    </Label>
+                                    <Control>
+                                        <Textarea color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.p ? "danger" : undefined} name={"publicKey"} value={csob.publicKey} onChange={handleChange} id="inputPublicKey" type="text" placeholder={"-----BEGIN PUBLIC KEY-----\n...\n-----END PUBLIC KEY-----"} required />
+                                    </Control>
+                                    {postMsg && typeof postMsg.msg === "object" && postMsg.msg.publicKey && <Help color={'danger'}>{postMsg.msg.publicKey}</Help>}
+                                </Field>
+                                <Field>
+                                    <Label htmlFor="checkBoxIsClosePayment">
+                                        Automatická úzavěrka - closePayment
+                                    </Label>
+                                    <Toggle
+                                        id='checkBoxIsClosePayment'
+                                        name={"closePayment"}
+                                        checked={csob.closePayment}
+                                        onChange={(e) => {
+                                            handleChange({ target: { name: "closePayment", value: e.target.checked } });
+                                        }}
+                                    />
+                                </Field>
+                                <Field>
+                                    <Label htmlFor="selectPayOperations">
+                                        Platební operace - payOperation
+                                    </Label>
+                                    <Control>
+                                        <Select disabled={CSOB.PAY_OPERATIONS_DISABLED} name="payOperation" onChange={handleChange} defaultValue={csob.payOperation} id="selectPayOperations">
+                                            {CSOB.PAY_OPERATIONS.map((operation) => (
+                                                <option value={operation} key={operation}>{operation}</option>
                                             ))}
                                         </Select>
                                     </Control>
                                 </Field>
                                 <Field>
-                                    <Label htmlFor="inputLabel">
-                                        Popis produktu - popis
+                                    <Label htmlFor="selectPayMethods">
+                                        Platební metoda - payMethod
                                     </Label>
                                     <Control>
-                                        <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.label ? "danger" : undefined} name={"label"} value={comgate.label} onChange={handleChange} id="inputLabel" type="text" placeholder="Popis produktu" required />
-                                    </Control>
-                                    {postMsg && typeof postMsg.msg === "object" && postMsg.msg.label && <Help color={'danger'}>{postMsg.msg.label}</Help>}
-                                </Field>
-                                <Field>
-                                    <Label htmlFor="selectMethods">
-                                        Metody - method
-                                    </Label>
-                                    <Control>
-                                        <Select disabled={COMGATE.METHODS_DISABLED} name="method" onChange={handleChange} defaultValue={comgate.method} id="selectMethods">
-                                            {COMGATE.METHODS.map((method) => (
+                                        <Select disabled={CSOB.PAYMENT_METHODS_DISABLED} name="payMethod" onChange={handleChange} defaultValue={csob.payMethod} id="selectPayMethods">
+                                            {CSOB.PAYMENT_METHODS.map((method) => (
                                                 <option value={method} key={method}>{method}</option>
                                             ))}
                                         </Select>
                                     </Control>
                                 </Field>
                                 <Field>
-                                    <Label htmlFor="inputSecret">
-                                        Secret - secret
+                                    <Label htmlFor="selectCurrencies">
+                                        Platební měna - currency
                                     </Label>
                                     <Control>
-                                        <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg.secret ? "danger" : undefined} name={"secret"} value={comgate.secret} onChange={handleChange} id="inputSecret" type="text" placeholder="Secret" required />
+                                        <Select disabled={CSOB.CURRENCIES_DISABLED} name="currency" onChange={handleChange} defaultValue={csob.currency} id="selectCurrencies">
+                                            {CSOB.CURRENCIES.map((currency) => (
+                                                <option value={currency} key={currency}>{currency}</option>
+                                            ))}
+                                        </Select>
                                     </Control>
-                                    {postMsg && typeof postMsg.msg === "object" && postMsg.msg.secret && <Help color={'danger'}>{postMsg.msg.secret}</Help>}
                                 </Field>
                                 <Field>
-                                    <Label htmlFor="selectCurrency">
-                                        Platební měna - curr
+                                    <Label htmlFor="selectLanguages">
+                                        Jazyk - language
                                     </Label>
                                     <Control>
-                                        <Select disabled={COMGATE.CURRENCIES_DISABLED} name="curr" onChange={handleChange} defaultValue={comgate.curr} id="selectCurrency">
-                                            {COMGATE.CURRENCIES.map((currency) => (
-                                                <option value={currency} key={currency}>{currency}</option>
+                                        <Select disabled={CSOB.LANGUAGES_DISABLED} name="language" onChange={handleChange} defaultValue={csob.language} id="selectLanguages">
+                                            {CSOB.LANGUAGES.map((language) => (
+                                                <option value={language} key={language}>{language}</option>
                                             ))}
                                         </Select>
                                     </Control>
