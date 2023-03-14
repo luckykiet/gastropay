@@ -23,7 +23,14 @@ export default function LoginPage() {
         setEmail(value);
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         setIsEmailValid(emailRegex.test(value) || value.length === 0);
+        setPostMsg('');
     }
+
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+        setPostMsg('');
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (email === '' || !isEmailValid || password === '') {
@@ -76,7 +83,7 @@ export default function LoginPage() {
                                             Heslo
                                         </Label>
                                         <Control>
-                                            <Input value={password} onChange={(event) => setPassword(event.target.value)} id="inputPassword" type="password" placeholder="*************" required />
+                                            <Input value={password} onChange={(event) => handlePasswordChange(event)} id="inputPassword" type="password" placeholder="*************" required />
                                             <Icon align="left">  <FontAwesomeIcon icon={faLock} /></Icon>
                                         </Control>
                                     </Field>

@@ -70,6 +70,7 @@ export default function ComgatePanel() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        setPostMsg({});
         setComgate(
             produce((draft) => {
                 const keys = name.split(".");

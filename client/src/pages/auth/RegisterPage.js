@@ -59,10 +59,12 @@ export default function RegisterPage() {
         const { value } = e.target;
         setConfirmPassword(value);
         setPasswordsMatch(!value || !password ? null : value === password);
+        setPostMsg('');
     };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        setPostMsg('');
         setFormData({ ...formData, [name]: value });
         if (name === 'password') {
             setPasswordsMatch(!value || !confirmPassword ? null : value === confirmPassword);

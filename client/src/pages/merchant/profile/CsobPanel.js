@@ -70,6 +70,7 @@ export default function CsobPanel() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        setPostMsg({});
         setCsob(
             produce((draft) => {
                 const keys = name.split(".");

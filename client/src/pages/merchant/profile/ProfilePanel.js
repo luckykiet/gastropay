@@ -104,6 +104,7 @@ export default function ProfilePanel() {
         const { value } = e.target;
         setConfirmNewPassword(value);
         setPasswordsMatch(!value || !newPassword ? null : value === newPassword);
+        setPostMsg({});
     }
 
     const handleNewPasswordChange = (e) => {
@@ -112,6 +113,7 @@ export default function ProfilePanel() {
         setPasswordsMatch(!value || !confirmNewPassword ? null : value === confirmNewPassword);
         const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
         setIsPasswordValid(passwordRegex.test(value) || value.length === 0);
+        setPostMsg({});
     }
 
     return (

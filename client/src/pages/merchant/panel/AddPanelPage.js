@@ -31,7 +31,7 @@ export default function AddPanelPage() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
+        setPostMsg({});
         setRestaurant(
             produce((draft) => {
                 const keys = name.split(".");

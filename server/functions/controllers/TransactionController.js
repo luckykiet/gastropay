@@ -148,7 +148,6 @@ const createTransaction = async (req, res, next) => {
                         deliveryMethod: body.deliveryMethod || ""
                     }
                 }
-
             } else if (paymentGate === 'csob' && owner.paymentGates[paymentGate] && owner.paymentGates[paymentGate].isAvailable) {
                 const csob = owner.paymentGates[paymentGate];
                 const { merchantId, privateKey, passphrases, currency, language, test, payOperation, payMethod, closePayment } = csob;

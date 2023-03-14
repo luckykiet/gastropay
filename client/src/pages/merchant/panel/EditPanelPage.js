@@ -52,6 +52,7 @@ export default function EditPanelPage() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        setPostMsg({});
         if (name === "image") {
             if (!isValidImageUrl(value) && value !== '') {
                 setPostMsg({
