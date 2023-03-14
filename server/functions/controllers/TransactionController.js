@@ -233,7 +233,19 @@ const createTransaction = async (req, res, next) => {
 
             const transaction = new TransactionModel(data);
             await transaction.save().then(async () => {
-                await sendMail();
+                const useSendMail = mail.USE_SEND_MAIL;
+                if (useSendMail) {
+                    try {
+                        const result = await sendMailWrapper(body.email,
+                            "Účtenka k objednávce č: " + transaction.refId,
+                            "Děkujeme za použití " + config.APP_NAME, "<a href='" + config.BASE_URL + "/" + api.TRANSACTION + "/" + transaction.refId + "' target='_blank' style='background-color: #ff3860;padding: 8px 12px;border-radius: 2px;font-size: 20px; color: #f5f5f5;text-decoration: none;font-weight:bold;display: inline-block;'>Odkaz k účtence</a>",
+                            "Přejeme Vám dobrou chuť!"
+                        );
+                        console.log(result)
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
                 return res.status(200).json({
                     success: true,
                     msg: transaction,
@@ -244,21 +256,6 @@ const createTransaction = async (req, res, next) => {
         }
     }
 };
-
-const sendMail = async () => {
-    const useSendMail = mail.USE_SEND_MAIL;
-    if (useSendMail) {
-        try {
-            await sendMailWrapper(body.email,
-                "Účtenka k objednávce č: " + transaction.refId,
-                "Děkujeme za použití " + config.APP_NAME, "<a href='" + config.BASE_URL + "/" + api.TRANSACTION + "/" + transaction.refId + "' target='_blank' style='background-color: #ff3860;padding: 8px 12px;border-radius: 2px;font-size: 20px; color: #f5f5f5;text-decoration: none;font-weight:bold;display: inline-block;'>Odkaz k účtence</a>",
-                "Přejeme Vám dobrou chuť!"
-            );
-        } catch (error) {
-            console.log(error);
-        }
-    }
-}
 
 // BATCH PROCESSING
 const BATCH_SIZE = 50;
