@@ -28,5 +28,17 @@ const csob = {
     6IgtVMloneN0XaHR5U88eMeKJJyqR859I4xfun6Z6RyfyaIl5Ph3f2daeMeENPUR
     BQIDAQAB
     -----END PUBLIC KEY-----`,
+    MICROSTATE: {
+        1: "Platba založena",
+        2: "Platba probíhá",
+        3: "Platba zrušena",
+        4: "Platba potvrzena",
+        5: "Platba odvolána",
+        6: "Platba zamítnuta",
+        7: "Čekání na zúčtování",
+        8: "Platba zúčtována",
+        9: "Zpracování vrácení",
+        10: "Platba vrácena",
+    }
 }
 export { csob as CSOB };

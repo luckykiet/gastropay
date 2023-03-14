@@ -13,6 +13,7 @@ const config = require('../config/config');
 const paths = require('../config/paths');
 const api = require('../config/api');
 const mail = require('../config/mail');
+const csob = require('../config/csob');
 const uppercaseNumberAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 const numberAlphabet = '0123456789';
 
@@ -212,7 +213,7 @@ const createTransaction = async (req, res, next) => {
             }
 
             const csob = owner.paymentGates[paymentGate];
-            const { merchantId, privateKey, passphrases, publicKey, currency, language, test, payOperation, payMethod, closePayment } = csob;
+            const { merchantId, privateKey, passphrases, currency, language, test, payOperation, payMethod, closePayment } = csob;
 
             const orders = [];
             let totalPrice = 0;
@@ -256,15 +257,13 @@ const createTransaction = async (req, res, next) => {
                 currency: currency,
                 closePayment: closePayment,
                 returnUrl: config.BASE_URL + paths.TRANSACTION + "/" + refId,
-                returnMethod: "POST",
+                returnMethod: "GET",
                 cart: cart,
                 language: language,
                 ttlSec: csobConfig.TIME_EXPIRATION,
             }
 
             const payment = await csobFunctions.createPayment(privateKey, passphrases, dataToPaymentGate, test);
-
-            console.log("haha", payment)
 
             if (!payment.success) {
                 res.status(400).json({
@@ -273,6 +272,15 @@ const createTransaction = async (req, res, next) => {
                 });
             } else {
                 const payId = payment.msg.payId;
+
+                const respGetUrl = await csobFunctions.getPaymentUrl(privateKey, passphrases, { merchantId: merchantId, payId: payId }, test);
+
+                if (!respGetUrl.success) {
+                    res.status(400).json({
+                        success: false,
+                        msg: respGetUrl.msg
+                    });
+                }
 
                 const data = {
                     refId: refId,
@@ -287,7 +295,8 @@ const createTransaction = async (req, res, next) => {
                             payId: payId,
                             orderNo: dataToPaymentGate.orderNo,
                             dttm: dataToPaymentGate.dttm,
-                            status: payment.msg.status
+                            status: 2,
+                            url: respGetUrl.msg
                         }
                     },
                     email: body.email,
@@ -339,7 +348,8 @@ const runAutoCheckPayment = async () => {
         const pendings = await TransactionModel.find({
             $or: [
                 { 'paymentMethod.comgate.status': 'PENDING' },
-                { 'paymentMethod.gopay.status': 'PENDING' }
+                { 'paymentMethod.csob.status': 1 },
+                { 'paymentMethod.csob.status': 2 }
             ]
         }).sort({ createAt: 'desc' }).select("refId").skip((page - 1) * BATCH_SIZE).limit(BATCH_SIZE).exec();
 
@@ -434,6 +444,30 @@ const checkPayment = async (refId) => {
             }
             return { success: true, msg: status };
         }
+    } else if (paymentMethodName === 'csob') {
+        const { privateKey, passphrases, merchantId, test } = merchant.paymentGates[paymentMethodName];
+        const { payId } = transaction.paymentMethod[paymentMethodName];
+        const checkStatusResp = await csobFunctions.getPaymentStatus(privateKey, passphrases, { merchantId: merchantId, payId: payId }, test)
+        const status = checkStatusResp.msg.paymentStatus;
+        const statusField = "paymentMethod." + paymentMethodName + ".status";
+        //     1: "Platba založena"
+        //     2: "Platba probíhá"
+        //     3: "Platba zrušena"
+        //     4: "Platba potvrzena"
+        //     5: "Platba odvolána"
+        //     6: "Platba zamítnuta"
+        //     7: "Čekání na zúčtování"
+        //     8: "Platba zúčtována"
+        //     9: "Zpracování vrácení"
+        //     10: "Platba vrácena"
+        if (status === 4 || status === 7 || status === 8) {
+            await transaction.updateOne({ [statusField]: status });
+            //TODO POST TO POS
+
+        } else if (status === 3 || status === 5 || status === 6) {
+            await transaction.updateOne({ [statusField]: status, status: "CANCELLED" });
+        }
+        return { success: true, msg: status };
     }
 }
 

@@ -56,6 +56,7 @@ const TransactionSchema = new Schema({
                 required: true
             },
             status: { type: Number, required: true, default: 2, min: 1, max: 10 },
+            url: { type: String, default: "" }
         }
     }
 }, { strict: true, timestamps: true });

@@ -32,7 +32,6 @@ const createPayment = async (privateKey, passphrase, transaction, testMode) => {
         const result = response.data;
 
         if (result.resultCode === 0) {
-            console.log(response.data)
             const signature = result.signature;
             delete result['signature'];
             const resultMessage = [
@@ -46,8 +45,6 @@ const createPayment = async (privateKey, passphrase, transaction, testMode) => {
             if (!verifySignature(resultMessage, signature, testMode)) {
                 return { success: false, msg: "Wrong signature!" }
             }
-
-            console.log("OK!")
             return { success: true, msg: result }
         }
         return { success: false, msg: result.resultMessage }
@@ -56,30 +53,58 @@ const createPayment = async (privateKey, passphrase, transaction, testMode) => {
     }
 }
 
-const getPaymentStatus = async (privateKey, passphrase, paymentMethod) => {
+const getPaymentStatus = async (privateKey, passphrase, paymentMethod, testMode) => {
     const { merchantId, payId } = paymentMethod;
     const dttm = moment().format('YYYYMMDDHHMMss');
     const messageArray = [merchantId, payId, dttm];
     const message = messageArray.join('|');
     const signature = signMessage(privateKey, passphrase, message);
-    await axios.get('https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/status/' + encodeURIComponent(merchantId) + "/" + encodeURIComponent(payId) + "/" + encodeURIComponent(dttm) + "/" + encodeURIComponent(signature))
-        .then(response => {
-            console.log(response.data);
+    if (signature === null) {
+        return { success: false, msg: "Failed to sign message" }
+    }
 
-        })
-        .catch(error => {
-            console.error(error);
-        });
+    try {
+        const response = await axios.get((testMode ? csobConfig.TEST_URL : csobConfig.PRODUCTION_URL) + '/payment/status/' + encodeURIComponent(merchantId) + "/" + encodeURIComponent(payId) + "/" + encodeURIComponent(dttm) + "/" + encodeURIComponent(signature));
+        const result = response.data;
+        if (result.resultCode === 0) {
+            const signature = result.signature;
+            delete result['signature'];
+            const resultMessage = [
+                result.payId,
+                result.dttm,
+                result.resultCode,
+                result.resultMessage,
+                result.paymentStatus,
+                result.authCode,
+                result.statusDetail,
+                result.actions
+            ].filter(value => value !== undefined).join('|');
+            if (!verifySignature(resultMessage, signature, testMode)) {
+                return { success: false, msg: "Wrong signature!" }
+            }
+            return { success: true, msg: result }
+        }
+        return { success: false, msg: result.resultMessage }
+    } catch (error) {
+        return { success: false, msg: error.response?.data?.resultMessage ? error.response.data.resultMessage : error };
+    }
 }
 
-const getPaymentUrl = async (privateKey, passphrase, paymentMethod) => {
-    const { merchantId, payId } = paymentMethod;
-    const dttm = moment().format('YYYYMMDDHHMMss');
-    const messageArray = [merchantId, payId, dttm];
-    const message = messageArray.join('|');
-    const signature = signMessage(privateKey, passphrase, message);
-    console.log('https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/process/' + encodeURIComponent(merchantId) + "/" + encodeURIComponent(payId) + "/" + encodeURIComponent(dttm) + "/" + encodeURIComponent(signature));
-    return 'https://iapi.iplatebnibrana.csob.cz/api/v1.9/payment/process/' + encodeURIComponent(merchantId) + "/" + encodeURIComponent(payId) + "/" + encodeURIComponent(dttm) + "/" + encodeURIComponent(signature);
+const getPaymentUrl = async (privateKey, passphrase, paymentMethod, testMode) => {
+    try {
+        const { merchantId, payId } = paymentMethod;
+        const dttm = moment().format('YYYYMMDDHHMMss');
+        const messageArray = [merchantId, payId, dttm];
+        const message = messageArray.join('|');
+        const signature = signMessage(privateKey, passphrase, message);
+        if (signature === null) {
+            return { success: false, msg: "Failed to sign message" }
+        }
+        const url = (testMode ? csobConfig.TEST_URL : csobConfig.PRODUCTION_URL) + '/payment/process/' + encodeURIComponent(merchantId) + "/" + encodeURIComponent(payId) + "/" + encodeURIComponent(dttm) + "/" + encodeURIComponent(signature);
+        return { success: true, msg: url }
+    } catch (error) {
+        return { success: false, msg: error.response?.data?.resultMessage ? error.response.data.resultMessage : error };
+    }
 }
 
 const signMessage = (privateKey, passphrase, message) => {
@@ -99,7 +124,6 @@ const signMessage = (privateKey, passphrase, message) => {
 }
 
 const verifySignature = (message, signature, testMode) => {
-    console.log(message);
     try {
         const key = trimPemKey(testMode ? csobConfig.TEST_PRODUCTION_PUB : csobConfig.PRODUCTION_PUB);
         const publicKeyToVerify = crypto.createPublicKey(key);

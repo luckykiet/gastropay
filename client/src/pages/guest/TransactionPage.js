@@ -19,7 +19,8 @@ export default function TransactionPage() {
 
     const handlePayClick = (e) => {
         e.preventDefault();
-        if (Object.keys(paymentMethod)[0] === 'comgate') {
+        const method = Object.keys(paymentMethod)[0];
+        if (method === 'comgate') {
             setShowPaymentBox(true);
         }
     }
@@ -52,6 +53,46 @@ export default function TransactionPage() {
         }
 
     }, [idTransaction, result?.transaction?.status]);
+
+    const StatusField = () => {
+        const method = Object.keys(paymentMethod)[0];
+        if (method === 'comgate') {
+            return (
+                paymentMethod[method].status === 'PENDING' ?
+                    <Fragment>
+                        <Heading renderAs='p' className={'has-text-danger'} size={5}>Nemáte zaplacenou objednávku</Heading>
+                        <Button color={'warning'} onClick={handlePayClick}>Zaplatit</Button>
+                        {showPaymentBox && (
+                            <ComgateFrame
+                                paymentMethod={paymentMethod[method]}
+                                onClose={() => setShowPaymentBox(false)}
+                            />
+                        )}
+                    </Fragment>
+                    :
+                    <Fragment>
+                        <Heading renderAs='p' className={'has-text-success'} size={5}>Máte zaplacenou objednávku, počkejte na potvrzení obchodníka.</Heading>
+                        <Heading renderAs='span' size={5}>Obchodník: </Heading>
+                        {!result.transaction.cart.isConfirmed ? <LoadingComponent /> : <Heading renderAs='span' className={'has-text-success'} size={5}>POTVRZENO</Heading>}
+                    </Fragment>
+            )
+        } else if (method === 'csob') {
+            return (
+                paymentMethod[method].status === 1 || paymentMethod[method].status === 2 ?
+                    <Fragment>
+                        <Heading renderAs='p' className={'has-text-danger'} size={5}>Nemáte zaplacenou objednávku</Heading>
+                        <Button color={'warning'} renderAs='a' href={paymentMethod[method].url} >Zaplatit</Button>
+                    </Fragment>
+                    :
+                    <Fragment>
+                        <Heading renderAs='p' className={'has-text-success'} size={5}>Máte zaplacenou objednávku, počkejte na potvrzení obchodníka.</Heading>
+                        <Heading renderAs='span' size={5}>Obchodník: </Heading>
+                        {!result.transaction.cart.isConfirmed ? <LoadingComponent /> : <Heading renderAs='span' className={'has-text-success'} size={5}>POTVRZENO</Heading>}
+                    </Fragment>
+            )
+        }
+        return ("");
+    }
 
     return (
         <Fragment>
@@ -89,28 +130,7 @@ export default function TransactionPage() {
                                             <Heading renderAs='h2' size={4}>Status</Heading>
                                             {result.transaction.status === 'PENDING'
                                                 ?
-                                                (paymentMethod[Object.keys(paymentMethod)[0]].status === 'PENDING' ?
-                                                    <Fragment>
-                                                        <Heading renderAs='p' className={'has-text-danger'} size={5}>Nemáte zaplacenou objednávku</Heading>
-                                                        <Button color={'warning'} onClick={handlePayClick}>Zaplatit</Button>
-                                                        {Object.keys(paymentMethod)[0] === 'comgate' ?
-                                                            (showPaymentBox && (
-                                                                <ComgateFrame
-                                                                    paymentMethod={paymentMethod['comgate']}
-                                                                    onClose={() => setShowPaymentBox(false)}
-                                                                />
-                                                            ))
-                                                            //Add another payment gates
-                                                            : ""}
-
-                                                    </Fragment>
-                                                    :
-                                                    <Fragment>
-                                                        <Heading renderAs='p' className={'has-text-success'} size={5}>Máte zaplacenou objednávku, počkejte na potvrzení obchodníka.</Heading>
-                                                        <Heading renderAs='span' size={5}>Obchodník: </Heading>
-                                                        {!result.transaction.cart.isConfirmed ? <LoadingComponent /> : <Heading renderAs='span' className={'has-text-success'} size={5}>POTVRZENO</Heading>}
-                                                    </Fragment>
-                                                )
+                                                <StatusField />
                                                 :
                                                 (result.transaction.status === 'CANCELLED'
                                                     ?
