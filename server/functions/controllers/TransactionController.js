@@ -225,9 +225,9 @@ const createTransaction = async (req, res, next) => {
                     price: parseFloat(item.price),
                     name: item.name
                 };
-                totalQuantity += order.quantity;
-                totalPrice += order.price;
                 orders.push(order);
+                totalQuantity += order.quantity;
+                totalPrice += order.price * item.quantity;
             });
             totalPrice *= 100;
 
