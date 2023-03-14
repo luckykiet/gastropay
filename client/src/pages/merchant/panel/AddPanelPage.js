@@ -79,7 +79,7 @@ export default function AddPanelPage() {
             } catch (err) {
                 setPostMsg({
                     success: false,
-                    msg: err?.response?.data.msg ? err.response.data.msg : err
+                    msg: err.response?.data.msg ? err.response.data.msg : err
                 });
             }
         }

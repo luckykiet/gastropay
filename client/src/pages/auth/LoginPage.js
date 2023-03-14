@@ -44,7 +44,7 @@ export default function LoginPage() {
                 localStorage.setItem('token', msg.token);
                 navigate(PATHS.MERCHANT);
             } catch (err) {
-                setPostMsg(err?.response?.data.msg ? err.response.data.msg : err);
+                setPostMsg(err.response?.data.msg ? err.response.data.msg : err);
             }
         }
     };

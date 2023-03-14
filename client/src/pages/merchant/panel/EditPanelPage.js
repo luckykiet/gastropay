@@ -129,7 +129,7 @@ export default function EditPanelPage() {
                 console.log(err)
                 setPostMsg({
                     success: false,
-                    msg: err?.response?.data.msg ? err.response.data.msg : err
+                    msg: err.response?.data.msg ? err.response.data.msg : err
                 });
             } finally {
                 setLoading(false);
@@ -168,7 +168,7 @@ export default function EditPanelPage() {
                 console.log(err)
                 setApiTestMsg({
                     success: false,
-                    msg: err?.response?.data.msg ? err.response.data.msg : err
+                    msg: err.response?.data.msg ? err.response.data.msg : err
                 });
             } finally {
                 setApiTestLoading(false);

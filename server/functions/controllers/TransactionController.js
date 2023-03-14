@@ -1,15 +1,20 @@
 const axios = require('axios');
+const moment = require('moment');
 const { customAlphabet } = require('nanoid');
 const sendMailWrapper = require('../mail_sender');
 const qs = require('qs');
 const MerchantModel = require("../models/MerchantModel");
 const TransactionModel = require("../models/TransactionModel");
 const RestaurantModel = require('../models/RestaurantModel');
+const csobFunctions = require('./gates/csob');
 const comgateConfig = require('../config/comgate');
+const csobConfig = require('../config/csob');
 const config = require('../config/config');
+const paths = require('../config/paths');
 const api = require('../config/api');
 const mail = require('../config/mail');
 const uppercaseNumberAlphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const numberAlphabet = '0123456789';
 
 const createTransaction = async (req, res, next) => {
     const body = req.body;
@@ -83,11 +88,6 @@ const createTransaction = async (req, res, next) => {
 
             totalPrice += body.tips;
 
-            // in haler
-            if (curr === 'CZK') {
-                totalPrice *= 100;
-            }
-
             const dataToPaymentGate = {
                 merchant: merchant,
                 curr: curr,
@@ -97,7 +97,7 @@ const createTransaction = async (req, res, next) => {
                 test: test,
                 country: country,
                 refId: refId,
-                price: totalPrice,
+                price: totalPrice * 100,
                 prepareOnly: true,
                 email: body.email,
                 expirationTime: "1h"
@@ -187,7 +187,140 @@ const createTransaction = async (req, res, next) => {
         } catch (error) {
             next(error);
         }
-    } else {
+    } else if (paymentGate === 'csob' && owner.paymentGates[paymentGate] && owner.paymentGates[paymentGate].isAvailable) {
+        try {
+            let isIDUnique = false;
+            const maxAttempts = 3;
+            let attempts = 0;
+            const nanoid = customAlphabet(uppercaseNumberAlphabet, 8);
+            let refId = nanoid();
+            while (!isIDUnique && attempts < maxAttempts) {
+                const existingDoc = await TransactionModel.findOne({ refId: refId });
+                if (existingDoc) {
+                    refId = nanoid();
+                    attempts++;
+                } else {
+                    isIDUnique = true;
+                }
+            }
+
+            if (!isIDUnique) {
+                res.status(400).json({
+                    success: false,
+                    msg: `Failed to generate a unique ID after ${maxAttempts} attempts`
+                });
+            }
+
+            const csob = owner.paymentGates[paymentGate];
+            const { merchantId, privateKey, passphrases, publicKey, currency, language, test, payOperation, payMethod, closePayment } = csob;
+
+            const orders = [];
+            let totalPrice = 0;
+            let totalQuantity = 0;
+            body.orders.forEach((item) => {
+                const order = {
+                    ean: item.ean,
+                    quantity: item.quantity,
+                    price: parseFloat(item.price),
+                    name: item.name
+                };
+                totalQuantity += order.quantity;
+                totalPrice += order.price;
+                orders.push(order);
+            });
+            totalPrice *= 100;
+
+            const nanoidNumberOnly = customAlphabet(numberAlphabet, 8)
+            const cart = [
+                {
+                    name: "Menu",
+                    quantity: totalQuantity,
+                    amount: totalPrice,
+                    description: "Celkový košík"
+                },
+                {
+                    name: "Tips",
+                    quantity: 1,
+                    amount: body.tips * 100,
+                    description: "Tips pro " + config.APP_NAME
+                }
+            ];
+
+            const dataToPaymentGate = {
+                merchantId: merchantId,
+                orderNo: nanoidNumberOnly(),
+                dttm: moment().format('YYYYMMDDHHMMss'),
+                payOperation: payOperation,
+                payMethod: payMethod,
+                totalAmount: totalPrice + (body.tips * 100),
+                currency: currency,
+                closePayment: closePayment,
+                returnUrl: config.BASE_URL + paths.TRANSACTION + "/" + refId,
+                returnMethod: "POST",
+                cart: cart,
+                language: language,
+                ttlSec: csobConfig.TIME_EXPIRATION,
+            }
+
+            const payment = await csobFunctions.createPayment(privateKey, passphrases, dataToPaymentGate, test);
+
+            console.log("haha", payment)
+
+            if (!payment.success) {
+                res.status(400).json({
+                    success: false,
+                    msg: payment.msg
+                });
+            } else {
+                const payId = payment.msg.payId;
+
+                const data = {
+                    refId: refId,
+                    idRestaurant: body.restaurant._id,
+                    cart:
+                    {
+                        orders: orders
+                    },
+                    tips: body.tips,
+                    paymentMethod: {
+                        csob: {
+                            payId: payId,
+                            orderNo: dataToPaymentGate.orderNo,
+                            dttm: dataToPaymentGate.dttm,
+                            status: payment.msg.status
+                        }
+                    },
+                    email: body.email,
+                    deliveryMethod: body.deliveryMethod || ""
+                }
+
+                const transaction = new TransactionModel(data);
+                await transaction.save().then(async () => {
+                    const useSendMail = mail.USE_SEND_MAIL;
+                    if (useSendMail) {
+                        try {
+                            const result = await sendMailWrapper(body.email,
+                                "Účtenka k objednávce č: " + transaction.refId,
+                                "Děkujeme za použití " + config.APP_NAME, "<a href='" + config.BASE_URL + "/" + api.TRANSACTION + "/" + transaction.refId + "' target='_blank' style='background-color: #ff3860;padding: 8px 12px;border-radius: 2px;font-size: 20px; color: #f5f5f5;text-decoration: none;font-weight:bold;display: inline-block;'>Odkaz k účtence</a>",
+                                "Přejeme Vám dobrou chuť!"
+                            );
+                            console.log(result)
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+
+                    return res.status(200).json({
+                        success: true,
+                        msg: transaction,
+                    });
+                });
+            }
+        } catch (error) {
+            next(error);
+        }
+    }
+    else {
         return res.status(400).json({
             success: false,
             msg: "Not supported payment gate, please choose another!",

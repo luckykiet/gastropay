@@ -36,7 +36,7 @@ export default function PaymentPage() {
         setIsEmailValid(emailRegex.test(value) || value.length === 0);
     }
 
-    const handleComgateClick = async (e) => {
+    const handlePaymentClick = async (e, paymentMethod) => {
         e.preventDefault();
         setIsPaymentLoading(true);
         try {
@@ -49,7 +49,7 @@ export default function PaymentPage() {
                 tips: tips,
                 restaurant: choosenRestaurant,
                 orders: cartItems,
-                paymentGate: 'comgate',
+                paymentGate: paymentMethod,
                 email: emailInput,
                 deliveryMethod: selectedTable
             }
@@ -191,29 +191,31 @@ export default function PaymentPage() {
                                             ?
                                             <Heading renderAs='p' size={5}>Obchodník nemá nastavenou platební metodu.</Heading>
                                             :
-                                            merchantPaymentMethods.map((method) => {
-                                                if (method === 'comgate') {
-                                                    return (
-                                                        <Button key={method} onClick={handleComgateClick} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
-                                                            <img
-                                                                alt='comgate'
-                                                                src={addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + "logo/logo-comgate.png"}
-                                                                style={{
-                                                                    position: 'absolute',
-                                                                    top: 0,
-                                                                    left: 0,
-                                                                    width: '100%',
-                                                                    height: '100%',
-                                                                    objectFit: 'fill'
-                                                                }}
-                                                            />
-                                                        </Button>
-                                                    );
-                                                } else if (method === 'gopay') {
-                                                    return <Button key={method} color={'warning'}>GoPay</Button>;
-                                                }
-                                                return "";
-                                            })
+                                            <Button.Group>
+                                                {merchantPaymentMethods.map((method) => {
+                                                    if (method === 'comgate') {
+                                                        return (
+                                                            <Button key={method} onClick={(e) => handlePaymentClick(e, 'comgate')} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
+                                                                <img
+                                                                    alt='comgate'
+                                                                    src={addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + "logo/logo-comgate.png"}
+                                                                    style={{
+                                                                        position: 'absolute',
+                                                                        top: 0,
+                                                                        left: 0,
+                                                                        width: '100%',
+                                                                        height: '100%',
+                                                                        objectFit: 'fill'
+                                                                    }}
+                                                                />
+                                                            </Button>
+                                                        );
+                                                    } else if (method === 'csob') {
+                                                        return <Button key={method} size={'large'} color={'warning'} onClick={(e) => handlePaymentClick(e, 'csob')}>ČSOB</Button>;
+                                                    }
+                                                    return "";
+                                                })}
+                                            </Button.Group>
                                         // add more methods later
                                     }
                                 </Block>

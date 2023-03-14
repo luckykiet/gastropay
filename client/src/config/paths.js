@@ -19,6 +19,7 @@ const paths = {
     RESTAURANT_ADD: "add",
     RESTAURANT_TRANSACTION: "transaction",
     COMGATE: 'comgate',
+    CSOB: 'csob',
     ID_TRANSACTION: ':idTransaction',
     ID_RESTAURANT: ':idRestaurant',
 }
