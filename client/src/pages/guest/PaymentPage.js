@@ -211,7 +211,20 @@ export default function PaymentPage() {
                                                             </Button>
                                                         );
                                                     } else if (method === 'csob') {
-                                                        return <Button key={method} size={'large'} color={'warning'} onClick={(e) => handlePaymentClick(e, 'csob')}>ČSOB</Button>;
+                                                        return <Button key={method} size={'large'} onClick={(e) => handlePaymentClick(e, 'csob')} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
+                                                            <img
+                                                                alt='comgate'
+                                                                src={addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + "logo/logo-csob.png"}
+                                                                style={{
+                                                                    position: 'absolute',
+                                                                    top: 0,
+                                                                    left: 0,
+                                                                    width: '100%',
+                                                                    height: '100%',
+                                                                    objectFit: 'fill'
+                                                                }}
+                                                            />
+                                                        </Button>;
                                                     }
                                                     return "";
                                                 })}
