@@ -195,9 +195,9 @@ export default function PaymentPage() {
                                                 {merchantPaymentMethods.map((method) => {
                                                     if (method === 'comgate') {
                                                         return (
-                                                            <Button key={method} onClick={(e) => handlePaymentClick(e, 'comgate')} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
+                                                            <Button key={method} onClick={(e) => handlePaymentClick(e, method)} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
                                                                 <img
-                                                                    alt='comgate'
+                                                                    alt={method}
                                                                     src={addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + "logo/logo-comgate.png"}
                                                                     style={{
                                                                         position: 'absolute',
@@ -211,9 +211,9 @@ export default function PaymentPage() {
                                                             </Button>
                                                         );
                                                     } else if (method === 'csob') {
-                                                        return <Button key={method} size={'large'} onClick={(e) => handlePaymentClick(e, 'csob')} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
+                                                        return <Button key={method} size={'large'} onClick={(e) => handlePaymentClick(e, method)} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
                                                             <img
-                                                                alt='comgate'
+                                                                alt={method}
                                                                 src={addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + "logo/logo-csob.png"}
                                                                 style={{
                                                                     position: 'absolute',

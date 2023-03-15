@@ -1,12 +1,13 @@
 const axios = require('axios');
 const comgateConfig = require('../../config/comgate');
+const config = require('../../config/config');
 const qs = require('qs');
 const createPayment = async (transaction) => {
     try {
         const useProxy = process.env.USE_PROXY === 'true';
         let response = '';
         let params = '';
-        console.log(useProxy)
+
         if (useProxy) {
             const options = {
                 headers: {
