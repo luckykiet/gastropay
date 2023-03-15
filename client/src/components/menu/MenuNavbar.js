@@ -18,10 +18,11 @@ export default function MenuNavbar({ showSidebar }) {
                 <Item className='is-size-4 has-text-weight-bold' renderAs={Link} to={PATHS.HOME}>
                     {packageJson.app.name}
                 </Item>
+                <div className="navbar-end">
+                    <CartButton showSidebar={showSidebar} numItems={calculateCart(cartItems).totalQuantity} />
+                </div>
             </Brand>
-            <div className="navbar-end">
-                <CartButton showSidebar={showSidebar} numItems={calculateCart(cartItems).totalQuantity} />
-            </div>
+
         </Navbar>
     );
 }
