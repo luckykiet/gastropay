@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { createAxios, addSlashAfterUrl, calculateCart } from '../../../utils';
+import { createAxios, addSlashAfterUrl, calculateCart, statusColor, paymentGatesName } from '../../../utils';
 import { Box, Heading, Container, Hero, Table } from "react-bulma-components";
 import { Promise } from 'bluebird';
 import 'rc-time-picker/assets/index.css';
@@ -68,7 +68,7 @@ export default function TransactionPanelPage() {
                                 ?
                                 <Heading renderAs='p' size={5} className='has-text-weight-bold'>Nemáte ještě žádnou transakci.</Heading>
                                 :
-                                <Box style={{ overflow: "auto" }}>
+                                <Box style={{ overflowX: "auto" }}>
                                     <Table size={'fullwidth'}>
                                         <thead className='is-size-4'>
                                             <tr>
@@ -77,6 +77,8 @@ export default function TransactionPanelPage() {
                                                 <th>Cena</th>
                                                 <th>Tips</th>
                                                 <th>Platební metoda</th>
+                                                <th>ID Platby</th>
+                                                <th>Status platby</th>
                                                 <th>Datum</th>
                                             </tr>
                                         </thead>
@@ -86,10 +88,12 @@ export default function TransactionPanelPage() {
                                                 return (
                                                     <tr key={item.refId}>
                                                         <td><Link to={PATHS.TRANSACTION + '/' + item.refId} target="_blank">{item.refId}</Link></td>
-                                                        <td>{item.status}</td>
+                                                        <td><span className={'has-text-' + statusColor[item.status]}>{item.status}</span></td>
                                                         <td>{calculateCart(item.cart.orders).totalPrice} Kč</td>
                                                         <td>{item.tips} Kč</td>
-                                                        <td>{paymentMethod}: {paymentMethod === 'csob' ? item.paymentMethod[paymentMethod].payId : item.paymentMethod[paymentMethod].transId} - {paymentMethod === 'csob' ? CSOB.MICROSTATE[item.paymentMethod[paymentMethod].status] : item.paymentMethod[paymentMethod].status} </td>
+                                                        <td>{paymentGatesName[paymentMethod]}</td>
+                                                        <td>{paymentMethod === 'csob' ? item.paymentMethod[paymentMethod].payId : item.paymentMethod[paymentMethod].transId}</td>
+                                                        <td>{paymentMethod === 'csob' ? CSOB.MICROSTATE[item.paymentMethod[paymentMethod].status] : item.paymentMethod[paymentMethod].status}</td>
                                                         <td>{moment.utc(item.createdAt).format('DD/MM/YYYY HH:mm:ss')}</td>
                                                     </tr>
                                                 )

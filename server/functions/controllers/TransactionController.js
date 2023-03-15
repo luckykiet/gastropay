@@ -255,7 +255,6 @@ const createTransaction = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-
 };
 
 // BATCH PROCESSING
@@ -339,7 +338,7 @@ const checkPayment = async (refId) => {
                 const status = decodeURIComponent(params.get('status'));
                 const statusField = "paymentMethod." + paymentMethodName + ".status";
                 if (status === 'PAID') {
-                    await transaction.updateOne({ [statusField]: status });
+                    await transaction.updateOne({ [statusField]: status, status: status });
                     //TODO POST TO POS
 
                 } else if (status === 'CANCELLED') {
@@ -351,8 +350,8 @@ const checkPayment = async (refId) => {
             const { privateKey, passphrases, merchantId, test } = merchant.paymentGates[paymentMethodName];
             const { payId } = transaction.paymentMethod[paymentMethodName];
             const checkStatusResp = await csobFunctions.getPaymentStatus(privateKey, passphrases, { merchantId: merchantId, payId: payId }, test)
-            const status = checkStatusResp.msg.paymentStatus;
             const statusField = "paymentMethod." + paymentMethodName + ".status";
+            const status = checkStatusResp.msg.paymentStatus;
             //     1: "Platba založena"
             //     2: "Platba probíhá"
             //     3: "Platba zrušena"
@@ -364,7 +363,7 @@ const checkPayment = async (refId) => {
             //     9: "Zpracování vrácení"
             //     10: "Platba vrácena"
             if (status === 4 || status === 7 || status === 8) {
-                await transaction.updateOne({ [statusField]: status });
+                await transaction.updateOne({ [statusField]: status, status: "PAID" });
                 //TODO POST TO POS
 
             } else if (status === 3 || status === 5 || status === 6) {

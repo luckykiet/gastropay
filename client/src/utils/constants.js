@@ -8,6 +8,18 @@ export const daysOfWeeks = {
     6: "saturday"
 }
 
+export const statusColor = {
+    "PENDING": "info",
+    "PAID": "link",
+    "CANCELLED": "danger",
+    "COMPLETED": "success"
+}
+
+export const paymentGatesName = {
+    "comgate": "Comgate",
+    "csob": "ČSOB"
+}
+
 export const daysOfWeeksCzech = {
     "sunday": {
         "shortcut": "Ne",
