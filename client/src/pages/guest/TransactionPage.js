@@ -55,40 +55,48 @@ export default function TransactionPage() {
     }, [idTransaction, result?.transaction?.status]);
 
     const StatusField = () => {
+        const status = result.transaction.status;
+        if (status === 'PENDING') {
+            return (<Fragment>
+                <Heading renderAs='h2' className={'has-text-danger'} size={4}>NEZAPLACENO</Heading>
+                <Heading renderAs='p' className={'has-text-danger'} size={5}>Nemáte zaplacenou objednávku</Heading>
+                <PaymentField />
+            </Fragment>)
+        } else if (status === 'CANCELLED') {
+            return <Heading renderAs='h2' className={'has-text-danger'} size={4}>ZRUŠENO</Heading>
+        } else if (status === 'PAID') {
+            return (
+                <Fragment>
+                    <Heading renderAs='h2' className={'has-text-success'} size={4}>ZAPLACENO</Heading>
+                    <Heading renderAs='p' className={'has-text-success'} size={5}>Máte zaplacenou objednávku, počkejte na potvrzení obchodníka.</Heading>
+                    <Heading renderAs='span' size={5}>Obchodník: </Heading>
+                    {!result.transaction.cart.isConfirmed ? <LoadingComponent /> : <Heading renderAs='span' className={'has-text-success'} size={5}>POTVRZENO</Heading>}
+                </Fragment>
+            )
+        } else {
+            return <Heading renderAs='h2' className={'has-text-success'} size={4}>DOKONČENO</Heading>
+        }
+    }
+
+    const PaymentField = () => {
         const method = Object.keys(paymentMethod)[0];
         if (method === 'comgate') {
             return (
-                paymentMethod[method].status === 'PENDING' ?
-                    <Fragment>
-                        <Heading renderAs='p' className={'has-text-danger'} size={5}>Nemáte zaplacenou objednávku</Heading>
-                        <Button color={'warning'} onClick={handlePayClick}>Zaplatit</Button>
-                        {showPaymentBox && (
-                            <ComgateFrame
-                                paymentMethod={paymentMethod[method]}
-                                onClose={() => setShowPaymentBox(false)}
-                            />
-                        )}
-                    </Fragment>
-                    :
-                    <Fragment>
-                        <Heading renderAs='p' className={'has-text-success'} size={5}>Máte zaplacenou objednávku, počkejte na potvrzení obchodníka.</Heading>
-                        <Heading renderAs='span' size={5}>Obchodník: </Heading>
-                        {!result.transaction.cart.isConfirmed ? <LoadingComponent /> : <Heading renderAs='span' className={'has-text-success'} size={5}>POTVRZENO</Heading>}
-                    </Fragment>
+                <Fragment>
+                    <Button size={'large'} color={'warning'} onClick={handlePayClick}>Zaplatit</Button>
+                    {showPaymentBox && (
+                        <ComgateFrame
+                            paymentMethod={paymentMethod[method]}
+                            onClose={() => setShowPaymentBox(false)}
+                        />
+                    )}
+                </Fragment>
             )
         } else if (method === 'csob') {
             return (
-                paymentMethod[method].status === 1 || paymentMethod[method].status === 2 ?
-                    <Fragment>
-                        <Heading renderAs='p' className={'has-text-danger'} size={5}>Nemáte zaplacenou objednávku</Heading>
-                        <Button color={'warning'} renderAs='a' href={paymentMethod[method].url} >Zaplatit</Button>
-                    </Fragment>
-                    :
-                    <Fragment>
-                        <Heading renderAs='p' className={'has-text-success'} size={5}>Máte zaplacenou objednávku, počkejte na potvrzení obchodníka.</Heading>
-                        <Heading renderAs='span' size={5}>Obchodník: </Heading>
-                        {!result.transaction.cart.isConfirmed ? <LoadingComponent /> : <Heading renderAs='span' className={'has-text-success'} size={5}>POTVRZENO</Heading>}
-                    </Fragment>
+                <Fragment>
+                    <Button size={'large'} color={'warning'} renderAs='a' href={paymentMethod[method].url} >Zaplatit</Button>
+                </Fragment>
             )
         }
         return ("");
@@ -128,21 +136,7 @@ export default function TransactionPage() {
                                             {result.transaction.deliveryMethod !== '' && <Heading renderAs='h2' size={4}>Stůl: <span className='has-text-weight-normal'>{result.transaction.deliveryMethod}</span></Heading>}
                                             <hr />
                                             <Heading renderAs='h2' size={4}>Status</Heading>
-                                            {result.transaction.status === 'PENDING'
-                                                ?
-                                                <StatusField />
-                                                :
-                                                (result.transaction.status === 'CANCELLED'
-                                                    ?
-                                                    <Heading renderAs='h2' className={'has-text-danger'} size={4}>ZRUŠENA</Heading>
-                                                    :
-                                                    (result.transaction.status === 'PAID'
-                                                        ?
-                                                        <Heading renderAs='h2' className={'has-text-warning-dark'} size={4}>Objednávka zaplacena</Heading>
-                                                        :
-                                                        <Heading renderAs='h2' className={'has-text-success'} size={4}>DOKONČENA</Heading>)
-                                                )
-                                            }
+                                            <StatusField />
                                         </Column>
                                     </Columns>
                                 </Block>
