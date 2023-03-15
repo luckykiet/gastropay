@@ -1,13 +1,14 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Content, Heading, Container, Box, Block, Table, Columns, Button } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
-import { createAxios, addSlashAfterUrl, calculateCart } from '../../utils';
+import { createAxios, addSlashAfterUrl, calculateCart, statusColor, paymentGatesName } from '../../utils';
 import LoadingComponent from '../../components/LoadingComponent';
 import ComgateFrame from '../../components/ComgateFrame';
 import { Promise } from 'bluebird';
 import { PATHS } from '../../config/paths';
 import { API } from '../../config/api';
 import { CONFIG } from '../../config/config';
+import moment from 'moment';
 
 const { Column } = Columns;
 export default function TransactionPage() {
@@ -58,23 +59,23 @@ export default function TransactionPage() {
         const status = result.transaction.status;
         if (status === 'PENDING') {
             return (<Fragment>
-                <Heading renderAs='h2' className={'has-text-danger'} size={4}>NEZAPLACENO</Heading>
-                <Heading renderAs='p' className={'has-text-danger'} size={5}>Nemáte zaplacenou objednávku</Heading>
+                <Heading renderAs='h2' className={'has-text-' + statusColor[status]} size={4}>NEZAPLACENO</Heading>
+                <Heading renderAs='p' className={'has-text-' + statusColor[status]} size={5}>Nemáte zaplacenou objednávku</Heading>
                 <PaymentField />
             </Fragment>)
         } else if (status === 'CANCELLED') {
-            return <Heading renderAs='h2' className={'has-text-danger'} size={4}>ZRUŠENO</Heading>
+            return <Heading renderAs='h2' className={'has-text-' + statusColor[status]} size={4}>ZRUŠENO</Heading>
         } else if (status === 'PAID') {
             return (
                 <Fragment>
-                    <Heading renderAs='h2' className={'has-text-success'} size={4}>ZAPLACENO</Heading>
-                    <Heading renderAs='p' className={'has-text-success'} size={5}>Máte zaplacenou objednávku, počkejte na potvrzení obchodníka.</Heading>
+                    <Heading renderAs='h2' className={'has-text-' + statusColor[status]} size={4}>ZAPLACENO</Heading>
+                    <Heading renderAs='p' className={'has-text-' + statusColor[status]} size={5}>Máte zaplacenou objednávku, počkejte na potvrzení obchodníka.</Heading>
                     <Heading renderAs='span' size={5}>Obchodník: </Heading>
-                    {!result.transaction.cart.isConfirmed ? <LoadingComponent /> : <Heading renderAs='span' className={'has-text-success'} size={5}>POTVRZENO</Heading>}
+                    {!result.transaction.cart.isConfirmed ? <LoadingComponent /> : <Heading renderAs='span' className={'has-text-' + statusColor[status]} size={5}>POTVRZENO</Heading>}
                 </Fragment>
             )
         } else {
-            return <Heading renderAs='h2' className={'has-text-success'} size={4}>DOKONČENO</Heading>
+            return <Heading renderAs='h2' className={'has-text-' + statusColor[status]} size={4}>DOKONČENO</Heading>
         }
     }
 
@@ -130,10 +131,12 @@ export default function TransactionPage() {
                                             <Heading renderAs='p' className='has-text-weight-normal' size={5}>{result.restaurant.address.street}</Heading>
                                             <Heading renderAs='p' className='has-text-weight-normal' size={5}>{result.restaurant.address.postalCode} {result.restaurant.address.city}</Heading>
                                             <Heading renderAs='h2' size={4}>IČO: {result.merchant.ico}</Heading>
+                                            <Heading renderAs='h2' size={4}>Vytvořeno: <span className='has-text-weight-normal'>{moment.utc(result.transaction.createdAt).format("DD/MM/YYYY HH:mm")}</span></Heading>
                                         </Column>
                                         <Column>
                                             <Heading renderAs='h2' size={4}>Email plátce: <span className='has-text-weight-normal'>{result.transaction.email}</span></Heading>
                                             {result.transaction.deliveryMethod !== '' && <Heading renderAs='h2' size={4}>Stůl: <span className='has-text-weight-normal'>{result.transaction.deliveryMethod}</span></Heading>}
+                                            <Heading renderAs='h2' size={4}>Platební metoda: <span className='has-text-weight-normal'>{paymentGatesName[Object.keys(paymentMethod)[0]]}</span></Heading>
                                             <hr />
                                             <Heading renderAs='h2' size={4}>Status</Heading>
                                             <StatusField />
@@ -141,6 +144,7 @@ export default function TransactionPage() {
                                     </Columns>
                                 </Block>
                                 <hr />
+                                <Heading renderAs='h2' size={4}>Účtenka</Heading>
                                 <Block style={{ overflow: "auto" }}>
                                     <Table size={'fullwidth'}>
                                         <thead className='is-size-4'>

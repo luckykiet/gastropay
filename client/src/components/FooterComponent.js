@@ -7,7 +7,7 @@ export default function FooterComponent() {
         <Footer backgroundColor="white">
             <Content textAlign={"center"}>
                 <p>
-                    Copyright ©&nbsp; {packageJson.app.provider}, <Link to={PATHS.HOME}> {packageJson.app.www}</Link>&nbsp;{new Date().getFullYear()}
+                    Copyright ©&nbsp; {packageJson.app.provider}, <Link to={PATHS.HOME}> {packageJson.app.name}</Link>&nbsp;{new Date().getFullYear()}
                 </p>
             </Content>
         </Footer>
