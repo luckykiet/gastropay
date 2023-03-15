@@ -33,6 +33,7 @@ import ProfilePanel from './pages/merchant/profile/ProfilePanel';
 import ComgatePanel from './pages/merchant/profile/ComgatePanel';
 import { PATHS } from './config/paths';
 import CsobPanel from './pages/merchant/profile/CsobPanel';
+import RenewPasswordPage from './pages/auth/RenewPasswordPage';
 
 const ProtectedRoute = ({ children, ...rest }) => {
   const { isAuthenticated, isLoading, error, expirationTime } = useAuth();
@@ -94,6 +95,10 @@ const router = createBrowserRouter([
         {
           path: PATHS.FORGOTTEN_PASS,
           element: <ForgottenPasswordPage />
+        },
+        {
+          path: PATHS.CHANGE_PASSWORD + "/" + PATHS.PASS_RENEW_TOKEN,
+          element: <RenewPasswordPage />
         },
         {
           path: PATHS.RESTAURANTS,

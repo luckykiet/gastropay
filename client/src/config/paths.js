@@ -13,6 +13,7 @@ const paths = {
     PAYMENT: '/payment',
     TRANSACTION: '/transaction',
     MERCHANT: "/merchant",
+    CHANGE_PASSWORD: '/changepassword',
     DASHBOARD: "dashboard",
     PROFILE: "profile",
     RESTAURANT_EDIT: "edit",
@@ -22,5 +23,6 @@ const paths = {
     CSOB: 'csob',
     ID_TRANSACTION: ':idTransaction',
     ID_RESTAURANT: ':idRestaurant',
+    PASS_RENEW_TOKEN: ':token'
 }
 export { paths as PATHS };
