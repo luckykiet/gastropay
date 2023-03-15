@@ -25,6 +25,30 @@ const authMiddleware = async (req, res, next) => {
     }
 };
 
+const passwordResetTokenVerifyMiddleware = async (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ success: false, message: 'Not valid request' });
+    }
+    try {
+        const decoded = jwt.verify(token, config.JWT_SECRET);
+        if (decoded.exp < Date.now() / 1000) {
+            await MerchantModel.updateOne({ tokens: token }, { $pull: { tokens: token } });
+            return res.status(401).json({ success: false, message: 'Token expired' });
+        }
+        req.email = decoded.email;
+
+        const user = await MerchantModel.findOne({ email: req.email, tokens: token });
+        if (!user) {
+            throw new Error();
+        }
+        next();
+    } catch (err) {
+        return res.status(400).json({ success: false, message: 'Not valid request' });
+    }
+};
+
 const validationHandlerMiddleware = (err, req, res, next) => {
     if (err.name === 'ValidationError' || err.name === 'ValidatorError') {
         return res.status(422).json({
@@ -54,5 +78,6 @@ const validationHandlerMiddleware = (err, req, res, next) => {
 
 module.exports = {
     authMiddleware,
-    validationHandlerMiddleware
+    validationHandlerMiddleware,
+    passwordResetTokenVerifyMiddleware
 };
