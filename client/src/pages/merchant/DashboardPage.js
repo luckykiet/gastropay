@@ -4,7 +4,7 @@ import { Promise } from 'bluebird';
 import { Columns, Heading, Hero, Button, Tabs } from 'react-bulma-components';
 import RestaurantCard from '../../components/merchant/RestaurantCard';
 import { Link, Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/MerchantStores';
+import { useChosenRestaurant, useSetChosenRestaurant } from '../../stores/MerchantStores';
 import ConfirmBox from '../../components/merchant/ConfirmBox';
 import { PATHS } from '../../config/paths';
 import { API } from '../../config/api';
@@ -19,7 +19,7 @@ export default function DashboardPage() {
     const [restaurants, setRestaurants] = useState([]);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
     const { idRestaurant } = useParams();
-    const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
+    const [chosenRestaurant, setChosenRestaurant] = [useChosenRestaurant(), useSetChosenRestaurant()];
     const location = useLocation();
     const navigate = useNavigate()
 
@@ -41,13 +41,13 @@ export default function DashboardPage() {
             }
         }
         Promise.delay(0).then(fetchRestaurants);
-    }, [userId, choosenRestaurant, navigate]);
+    }, [userId, chosenRestaurant, navigate]);
 
     useEffect(() => {
         if (location.pathname === PATHS.MERCHANT) {
-            setChoosenRestaurant({});
+            setChosenRestaurant({});
         }
-    }, [location.pathname, setChoosenRestaurant])
+    }, [location.pathname, setChosenRestaurant])
 
     const handleDeleteButtonClick = (e) => {
         e.preventDefault();
@@ -101,7 +101,7 @@ export default function DashboardPage() {
                             <Fragment>
                                 {showConfirmBox && (
                                     <ConfirmBox
-                                        message={'Chcete smazat ' + choosenRestaurant.name + '?'}
+                                        message={'Chcete smazat ' + chosenRestaurant.name + '?'}
                                         yesText={"Smazat"}
                                         noText={"Zrušit"}
                                         title={"Smazat restauraci"}
@@ -111,7 +111,7 @@ export default function DashboardPage() {
                                 )}
                                 <Hero color="link" size="small">
                                     <Body>
-                                        <Heading size={4} className='is-inline-block'>{choosenRestaurant.name}</Heading>
+                                        <Heading size={4} className='is-inline-block'>{chosenRestaurant.name}</Heading>
                                         <Button color={'danger'} size={'medium'} className='is-pulled-right' onClick={handleDeleteButtonClick}>Smazat</Button>
                                     </Body>
                                 </Hero>

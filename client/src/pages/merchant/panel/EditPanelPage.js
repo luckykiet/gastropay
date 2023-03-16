@@ -8,7 +8,7 @@ import Toggle from 'react-toggle';
 import "react-toggle/style.css";
 import LoadingComponent from '../../../components/LoadingComponent';
 import produce from 'immer';
-import { useSetChoosenRestaurant } from '../../../stores/MerchantStores';
+import { useSetChosenRestaurant } from '../../../stores/MerchantStores';
 import OpeningTimeInputs from '../../../components/merchant/OpeningTimeInputs';
 import { API } from '../../../config/api';
 import { CONFIG } from '../../../config/config';
@@ -21,7 +21,7 @@ export default function EditPanelPage() {
     const [loading, setLoading] = useState(true);
     const [apiTestLoading, setApiTestLoading] = useState(false);
     const [apiTestMsg, setApiTestMsg] = useState({});
-    const setChoosenRestaurant = useSetChoosenRestaurant();
+    const setChosenRestaurant = useSetChosenRestaurant();
 
     useEffect(() => {
         setLoading(true);
@@ -40,7 +40,7 @@ export default function EditPanelPage() {
                     throw new Error(msg);
                 }
                 setRestaurant(msg);
-                setChoosenRestaurant(msg);
+                setChosenRestaurant(msg);
             } catch (err) {
                 console.log(err)
             } finally {
@@ -48,7 +48,7 @@ export default function EditPanelPage() {
             }
         }
         Promise.delay(0).then(fetchRestaurant);
-    }, [setChoosenRestaurant, idRestaurant]);
+    }, [setChosenRestaurant, idRestaurant]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -124,7 +124,7 @@ export default function EditPanelPage() {
                     success: true,
                     msg: msg
                 });
-                setChoosenRestaurant(restaurant);
+                setChosenRestaurant(restaurant);
 
             } catch (err) {
                 console.log(err)

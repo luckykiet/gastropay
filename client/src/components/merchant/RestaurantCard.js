@@ -2,7 +2,7 @@ import React from 'react';
 import { Columns, Card, Media, Content as TextContent, Heading } from 'react-bulma-components';
 import { addSlashAfterUrl, isValidImageUrl } from "../../utils";
 import { useNavigate } from 'react-router-dom';
-import { useChoosenRestaurant, useSetChoosenRestaurant } from '../../stores/MerchantStores';
+import { useChosenRestaurant, useSetChosenRestaurant } from '../../stores/MerchantStores';
 import { PATHS } from '../../config/paths';
 import { CONFIG } from '../../config/config';
 const { Item } = Media;
@@ -11,19 +11,19 @@ const { Column } = Columns;
 
 export default function RestaurantCard({ restaurant }) {
     const navigate = useNavigate();
-    const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
+    const [chosenRestaurant, setChosenRestaurant] = [useChosenRestaurant(), useSetChosenRestaurant()];
     const handleOnClick = () => {
-        if (choosenRestaurant._id === restaurant._id) {
+        if (chosenRestaurant._id === restaurant._id) {
             navigate(PATHS.MERCHANT);
         } else {
-            setChoosenRestaurant(restaurant);
+            setChosenRestaurant(restaurant);
             navigate(PATHS.MERCHANT + '/' + PATHS.RESTAURANT_EDIT + '/' + restaurant._id)
         }
     }
 
     return (
         <Column fullwidth="true">
-            <Card className={"is-clickable" + (choosenRestaurant._id === restaurant._id ? " has-background-light" : "")} onClick={handleOnClick}>
+            <Card className={"is-clickable" + (chosenRestaurant._id === restaurant._id ? " has-background-light" : "")} onClick={handleOnClick}>
                 <Header>
                     <Header.Title>{restaurant.name}</Header.Title>
                 </Header>

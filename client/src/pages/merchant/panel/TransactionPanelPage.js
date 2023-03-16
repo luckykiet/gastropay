@@ -6,7 +6,7 @@ import { Promise } from 'bluebird';
 import 'rc-time-picker/assets/index.css';
 import "react-toggle/style.css";
 import LoadingComponent from '../../../components/LoadingComponent';
-import { useChoosenRestaurant } from '../../../stores/MerchantStores';
+import { useChosenRestaurant } from '../../../stores/MerchantStores';
 import moment from 'moment';
 import { PATHS } from '../../../config/paths';
 import { API } from '../../../config/api';
@@ -18,7 +18,7 @@ export default function TransactionPanelPage() {
     const { idRestaurant } = useParams();
     const [transactions, setTransactions] = useState(null);
     const [loading, setLoading] = useState(true);
-    const choosenRestaurant = useChoosenRestaurant();
+    const chosenRestaurant = useChosenRestaurant();
 
     useEffect(() => {
         setLoading(true);
@@ -60,7 +60,7 @@ export default function TransactionPanelPage() {
                     <Fragment>
                         <Hero color="link" size="small">
                             <Body>
-                                <Heading size={4} className='is-inline-block'>{choosenRestaurant.name}</Heading>
+                                <Heading size={4} className='is-inline-block'>{chosenRestaurant.name}</Heading>
                             </Body>
                         </Hero>
                         <Container py={5} breakpoint={'fluid'}>

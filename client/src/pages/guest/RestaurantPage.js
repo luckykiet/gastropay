@@ -5,7 +5,7 @@ import { createAxios, isOpening, daysOfWeeksCzech, addSlashAfterUrl, removeSlash
 import Promise from "bluebird";
 import moment from 'moment';
 import LoadingComponent from '../../components/LoadingComponent';
-import { useChoosenRestaurant, useSetCartItems, useSetChoosenRestaurant } from '../../stores/ZustandStores';
+import { useChosenRestaurant, useSetCartItems, useSetChosenRestaurant } from '../../stores/ZustandStores';
 import DownloadableQRCode from '../../components/restaurants/DownloadableQRCode';
 import { PATHS } from '../../config/paths';
 import { API } from '../../config/api';
@@ -21,7 +21,7 @@ const currentOpeningTimeStyle = (day) => {
 
 export default function RestaurantPage() {
     const [business, setBusiness] = useState({});
-    const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
+    const [chosenRestaurant, setChosenRestaurant] = [useChosenRestaurant(), useSetChosenRestaurant()];
     const [loading, setLoading] = useState(true);
     const { idRestaurant } = useParams();
     const setCartItems = useSetCartItems();
@@ -30,10 +30,10 @@ export default function RestaurantPage() {
     const navigate = useNavigate();
 
     const handleChooseClick = () => {
-        if (choosenRestaurant && choosenRestaurant._id !== business._id) {
+        if (chosenRestaurant && chosenRestaurant._id !== business._id) {
             setCartItems([]);
         }
-        setChoosenRestaurant(business);
+        setChosenRestaurant(business);
         navigate(PATHS.MENU);
     }
 

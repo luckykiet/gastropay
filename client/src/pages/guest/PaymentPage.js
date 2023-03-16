@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Content, Heading, Container, Box, Table, Button, Block, Form, Icon, Columns } from 'react-bulma-components';
-import { useCartItems, useChoosenRestaurant, useSetCartItems, useSetChoosenRestaurant, useTables, useTips } from '../../stores/ZustandStores';
+import { useCartItems, useChosenRestaurant, useSetCartItems, useSetChosenRestaurant, useTables, useTips } from '../../stores/ZustandStores';
 import { Link, useNavigate } from 'react-router-dom';
 import { calculateCart, addSlashAfterUrl, createAxios } from '../../utils'
 import TipsInput from '../../components/menu/TipsInput';
@@ -25,7 +25,7 @@ export default function PaymentPage() {
     const [merchantPaymentMethods, setMerchantPaymentMethods] = useState([]);
     const [cartItems, setCartItems] = [useCartItems(), useSetCartItems()];
     const tables = useTables();
-    const [choosenRestaurant, setChoosenRestaurant] = [useChoosenRestaurant(), useSetChoosenRestaurant()];
+    const [chosenRestaurant, setChosenRestaurant] = [useChosenRestaurant(), useSetChosenRestaurant()];
     const tips = useTips();
     const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ export default function PaymentPage() {
 
             const transaction = {
                 tips: tips,
-                restaurant: choosenRestaurant,
+                restaurant: chosenRestaurant,
                 orders: cartItems,
                 paymentGate: paymentMethod,
                 email: emailInput,
@@ -66,7 +66,7 @@ export default function PaymentPage() {
                 throw new Error(msg);
             }
             setCartItems([]);
-            setChoosenRestaurant({});
+            setChosenRestaurant({});
             navigate(PATHS.TRANSACTION + "/" + msg.refId);
         } catch (error) {
             console.log(error)
@@ -80,11 +80,11 @@ export default function PaymentPage() {
     }
 
     useEffect(() => {
-        if (Object.keys(choosenRestaurant).length !== 0) {
+        if (Object.keys(chosenRestaurant).length !== 0) {
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
             const fetchTransaction = async () => {
                 try {
-                    const { data: { success, msg } } = await axios.get(`${API.TRANSACTION}/${API.PAYMENT_METHODS}/${choosenRestaurant._id}`);
+                    const { data: { success, msg } } = await axios.get(`${API.TRANSACTION}/${API.PAYMENT_METHODS}/${chosenRestaurant._id}`);
                     if (success) {
                         setMerchantPaymentMethods(msg);
                     } else {
@@ -101,7 +101,7 @@ export default function PaymentPage() {
         } else {
             setIsPageLoading(false);
         }
-    }, [choosenRestaurant])
+    }, [chosenRestaurant])
 
     useEffect(() => {
         if (tables.length > 0) {
@@ -154,7 +154,7 @@ export default function PaymentPage() {
                                                 <Control>
                                                     <Field className='has-addons'>
                                                         <Control>
-                                                            <Input color={isEmailValid !== null && !isEmailValid && "danger"} value={emailInput} onChange={handleEmailChange} id='inputEmail' type='email' required placeholder='Email pro zasílání účtenky' />
+                                                            <Input type={'email'} color={isEmailValid !== null && !isEmailValid && "danger"} value={emailInput} onChange={handleEmailChange} id='inputEmail' required placeholder='Email pro zasílání účtenky' />
                                                             <Icon color={isEmailValid !== null && !isEmailValid && "danger"} align="left"><FontAwesomeIcon icon={faEnvelope} /></Icon>
                                                             {isEmailValid !== null && !isEmailValid && <Help color="danger">Nesprávný email formát</Help>}
                                                         </Control>
