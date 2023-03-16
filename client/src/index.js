@@ -35,15 +35,11 @@ import { PATHS } from './config/paths';
 import CsobPanel from './pages/merchant/profile/CsobPanel';
 import RenewPasswordPage from './pages/auth/RenewPasswordPage';
 
-const ProtectedRoute = ({ children, ...rest }) => {
+const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading, error, expirationTime } = useAuth();
   const currentTime = Date.now() / 1000;
 
-  if (error) {
-    return <Navigate to={PATHS.LOGIN} replace />;
-  }
-
-  if (!isAuthenticated && !isLoading) {
+  if (error || (!isAuthenticated && !isLoading)) {
     return <Navigate to={PATHS.LOGIN} replace />;
   }
 
@@ -59,10 +55,7 @@ const ProtectedRoute = ({ children, ...rest }) => {
   return children;
 };
 
-export default ProtectedRoute;
-
-
-const AuthRoute = ({ children, ...rest }) => {
+const AuthRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
   if (isAuthenticated) {
     return <Navigate to={PATHS.MERCHANT} replace />
@@ -104,6 +97,18 @@ const router = createBrowserRouter([
           path: PATHS.RESTAURANTS,
           element: <RestaurantsPage />
         },
+        {
+          path: PATHS.RESTAURANT + "/" + PATHS.ID_RESTAURANT,
+          element: <RestaurantPage />,
+        },
+        {
+          path: PATHS.TRANSACTION + "/" + PATHS.ID_TRANSACTION,
+          element: <TransactionPage />,
+        },
+        {
+          path: PATHS.PAYMENT,
+          element: <PaymentPage />,
+        }
       ],
     }]
   }, {
@@ -116,35 +121,8 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "",
-    element: <RootLayout />,
-    errorElement: <ErrorPage />,
-    children: [{
-      path: PATHS.RESTAURANT + "/" + PATHS.ID_RESTAURANT,
-      element: <RestaurantPage />,
-    }]
-  },
-  {
     path: PATHS.MENU,
     element: <MenuLayout />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "",
-    element: <RootLayout />,
-    errorElement: <ErrorPage />,
-    children: [{
-      path: PATHS.TRANSACTION + "/" + PATHS.ID_TRANSACTION,
-      element: <TransactionPage />,
-    }]
-  },
-  {
-    path: PATHS.PAYMENT,
-    element: <RootLayout />,
-    children: [{
-      path: "",
-      element: <PaymentPage />,
-    }],
     errorElement: <ErrorPage />,
   },
   {

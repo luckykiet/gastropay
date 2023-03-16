@@ -19,6 +19,7 @@ export default function RegisterPage() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [isPasswordValid, setIsPasswordValid] = useState(true);
     const [passwordsMatch, setPasswordsMatch] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         ico: '',
         email: '',
@@ -29,6 +30,8 @@ export default function RegisterPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setPostMsg('');
+        setIsLoading(true);
         if (ico.length !== 8 || icoCheckMsg !== 'OK' || !isEmailValid || !passwordsMatch || !isPasswordValid || confirmPassword === '' || email === '' || password === '') {
             setPostMsg("Zkontrolujte vyplněné údaje!")
         } else {
@@ -53,6 +56,7 @@ export default function RegisterPage() {
                 setPostMsg(err.response?.data.msg ? err.response.data.msg : err);
             }
         }
+        setIsLoading(false);
     }
 
     const handleConfirmPasswordChange = (e) => {
@@ -144,7 +148,7 @@ export default function RegisterPage() {
                     <form onSubmit={handleSubmit}>
                         <Field>
                             <Label htmlFor="inputIco">
-                                IČO
+                                <span className='has-text-danger'>*</span> IČO
                             </Label>
                             <Control>
                                 <Input color={icoCheckMsg !== '' ? (icoCheckMsg === "OK" ? "success" : "danger") : undefined} name={"ico"} value={ico} type={"text"} onChange={handleChange} id="inputIco" placeholder="12345678" required />
@@ -154,7 +158,7 @@ export default function RegisterPage() {
                         </Field>
                         <Field>
                             <Label htmlFor="inputEmail">
-                                Email
+                                <span className='has-text-danger'>*</span> Email
                             </Label>
                             <Control>
                                 <Input color={emailCheckMsg === "OK" ? "success" : (emailCheckMsg !== '' || !isEmailValid) ? "danger" : undefined} name={"email"} value={email} onChange={handleChange} id="inputEmail" type={"email"} placeholder="gastropay@vse.cz" required />
@@ -164,7 +168,7 @@ export default function RegisterPage() {
                         </Field>
                         <Field>
                             <Label htmlFor="inputPassword">
-                                Heslo
+                                <span className='has-text-danger'>*</span>  Heslo
                             </Label>
                             <Control>
                                 <Input name={"password"} color={isPasswordValid ? null : "danger"} value={password} onChange={handleChange} id="inputPassword" type="password" placeholder="*************" required />
@@ -174,7 +178,7 @@ export default function RegisterPage() {
                         </Field>
                         <Field>
                             <Label htmlFor="inputConfirmPassword">
-                                Ověření hesla
+                                <span className='has-text-danger'>*</span>  Ověření hesla
                             </Label>
                             <Control>
                                 <Input color={passwordsMatch !== null ? (passwordsMatch ? "success" : "danger") : undefined} name={"confirmPassword"} value={confirmPassword} onChange={handleConfirmPasswordChange} id="inputConfirmPassword" type="password" placeholder="*************" required />
@@ -184,10 +188,14 @@ export default function RegisterPage() {
                         </Field>
                         <Field>
                             <Control>
-                                <Checkbox required id="agreementCheckBox">&nbsp;Souhlasíte s podmínky</Checkbox>
+                                <Checkbox required id="agreementCheckBox"><span className='has-text-danger'>*</span>&nbsp;Souhlasíte s podmínky</Checkbox>
                             </Control>
                         </Field>
-                        <Button submit fullwidth color={'warning'}>Zaregistrovat se</Button>
+                        {isLoading ?
+                            <Button disabled fullwidth color={'warning'} className="is-loading" />
+                            :
+                            <Button submit fullwidth color={'warning'}>Zaregistrovat se</Button>
+                        }
                     </form>
                     {postMsg && (<p className="has-text-danger">{postMsg instanceof Error ? postMsg.message : postMsg}</p>)}
                 </Box>
