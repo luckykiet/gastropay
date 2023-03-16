@@ -4,7 +4,7 @@ import { Box, Heading, Form, Button, Container, Hero, Block } from "react-bulma-
 import 'rc-time-picker/assets/index.css';
 import "react-toggle/style.css";
 import produce from 'immer';
-import { useSetChoosenRestaurant } from '../../../stores/MerchantStores';
+import { useSetChosenRestaurant } from '../../../stores/MerchantStores';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../../config/paths'
 import { CONFIG } from '../../../config/config'
@@ -23,11 +23,11 @@ export default function AddPanelPage() {
             postalCode: ""
         }
     });
-    const setChoosenRestaurant = useSetChoosenRestaurant();
+    const setChosenRestaurant = useSetChosenRestaurant();
 
     useEffect(() => {
-        setChoosenRestaurant({});
-    }, [setChoosenRestaurant])
+        setChosenRestaurant({});
+    }, [setChosenRestaurant])
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -73,7 +73,7 @@ export default function AddPanelPage() {
                     throw new Error(msg);
                 }
 
-                setChoosenRestaurant(msg);
+                setChosenRestaurant(msg);
                 navigate(PATHS.MERCHANT + "/" + PATHS.RESTAURANT_EDIT + "/" + msg._id);
             } catch (err) {
                 setPostMsg({

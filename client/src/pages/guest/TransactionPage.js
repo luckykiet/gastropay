@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useLayoutEffect } from 'react';
 import { Content, Heading, Container, Box, Block, Table, Columns, Button } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, calculateCart, statusColor, paymentGatesName } from '../../utils';
@@ -54,6 +54,19 @@ export default function TransactionPage() {
         }
 
     }, [idTransaction, result?.transaction?.status]);
+
+    useLayoutEffect(() => {
+        const html = document.documentElement;
+        if (showPaymentBox) {
+            html.style.overflow = "hidden";
+        } else {
+            html.style.overflow = "unset";
+        }
+
+        return () => {
+            html.style.overflow = "unset";
+        };
+    }, [showPaymentBox]);
 
     const StatusField = () => {
         const status = result.transaction.status;

@@ -4,14 +4,14 @@ import TabsList from '../../components/menu/TabsList';
 import { createAxios, addSlashAfterUrl } from '../../utils';
 import { Link, useNavigate } from 'react-router-dom';
 import { Promise } from 'bluebird';
-import { useChoosenRestaurant, useSetTables } from '../../stores/ZustandStores';
+import { useChosenRestaurant, useSetTables } from '../../stores/ZustandStores';
 import ProgressBar from '../../components/ProgressBar';
 import { PATHS } from '../../config/paths';
 
 const { Content } = Card;
 
 export default function MenuPage() {
-    const restaurant = useChoosenRestaurant();
+    const restaurant = useChosenRestaurant();
     const setTables = useSetTables();
     const [menu, setMenu] = useState({});
     const [loading, setLoading] = useState(true);

@@ -1,15 +1,15 @@
 import 'bulma/css/bulma.min.css';
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useLayoutEffect } from "react";
 import FooterComponent from '../FooterComponent';
 import { Container } from 'react-bulma-components';
 import BackButtonComponent from '../BackButtonComponent';
 import MenuNavbar from '../menu/MenuNavbar';
 import CollapsibleSidebar from '../menu/CollapsibleSidebar';
 import MenuPage from '../../pages/guest/MenuPage';
-import { useChoosenRestaurant } from '../../stores/ZustandStores';
+import { useChosenRestaurant } from '../../stores/ZustandStores';
 
 export default function MenuLayout() {
-    const restaurant = useChoosenRestaurant();
+    const restaurant = useChosenRestaurant();
     const [isSidebarShowed, setIsSidebarShowed] = useState(false);
 
     const showSidebar = () => {
@@ -19,6 +19,19 @@ export default function MenuLayout() {
     const handleCloseSidebar = () => {
         setIsSidebarShowed(false);
     }
+
+    useLayoutEffect(() => {
+        const html = document.documentElement;
+        if (isSidebarShowed) {
+            html.style.overflow = "hidden";
+        } else {
+            html.style.overflow = "unset";
+        }
+
+        return () => {
+            html.style.overflow = "unset";
+        };
+    }, [isSidebarShowed]);
 
     return (
         <Fragment>
@@ -32,6 +45,16 @@ export default function MenuLayout() {
                     <MenuPage />
                 </Container>
             </main>
+            <div style={{
+                display: isSidebarShowed ? "block" : "none",
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                zIndex: 100
+            }} onClick={handleCloseSidebar} />
             <FooterComponent />
         </Fragment>
     )

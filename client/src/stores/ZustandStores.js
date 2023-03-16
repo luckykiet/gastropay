@@ -4,8 +4,8 @@ import produce from 'immer';
 import { useCallback } from 'react';
 
 const useStore = create((set) => ({
-    choosenRestaurant: {},
-    setChoosenRestaurant: (choosenRestaurant) => set({ choosenRestaurant }),
+    chosenRestaurant: {},
+    setChosenRestaurant: (chosenRestaurant) => set({ chosenRestaurant }),
 
     settings: {},
     setSettings: (settings) => set({ settings }),
@@ -74,8 +74,8 @@ export const useSetSettings = () => useStore(useCallback((state) => state.setSet
 export const useTables = () => useStore(useCallback((state) => state.tables, []));
 export const useSetTables = () => useStore(useCallback((state) => state.setTables, []));
 
-export const useChoosenRestaurant = () => useStore(useCallback((state) => state.choosenRestaurant, []));
-export const useSetChoosenRestaurant = () => useStore(useCallback((state) => state.setChoosenRestaurant, []));
+export const useChosenRestaurant = () => useStore(useCallback((state) => state.chosenRestaurant, []));
+export const useSetChosenRestaurant = () => useStore(useCallback((state) => state.setChosenRestaurant, []));
 
 export const useTips = () => useStore(useCallback((state) => state.tips, []));
 export const useSetTips = () => useStore(useCallback((state) => state.setTips, []));
