@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar } from 'react-bulma-components';
+import { Container, Navbar } from 'react-bulma-components';
 import { Link } from 'react-router-dom';
 import { calculateCart } from '../../utils';
 import packageJson from '../../../package.json';
@@ -18,11 +18,10 @@ export default function MenuNavbar({ showSidebar }) {
                 <Item className='is-size-4 has-text-weight-bold' renderAs={Link} to={PATHS.HOME}>
                     {packageJson.app.name}
                 </Item>
-                <div className="navbar-end">
+                <Container className='has-text-right'>
                     <CartButton showSidebar={showSidebar} numItems={calculateCart(cartItems).totalQuantity} />
-                </div>
+                </Container>
             </Brand>
-
         </Navbar>
     );
 }
