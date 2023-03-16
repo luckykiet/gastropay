@@ -43,7 +43,7 @@ export default function MenuPage() {
                     setLoading(false);
                 }
             };
-            Promise.delay(500).then(fetchData);
+            Promise.delay(300).then(fetchData);
         }
     }, [navigate, restaurant, apiUrl, setTables]);
 

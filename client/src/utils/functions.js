@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import moment from 'moment';
 import jwtDecode from 'jwt-decode';
+import { CONFIG } from '../config/config';
 
 export const createAxios = (urlAPI) => {
     return Axios.create({ baseURL: urlAPI })
@@ -68,7 +69,6 @@ export const addSlashAfterUrl = (url) => {
     return url;
 };
 
-
 export const removeSlashFromUrl = (url) => {
     if (url.endsWith('/')) {
         url = url.replace(/\/+$/, '');
@@ -102,7 +102,7 @@ export const isValidImageUrl = (url) => {
 
 export const getItemsFromToken = (token = localStorage.getItem('token')) => {
     try {
-        const payload = jwtDecode(token, '@ThIS iS Sup3rb s3creT!');
+        const payload = jwtDecode(token, CONFIG.JWT_SECRET);
         return payload;
     } catch (error) {
         console.error('Error decoding token:', error);

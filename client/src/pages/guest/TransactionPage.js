@@ -44,7 +44,7 @@ export default function TransactionPage() {
             }
         };
 
-        Promise.delay(300).then(fetchTransaction);
+        Promise.delay(0).then(fetchTransaction);
 
         if (result?.transaction?.status === 'PENDING') {
             const interval = setInterval(() => {

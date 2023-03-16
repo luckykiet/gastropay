@@ -15,8 +15,8 @@ const { Column } = Columns;
 
 const currentOpeningTimeStyle = (day) => {
     return !day.isOpen || !isOpening(day.from, day.to)
-        ? "has-text-weight-bold has-text-danger"
-        : "has-text-weight-bold has-text-success";
+        ? " has-text-danger"
+        : " has-text-success";
 };
 
 export default function RestaurantPage() {
@@ -53,7 +53,7 @@ export default function RestaurantPage() {
                 setLoading(false);
             }
         }
-        Promise.delay(500).then(fetchData);
+        Promise.delay(300).then(fetchData);
     }, [idRestaurant, setBusiness]);
 
     return (
@@ -62,11 +62,6 @@ export default function RestaurantPage() {
                 <LoadingComponent />
             ) : (
                 <Fragment>
-                    <Content textAlign={"center"}>
-                        <Heading spaced>
-                            {business.name}
-                        </Heading>
-                    </Content>
                     {Object.keys(business).length === 0 ?
                         (
                             <Content textAlign={"center"}>
@@ -80,26 +75,30 @@ export default function RestaurantPage() {
                         ) :
                         (
                             <Fragment>
+                                <Content textAlign={"center"}>
+                                    <Heading spaced>
+                                        {business.name}
+                                    </Heading>
+                                </Content>
+                                <hr />
                                 <Columns>
                                     <Column size={"is-half"}>
-                                        <Container className='has-text-left'>
-                                            <figure className="image is-3by2 is-fullwidth">
-                                                <img
-                                                    alt={business.name}
-                                                    src={isValidImageUrl(business.image)
-                                                        ? business.image
-                                                        : addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + 'restaurants/default.jpg'}
-                                                    style={{ height: '100%' }}
-                                                />
-                                            </figure>
-                                        </Container>
+                                        <figure className="image is-3by2 is-fullwidth">
+                                            <img
+                                                alt={business.name}
+                                                src={isValidImageUrl(business.image)
+                                                    ? business.image
+                                                    : addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + 'restaurants/default.jpg'}
+                                                style={{ height: '100%' }}
+                                            />
+                                        </figure>
                                     </Column>
                                     <Column>
                                         <Content>
                                             <Heading renderAs='h3' className="has-text-weight-bold is-size-4">Otevírací doba:</Heading>
                                             <ul className='is-size-5'>
                                                 {Object.keys(daysOfWeeksCzech).map((day, index) => (
-                                                    <li className={index === todayDay ? currentOpeningTimeStyle(business.openingTime[day]) : undefined} key={day}>
+                                                    <li className={"has-text-weight-bold" + (index === todayDay ? currentOpeningTimeStyle(business.openingTime[day]) : undefined)} key={day}>
                                                         <span className="alignAfterColon">{daysOfWeeksCzech[day].name}:</span>
                                                         {business.openingTime[day].isOpen ? (
                                                             <span>{business.openingTime[day].from + " - " + business.openingTime[day].to}</span>

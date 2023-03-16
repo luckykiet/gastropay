@@ -16,6 +16,7 @@ export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [isEmailValid, setIsEmailValid] = useState(null);
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -33,6 +34,8 @@ export default function LoginPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setPostMsg('')
+        setIsLoading(true);
         if (email === '' || !isEmailValid || password === '') {
             setPostMsg("Zkontrolujte vyplněné údaje!");
         } else {
@@ -54,6 +57,7 @@ export default function LoginPage() {
                 setPostMsg(err.response?.data.msg ? err.response.data.msg : err);
             }
         }
+        setIsLoading(false);
     };
 
     const handleBackToApp = () => {
@@ -91,9 +95,13 @@ export default function LoginPage() {
                                     <p>Zapoměl(a) jste heslo? <Link to={PATHS.FORGOTTEN_PASS} className="is-underlined">Obnovte heslo</Link></p>
                                     <Columns pt={4}>
                                         <Column size={"half"}>
-                                            <Button submit fullwidth color={'success'}>
-                                                Přihlásit se
-                                            </Button>
+                                            {isLoading ?
+                                                <Button disabled fullwidth color={'success'} className="is-loading" />
+                                                :
+                                                <Button submit fullwidth color={'success'}>
+                                                    Přihlásit se
+                                                </Button>
+                                            }
                                         </Column>
                                         <Column size={"half"}>
                                             <Button onClick={handleBackToApp} fullwidth color={'warning'}>

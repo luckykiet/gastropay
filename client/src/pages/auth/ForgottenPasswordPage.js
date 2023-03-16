@@ -23,6 +23,7 @@ export default function ForgottenPasswordPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setPostMsg('');
         setLoading(true);
         if (email === '' || !isEmailValid) {
             setPostMsg("Zkontrolujte vyplněné údaje!");

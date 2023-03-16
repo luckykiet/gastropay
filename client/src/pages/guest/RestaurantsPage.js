@@ -64,7 +64,6 @@ export default function RestaurantsPage() {
                 if (!success) {
                     throw new Error(msg);
                 }
-
                 setRestaurants(msg);
                 setSearchMsg('');
             } catch (err) {
@@ -95,13 +94,9 @@ export default function RestaurantsPage() {
                 <LoadingComponent />
             ) :
                 (
-                    (!restaurants || Object.keys(restaurants).length === 0) ? (
-                        <Container>
-                            <Columns centered>
-                                <TextContent textAlign={"center"}>
-                                    <p>{searchMsg !== '' ? searchMsg : "Momentálně není žádná restaurace aktivní :("}</p>
-                                </TextContent>
-                            </Columns>
+                    (!restaurants || restaurants.length === 0) ? (
+                        <Container className="has-text-centered">
+                            <p className="is-size-4 has-text-weight-bold">{searchMsg !== '' ? searchMsg : "Momentálně není žádná restaurace aktivní :("}</p>
                         </Container>
                     ) : (
                         <Container>

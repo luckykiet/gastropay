@@ -48,7 +48,6 @@ export default function AddPanelPage() {
         );
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setPostMsg({});
