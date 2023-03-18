@@ -170,7 +170,7 @@ export default function PaymentPage() {
                                                         <Select id='inputTables' onChange={(e) => setSelectedTable(e.target.value)} value={selectedTable} required>
                                                             {tables.map((table) => {
                                                                 return (
-                                                                    <option value={table} key={table}>{table}</option>
+                                                                    <option value={table.name} key={table.id}>{table.name}</option>
                                                                 )
                                                             })}
                                                         </Select>

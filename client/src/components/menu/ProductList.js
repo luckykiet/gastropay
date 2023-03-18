@@ -24,7 +24,7 @@ const notificationReducer = (state, action) => {
 };
 
 export default function ProductList({ group, content }) {
-    const groupedProducts = content.filter((product) => product.group === group);
+    const groupedProducts = content.filter((product) => product.tab === group);
 
     const [notification, dispatch] = useReducer(notificationReducer, {
         isShowed: false,

@@ -1,0 +1,458 @@
+{
+  "success": true,
+  "msg": {
+    "activeTimeIntervals": [
+      {
+        "begin": "10:00",
+        "end": "14:00"
+      },
+      {
+        "begin": "17:00",
+        "end": "21:00"
+      }
+    ],
+    "activeWeekDays": {
+      "Mon": true,
+      "Tue": true,
+      "Wed": true,
+      "Thu": true,
+      "Fri": true,
+      "Sat": false,
+      "Sun": false
+    },
+    "sections": [
+      {
+        "name": "Hlavní jídlo - Pho",
+        "items": [
+          {
+            "ean": "1",
+            "image": "https://www.postavy.cz/foto/pikachu-foto.jpg"
+          },
+          {
+            "ean": "P01",
+            "image": "https://www.postavy.cz/foto/pikachu-foto.jpg"
+          },
+          {
+            "ean": "P02",
+            "image": ""
+          }
+        ]
+      },
+      {
+        "name": "Hlavní jídlo - Bun",
+        "items": [
+          {
+            "ean": "B01",
+            "image": "https://www.postavy.cz/foto/pikachu-foto.jpg"
+          },
+          {
+            "ean": "B02",
+            "image": "https://www.postavy.cz/foto/pikachu-foto.jpg"
+          }
+        ]
+      }
+    ],
+    "mods": {
+      "A": {
+        "name": "Bez arašídů - Kô Lạc",
+        "groups": [3, 4, 5],
+        "eans": []
+      },
+      "B": {
+        "name": "Bez cibulky - Kô hành phi",
+        "groups": [3, 4],
+        "eans": []
+      },
+      "C": {
+        "name": "Bez čili - Kô ớt cay",
+        "groups": [2, 3, 4, 5],
+        "eans": []
+      },
+      "D": {
+        "name": "Bez čer. cibule - Kô hành tím",
+        "groups": [2, 3, 4, 5],
+        "eans": []
+      },
+      "E": {
+        "name": "Bez jar. cibulky - Kô hành lá",
+        "groups": [2, 3, 4, 5],
+        "eans": []
+      },
+      "F": {
+        "name": "Bez koriandr - Kô mùi",
+        "groups": [2, 3, 4, 5],
+        "eans": []
+      },
+      "G": {
+        "name": "Bez ledu - Kô đá",
+        "groups": [7, 9],
+        "eans": []
+      },
+      "H": {
+        "name": "Bez mungo - Kô giá đỗ",
+        "groups": [2, 3, 4, 5],
+        "eans": []
+      },
+      "I": {
+        "name": "Bez nudlí - Kô mỳ",
+        "groups": [2, 3],
+        "eans": []
+      },
+      "J": {
+        "name": "Bez pepře - Kô hạt tiêu",
+        "groups": [2],
+        "eans": []
+      },
+      "K": {
+        "name": "Bez perily - Kô kinh giới tía tô",
+        "groups": [2, 5],
+        "eans": []
+      },
+      "L": {
+        "name": "Bez rybí omáčky - Kô nước mắm",
+        "groups": [2, 3, 4, 5],
+        "eans": []
+      },
+      "M": {
+        "name": "Bez tofu - Kô đậu",
+        "groups": [2, 3, 4, 5],
+        "eans": []
+      },
+      "N": {
+        "name": "Kô nộm",
+        "groups": [3, 5],
+        "eans": []
+      },
+      "O": {
+        "name": "Bez vepřové - Nem kô thịt lợn",
+        "groups": [5],
+        "eans": []
+      },
+      "P": {
+        "name": "Bez Lepku - Thịt kô dầu hào",
+        "groups": [3, 4],
+        "eans": []
+      }
+    },
+    "surcharges": {
+      "E01": {
+        "groups": [2, 3],
+        "eans": []
+      },
+      "E02": {
+        "groups": [2, 3],
+        "eans": []
+      },
+      "E03": {
+        "groups": [2, 3, 4],
+        "eans": []
+      },
+      "E04": {
+        "groups": [3, 4],
+        "eans": []
+      },
+      "E05": {
+        "groups": [2, 3, 4],
+        "eans": []
+      },
+      "E06": {
+        "groups": [2, 3],
+        "eans": []
+      },
+      "E08": {
+        "groups": [4],
+        "eans": []
+      },
+      "E09": {
+        "groups": [2, 3, 4],
+        "eans": []
+      },
+      "E07": {
+        "groups": [2],
+        "eans": []
+      }
+    },
+    "business": {
+      "name": "Bisztró",
+      "currency": {
+        "locale": "hu",
+        "rounding": false,
+        "symbol": "Ft",
+        "code": "HUF"
+      }
+    },
+    "articles": {
+      "E01": {
+        "name": "Extra  citrón",
+        "price": "5.00",
+        "group": "1",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "E02": {
+        "name": "Extra bylinky",
+        "price": "15.00",
+        "group": "1",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "E03": {
+        "name": "Extra čili",
+        "price": "5.00",
+        "group": "1",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "E04": {
+        "name": "Extra krevety",
+        "price": "79.00",
+        "group": "1",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "E05": {
+        "name": "Extra maso",
+        "price": "55.00",
+        "group": "1",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "E06": {
+        "name": "Extra nudle",
+        "price": "45.00",
+        "group": "1",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "E08": {
+        "name": "Extra rýže - Com Trang",
+        "price": "50.00",
+        "group": "1",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "E09": {
+        "name": "Extra veggie",
+        "price": "40.00",
+        "group": "1",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "E07": {
+        "name": "Telecí příplatek",
+        "price": "20.00",
+        "group": "1",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "P01": {
+        "name": "Pho Bo Chin - hovezi",
+        "price": "155.00",
+        "group": "2",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "P02": {
+        "name": "Pho Bo Tai - Rare hovězí",
+        "price": "159.00",
+        "group": "2",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "B01": {
+        "name": "Bun Nem",
+        "price": "159.00",
+        "group": "3",
+        "amount": 1,
+        "unit": "pcs"
+      },
+      "B02": {
+        "name": "Bun Bo Nam Bo",
+        "price": "169.00",
+        "group": "3",
+        "amount": 1,
+        "unit": "pcs"
+      }
+    },
+    "groups": [
+      {
+        "_id": "5fc3f6ae7a2b7d21b409847a",
+        "number": 1,
+        "name": "POTRAVINY",
+        "tax": 15,
+        "bg": "BB5151",
+        "button": true,
+        "key": "",
+        "image": "ysnmmpo5vaovutord2mx"
+      },
+      {
+        "_id": "5fc3f6c97a2b7d21b409847c",
+        "number": 2,
+        "name": "PHO",
+        "tax": 10,
+        "bg": "BB5151",
+        "button": false,
+        "key": "",
+        "image": "cotzi991rmrpzuer2won"
+      },
+      {
+        "_id": "5fc3f6d17a2b7d21b409847e",
+        "number": 3,
+        "name": "BÚN",
+        "tax": 10,
+        "bg": "B02020",
+        "button": false,
+        "key": "",
+        "image": "nh5gpxbi0j7u3eo2w8sd"
+      },
+      {
+        "_id": "5fc3f6d87a2b7d21b4098480",
+        "number": 4,
+        "name": "COM",
+        "tax": 10,
+        "bg": "5059BA",
+        "button": false,
+        "key": "",
+        "image": "zmcbu7a93zfc9oytxzaq"
+      },
+      {
+        "_id": "5fc3f7297a2b7d21b4098489",
+        "number": 5,
+        "name": "STARTER",
+        "tax": 10,
+        "bg": "BB5151",
+        "button": false,
+        "key": "",
+        "image": "ftiwxziaghsgicpeagso"
+      },
+      {
+        "_id": "5fc3f74b7a2b7d21b409848e",
+        "number": 6,
+        "name": "DEZERT",
+        "tax": 10,
+        "bg": "BB5151",
+        "button": false,
+        "key": "",
+        "image": ""
+      },
+      {
+        "_id": "5fc3f7657a2b7d21b4098493",
+        "number": 7,
+        "name": "NEALKO. NÁPOJE",
+        "tax": 10,
+        "bg": "BB5151",
+        "button": false,
+        "key": "",
+        "image": ""
+      },
+      {
+        "_id": "5fc3f8b77a2b7d21b40984ae",
+        "number": 8,
+        "name": "KÁVA",
+        "tax": 10,
+        "bg": "BB5151",
+        "button": false,
+        "key": "",
+        "image": ""
+      },
+      {
+        "_id": "5fc3f8c37a2b7d21b40984b0",
+        "number": 9,
+        "name": "ALKO. NÁPOJE",
+        "tax": 21,
+        "bg": "BB5151",
+        "button": false,
+        "key": "",
+        "image": ""
+      },
+      {
+        "_id": "5fc3f8d47a2b7d21b40984b4",
+        "number": 10,
+        "name": "VÍNO",
+        "tax": 21,
+        "bg": "BB5151",
+        "button": false,
+        "key": "",
+        "image": ""
+      },
+      {
+        "_id": "5fc3f8e77a2b7d21b40984b8",
+        "number": 11,
+        "name": "OBALY",
+        "tax": 15,
+        "bg": "BB5151",
+        "button": false,
+        "key": "",
+        "image": ""
+      },
+      {
+        "_id": "5fc3f8f07a2b7d21b40984ba",
+        "number": 12,
+        "name": "DOPLŇKY",
+        "tax": 21,
+        "bg": "BB5151",
+        "button": false,
+        "key": "",
+        "image": ""
+      },
+      {
+        "_id": "5fc3f9477a2b7d21b40984bc",
+        "number": 13,
+        "name": "SPROPITNÉ",
+        "tax": 15,
+        "bg": "BB5151",
+        "button": true,
+        "key": "",
+        "image": "v8ggfumzabbpnn3sxsbi"
+      },
+      {
+        "_id": "5fc405667a2b7d21b40984e0",
+        "number": 14,
+        "name": "EXTRA",
+        "tax": 10,
+        "bg": "BB5151",
+        "button": false,
+        "key": "",
+        "image": ""
+      }
+    ],
+    "tables": [
+      {
+        "_id": "5fca2fd7b9a33d1cb0e04f60",
+        "table_name": "V01",
+        "table_desc": "",
+        "bg": "334C60"
+      },
+      {
+        "_id": "5fca6ab2b9a33d1cb0e09068",
+        "table_name": "V02",
+        "table_desc": "",
+        "bg": "334C60"
+      },
+      {
+        "_id": "60aa29b3dfe17d1e084830a6",
+        "table_name": "V03",
+        "table_desc": "",
+        "bg": "334C60"
+      },
+      {
+        "_id": "60aa29b7dfe17d1e084830a9",
+        "table_name": "V04",
+        "table_desc": "",
+        "bg": "334C60"
+      },
+      {
+        "_id": "60aa29bfdfe17d1e084830b3",
+        "table_name": "Z01",
+        "table_desc": "",
+        "bg": "2E7A2A"
+      },
+      {
+        "_id": "60aa29c4dfe17d1e084830b8",
+        "table_name": "Z02",
+        "table_desc": "",
+        "bg": "2E7A2A"
+      }
+    ]
+  }
+}

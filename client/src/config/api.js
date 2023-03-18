@@ -10,6 +10,7 @@ const api = {
     TRANSACTION: "transaction",
     PAYMENT_METHODS: "paymentMethods",
     CHANGE_PASSWORD: 'changepassword',
-    CSOB_URL: "csob_url"
+    CSOB_URL: "csob_url",
+    PROXY: "proxy"
 }
 export { api as API };
