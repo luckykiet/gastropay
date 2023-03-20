@@ -24,58 +24,56 @@ export default function MenuPage() {
         if (Object.keys(restaurant).length === 0) {
             navigate(PATHS.RESTAURANTS);
         } else {
-            try {
-                const axios = createAxios(addSlashAfterUrl(`${CONFIG.API_URL}/${API.PROXY}`));
-                Promise.delay(300).then(() => {
-                    return axios.get(`get?url=${restaurant.api.menuUrl}${restaurant.api.key}`);
-                }).then((resp) => {
-                    const { data: { success, msg } } = resp;
-                    if (!success) {
-                        throw new Error(msg);
-                    }
-                    const groups = msg.sections;
-                    const products = msg.articles;
-                    const tabs = [];
-                    const newMenu = [];
-                    groups.forEach(({ name, items }) => {
-                        const tabId = nanoid();
-                        tabs.push({
-                            id: tabId,
-                            name,
-                        });
-
-                        items.forEach((item) => {
-                            const product = products[item.ean];
-                            if (product) {
-                                newMenu.push({
-                                    name: product.name,
-                                    price: product.price,
-                                    tab: tabId,
-                                    ean: item.ean,
-                                    image: item.image,
-                                });
-                            }
-                        });
+            setLoading(true);
+            const axios = createAxios(addSlashAfterUrl(`${CONFIG.API_URL}/${API.PROXY}`));
+            Promise.delay(300).then(() => {
+                return axios.get(`get?url=${restaurant.api.menuUrl}${restaurant.api.key}`);
+            }).then((resp) => {
+                const { data: { success, msg } } = resp;
+                if (!success) {
+                    throw new Error(msg);
+                }
+                const groups = msg.sections;
+                const products = msg.articles;
+                const tabs = [];
+                const newMenu = [];
+                groups.forEach(({ name, items }) => {
+                    const tabId = nanoid();
+                    tabs.push({
+                        id: tabId,
+                        name,
                     });
 
-                    const tables = [];
-                    if (msg.tables) {
-                        msg.tables.map((table) => (
-                            tables.push({
-                                id: nanoid(),
-                                name: table.table_name
-                            })
-                        ))
-                    }
-                    setTables(tables);
-                    setMenu({ tabs, menu: newMenu });
+                    items.forEach((item) => {
+                        const product = products[item.ean];
+                        if (product) {
+                            newMenu.push({
+                                name: product.name,
+                                price: product.price,
+                                tab: tabId,
+                                ean: item.ean,
+                                image: item.image,
+                            });
+                        }
+                    });
                 });
-            } catch (error) {
+
+                const tables = [];
+                if (msg.tables) {
+                    msg.tables.map((table) => (
+                        tables.push({
+                            id: table._id,
+                            name: table.table_name
+                        })
+                    ))
+                }
+                setTables(tables);
+                setMenu({ tabs, menu: newMenu });
+                setLoading(false);
+            }).catch((error) => {
                 setMenu({});
                 console.log(error);
-            } finally {
-                setLoading(false);
-            }
+            });
         }
     }, [navigate, restaurant, setTables]);
 
@@ -86,7 +84,7 @@ export default function MenuPage() {
             ) : (
                 <Fragment>
                     <Content textAlign="center">
-                        <Heading spaced>
+                        <Heading>
                             {restaurant.name} - Menu
                         </Heading>
                     </Content>

@@ -21,10 +21,17 @@ const TransactionSchema = new Schema({
                 message: 'Orders must contain at least one order.'
             }
         },
-        isConfirmed: { type: Boolean, required: true, default: false }
+    },
+    pos: {
+        isConfirmed: { type: Boolean, required: true, default: false },
+        callingNumber: { type: String, default: "" },
+        receiptNumber: { type: String, default: "" },
     },
     tips: { type: Number, required: true, default: 0 },
-    deliveryMethod: { type: String, default: "" },
+    deliveryMethod: {
+        name: { type: String, default: "" },
+        id: { type: String, default: "" }
+    },
     email: { type: String, trim: true, match: [/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/], required: true },
     paymentMethod: {
         type: Object,

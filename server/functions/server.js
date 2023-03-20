@@ -27,7 +27,7 @@ const ProxyRouter = require('./routes/ProxyRouter');
 
 const TransactionController = require('./controllers/TransactionController');
 setInterval(TransactionController.runAutoCheckPayment, 20000);
-
+setInterval(TransactionController.runAutoSendToPos, 20000);
 // Inits
 const app = express();
 app.use(helmet());
@@ -37,7 +37,10 @@ app.use(cors());
 app.use(morgan('combined'));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-connectDB();
+const connect = async () => {
+    await connectDB();
+}
+connect();
 
 // Define api
 app.use('/api', RestaurantRouter);
