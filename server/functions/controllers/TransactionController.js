@@ -338,13 +338,7 @@ const checkPayment = async (refId) => {
                 const status = decodeURIComponent(params.get('status'));
                 const statusField = "paymentMethod." + paymentMethodName + ".status";
                 if (status === 'PAID') {
-                    console.log("Sending transaction: " + transaction.refId + " to POS.")
-                    const resp = await sendToPos({ transaction: transaction, restaurant: restaurant }, paymentMethodName);
-                    if (!resp.success) {
-                        await transaction.updateOne({ [statusField]: status, status: status });
-                    } else {
-                        await transaction.updateOne({ [statusField]: status, status: 'COMPLETED' });
-                    }
+                    await transaction.updateOne({ [statusField]: status, status: status });
                 } else if (status === 'CANCELLED') {
                     await transaction.updateOne({ [statusField]: status, status: status });
                 }
@@ -367,13 +361,7 @@ const checkPayment = async (refId) => {
             //     9: "Zpracování vrácení"
             //     10: "Platba vrácena"
             if (status === 4 || status === 7 || status === 8) {
-                console.log("Sending transaction: " + transaction.refId + " to POS.")
-                const resp = await sendToPos({ transaction: transaction, restaurant: restaurant }, paymentMethodName);
-                if (!resp.success) {
-                    await transaction.updateOne({ [statusField]: status, status: 'PAID' });
-                } else {
-                    await transaction.updateOne({ [statusField]: status, status: 'COMPLETED' });
-                }
+                await transaction.updateOne({ [statusField]: status, status: 'PAID' });
             } else if (status === 3 || status === 5 || status === 6) {
                 await transaction.updateOne({ [statusField]: status, status: "CANCELLED" });
             }
@@ -457,86 +445,82 @@ const runAutoSendToPos = async () => {
 };
 
 const sendToPos = async (refId) => {
+    const transaction = await TransactionModel.findOne({ refId: refId });
+    if (!transaction) {
+        return { success: false, msg: `Transaction not found` };
+    }
     try {
-        const transaction = await TransactionModel.findOne({ refId: refId });
-        if (!transaction) {
-            return { success: false, msg: `Transaction not found` };
-        }
-
-        const restaurant = await RestaurantModel.findById(transaction.idRestaurant).select("idOwner api").exec();
+        const restaurant = await RestaurantModel.findById(transaction.idRestaurant)
+            .select('idOwner api')
+            .exec();
         if (!restaurant) {
             return { success: false, msg: `Restaurant not found` };
         }
 
         if (!restaurant.api.posUrl) {
             await transaction.updateOne({ status: 'COMPLETED', pos: { isConfirmed: true } });
-            console.log("Merchant " + restaurant.idOwner + " has not set POS api.")
-            return { success: true, msg: { isConfirmed: true } }
+            console.log(`Merchant ${restaurant.idOwner} has not set POS api.`);
+            return { success: true, msg: { isConfirmed: true } };
         }
 
         const paymentMethodName = Object.keys(transaction.paymentMethod)[0];
 
-        let totalPrice = 0;
-        const items = [];
-        for (const item of transaction.cart.orders) {
-            const amount = parseFloat(item.price) * item.quantity;
-            items.push({
-                ean: item.ean,
-                price: amount.toFixed(2),
-                quantity: item.quantity,
-                note: "",
-                mods: ""
-            })
-            totalPrice += amount;
-        }
-        totalPrice += transaction.tips;
+        const items = transaction.cart.orders.map((item) => ({
+            ean: item.ean,
+            price: (parseFloat(item.price) * item.quantity).toFixed(2),
+            quantity: item.quantity,
+            note: '',
+            mods: '',
+        }));
+
+        const totalPrice = items.reduce((acc, item) => acc + parseFloat(item.price), 0) + transaction.tips;
 
         let paymentId = '';
 
         switch (paymentMethodName) {
             case 'comgate':
-                paymentId = transaction.paymentMethod[paymentMethodName].transId
+                paymentId = transaction.paymentMethod[paymentMethodName].transId;
                 break;
             case 'csob':
-                paymentId = transaction.paymentMethod[paymentMethodName].payId
+                paymentId = transaction.paymentMethod[paymentMethodName].payId;
                 break;
             default:
-                throw new Error("Unsupported payment gate")
+                throw new Error('Unsupported payment gate');
         }
 
         const data = {
             key: restaurant.api.key,
             totalPrice: totalPrice.toFixed(2),
-            tableName: transaction.deliveryMethod.name ? transaction.deliveryMethod.name : "Table",
-            tableId: transaction.deliveryMethod.id ? transaction.deliveryMethod.id : "ID",
+            tableName: transaction.deliveryMethod.name || 'Table',
+            tableId: transaction.deliveryMethod.id || 'ID',
             items: JSON.stringify(items),
-            paymentId: paymentId,
-            paymentGate: paymentMethodName
-        }
-        const options = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } };
-        try {
-            const resp = await axios.post(restaurant.api.posUrl, data, options);
-            if (!resp.data.success) {
-                return new Error(resp.data.msg);
-            }
+            paymentId,
+            paymentGate: paymentMethodName,
+        };
 
-            const pos = {
-                isConfirmed: true,
-                callingNumber: resp.data.msg.callingNumber,
-                receiptNumber: resp.data.msg.receiptNumber
-            }
-            await transaction.updateOne({ status: 'COMPLETED', pos: pos });
-            console.log("Transaction " + transaction.refId + " successfully sent.")
-            return { success: true, msg: "Transaction " + transaction.refId + " successfully sent." };
-        } catch (error) {
-            if (error.response?.status === 409) {
-                console.log("Transaction " + transaction.refId + " already summited")
-                await transaction.updateOne({ status: 'COMPLETED', pos: { isConfirmed: true } });
-            }
-            console.log(error.response.data);
-            throw new Error();
+        const options = { headers: { 'Content-Type': `application/${restaurant.api.contentType}` } };
+        const resp = await axios.post(restaurant.api.posUrl, data, options);
+        if (!resp.data.success) {
+            throw new Error(resp.data.msg);
         }
-    } catch (error) {
+        const pos = {
+            isConfirmed: true,
+            callingNumber: resp.data.msg.callingNumber,
+            receiptNumber: resp.data.msg.receiptNumber,
+        };
+        await transaction.updateOne({ status: 'COMPLETED', pos });
+
+
+        console.log(`Transaction ${transaction.refId} successfully sent.`);
+        return { success: true, msg: `Transaction ${transaction.refId} successfully sent.` };
+    }
+    catch (error) {
+        console.log(error)
+        if (error.response?.status === 409) {
+            console.log("Transaction " + transaction.refId + " already summited")
+            await transaction.updateOne({ status: 'COMPLETED', pos: { isConfirmed: true } });
+            return { success: true, msg: `Transaction ${transaction.refId} successfully sent.` };
+        }
         return { success: false, msg: "Failed to send to POS." };
     }
 }
