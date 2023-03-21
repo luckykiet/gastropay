@@ -4,7 +4,10 @@ const RestaurantModel = require("../models/RestaurantModel");
 const TransactionModel = require("../models/TransactionModel");
 const ObjectId = require("mongoose").Types.ObjectId;
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const moment = require('moment');
+const config = require('../config/config');
+const { customAlphabet } = require('nanoid');
 
 const createRestaurant = async (req, res, next) => {
     try {
@@ -28,12 +31,21 @@ const createRestaurant = async (req, res, next) => {
                 msg: "Restaurant " + foundRestaurant.name + " already exists!",
             });
         }
+
         const restaurant = new RestaurantModel({
             ...body,
             idOwner: ObjectId(authorizedMerchantId),
             openingTime: {},
-            paymentGates: { comgate: {} }
+            paymentGates: {},
+            key: ""
         });
+
+        const nanoid = customAlphabet('0123456789', 5)
+        const inputString = restaurant._id + config.JWT_SECRET + req.userId + nanoid();
+        const objectIdHash = generateRestaurantKey(inputString);
+        console.log(objectIdHash);
+        restaurant.key = objectIdHash;
+
         await restaurant.save().then(() => {
             return res.status(200).json({
                 success: true,
@@ -43,7 +55,6 @@ const createRestaurant = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-
 };
 
 const getRestaurants = async (req, res) => {
@@ -151,7 +162,7 @@ const deleteRestaurant = async (req, res) => {
 const getRestaurantByID = async (req, res) => {
     try {
         const query = RestaurantModel.findOne({ _id: ObjectId(req.params.restaurantId), idOwner: ObjectId(req.userId) });
-        query.select("_id name address openingTime image api isAvailable");
+        query.select("_id name address openingTime image api key isAvailable");
         const restaurant = await query.lean().exec();
         if (!restaurant) {
             return res
@@ -319,6 +330,12 @@ const updatePassword = async (req, res, next) => {
         next(err);
     }
 };
+
+const generateRestaurantKey = (inputString) => {
+    const hash = crypto.createHash('sha256').update(inputString).digest('hex');
+    const objectIdHex = hash.slice(0, 24);
+    return objectIdHex;
+}
 
 module.exports = {
     createRestaurant,

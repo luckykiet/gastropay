@@ -24,6 +24,7 @@ const AuthenticateRouter = require('./routes/AuthenticateRouter');
 const TransactionRouter = require('./routes/TransactionRouter');
 const GuestRouter = require('./routes/GuestRouter');
 const ProxyRouter = require('./routes/ProxyRouter');
+const PosRouter = require('./routes/PosRouter');
 
 const TransactionController = require('./controllers/TransactionController');
 setInterval(TransactionController.runAutoCheckPayment, 20000);
@@ -31,7 +32,7 @@ setInterval(TransactionController.runAutoSendToPos, 20000);
 // Inits
 const app = express();
 app.use(helmet());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 app.use(morgan('combined'));
@@ -45,14 +46,16 @@ connect();
 // Define api
 app.use('/api', RestaurantRouter);
 app.use('/api', GuestRouter);
-app.use('/api', ProxyRouter);
+app.use('/api', PosRouter);
+app.use('/api', cors(corsOnlyAppAllowedOption), ProxyRouter);
 app.use('/api', cors(corsOnlyAppAllowedOption), MerchantRouter);
 app.use('/api', cors(corsOnlyAppAllowedOption), AuthenticateRouter);
 app.use('/api', cors(corsOnlyAppAllowedOption), TransactionRouter);
 
 app.use(config.SERVERLESS_PATH, RestaurantRouter);
 app.use(config.SERVERLESS_PATH, GuestRouter);
-app.use(config.SERVERLESS_PATH, ProxyRouter);
+app.use(config.SERVERLESS_PATH, PosRouter);
+app.use(config.SERVERLESS_PATH, cors(corsOnlyAppAllowedOption), ProxyRouter);
 app.use(config.SERVERLESS_PATH, cors(corsOnlyAppAllowedOption), MerchantRouter);
 app.use(config.SERVERLESS_PATH, cors(corsOnlyAppAllowedOption), AuthenticateRouter);
 app.use(config.SERVERLESS_PATH, cors(corsOnlyAppAllowedOption), TransactionRouter);

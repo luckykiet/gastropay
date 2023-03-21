@@ -31,12 +31,11 @@ export default function TransactionPage() {
         const fetchTransaction = async () => {
             try {
                 const { data: { success, msg } } = await axios.get(`${API.TRANSACTION}/${idTransaction}`);
-                if (success) {
-                    setResult(msg);
-                    setPaymentMethod(msg.transaction.paymentMethod);
-                } else {
-                    console.log(msg);
+                if (!success) {
+                    throw new Error("Nečítání transakce selhala!")
                 }
+                setResult(msg);
+                setPaymentMethod(msg.transaction.paymentMethod);
             } catch (error) {
                 console.log(error.response.data.msg)
             } finally {
@@ -47,9 +46,9 @@ export default function TransactionPage() {
         Promise.delay(0).then(fetchTransaction);
 
         if (result?.transaction?.status === 'PENDING' || result?.transaction?.status === 'PAID') {
-            const interval = setInterval(() => {
-                fetchTransaction();
-            }, 10000);
+            const interval = setInterval(async () => {
+                await fetchTransaction();
+            }, 15000);
             return () => clearInterval(interval);
         }
 

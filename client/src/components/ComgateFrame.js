@@ -16,7 +16,7 @@ export default function ComgateFrame({ paymentMethod, onClose }) {
         <Modal show={showModal} onClose={handleClose}>
             <Card>
                 <Body>
-                    <Container breakpoint={'fluid'} className='has-text-centered'>
+                    <Container breakpoint={'fullhd'} className='has-text-centered'>
                         <iframe title='comgate-payment' id='comgate-iframe' src={"https://payments.comgate.cz/client/instructions/index?id=" + paymentMethod.transId} />
                     </Container>
                 </Body>

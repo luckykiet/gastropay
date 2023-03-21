@@ -17,6 +17,7 @@ const RestaurantSchema = new Schema({
     },
     image: { type: String, trim: true, default: "" },
     openingTime: { type: OpeningTime, required: true },
+    key: { type: String, required: true, default: "key" },
     isAvailable: { type: Boolean, required: true, default: false }
 }, { strict: true, timestamps: true });
 

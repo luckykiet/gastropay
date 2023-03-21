@@ -12,6 +12,8 @@ import { useSetChosenRestaurant } from '../../../stores/MerchantStores';
 import OpeningTimeInputs from '../../../components/merchant/OpeningTimeInputs';
 import { API } from '../../../config/api';
 import { CONFIG } from '../../../config/config';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
 const { Field, Label, Control, Input, Help, Select } = Form;
 export default function EditPanelPage() {
@@ -189,6 +191,7 @@ export default function EditPanelPage() {
                             <Box>
                                 <form onSubmit={handleSubmit}>
                                     <Block>
+                                        <Heading renderAs='p' size={4} className='has-text-weight-bold'>Key API: <span>{restaurant.key}</span>&nbsp;<FontAwesomeIcon className='is-clickable' onClick={() => { navigator.clipboard.writeText(restaurant.key) }} icon={faCopy} /></Heading>
                                         <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Profile:</Heading>
                                         <div className='is-pulled-right'>
                                             <Heading renderAs='label' htmlFor={'checkBoxIsAvailable'} size={5} mr={4} className='has-text-weight-bold is-inline-block'>Aktivní: </Heading>

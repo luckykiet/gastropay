@@ -408,17 +408,14 @@ const getPaymentMethods = async (req, res) => {
     }
 }
 
-
 const runAutoSendToPos = async () => {
     let page = 1;
     let transactions = [];
 
     while (true) {
         const pendings = await TransactionModel.find({
-            $or: [
-                { 'pos.isConfirmed': false },
-            ],
             $and: [
+                { 'pos.isConfirmed': false },
                 { 'status': 'PAID' },
             ]
         }).sort({ createAt: 'desc' }).select("refId").skip((page - 1) * BATCH_SIZE).limit(BATCH_SIZE).exec();
@@ -458,8 +455,8 @@ const sendToPos = async (refId) => {
         }
 
         if (!restaurant.api.posUrl) {
-            await transaction.updateOne({ status: 'COMPLETED', pos: { isConfirmed: true } });
             console.log(`Merchant ${restaurant.idOwner} has not set POS api.`);
+            await transaction.updateOne({ status: 'COMPLETED', pos: { isConfirmed: true } });
             return { success: true, msg: { isConfirmed: true } };
         }
 
@@ -497,7 +494,6 @@ const sendToPos = async (refId) => {
             paymentId,
             paymentGate: paymentMethodName,
         };
-
         const options = { headers: { 'Content-Type': `application/${restaurant.api.contentType}` } };
         const resp = await axios.post(restaurant.api.posUrl, data, options);
         if (!resp.data.success) {
@@ -509,8 +505,6 @@ const sendToPos = async (refId) => {
             receiptNumber: resp.data.msg.receiptNumber,
         };
         await transaction.updateOne({ status: 'COMPLETED', pos });
-
-
         console.log(`Transaction ${transaction.refId} successfully sent.`);
         return { success: true, msg: `Transaction ${transaction.refId} successfully sent.` };
     }
