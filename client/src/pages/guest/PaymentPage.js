@@ -59,7 +59,6 @@ export default function PaymentPage() {
                 throw new Error("Vyberte si stůl");
             }
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
-            console.log(selectedTable.name, selectedTable.id)
             const transaction = {
                 tips: tips,
                 restaurant: chosenRestaurant,

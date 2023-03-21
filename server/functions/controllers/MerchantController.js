@@ -4,10 +4,7 @@ const RestaurantModel = require("../models/RestaurantModel");
 const TransactionModel = require("../models/TransactionModel");
 const ObjectId = require("mongoose").Types.ObjectId;
 const bcrypt = require('bcryptjs');
-const crypto = require('crypto');
 const moment = require('moment');
-const config = require('../config/config');
-const { customAlphabet } = require('nanoid');
 
 const createRestaurant = async (req, res, next) => {
     try {
@@ -36,15 +33,8 @@ const createRestaurant = async (req, res, next) => {
             ...body,
             idOwner: ObjectId(authorizedMerchantId),
             openingTime: {},
-            paymentGates: {},
-            key: ""
+            paymentGates: {}
         });
-
-        const nanoid = customAlphabet('0123456789', 5)
-        const inputString = restaurant._id + config.JWT_SECRET + req.userId + nanoid();
-        const objectIdHash = generateRestaurantKey(inputString);
-        console.log(objectIdHash);
-        restaurant.key = objectIdHash;
 
         await restaurant.save().then(() => {
             return res.status(200).json({
@@ -330,12 +320,6 @@ const updatePassword = async (req, res, next) => {
         next(err);
     }
 };
-
-const generateRestaurantKey = (inputString) => {
-    const hash = crypto.createHash('sha256').update(inputString).digest('hex');
-    const objectIdHex = hash.slice(0, 24);
-    return objectIdHex;
-}
 
 module.exports = {
     createRestaurant,

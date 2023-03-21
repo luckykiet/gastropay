@@ -17,7 +17,7 @@ const RestaurantSchema = new Schema({
     },
     image: { type: String, trim: true, default: "" },
     openingTime: { type: OpeningTime, required: true },
-    key: { type: String, required: true, default: "key" },
+    key: { type: Schema.Types.ObjectId, required: true, unique: true, default: () => new mongoose.Types.ObjectId() },
     isAvailable: { type: Boolean, required: true, default: false }
 }, { strict: true, timestamps: true });
 

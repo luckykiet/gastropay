@@ -18,6 +18,8 @@ const getTransaction = async (req, res) => {
         const status = transaction.paymentMethod[paymentMethodName].status;
         if (status === 'PENDING' || status === 1 || status === 2) {
             await TransactionController.checkPayment(idTransaction);
+        } else if (transaction.status === 'PAID') {
+            await TransactionController.sendToPos(transaction.refId);
         }
 
         const restaurant = await RestaurantModel.findById(transaction.idRestaurant).select("idOwner name address").exec();

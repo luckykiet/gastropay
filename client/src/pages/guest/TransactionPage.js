@@ -17,6 +17,7 @@ export default function TransactionPage() {
     const [paymentMethod, setPaymentMethod] = useState({});
     const [result, setResult] = useState({});
     const [showPaymentBox, setShowPaymentBox] = useState(false);
+    const [isCompleted, setIsCompleted] = useState(false);
 
     const handlePayClick = (e) => {
         e.preventDefault();
@@ -29,6 +30,7 @@ export default function TransactionPage() {
     useEffect(() => {
         const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
         const fetchTransaction = async () => {
+            console.log("Checking...")
             try {
                 const { data: { success, msg } } = await axios.get(`${API.TRANSACTION}/${idTransaction}`);
                 if (!success) {
@@ -36,23 +38,23 @@ export default function TransactionPage() {
                 }
                 setResult(msg);
                 setPaymentMethod(msg.transaction.paymentMethod);
+                if (msg.transaction.status === 'CANCELLED' || msg.transaction.status === 'COMPLETED') {
+                    setIsCompleted(true);
+                }
             } catch (error) {
                 console.log(error.response.data.msg)
             } finally {
                 setIsLoading(false);
             }
         };
-
         Promise.delay(0).then(fetchTransaction);
-
-        if (result?.transaction?.status === 'PENDING' || result?.transaction?.status === 'PAID') {
-            const interval = setInterval(async () => {
-                await fetchTransaction();
+        if (!isCompleted) {
+            const interval = setInterval(() => {
+                Promise.delay(0).then(fetchTransaction);
             }, 15000);
             return () => clearInterval(interval);
         }
-
-    }, [idTransaction, result?.transaction?.status]);
+    }, [idTransaction, isCompleted]);
 
     useLayoutEffect(() => {
         const html = document.documentElement;

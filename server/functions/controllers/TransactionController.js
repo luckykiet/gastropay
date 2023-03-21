@@ -1,7 +1,6 @@
 const moment = require('moment');
 const { customAlphabet } = require('nanoid');
 const axios = require('axios');
-const qs = require('qs');
 const sendMailWrapper = require('../mail_sender');
 const MerchantModel = require("../models/MerchantModel");
 const TransactionModel = require("../models/TransactionModel");
@@ -337,10 +336,9 @@ const checkPayment = async (refId) => {
             } else {
                 const status = decodeURIComponent(params.get('status'));
                 const statusField = "paymentMethod." + paymentMethodName + ".status";
-                if (status === 'PAID') {
-                    await transaction.updateOne({ [statusField]: status, status: status });
-                } else if (status === 'CANCELLED') {
-                    await transaction.updateOne({ [statusField]: status, status: status });
+                if (status === 'PAID' || status === 'CANCELLED') {
+                    await sendToPos(transaction.refId);
+                    await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: status, status: status }, { new: true })
                 }
                 return { success: true, msg: status };
             }
@@ -361,9 +359,11 @@ const checkPayment = async (refId) => {
             //     9: "Zpracování vrácení"
             //     10: "Platba vrácena"
             if (status === 4 || status === 7 || status === 8) {
-                await transaction.updateOne({ [statusField]: status, status: 'PAID' });
+                await sendToPos(transaction.refId);
+                await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: status, status: 'PAID' }, { new: true })
             } else if (status === 3 || status === 5 || status === 6) {
-                await transaction.updateOne({ [statusField]: status, status: "CANCELLED" });
+                await sendToPos(transaction.refId);
+                await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: status, status: 'CANCELLED' }, { new: true })
             }
             return { success: true, msg: status };
         }
@@ -456,7 +456,7 @@ const sendToPos = async (refId) => {
 
         if (!restaurant.api.posUrl) {
             console.log(`Merchant ${restaurant.idOwner} has not set POS api.`);
-            await transaction.updateOne({ status: 'COMPLETED', pos: { isConfirmed: true } });
+            await TransactionModel.findByIdAndUpdate(transaction._id, { status: 'COMPLETED', pos: { isConfirmed: true } }, { new: true })
             return { success: true, msg: { isConfirmed: true } };
         }
 
@@ -504,7 +504,8 @@ const sendToPos = async (refId) => {
             callingNumber: resp.data.msg.callingNumber,
             receiptNumber: resp.data.msg.receiptNumber,
         };
-        await transaction.updateOne({ status: 'COMPLETED', pos });
+        await TransactionModel.findByIdAndUpdate(transaction._id, { status: 'COMPLETED', pos: pos }, { new: true })
+
         console.log(`Transaction ${transaction.refId} successfully sent.`);
         return { success: true, msg: `Transaction ${transaction.refId} successfully sent.` };
     }
@@ -512,7 +513,7 @@ const sendToPos = async (refId) => {
         console.log(error)
         if (error.response?.status === 409) {
             console.log("Transaction " + transaction.refId + " already summited")
-            await transaction.updateOne({ status: 'COMPLETED', pos: { isConfirmed: true } });
+            await TransactionModel.findByIdAndUpdate(transaction._id, { status: 'COMPLETED', pos: { isConfirmed: true } }, { new: true })
             return { success: true, msg: `Transaction ${transaction.refId} successfully sent.` };
         }
         return { success: false, msg: "Failed to send to POS." };
