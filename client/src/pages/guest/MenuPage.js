@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useLayoutEffect } from 'react';
 import { Card, Container, Heading } from 'react-bulma-components';
 import TabsList from '../../components/menu/TabsList';
 import { createAxios, addSlashAfterUrl } from '../../utils';
@@ -20,10 +20,15 @@ export default function MenuPage() {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
+    useLayoutEffect(() => {
+        document.title = `Menu | ${CONFIG.APP_NAME}`;
+    }, [])
+
     useEffect(() => {
         if (Object.keys(restaurant).length === 0) {
             navigate(PATHS.RESTAURANTS);
         } else {
+            document.title = `Menu - ${restaurant.name} | ${CONFIG.APP_NAME}`;
             setLoading(true);
             const axios = createAxios(addSlashAfterUrl(`${CONFIG.API_URL}/${API.PROXY}`));
             Promise.delay(0).then(() => {

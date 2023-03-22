@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
 import { Container, Content as TextContent, Heading, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
 import { createAxios, addSlashAfterUrl } from "../../utils";
@@ -42,6 +42,10 @@ export default function RestaurantsPage() {
     const handleSearch = (e) => {
         setSearchQuery(e.target.value);
     };
+
+    useLayoutEffect(() => {
+        document.title = `Restaurace | ${CONFIG.APP_NAME}`;
+    }, [])
 
     useEffect(() => {
         const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));

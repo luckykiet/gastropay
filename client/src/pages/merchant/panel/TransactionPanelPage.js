@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useLayoutEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, calculateCart, statusColor, paymentGatesName } from '../../../utils';
 import { Box, Heading, Container, Hero, Table } from "react-bulma-components";
@@ -19,6 +19,10 @@ export default function TransactionPanelPage() {
     const [transactions, setTransactions] = useState(null);
     const [loading, setLoading] = useState(true);
     const chosenRestaurant = useChosenRestaurant();
+
+    useLayoutEffect(() => {
+        document.title = `Transakce - ${chosenRestaurant.name} | ${CONFIG.APP_NAME}`;
+    }, [chosenRestaurant.name])
 
     useEffect(() => {
         setLoading(true);

@@ -27,6 +27,10 @@ export default function TransactionPage() {
         }
     }
 
+    useLayoutEffect(() => {
+        document.title = `Transakce ${idTransaction} | ${CONFIG.APP_NAME}`;
+    }, [idTransaction])
+
     useEffect(() => {
         const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
         const fetchTransaction = async () => {

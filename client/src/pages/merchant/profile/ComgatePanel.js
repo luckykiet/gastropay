@@ -1,7 +1,7 @@
+import React, { Fragment, useState, useEffect, useLayoutEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { Box, Content, Heading, Form, Icon, Button, Container, Block } from "react-bulma-components";
-import React, { Fragment, useState, useEffect } from "react";
 import Toggle from 'react-toggle';
 import "react-toggle/style.css";
 import produce from "immer";
@@ -19,6 +19,10 @@ export default function ComgatePanel() {
     const [loading, setLoading] = useState(true);
     const [password, setPassword] = useState('');
     const [comgate, setComgate] = useState({});
+
+    useLayoutEffect(() => {
+        document.title = `Comgate | ${CONFIG.APP_NAME}`;
+    }, [])
 
     const handleSubmit = async (e) => {
         e.preventDefault();

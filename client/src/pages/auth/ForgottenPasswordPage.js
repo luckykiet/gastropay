@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { Box, Content, Heading, Form, Icon, Button, Container } from "react-bulma-components";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useLayoutEffect } from "react";
 import { createAxios, addSlashAfterUrl } from "../../utils";
 import { CONFIG } from "../../config/config";
 import { API } from "../../config/api";
@@ -12,6 +12,10 @@ export default function ForgottenPasswordPage() {
     const [email, setEmail] = useState('');
     const [isEmailValid, setIsEmailValid] = useState(null);
     const [loading, setLoading] = useState(false);
+
+    useLayoutEffect(() => {
+        document.title = `Zapomenuté heslo | ${CONFIG.APP_NAME}`;
+    }, [])
 
     const handleChange = (e) => {
         const { value } = e.target;

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useLayoutEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, isValidImageUrl, isValidUrl } from '../../../utils';
 import { Box, Heading, Form, Button, Container, Block } from "react-bulma-components";
@@ -25,6 +25,10 @@ export default function EditPanelPage() {
     const [apiTestMsg, setApiTestMsg] = useState({});
     const setChosenRestaurant = useSetChosenRestaurant();
 
+    useLayoutEffect(() => {
+        document.title = `Editace | ${CONFIG.APP_NAME}`;
+    }, [])
+
     useEffect(() => {
         setLoading(true);
         setPostMsg({});
@@ -43,6 +47,7 @@ export default function EditPanelPage() {
                 }
                 setRestaurant(msg);
                 setChosenRestaurant(msg);
+                document.title = `Editace - ${msg.name} | ${CONFIG.APP_NAME}`;
             } catch (err) {
                 console.log(err)
             } finally {

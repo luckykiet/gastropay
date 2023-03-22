@@ -7,6 +7,7 @@ import MenuNavbar from '../menu/MenuNavbar';
 import CollapsibleSidebar from '../menu/CollapsibleSidebar';
 import MenuPage from '../../pages/guest/MenuPage';
 import { useChosenRestaurant } from '../../stores/ZustandStores';
+import { CONFIG } from '../../config/config';
 
 export default function MenuLayout() {
     const restaurant = useChosenRestaurant();
@@ -19,6 +20,10 @@ export default function MenuLayout() {
     const handleCloseSidebar = () => {
         setIsSidebarShowed(false);
     }
+
+    useLayoutEffect(() => {
+        document.title = `${CONFIG.APP_NAME}`
+    }, [])
 
     useLayoutEffect(() => {
         const html = document.documentElement;

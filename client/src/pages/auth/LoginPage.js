@@ -3,7 +3,7 @@ import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from "react-router-dom";
 import { createAxios, addSlashAfterUrl } from "../../utils";
 import { Box, Columns, Container, Hero, Icon, Button, Form } from "react-bulma-components";
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import { PATHS } from '../../config/paths';
 import { CONFIG } from '../../config/config';
 import { API } from '../../config/api';
@@ -18,6 +18,10 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
+
+    useLayoutEffect(() => {
+        document.title = `Přihlášení | ${CONFIG.APP_NAME}`;
+    }, [])
 
     const handleChange = (e) => {
         const { value } = e.target;

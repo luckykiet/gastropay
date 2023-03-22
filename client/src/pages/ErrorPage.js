@@ -3,12 +3,15 @@ import { Heading, Content, Container } from "react-bulma-components";
 import NavbarComponent from "../components/NavbarComponent";
 import FooterComponent from "../components/FooterComponent";
 import 'bulma/css/bulma.min.css';
-import React, { Fragment } from "react";
+import React, { Fragment, useLayoutEffect } from "react";
+import { CONFIG } from "../config/config";
 
 export default function ErrorPage() {
     const error = useRouteError();
     console.error(error);
-
+    useLayoutEffect(() => {
+        document.title = `Chyba | ${CONFIG.APP_NAME}`;
+    }, [])
     return (
         <Fragment>
             <header>
