@@ -336,9 +336,13 @@ const checkPayment = async (refId) => {
             } else {
                 const newStatus = decodeURIComponent(params.get('status'));
                 const statusField = "paymentMethod." + paymentMethodName + ".status";
-                if (transaction.paymentMethod[paymentMethodName].status !== newStatus && (newStatus === 'PAID' || newStatus === 'CANCELLED')) {
-                    const newTransaction = await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: newStatus, status: newStatus }, { new: true })
-                    await sendToPos(newTransaction.refId);
+                if (transaction.paymentMethod[paymentMethodName].status !== newStatus) {
+                    if (newStatus === 'PAID') {
+                        const newTransaction = await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: newStatus, status: newStatus }, { new: true })
+                        await sendToPos(newTransaction.refId);
+                    } else if (newStatus === 'CANCELLED') {
+                        await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: newStatus, status: newStatus }, { new: true })
+                    }
                 }
                 return { success: true, msg: newStatus };
             }
@@ -363,8 +367,7 @@ const checkPayment = async (refId) => {
                     const newTransaction = await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: newStatus, status: 'PAID' }, { new: true })
                     await sendToPos(newTransaction.refId);
                 } else if (newStatus === 3 || newStatus === 5 || newStatus === 6) {
-                    const newTransaction = await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: newStatus, status: 'CANCELLED' }, { new: true })
-                    await sendToPos(newTransaction.refId);
+                    await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: newStatus, status: 'CANCELLED' }, { new: true })
                 }
             }
             return { success: true, msg: newStatus };
@@ -449,6 +452,11 @@ const sendToPos = async (refId) => {
     if (!transaction) {
         return { success: false, msg: `Transaction not found` };
     }
+
+    if (transaction.status === 'COMPLETED' || transaction.status === 'CANCELLED') {
+        return { success: false, msg: `Transaction already finished` };
+    }
+
     try {
         const restaurant = await RestaurantModel.findById(transaction.idRestaurant)
             .select('idOwner api')
