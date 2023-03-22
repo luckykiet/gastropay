@@ -28,12 +28,14 @@ const createRestaurant = async (req, res, next) => {
                 msg: "Restaurant " + foundRestaurant.name + " already exists!",
             });
         }
+
         const restaurant = new RestaurantModel({
             ...body,
             idOwner: ObjectId(authorizedMerchantId),
             openingTime: {},
-            paymentGates: { comgate: {} }
+            paymentGates: {}
         });
+
         await restaurant.save().then(() => {
             return res.status(200).json({
                 success: true,
@@ -43,7 +45,6 @@ const createRestaurant = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-
 };
 
 const getRestaurants = async (req, res) => {
@@ -151,7 +152,7 @@ const deleteRestaurant = async (req, res) => {
 const getRestaurantByID = async (req, res) => {
     try {
         const query = RestaurantModel.findOne({ _id: ObjectId(req.params.restaurantId), idOwner: ObjectId(req.userId) });
-        query.select("_id name address openingTime image api isAvailable");
+        query.select("_id name address openingTime image api key isAvailable");
         const restaurant = await query.lean().exec();
         if (!restaurant) {
             return res

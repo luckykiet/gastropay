@@ -19,7 +19,10 @@ export default function PaymentPage() {
     const [isPaymentLoading, setIsPaymentLoading] = useState(true);
     const [isPageLoading, setIsPageLoading] = useState(true);
     const [postMsg, setPostMsg] = useState({});
-    const [selectedTable, setSelectedTable] = useState('');
+    const [selectedTable, setSelectedTable] = useState({
+        id: "",
+        name: ""
+    });
     const [emailInput, setEmailInput] = useState("");
     const [isEmailValid, setIsEmailValid] = useState(null);
     const [merchantPaymentMethods, setMerchantPaymentMethods] = useState([]);
@@ -28,6 +31,14 @@ export default function PaymentPage() {
     const [chosenRestaurant, setChosenRestaurant] = [useChosenRestaurant(), useSetChosenRestaurant()];
     const tips = useTips();
     const navigate = useNavigate();
+
+    const handleTableSelected = (e) => {
+        const table = tables.find((table) => table.id === e.target.value) || {
+            id: "",
+            name: ""
+        };
+        setSelectedTable(table);
+    }
 
     const handleEmailChange = (e) => {
         const { value } = e.target;
@@ -38,20 +49,26 @@ export default function PaymentPage() {
 
     const handlePaymentClick = async (e, paymentMethod) => {
         e.preventDefault();
+        setPostMsg({});
         setIsPaymentLoading(true);
         try {
             if (isEmailValid === null || !isEmailValid) {
                 throw new Error("Nesprávný email formát");
             }
+            if (tables.length > 0 && selectedTable.id === '') {
+                throw new Error("Vyberte si stůl");
+            }
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
-
             const transaction = {
                 tips: tips,
                 restaurant: chosenRestaurant,
                 orders: cartItems,
                 paymentGate: paymentMethod,
                 email: emailInput,
-                deliveryMethod: selectedTable
+                deliveryMethod: {
+                    name: selectedTable.name ? selectedTable.name : "",
+                    id: selectedTable.id ? selectedTable.id : ""
+                }
             }
 
             const { data: { success, msg } } = await axios.post(
@@ -97,17 +114,11 @@ export default function PaymentPage() {
                     setIsPageLoading(false);
                 }
             };
-            Promise.delay(1000).then(fetchTransaction);
+            Promise.delay(0).then(fetchTransaction);
         } else {
             setIsPageLoading(false);
         }
     }, [chosenRestaurant])
-
-    useEffect(() => {
-        if (tables.length > 0) {
-            setSelectedTable(tables[0]);
-        }
-    }, [tables]);
 
     return (
         <Fragment>
@@ -167,10 +178,11 @@ export default function PaymentPage() {
                                                 <Field>
                                                     <Label className='is-normal' htmlFor='inputTables'><span className='has-text-danger'>*</span> Stůl</Label>
                                                     <Control>
-                                                        <Select id='inputTables' onChange={(e) => setSelectedTable(e.target.value)} value={selectedTable} required>
+                                                        <Select id='inputTables' onChange={(e) => handleTableSelected(e)} value={selectedTable.id} required>
+                                                            <option value={""} >-------</option>
                                                             {tables.map((table) => {
                                                                 return (
-                                                                    <option value={table} key={table}>{table}</option>
+                                                                    <option value={table.id} key={table.id}>{table.name}</option>
                                                                 )
                                                             })}
                                                         </Select>

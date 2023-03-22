@@ -12,8 +12,10 @@ import { useSetChosenRestaurant } from '../../../stores/MerchantStores';
 import OpeningTimeInputs from '../../../components/merchant/OpeningTimeInputs';
 import { API } from '../../../config/api';
 import { CONFIG } from '../../../config/config';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-solid-svg-icons';
 
-const { Field, Label, Control, Input, Help } = Form;
+const { Field, Label, Control, Input, Help, Select } = Form;
 export default function EditPanelPage() {
     const idRestaurant = useParams().idRestaurant;
     const [restaurant, setRestaurant] = useState({});
@@ -65,11 +67,11 @@ export default function EditPanelPage() {
                     msg: {}
                 })
             }
-        } else if (name === "api.baseUrl") {
+        } else if (name === "api.verifyUrl" || name === "api.menuUrl" || name === "api.posUrl") {
             if (!isValidUrl(value) && value !== '') {
                 setPostMsg({
                     success: false,
-                    msg: { "api.baseUrl": "Nesprávný url" }
+                    msg: { [name]: "Nesprávný url" }
                 })
             } else {
                 setPostMsg({
@@ -141,7 +143,7 @@ export default function EditPanelPage() {
     const handleTestApiClick = async (e) => {
         e.preventDefault();
         setApiTestMsg({});
-        if (restaurant.api.baseUrl === '' || restaurant.api.params === '') {
+        if (restaurant.api.menuUrl === '' || restaurant.api.key === '') {
             setApiTestMsg({
                 success: false,
                 msg: "API url a parametry nesmí být prázdné"
@@ -149,15 +151,10 @@ export default function EditPanelPage() {
         } else {
             setApiTestLoading(true);
             try {
-                const axios = createAxios(addSlashAfterUrl(restaurant.api.baseUrl));
-                const { data: { success } } = await axios.get(`${restaurant.api.params}`,
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    });
-
-                if (!success) {
+                const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL + "/" + API.PROXY));
+                const resp = await axios.get(`/get?url=${restaurant.api.menuUrl}${restaurant.api.key}`);
+                console.log(resp);
+                if (!resp) {
                     throw new Error("Nepovedlo se připojit k API!")
                 }
 
@@ -194,6 +191,7 @@ export default function EditPanelPage() {
                             <Box>
                                 <form onSubmit={handleSubmit}>
                                     <Block>
+                                        <Heading renderAs='p' size={4} className='has-text-weight-bold'>Key API: <span>{restaurant.key}</span>&nbsp;<FontAwesomeIcon className='is-clickable' onClick={() => { navigator.clipboard.writeText(restaurant.key) }} icon={faCopy} /></Heading>
                                         <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Profile:</Heading>
                                         <div className='is-pulled-right'>
                                             <Heading renderAs='label' htmlFor={'checkBoxIsAvailable'} size={5} mr={4} className='has-text-weight-bold is-inline-block'>Aktivní: </Heading>
@@ -225,6 +223,7 @@ export default function EditPanelPage() {
                                             {postMsg && typeof postMsg.msg === "object" && postMsg.msg.image && <Help color={'danger'}>{postMsg.msg.image}</Help>}
                                         </Field>
                                     </Block>
+                                    <hr />
                                     <Block>
                                         <Heading renderAs='p' size={4} className='has-text-weight-bold'>Adresa:</Heading>
                                         <Field>
@@ -255,34 +254,66 @@ export default function EditPanelPage() {
                                             {postMsg && typeof postMsg.msg === "object" && postMsg.msg['address.postalCode'] && <Help color={'danger'}>{postMsg.msg['address.postalCode']}</Help>}
                                         </Field>
                                     </Block>
+                                    <hr />
                                     <Block>
                                         <Heading renderAs='p' size={4} className='has-text-weight-bold is-inline-block'>Menu API:</Heading>
-                                        <Button className='is-pulled-right' color={'warning'} onClick={handleTestApiClick}>Test API</Button>
+                                        <Button className='is-pulled-right' color={'warning'} onClick={handleTestApiClick}>Test Menu API</Button>
                                         {apiTestLoading && <LoadingComponent />}
-                                        <Field>
-                                            <Label htmlFor="inputApiBaseUrl">
-                                                Base URL
-                                            </Label>
-                                            <Control>
-                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.baseUrl'] ? "danger" : undefined} onChange={handleChange} name={"api.baseUrl"} value={restaurant.api.baseUrl} type={"text"} id="inputApiBaseUrl" placeholder="https://api.npoint.io/" />
-                                            </Control>
-                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.baseUrl'] && <Help color={'danger'}>{postMsg.msg['api.baseUrl']}</Help>}
-                                        </Field>
-                                        <Field>
-                                            <Label htmlFor="inputApiParam">
-                                                Parametry
-                                            </Label>
-                                            <Control>
-                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.params'] ? "danger" : undefined} onChange={handleChange} name={"api.params"} value={restaurant.api.params} type={"text"} id="inputApiParam" placeholder="API Params" />
-                                            </Control>
-                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.params'] && <Help color={'danger'}>{postMsg.msg['api.params']}</Help>}
-                                        </Field>
                                         {apiTestMsg && apiTestMsg.msg && (
                                             <p className={apiTestMsg.success ? "has-text-success" : "has-text-danger"}>
                                                 {apiTestMsg.msg instanceof Error ? apiTestMsg.msg.message : typeof apiTestMsg.msg === "string" && apiTestMsg.msg}
                                             </p>
                                         )}
+                                        <Field>
+                                            <Label htmlFor="inputApiKey">
+                                                Key
+                                            </Label>
+                                            <Control>
+                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.key'] ? "danger" : undefined} onChange={handleChange} name={"api.key"} value={restaurant.api.key} type={"text"} id="inputApiKey" placeholder="API Key" />
+                                            </Control>
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.key'] && <Help color={'danger'}>{postMsg.msg['api.key']}</Help>}
+                                        </Field>
+                                        <Field>
+                                            <Label htmlFor="inputApiVerifyUrl">
+                                                Verifikační URL
+                                            </Label>
+                                            <Control>
+                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.verifyUrl'] ? "danger" : undefined} onChange={handleChange} name={"api.verifyUrl"} value={restaurant.api.verifyUrl} type={"text"} id="inputApiVerifyUrl" placeholder="https://api.npoint.io/" />
+                                            </Control>
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.verifyUrl'] && <Help color={'danger'}>{postMsg.msg['api.verifyUrl']}</Help>}
+                                        </Field>
+                                        <Field>
+                                            <Label htmlFor="inputApiMenuUrl">
+                                                Menu URL
+                                            </Label>
+                                            <Control>
+                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.menuUrl'] ? "danger" : undefined} onChange={handleChange} name={"api.menuUrl"} value={restaurant.api.menuUrl} type={"text"} id="inputApiMenuUrl" placeholder="https://api.npoint.io/" />
+                                            </Control>
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.menuUrl'] && <Help color={'danger'}>{postMsg.msg['api.menuUrl']}</Help>}
+                                        </Field>
+                                        <Field>
+                                            <Label htmlFor="inputApiPosUrl">
+                                                POS URL
+                                            </Label>
+                                            <Control>
+                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.posUrl'] ? "danger" : undefined} onChange={handleChange} name={"api.posUrl"} value={restaurant.api.posUrl} type={"text"} id="inputApiPosUrl" placeholder="https://api.npoint.io/" />
+                                            </Control>
+                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.posUrl'] && <Help color={'danger'}>{postMsg.msg['api.posUrl']}</Help>}
+                                        </Field>
+                                        <Field>
+                                            <Label htmlFor="selectContentTypes">
+                                                Content Type - pro POST požadavek
+                                            </Label>
+                                            <Control>
+                                                <Select name={"api.contentType"} onChange={handleChange} defaultValue={restaurant.api.contentType} id="selectContentTypes">
+                                                    {CONFIG.SUPPORTED_CONTENT_TYPES.map((contentType) => (
+                                                        <option value={contentType} key={contentType}>{contentType}</option>
+                                                    ))}
+                                                </Select>
+                                            </Control>
+                                        </Field>
                                     </Block>
+                                    <hr />
                                     <Heading renderAs='p' size={4} className='has-text-weight-bold'>Otevírací doba:</Heading>
                                     {Object.keys(restaurant.openingTime).map((key) => {
                                         return <OpeningTimeInputs handleChange={handleChange} restaurant={restaurant} setRestaurant={setRestaurant} key={key} day={key} />

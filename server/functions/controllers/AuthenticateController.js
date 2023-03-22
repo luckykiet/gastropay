@@ -18,7 +18,7 @@ const login = async (req, res, next) => {
             return res.status(401).json({ success: false, msg: 'Nesprávná kombinace' });
         }
         const token = signItemToken({ userId: user._id, ico: user.ico }, "1h");
-        await MerchantModel.findByIdAndUpdate(user._id, { $push: { tokens: token } });
+        await MerchantModel.findByIdAndUpdate(user._id, { $push: { tokens: token } }, { new: true });
         return res.status(201).json({
             success: true,
             msg: { token: token },
@@ -96,7 +96,7 @@ const sendRequestRenewPassword = async (req, res, next) => {
                 return res.status(404).json({ success: false, msg: 'Email není registrován' });
             }
             const token = signItemToken({ email }, '15m');
-            await MerchantModel.findByIdAndUpdate(user._id, { $push: { tokens: token } });
+            await MerchantModel.findByIdAndUpdate(user._id, { $push: { tokens: token } }, { new: true });
             await sendMailWrapper(email,
                 "Obnovení hesla pro účet IČO: " + user.ico,
                 config.APP_NAME + " - Obnovení hesla pro účet IČO: " + user.ico,

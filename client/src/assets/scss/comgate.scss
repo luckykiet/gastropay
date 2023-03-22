@@ -2,11 +2,11 @@
     display: block;
 }
 #comgate-iframe {
-    width: 504px;
+    width: 610px;
     height: 679px;
 }
-@media (max-height: 700px) {
+@media (max-width: 550px) {
     #comgate-iframe {
-        top: 0px;
+        width: auto;
     }
 }

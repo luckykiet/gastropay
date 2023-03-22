@@ -1,16 +1,70 @@
 {
   "success": true,
   "msg": {
-    "categories": [
+    "sections": [
       {
-        "name": "Rýže"
+        "name": "Pho",
+        "items": [
+          {
+            "ean": "1",
+            "image": "https://toplist.vn/images/800px/quan-com-dui-ga-ngon-nhat-ha-noi-284152.jpg"
+          },
+          {
+            "ean": "2",
+            "image": "https://toplist.vn/images/800px/quan-com-dui-ga-ngon-nhat-ha-noi-284152.jpg"
+          },
+          {
+            "ean": "3",
+            "image": ""
+          },
+          {
+            "ean": "4",
+            "image": ""
+          },
+          {
+            "ean": "5",
+            "image": ""
+          },
+          {
+            "ean": "6",
+            "image": ""
+          }
+        ]
       },
       {
-        "name": "Pho"
+        "name": "Rýže",
+        "items": [
+          {
+            "ean": "7",
+            "image": "http://www.sushitime.cz/image-cache/1280x1280/_files_products_727-pho-bo-A.jpg"
+          },
+          {
+            "ean": "8",
+            "image": ""
+          },
+          {
+            "ean": "9",
+            "image": "http://www.sushitime.cz/image-cache/1280x1280/_files_products_727-pho-bo-A.jpg"
+          }
+        ]
       }
     ],
-    "menu": {
-      "5": {
+    "tables": [
+      {
+        "table_name": "U Okna"
+      },
+      {
+        "table_name": "U Baru"
+      },
+      {
+        "table_name": "U Dveri"
+      },
+      {
+        "table_name": "U Okna 2"
+      }
+    ],
+    "articles": {
+      "1": {
         "unit": "ks",
         "amount": 1,
         "group": 1,
@@ -19,7 +73,7 @@
         "description": "RIZITO S KUŘECÍM MASEM, ZELENINA",
         "image": "https://cdn.tgdd.vn/Files/2020/06/17/1263673/cach-lam-com-chien-ga-xe-thap-cam-gion-toi-hap-da-18.jpg"
       },
-      "6": {
+      "2": {
         "unit": "ks",
         "amount": 1,
         "group": 1,
@@ -29,7 +83,7 @@
         "allergens": [6],
         "image": "https://toplist.vn/images/800px/quan-com-dui-ga-ngon-nhat-ha-noi-284152.jpg"
       },
-      "7": {
+      "3": {
         "unit": "ks",
         "amount": 1,
         "group": 1,
@@ -38,7 +92,7 @@
         "description": "SÉPIE VE SLADKOKYSELÉ OMÁČCE, ZELENINA A RÝŽE",
         "allergens": [4]
       },
-      "8": {
+      "4": {
         "unit": "ks",
         "amount": 1,
         "group": 1,
@@ -46,7 +100,7 @@
         "name": "Com bo xao",
         "description": "SMAŽENÉ HOVĚZÍ MASO SE ZELENINOU V OMÁČCE A RÝŽE"
       },
-      "9": {
+      "5": {
         "unit": "ks",
         "amount": 1,
         "group": 1,
@@ -54,7 +108,7 @@
         "name": "Com nhong",
         "description": "OBALOVANÉ KUŘECÍ MASO S RÝŽÍ, ZELENINA"
       },
-      "10": {
+      "6": {
         "unit": "ks",
         "amount": 1,
         "group": 1,
@@ -63,7 +117,7 @@
         "description": "OBALOVANÉ KUŘECÍ MASO S RÝŽÍ, ZELENINA",
         "allergens": [6]
       },
-      "11": {
+      "7": {
         "unit": "ks",
         "amount": 1,
         "group": 2,
@@ -72,7 +126,7 @@
         "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S HOVĚZÍM MASEM",
         "image": "http://www.sushitime.cz/image-cache/1280x1280/_files_products_727-pho-bo-A.jpg"
       },
-      "12": {
+      "8": {
         "unit": "ks",
         "amount": 1,
         "group": 2,
@@ -81,7 +135,7 @@
         "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S UŘECÍM MASO",
         "image": "https://www.hungrywanderlust.com/wp-content/uploads/2020/01/Chicken-Pho-Recipe_0206-1024x683.jpg"
       },
-      "13": {
+      "9": {
         "unit": "ks",
         "amount": 1,
         "group": 2,

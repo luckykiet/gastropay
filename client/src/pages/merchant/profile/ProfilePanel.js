@@ -43,7 +43,7 @@ export default function ProfilePanel() {
                 setLoading(false);
             }
         }
-        Promise.delay(300).then(fetchRestaurant);
+        Promise.delay(0).then(fetchRestaurant);
     }, []);
 
 

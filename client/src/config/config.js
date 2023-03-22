@@ -31,6 +31,7 @@ const config = {
         EN: 'en'
     },
     JWT_SECRET: "@ThIS iS Sup3rb s3creT!",
+    SUPPORTED_CONTENT_TYPES: ["json", "x-www-form-urlencoded"]
 };
 
 export { config as CONFIG };

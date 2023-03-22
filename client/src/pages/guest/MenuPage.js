@@ -7,6 +7,9 @@ import { Promise } from 'bluebird';
 import { useChosenRestaurant, useSetTables } from '../../stores/ZustandStores';
 import ProgressBar from '../../components/ProgressBar';
 import { PATHS } from '../../config/paths';
+import { CONFIG } from '../../config/config';
+import { API } from '../../config/api';
+import { nanoid } from 'nanoid';
 
 const { Content } = Card;
 
@@ -15,37 +18,65 @@ export default function MenuPage() {
     const setTables = useSetTables();
     const [menu, setMenu] = useState({});
     const [loading, setLoading] = useState(true);
-    const apiUrl = addSlashAfterUrl(restaurant?.api?.baseUrl);
     const navigate = useNavigate();
 
     useEffect(() => {
         if (Object.keys(restaurant).length === 0) {
             navigate(PATHS.RESTAURANTS);
         } else {
-            const fetchData = async () => {
-                try {
-                    const axios = createAxios(apiUrl);
-                    const { data: { success, msg } } = await axios.get(restaurant.api.params);
-                    if (!success) {
-                        throw new Error(msg);
-                    }
-                    const tabs = msg.categories.map((tab, index) => ({
-                        id: index + 1,
-                        name: tab.name,
-                    }));
-                    const newMenu = Object.entries(msg.menu).map(([ean, item]) => ({ ean, ...item }));
-                    setTables(msg.tables ? msg.tables : []);
-                    setMenu({ tabs, menu: newMenu });
-                } catch (err) {
-                    setMenu({});
-                    console.log(err);
-                } finally {
-                    setLoading(false);
+            setLoading(true);
+            const axios = createAxios(addSlashAfterUrl(`${CONFIG.API_URL}/${API.PROXY}`));
+            Promise.delay(0).then(() => {
+                return axios.get(`get?url=${restaurant.api.menuUrl}${restaurant.api.key}`);
+            }).then((resp) => {
+                const { data: { success, msg } } = resp;
+                if (!success) {
+                    throw new Error(msg);
                 }
-            };
-            Promise.delay(300).then(fetchData);
+                const groups = msg.sections;
+                const products = msg.articles;
+                const tabs = [];
+                const newMenu = [];
+                groups.forEach(({ name, items }) => {
+                    const tabId = nanoid();
+                    tabs.push({
+                        id: tabId,
+                        name,
+                    });
+
+                    items.forEach((item) => {
+                        const product = products[item.ean];
+                        if (product) {
+                            newMenu.push({
+                                name: product.name,
+                                price: product.price,
+                                tab: tabId,
+                                ean: item.ean,
+                                image: item.image,
+                            });
+                        }
+                    });
+                });
+
+                const tables = [];
+                if (msg.tables) {
+                    msg.tables.map((table) => (
+                        tables.push({
+                            id: table._id,
+                            name: table.table_name
+                        })
+                    ))
+                }
+                setTables(tables);
+                setMenu({ tabs, menu: newMenu });
+            }).catch((error) => {
+                setMenu({});
+                console.log(error);
+            }).finally(() => {
+                setLoading(false);
+            })
         }
-    }, [navigate, restaurant, apiUrl, setTables]);
+    }, [navigate, restaurant, setTables]);
 
     return (
         <Fragment>
@@ -54,7 +85,7 @@ export default function MenuPage() {
             ) : (
                 <Fragment>
                     <Content textAlign="center">
-                        <Heading spaced>
+                        <Heading>
                             {restaurant.name} - Menu
                         </Heading>
                     </Content>

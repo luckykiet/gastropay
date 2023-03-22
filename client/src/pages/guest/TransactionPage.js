@@ -17,6 +17,7 @@ export default function TransactionPage() {
     const [paymentMethod, setPaymentMethod] = useState({});
     const [result, setResult] = useState({});
     const [showPaymentBox, setShowPaymentBox] = useState(false);
+    const [isCompleted, setIsCompleted] = useState(false);
 
     const handlePayClick = (e) => {
         e.preventDefault();
@@ -29,13 +30,16 @@ export default function TransactionPage() {
     useEffect(() => {
         const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
         const fetchTransaction = async () => {
+            console.log("Checking...")
             try {
                 const { data: { success, msg } } = await axios.get(`${API.TRANSACTION}/${idTransaction}`);
-                if (success) {
-                    setResult(msg);
-                    setPaymentMethod(msg.transaction.paymentMethod);
-                } else {
-                    console.log(msg);
+                if (!success) {
+                    throw new Error("Nečítání transakce selhala!")
+                }
+                setResult(msg);
+                setPaymentMethod(msg.transaction.paymentMethod);
+                if (msg.transaction.status === 'CANCELLED' || msg.transaction.status === 'COMPLETED') {
+                    setIsCompleted(true);
                 }
             } catch (error) {
                 console.log(error.response.data.msg)
@@ -43,17 +47,14 @@ export default function TransactionPage() {
                 setIsLoading(false);
             }
         };
-
         Promise.delay(0).then(fetchTransaction);
-
-        if (result?.transaction?.status === 'PENDING') {
+        if (!isCompleted) {
             const interval = setInterval(() => {
-                fetchTransaction();
-            }, 10000);
+                Promise.delay(0).then(fetchTransaction);
+            }, 15000);
             return () => clearInterval(interval);
         }
-
-    }, [idTransaction, result?.transaction?.status]);
+    }, [idTransaction, isCompleted]);
 
     useLayoutEffect(() => {
         const html = document.documentElement;
@@ -79,16 +80,21 @@ export default function TransactionPage() {
         } else if (status === 'CANCELLED') {
             return <Heading renderAs='h2' className={'has-text-' + statusColor[status]} size={4}>ZRUŠENO</Heading>
         } else if (status === 'PAID') {
-            return (
+            return !result.transaction.pos.isConfirmed &&
                 <Fragment>
                     <Heading renderAs='h2' className={'has-text-' + statusColor[status]} size={4}>ZAPLACENO</Heading>
                     <Heading renderAs='p' className={'has-text-' + statusColor[status]} size={5}>Máte zaplacenou objednávku, počkejte na potvrzení obchodníka.</Heading>
                     <Heading renderAs='span' size={5}>Obchodník: </Heading>
-                    {!result.transaction.cart.isConfirmed ? <LoadingComponent /> : <Heading renderAs='span' className={'has-text-' + statusColor[status]} size={5}>POTVRZENO</Heading>}
+                    <LoadingComponent />
+                </Fragment>
+        } else {
+            return (
+                <Fragment>
+                    <Heading renderAs='p' size={5}>Obchodník:  <Heading renderAs='span' className={'has-text-success'} size={5}>POTVRZENO</Heading></Heading>
+                    {result.transaction.pos.receiptNumber && result.transaction.pos.receiptNumber !== "" && <Heading renderAs='p' size={5}>Číslo účtenky: {result.transaction.pos.receiptNumber}</Heading>}
+                    {result.transaction.pos.callingNumber && result.transaction.pos.callingNumber !== "" && <Heading renderAs='p' size={5}>Pořadové číslo: {result.transaction.pos.callingNumber}</Heading>}
                 </Fragment>
             )
-        } else {
-            return <Heading renderAs='h2' className={'has-text-' + statusColor[status]} size={4}>DOKONČENO</Heading>
         }
     }
 
@@ -148,7 +154,7 @@ export default function TransactionPage() {
                                         </Column>
                                         <Column>
                                             <Heading renderAs='h2' size={4}>Email plátce: <span className='has-text-weight-normal'>{result.transaction.email}</span></Heading>
-                                            {result.transaction.deliveryMethod !== '' && <Heading renderAs='h2' size={4}>Stůl: <span className='has-text-weight-normal'>{result.transaction.deliveryMethod}</span></Heading>}
+                                            {result.transaction.deliveryMethod.name !== '' && <Heading renderAs='h2' size={4}>Stůl: <span className='has-text-weight-normal'>{result.transaction.deliveryMethod.name}</span></Heading>}
                                             <Heading renderAs='h2' size={4}>Platební metoda: <span className='has-text-weight-normal'>{paymentGatesName[Object.keys(paymentMethod)[0]]}</span></Heading>
                                             <hr />
                                             <Heading renderAs='h2' size={4}>Status</Heading>

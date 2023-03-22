@@ -111,7 +111,7 @@ export default function ComgatePanel() {
                 setLoading(false);
             }
         }
-        Promise.delay(300).then(fetchPaymentGate);
+        Promise.delay(0).then(fetchPaymentGate);
     }, []);
 
     return (
