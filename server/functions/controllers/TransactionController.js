@@ -334,20 +334,20 @@ const checkPayment = async (refId) => {
                 const message = decodeURIComponent(params.get('message'));
                 return { success: false, msg: message ? message : "Failed to get a status!" };
             } else {
-                const status = decodeURIComponent(params.get('status'));
+                const newStatus = decodeURIComponent(params.get('status'));
                 const statusField = "paymentMethod." + paymentMethodName + ".status";
-                if (status === 'PAID' || status === 'CANCELLED') {
-                    await sendToPos(transaction.refId);
-                    await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: status, status: status }, { new: true })
+                if (transaction.paymentMethod[paymentMethodName].status !== newStatus && (newStatus === 'PAID' || newStatus === 'CANCELLED')) {
+                    const newTransaction = await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: newStatus, status: newStatus }, { new: true })
+                    await sendToPos(newTransaction.refId);
                 }
-                return { success: true, msg: status };
+                return { success: true, msg: newStatus };
             }
         } else if (paymentMethodName === 'csob') {
             const { privateKey, passphrases, merchantId, test } = merchant.paymentGates[paymentMethodName];
-            const { payId } = transaction.paymentMethod[paymentMethodName];
+            const { payId, status } = transaction.paymentMethod[paymentMethodName];
             const checkStatusResp = await csobFunctions.getPaymentStatus(privateKey, passphrases, { merchantId: merchantId, payId: payId }, test)
             const statusField = "paymentMethod." + paymentMethodName + ".status";
-            const status = checkStatusResp.msg.paymentStatus;
+            const newStatus = checkStatusResp.msg.paymentStatus;
             //     1: "Platba založena"
             //     2: "Platba probíhá"
             //     3: "Platba zrušena"
@@ -358,14 +358,16 @@ const checkPayment = async (refId) => {
             //     8: "Platba zúčtována"
             //     9: "Zpracování vrácení"
             //     10: "Platba vrácena"
-            if (status === 4 || status === 7 || status === 8) {
-                await sendToPos(transaction.refId);
-                await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: status, status: 'PAID' }, { new: true })
-            } else if (status === 3 || status === 5 || status === 6) {
-                await sendToPos(transaction.refId);
-                await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: status, status: 'CANCELLED' }, { new: true })
+            if (newStatus !== status) {
+                if (newStatus === 4 || newStatus === 7 || newStatus === 8) {
+                    const newTransaction = await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: newStatus, status: 'PAID' }, { new: true })
+                    await sendToPos(newTransaction.refId);
+                } else if (newStatus === 3 || newStatus === 5 || newStatus === 6) {
+                    const newTransaction = await TransactionModel.findOneAndUpdate(transaction._id, { [statusField]: newStatus, status: 'CANCELLED' }, { new: true })
+                    await sendToPos(newTransaction.refId);
+                }
             }
-            return { success: true, msg: status };
+            return { success: true, msg: newStatus };
         }
     } catch (error) {
         console.log(error);
@@ -442,6 +444,7 @@ const runAutoSendToPos = async () => {
 };
 
 const sendToPos = async (refId) => {
+    console.log("Sending " + refId + " to POS")
     const transaction = await TransactionModel.findOne({ refId: refId });
     if (!transaction) {
         return { success: false, msg: `Transaction not found` };
@@ -511,9 +514,8 @@ const sendToPos = async (refId) => {
     }
     catch (error) {
         console.log(error)
-        if (error.response?.status === 409) {
-            console.log("Transaction " + transaction.refId + " already summited")
-            await TransactionModel.findByIdAndUpdate(transaction._id, { status: 'COMPLETED', pos: { isConfirmed: true } }, { new: true })
+        if (error.response?.status === 409 && !transaction.pos.isConfirmed) {
+            console.log("Transaction " + transaction.refId + " already summited");
             return { success: true, msg: `Transaction ${transaction.refId} successfully sent.` };
         }
         return { success: false, msg: "Failed to send to POS." };

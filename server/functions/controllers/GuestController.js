@@ -7,7 +7,7 @@ const getTransaction = async (req, res) => {
     try {
         const { idTransaction } = req.params;
 
-        const transaction = await TransactionModel.findOne({ refId: idTransaction });
+        let transaction = await TransactionModel.findOne({ refId: idTransaction });
         if (!transaction) {
             return res
                 .status(404)
@@ -16,10 +16,13 @@ const getTransaction = async (req, res) => {
 
         const paymentMethodName = Object.keys(transaction.paymentMethod)[0];
         const status = transaction.paymentMethod[paymentMethodName].status;
+
         if (status === 'PENDING' || status === 1 || status === 2) {
             await TransactionController.checkPayment(idTransaction);
+            transaction = await TransactionModel.findOne({ refId: idTransaction });
         } else if (transaction.status === 'PAID') {
             await TransactionController.sendToPos(transaction.refId);
+            transaction = await TransactionModel.findOne({ refId: idTransaction });
         }
 
         const restaurant = await RestaurantModel.findById(transaction.idRestaurant).select("idOwner name address").exec();

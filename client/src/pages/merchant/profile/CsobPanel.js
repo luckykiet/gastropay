@@ -110,7 +110,7 @@ export default function CsobPanel() {
                 setLoading(false);
             }
         }
-        Promise.delay(300).then(fetchPaymentGate);
+        Promise.delay(0).then(fetchPaymentGate);
     }, []);
 
     return (

@@ -114,7 +114,7 @@ export default function PaymentPage() {
                     setIsPageLoading(false);
                 }
             };
-            Promise.delay(1000).then(fetchTransaction);
+            Promise.delay(0).then(fetchTransaction);
         } else {
             setIsPageLoading(false);
         }

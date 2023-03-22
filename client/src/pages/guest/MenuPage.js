@@ -26,7 +26,7 @@ export default function MenuPage() {
         } else {
             setLoading(true);
             const axios = createAxios(addSlashAfterUrl(`${CONFIG.API_URL}/${API.PROXY}`));
-            Promise.delay(300).then(() => {
+            Promise.delay(0).then(() => {
                 return axios.get(`get?url=${restaurant.api.menuUrl}${restaurant.api.key}`);
             }).then((resp) => {
                 const { data: { success, msg } } = resp;
@@ -69,11 +69,12 @@ export default function MenuPage() {
                 }
                 setTables(tables);
                 setMenu({ tabs, menu: newMenu });
-                setLoading(false);
             }).catch((error) => {
                 setMenu({});
                 console.log(error);
-            });
+            }).finally(() => {
+                setLoading(false);
+            })
         }
     }, [navigate, restaurant, setTables]);
 

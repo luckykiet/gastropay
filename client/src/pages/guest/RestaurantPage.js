@@ -53,7 +53,7 @@ export default function RestaurantPage() {
                 setLoading(false);
             }
         }
-        Promise.delay(300).then(fetchData);
+        Promise.delay(0).then(fetchData);
     }, [idRestaurant, setBusiness]);
 
     return (
