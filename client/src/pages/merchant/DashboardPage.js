@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, useLayoutEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { createAxios, addSlashAfterUrl, getItemsFromToken } from '../../utils';
 import { Promise } from 'bluebird';
 import { Columns, Heading, Hero, Button, Tabs } from 'react-bulma-components';
@@ -23,7 +23,7 @@ export default function DashboardPage() {
     const location = useLocation();
     const navigate = useNavigate()
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Dashboard | ${CONFIG.APP_NAME}`;
     }, [])
 

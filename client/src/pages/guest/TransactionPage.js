@@ -27,7 +27,7 @@ export default function TransactionPage() {
         }
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Transakce ${idTransaction} | ${CONFIG.APP_NAME}`;
     }, [idTransaction])
 

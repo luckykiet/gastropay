@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock, faUser, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { Box, Content, Heading, Form, Icon, Button, Container } from "react-bulma-components";
-import React, { Fragment, useState, useEffect, useLayoutEffect, useCallback } from "react";
+import React, { Fragment, useState, useEffect, useCallback } from "react";
 import { checkICO, createAxios, addSlashAfterUrl } from "../../utils";
 import { Promise } from "bluebird";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { PATHS } from '../../config/paths';
 import { API } from '../../config/api';
 import { CONFIG } from '../../config/config';
@@ -27,10 +27,11 @@ export default function RegisterPage() {
     });
     const { ico, email, password } = formData;
     const navigate = useNavigate();
+    const location = useLocation();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Registrace | ${CONFIG.APP_NAME}`;
-    }, [])
+    }, [location])
 
     const handleSubmit = async (e) => {
         e.preventDefault();

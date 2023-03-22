@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useLayoutEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { Box, Content, Heading, Form, Icon, Button, Container, Block } from "react-bulma-components";
@@ -20,7 +20,7 @@ export default function ComgatePanel() {
     const [password, setPassword] = useState('');
     const [comgate, setComgate] = useState({});
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Comgate | ${CONFIG.APP_NAME}`;
     }, [])
 

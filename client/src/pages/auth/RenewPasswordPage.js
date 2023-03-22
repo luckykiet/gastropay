@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Block, Content, Heading, Form, Icon, Button, Container } from "react-bulma-components";
 import { Link, useParams } from 'react-router-dom';
@@ -21,7 +21,7 @@ export default function RenewPasswordPage() {
     const [isValidToken, setIsValidToken] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Obnovení hesla | ${CONFIG.APP_NAME}`;
     }, [])
 

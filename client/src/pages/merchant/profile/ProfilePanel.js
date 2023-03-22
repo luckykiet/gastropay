@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useLayoutEffect } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import ProgressBar from '../../../components/ProgressBar'
 import { Content, Heading, Container, Box, Block, Form, Icon, Button } from 'react-bulma-components';
 import { Promise } from 'bluebird';
@@ -20,7 +20,7 @@ export default function ProfilePanel() {
     const [passwordsMatch, setPasswordsMatch] = useState(null);
     const [isPasswordValid, setIsPasswordValid] = useState(true);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Údaje | ${CONFIG.APP_NAME}`;
     }, [])
 

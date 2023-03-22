@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useLayoutEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { createAxios, addSlashAfterUrl } from '../../../utils';
 import { Box, Heading, Form, Button, Container, Hero, Block } from "react-bulma-components";
 import 'rc-time-picker/assets/index.css';
@@ -25,7 +25,7 @@ export default function AddPanelPage() {
     });
     const setChosenRestaurant = useSetChosenRestaurant();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Přidat restauraci | ${CONFIG.APP_NAME}`;
     }, [])
 

@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { Box, Content, Heading, Form, Icon, Button, Container, Block } from "react-bulma-components";
-import React, { Fragment, useState, useEffect, useLayoutEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import Toggle from 'react-toggle';
 import "react-toggle/style.css";
 import produce from "immer";
@@ -20,7 +20,7 @@ export default function CsobPanel() {
     const [password, setPassword] = useState('');
     const [csob, setCsob] = useState({});
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `ČSOB | ${CONFIG.APP_NAME}`;
     }, [])
 

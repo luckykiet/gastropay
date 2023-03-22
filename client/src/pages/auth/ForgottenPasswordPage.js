@@ -1,10 +1,11 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { Box, Content, Heading, Form, Icon, Button, Container } from "react-bulma-components";
-import React, { Fragment, useState, useLayoutEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { createAxios, addSlashAfterUrl } from "../../utils";
 import { CONFIG } from "../../config/config";
 import { API } from "../../config/api";
+import { useLocation } from "react-router-dom";
 
 const { Field, Label, Control, Input, Help } = Form;
 export default function ForgottenPasswordPage() {
@@ -12,10 +13,11 @@ export default function ForgottenPasswordPage() {
     const [email, setEmail] = useState('');
     const [isEmailValid, setIsEmailValid] = useState(null);
     const [loading, setLoading] = useState(false);
+    const location = useLocation();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Zapomenuté heslo | ${CONFIG.APP_NAME}`;
-    }, [])
+    }, [location])
 
     const handleChange = (e) => {
         const { value } = e.target;

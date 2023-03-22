@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useLayoutEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Container, Content as TextContent, Heading, Columns } from "react-bulma-components";
 import { useNavigate } from "react-router-dom";
 import { createAxios, addSlashAfterUrl } from "../../utils";
@@ -43,7 +43,7 @@ export default function RestaurantsPage() {
         setSearchQuery(e.target.value);
     };
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Restaurace | ${CONFIG.APP_NAME}`;
     }, [])
 

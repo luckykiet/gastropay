@@ -1,5 +1,5 @@
 import 'bulma/css/bulma.min.css';
-import React, { Fragment, useState, useLayoutEffect } from "react";
+import React, { Fragment, useState, useLayoutEffect, useEffect } from "react";
 import FooterComponent from '../FooterComponent';
 import { Container } from 'react-bulma-components';
 import BackButtonComponent from '../BackButtonComponent';
@@ -21,7 +21,7 @@ export default function MenuLayout() {
         setIsSidebarShowed(false);
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `${CONFIG.APP_NAME}`
     }, [])
 

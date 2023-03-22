@@ -1,7 +1,7 @@
-import React, { Fragment, useState, useEffect, useLayoutEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Content, Heading, Container, Box, Table, Button, Block, Form, Icon, Columns } from 'react-bulma-components';
 import { useCartItems, useChosenRestaurant, useSetCartItems, useSetChosenRestaurant, useTables, useTips } from '../../stores/ZustandStores';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { calculateCart, addSlashAfterUrl, createAxios } from '../../utils'
 import TipsInput from '../../components/menu/TipsInput';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -31,10 +31,11 @@ export default function PaymentPage() {
     const [chosenRestaurant, setChosenRestaurant] = [useChosenRestaurant(), useSetChosenRestaurant()];
     const tips = useTips();
     const navigate = useNavigate();
+    const location = useLocation();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Platba | ${CONFIG.APP_NAME}`;
-    }, [])
+    }, [location])
 
     const handleTableSelected = (e) => {
         const table = tables.find((table) => table.id === e.target.value) || {

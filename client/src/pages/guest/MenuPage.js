@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useLayoutEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Card, Container, Heading } from 'react-bulma-components';
 import TabsList from '../../components/menu/TabsList';
 import { createAxios, addSlashAfterUrl } from '../../utils';
@@ -20,7 +20,7 @@ export default function MenuPage() {
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Menu | ${CONFIG.APP_NAME}`;
     }, [])
 

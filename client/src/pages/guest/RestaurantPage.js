@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState, useLayoutEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Block, Button, Columns, Container, Content, Heading } from 'react-bulma-components';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { createAxios, isOpening, daysOfWeeksCzech, addSlashAfterUrl, removeSlashFromUrl, daysOfWeeks, isValidImageUrl } from "../../utils";
@@ -37,7 +37,7 @@ export default function RestaurantPage() {
         navigate(PATHS.MENU);
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Restaurace | ${CONFIG.APP_NAME}`;
     }, [])
 

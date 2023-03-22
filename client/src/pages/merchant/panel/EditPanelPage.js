@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useLayoutEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, isValidImageUrl, isValidUrl } from '../../../utils';
 import { Box, Heading, Form, Button, Container, Block } from "react-bulma-components";
@@ -25,7 +25,7 @@ export default function EditPanelPage() {
     const [apiTestMsg, setApiTestMsg] = useState({});
     const setChosenRestaurant = useSetChosenRestaurant();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         document.title = `Editace | ${CONFIG.APP_NAME}`;
     }, [])
 
