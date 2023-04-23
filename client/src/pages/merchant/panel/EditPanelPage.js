@@ -26,6 +26,10 @@ export default function EditPanelPage() {
     const setChosenRestaurant = useSetChosenRestaurant();
 
     useEffect(() => {
+        document.title = `Editace | ${CONFIG.APP_NAME}`;
+    }, [])
+
+    useEffect(() => {
         setLoading(true);
         setPostMsg({});
         setApiTestMsg({});
@@ -43,6 +47,7 @@ export default function EditPanelPage() {
                 }
                 setRestaurant(msg);
                 setChosenRestaurant(msg);
+                document.title = `Editace - ${msg.name} | ${CONFIG.APP_NAME}`;
             } catch (err) {
                 console.log(err)
             } finally {

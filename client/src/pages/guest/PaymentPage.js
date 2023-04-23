@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Content, Heading, Container, Box, Table, Button, Block, Form, Icon, Columns } from 'react-bulma-components';
 import { useCartItems, useChosenRestaurant, useSetCartItems, useSetChosenRestaurant, useTables, useTips } from '../../stores/ZustandStores';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { calculateCart, addSlashAfterUrl, createAxios } from '../../utils'
 import TipsInput from '../../components/menu/TipsInput';
 import LoadingComponent from '../../components/LoadingComponent';
@@ -11,6 +11,7 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { PATHS } from '../../config/paths';
 import { API } from '../../config/api';
 import { CONFIG } from '../../config/config';
+import BackButtonComponent from '../../components/BackButtonComponent';
 
 const { Field, Input, Label, Help, Control, Select } = Form;
 const { Column } = Columns;
@@ -31,6 +32,11 @@ export default function PaymentPage() {
     const [chosenRestaurant, setChosenRestaurant] = [useChosenRestaurant(), useSetChosenRestaurant()];
     const tips = useTips();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        document.title = `Platba | ${CONFIG.APP_NAME}`;
+    }, [location])
 
     const handleTableSelected = (e) => {
         const table = tables.find((table) => table.id === e.target.value) || {
@@ -122,6 +128,7 @@ export default function PaymentPage() {
 
     return (
         <Fragment>
+            <BackButtonComponent backNavigations={{ "payment": "/menu" }} />
             <Content textAlign={"center"}>
                 <Heading pt={5} spaced>Platba</Heading>
             </Content>

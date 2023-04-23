@@ -21,6 +21,10 @@ export default function ProfilePanel() {
     const [isPasswordValid, setIsPasswordValid] = useState(true);
 
     useEffect(() => {
+        document.title = `Údaje | ${CONFIG.APP_NAME}`;
+    }, [])
+
+    useEffect(() => {
         setLoading(true);
         setPostMsg({});
         const fetchRestaurant = async () => {

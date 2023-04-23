@@ -20,6 +20,10 @@ export default function CsobPanel() {
     const [password, setPassword] = useState('');
     const [csob, setCsob] = useState({});
 
+    useEffect(() => {
+        document.title = `ČSOB | ${CONFIG.APP_NAME}`;
+    }, [])
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);

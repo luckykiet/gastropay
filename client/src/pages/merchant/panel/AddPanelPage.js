@@ -26,6 +26,10 @@ export default function AddPanelPage() {
     const setChosenRestaurant = useSetChosenRestaurant();
 
     useEffect(() => {
+        document.title = `Přidat restauraci | ${CONFIG.APP_NAME}`;
+    }, [])
+
+    useEffect(() => {
         setChosenRestaurant({});
     }, [setChosenRestaurant])
 

@@ -44,6 +44,10 @@ export default function RestaurantsPage() {
     };
 
     useEffect(() => {
+        document.title = `Restaurace | ${CONFIG.APP_NAME}`;
+    }, [])
+
+    useEffect(() => {
         const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
         let delayTime = searchQuery ? 0 : 500;
         const fetchData = async () => {

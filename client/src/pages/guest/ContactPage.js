@@ -1,10 +1,16 @@
 import { Content, Heading } from "react-bulma-components";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import packageJson from '../../../package.json';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUser, faSchool } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { CONFIG } from "../../config/config";
+
 export default function ContactPage() {
+    useEffect(() => {
+        document.title = `Kontakty | ${CONFIG.APP_NAME}`;
+    }, [])
+
     return (
         <Fragment>
             <Heading pt={5}>Kontaktní údaje</Heading>

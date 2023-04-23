@@ -1,7 +1,12 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Content, Heading } from "react-bulma-components";
+import { CONFIG } from "../../config/config";
 
 export default function AboutPage() {
+    useEffect(() => {
+        document.title = `O nás | ${CONFIG.APP_NAME}`;
+    }, [])
+
     return (
         <Fragment>
             <Heading pt={5}>Abstrakt</Heading>

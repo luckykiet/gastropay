@@ -21,9 +21,14 @@ export default function MenuPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        document.title = `Menu | ${CONFIG.APP_NAME}`;
+    }, [])
+
+    useEffect(() => {
         if (Object.keys(restaurant).length === 0) {
             navigate(PATHS.RESTAURANTS);
         } else {
+            document.title = `Menu - ${restaurant.name} | ${CONFIG.APP_NAME}`;
             setLoading(true);
             const axios = createAxios(addSlashAfterUrl(`${CONFIG.API_URL}/${API.PROXY}`));
             Promise.delay(0).then(() => {

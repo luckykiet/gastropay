@@ -28,6 +28,10 @@ export default function TransactionPage() {
     }
 
     useEffect(() => {
+        document.title = `Transakce ${idTransaction} | ${CONFIG.APP_NAME}`;
+    }, [idTransaction])
+
+    useEffect(() => {
         const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
         const fetchTransaction = async () => {
             console.log("Checking...")
@@ -184,7 +188,7 @@ export default function TransactionPage() {
                                         </tbody>
                                     </Table>
                                     <hr />
-                                    <Heading size={5} renderAs="p">Tips: {result.transaction.tips} Kč</Heading>
+                                    <Heading size={5} renderAs="p">Spropitné: {result.transaction.tips} Kč</Heading>
                                 </Block>
                                 <hr />
                                 <Heading size={4} renderAs="p">Celkem: {Math.round(calculateCart(result.transaction.cart.orders).totalPrice + result.transaction.tips) + " Kč"}</Heading>

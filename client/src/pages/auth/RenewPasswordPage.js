@@ -21,6 +21,10 @@ export default function RenewPasswordPage() {
     const [isValidToken, setIsValidToken] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        document.title = `Obnovení hesla | ${CONFIG.APP_NAME}`;
+    }, [])
+
     const handleConfirmNewPasswordChange = (e) => {
         const { value } = e.target;
         setConfirmNewPassword(value);

@@ -38,6 +38,10 @@ export default function RestaurantPage() {
     }
 
     useEffect(() => {
+        document.title = `Restaurace | ${CONFIG.APP_NAME}`;
+    }, [])
+
+    useEffect(() => {
         const fetchData = async () => {
             try {
                 const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
@@ -46,6 +50,7 @@ export default function RestaurantPage() {
                     throw new Error(msg);
                 }
                 setBusiness(msg);
+                document.title = `${msg.name} | ${CONFIG.APP_NAME}`;
             } catch (err) {
                 setBusiness({});
                 console.log(err);

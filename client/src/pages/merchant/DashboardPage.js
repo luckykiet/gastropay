@@ -24,6 +24,10 @@ export default function DashboardPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        document.title = `Dashboard | ${CONFIG.APP_NAME}`;
+    }, [])
+
+    useEffect(() => {
         const fetchRestaurants = async () => {
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
             try {

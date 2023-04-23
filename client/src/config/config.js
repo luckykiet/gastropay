@@ -7,6 +7,7 @@ const APP_PORT = process.env.REACT_APP_APP_PORT || 3000;
 const LOCALHOST = "http://localhost";
 const SERVERLESS_PATH = "/.netlify/functions/server";
 const PUBLIC_APP_URL = process.env.REACT_APP_BASE_URL || packageJson.app.url;
+const PROXY_URL = process.env.PROXY_URL;
 const APP_NAME = process.env.REACT_APP_NAME || packageJson.app.name || "Gastro Pay";
 
 const removeSlashFromUrl = (url) => {
@@ -25,7 +26,7 @@ const config = {
     API_URL: DEV_MODE ? LOCALHOST + ":" + API_PORT + "/api" : removeSlashFromUrl(PUBLIC_APP_URL) + SERVERLESS_PATH,
     BASE_URL: DEV_MODE ? LOCALHOST + ":" + APP_PORT : removeSlashFromUrl(PUBLIC_APP_URL),
     IMAGE_BASE_URL: DEV_MODE ? LOCALHOST + ":" + APP_PORT + "/images" : removeSlashFromUrl(PUBLIC_APP_URL) + "/images",
-    PROXY_URL: "https://cors-proxy.itake.cz",
+    PROXY_URL: PROXY_URL,
     LANGUAGES: {
         CS: 'cs',
         EN: 'en'

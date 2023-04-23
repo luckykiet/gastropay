@@ -21,6 +21,10 @@ export default function TransactionPanelPage() {
     const chosenRestaurant = useChosenRestaurant();
 
     useEffect(() => {
+        document.title = `Transakce - ${chosenRestaurant.name} | ${CONFIG.APP_NAME}`;
+    }, [chosenRestaurant.name])
+
+    useEffect(() => {
         setLoading(true);
         const fetchTransactions = async () => {
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));

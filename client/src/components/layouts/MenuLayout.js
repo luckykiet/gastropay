@@ -1,5 +1,5 @@
 import 'bulma/css/bulma.min.css';
-import React, { Fragment, useState, useLayoutEffect } from "react";
+import React, { Fragment, useState, useLayoutEffect, useEffect } from "react";
 import FooterComponent from '../FooterComponent';
 import { Container } from 'react-bulma-components';
 import BackButtonComponent from '../BackButtonComponent';
@@ -7,6 +7,7 @@ import MenuNavbar from '../menu/MenuNavbar';
 import CollapsibleSidebar from '../menu/CollapsibleSidebar';
 import MenuPage from '../../pages/guest/MenuPage';
 import { useChosenRestaurant } from '../../stores/ZustandStores';
+import { CONFIG } from '../../config/config';
 
 export default function MenuLayout() {
     const restaurant = useChosenRestaurant();
@@ -19,6 +20,10 @@ export default function MenuLayout() {
     const handleCloseSidebar = () => {
         setIsSidebarShowed(false);
     }
+
+    useEffect(() => {
+        document.title = `${CONFIG.APP_NAME}`
+    }, [])
 
     useLayoutEffect(() => {
         const html = document.documentElement;

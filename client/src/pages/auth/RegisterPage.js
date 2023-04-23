@@ -4,7 +4,7 @@ import { Box, Content, Heading, Form, Icon, Button, Container } from "react-bulm
 import React, { Fragment, useState, useEffect, useCallback } from "react";
 import { checkICO, createAxios, addSlashAfterUrl } from "../../utils";
 import { Promise } from "bluebird";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { PATHS } from '../../config/paths';
 import { API } from '../../config/api';
 import { CONFIG } from '../../config/config';
@@ -27,6 +27,11 @@ export default function RegisterPage() {
     });
     const { ico, email, password } = formData;
     const navigate = useNavigate();
+    const location = useLocation();
+
+    useEffect(() => {
+        document.title = `Registrace | ${CONFIG.APP_NAME}`;
+    }, [location])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
