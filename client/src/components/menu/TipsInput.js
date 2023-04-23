@@ -27,7 +27,7 @@ export default function TipsInput() {
         <Block>
             <Field>
                 <Control>
-                    <Label className='is-normal' mr={5} htmlFor='inputTips'>Tips:</Label>
+                    <Label className='is-normal' mr={5} htmlFor='inputTips'>Spropitné:</Label>
                     <Field className='has-addons'>
                         <Control>
                             <Input id='inputTips'

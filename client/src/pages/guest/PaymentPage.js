@@ -11,6 +11,7 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { PATHS } from '../../config/paths';
 import { API } from '../../config/api';
 import { CONFIG } from '../../config/config';
+import BackButtonComponent from '../../components/BackButtonComponent';
 
 const { Field, Input, Label, Help, Control, Select } = Form;
 const { Column } = Columns;
@@ -127,6 +128,7 @@ export default function PaymentPage() {
 
     return (
         <Fragment>
+            <BackButtonComponent backNavigations={{ "payment": "/menu" }} />
             <Content textAlign={"center"}>
                 <Heading pt={5} spaced>Platba</Heading>
             </Content>

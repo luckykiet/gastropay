@@ -16,6 +16,7 @@ const { Field, Label, Control, Input, Select, Help } = Form;
 
 export default function ComgatePanel() {
     const [postMsg, setPostMsg] = useState({});
+    const [ip, setIp] = useState("");
     const [loading, setLoading] = useState(true);
     const [password, setPassword] = useState('');
     const [comgate, setComgate] = useState({});
@@ -115,6 +116,20 @@ export default function ComgatePanel() {
                 setLoading(false);
             }
         }
+
+        const fetchIpAddress = async () => {
+            const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
+            try {
+                const { data: { success, msg } } = await axios.get(`/ip`)
+                if (!success) {
+                    throw new Error(msg)
+                }
+                setIp(msg)
+            } catch (err) {
+                setIp(err.response.data.msg)
+            }
+        }
+        Promise.delay(0).then(fetchIpAddress);
         Promise.delay(0).then(fetchPaymentGate);
     }, []);
 
@@ -147,6 +162,7 @@ export default function ComgatePanel() {
                                         <Button renderAs="a" color={"info"} target="_blank" href="https://portal.comgate.cz">Portál</Button>
                                         <Button renderAs="a" color={"link"} target="_blank" href="https://help.comgate.cz/docs/api-protokol#založen%C3%AD-platby">API Dokumentace</Button>
                                     </Button.Group>
+                                    <Heading renderAs='p' size={5} mr={4} className='has-text-weight-bold'>Povolení IP adresy: {ip}</Heading>
                                 </Block>
                                 <Field>
                                     <Label htmlFor="inputMerchant">
