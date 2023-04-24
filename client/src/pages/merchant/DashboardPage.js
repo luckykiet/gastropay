@@ -9,6 +9,7 @@ import ConfirmBox from '../../components/merchant/ConfirmBox';
 import { PATHS } from '../../config/paths';
 import { API } from '../../config/api';
 import { CONFIG } from '../../config/config';
+import LoadingComponent from '../../components/LoadingComponent';
 
 const { Column } = Columns;
 const { Body } = Hero;
@@ -16,6 +17,7 @@ const { Tab } = Tabs;
 
 export default function DashboardPage() {
     const userId = getItemsFromToken().userId;
+    const [loading, setLoading] = useState(false);
     const [restaurants, setRestaurants] = useState([]);
     const [showConfirmBox, setShowConfirmBox] = useState(false);
     const { idRestaurant } = useParams();
@@ -60,6 +62,7 @@ export default function DashboardPage() {
 
     const handleConfirm = async () => {
         try {
+            setLoading(true);
             const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
             const { data: { success, msg } } = await axios.delete(
                 `${API.MERCHANT}/${API.RESTAURANT}/${idRestaurant}`, {
@@ -75,6 +78,7 @@ export default function DashboardPage() {
         } catch (err) {
             console.log(err)
         } finally {
+            setLoading(false);
             setShowConfirmBox(false);
         }
     };
@@ -125,7 +129,7 @@ export default function DashboardPage() {
                                 </Tabs>
                             </Fragment>
                         }
-                        <Outlet />
+                        {loading ? <LoadingComponent /> : <Outlet />}
                     </Fragment>
                 }
             </Column>
