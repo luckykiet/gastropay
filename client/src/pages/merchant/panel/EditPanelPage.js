@@ -104,7 +104,6 @@ export default function EditPanelPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
         setPostMsg({});
         setApiTestMsg({});
         if (restaurant.name === '' || restaurant.address.street === '' || restaurant.address.city === '' || restaurant.address.postalCode === '') {
@@ -114,6 +113,7 @@ export default function EditPanelPage() {
             });
         } else {
             try {
+                setLoading(true);
                 const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
                 const { data: { success, msg } } = await axios.put(
                     `${API.MERCHANT}/${API.RESTAURANT}/${idRestaurant}`,
@@ -325,7 +325,7 @@ export default function EditPanelPage() {
                                     })}
                                     <Button id={"submitButton"} submit fullwidth color={'warning'}>Uložit</Button>
                                 </form>
-                                {postMsg && postMsg.msg && (
+                                {postMsg?.msg && (
                                     <p className={postMsg.success ? "has-text-success" : "has-text-danger"}>
                                         {postMsg.msg instanceof Error ? postMsg.msg.message : typeof postMsg.msg === "string" && postMsg.msg}
                                     </p>
