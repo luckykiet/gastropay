@@ -1,0 +1,24 @@
+{
+  "key": "57a1b101181ab413ec08ea96",
+  "totalPrice": 628.0,
+  "tableName": "Z01",
+  "tableId": "60aa29bfdfe17d1e084830b3",
+  "items": [
+    {
+      "ean": "P01",
+      "price": "310.00",
+      "quantity": 2,
+      "note": "",
+      "mods": ""
+    },
+    {
+      "ean": "P02",
+      "price": "159.00",
+      "quantity": 1,
+      "note": "",
+      "mods": ""
+    }
+  ],
+  "paymentId": "ZRSH-STGE-X9QN",
+  "paymentGate": "comgate"
+}
