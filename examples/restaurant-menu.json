@@ -178,6 +178,38 @@
         "name": "Pho bo vien",
         "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S HOVĚZÍMI MASOVÝMI KOULEMI"
       }
-    }
+    },
+    "tables": [
+      {
+        "_id": "5fca2fd7b9a33d1cb0e04f60",
+        "table_name": "V01",
+        "table_desc": ""
+      },
+      {
+        "_id": "5fca6ab2b9a33d1cb0e09068",
+        "table_name": "V02",
+        "table_desc": ""
+      },
+      {
+        "_id": "60aa29b3dfe17d1e084830a6",
+        "table_name": "V03",
+        "table_desc": ""
+      },
+      {
+        "_id": "60aa29b7dfe17d1e084830a9",
+        "table_name": "V04",
+        "table_desc": ""
+      },
+      {
+        "_id": "60aa29bfdfe17d1e084830b3",
+        "table_name": "Z01",
+        "table_desc": ""
+      },
+      {
+        "_id": "60aa29c4dfe17d1e084830b8",
+        "table_name": "Z02",
+        "table_desc": ""
+      }
+    ]
   }
 }
