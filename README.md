@@ -88,8 +88,9 @@ yarn deploy-prod
 
 ### Connect to POS
 
-Gastro Pay uses **GET** method to load the Menu Gastro Pay uses **POST** method
-to verify connection and to send the orders to the POS
+- Gastro Pay uses **GET** method to load the Menu
+- Gastro Pay uses **POST** method to verify connection and to send the orders to
+  the POS
 
 1. Choose a restaurant, where you want to connect to
 2. Move down to **Menu API** section
@@ -99,4 +100,6 @@ to verify connection and to send the orders to the POS
 6. You can test Menu using button **Test Menu API**
 7. On your API side, set API answers as examples in
    [API examples folder](https://github.com/luckykiet/gastropay/tree/main/examples 'API examples folder')
-8. Save it
+8. To request transaction status, follow
+   [this API](https://app.swaggerhub.com/apis/luckykiet/GastroPay/1.0.0 'this API')
+9. Save it
