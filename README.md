@@ -47,11 +47,11 @@ yarn deploy-prod
 
 1. Get an Comgate account and login to
    [Comgate Portal](https://portal.comgate.cz/ 'Comgate Portal')
-2. On main page go to **Integration** > **_shop's name_ **> **Shop connections
-   **> **Add**
+2. On main page go to **Integration** > **shops name** > **Shop connections** >
+   **Add**
 3. Add new shop, set **Connection name**
-4. Add redirect URL **https:&#8203;//_yourwebsitedomain_/transaction/${refId} **
-   to _Url paid_, _Url cancelled_, _Url pending_ and keep the tab open
+4. Add redirect URL **https:&#8203;//yourwebsitedomain/transaction/${refId}** to
+   _Url paid_, _Url cancelled_, _Url pending_ and keep the tab open
 5. On merchant page of Gastro Pay go to **Více** > **Profile** > **Comgate**
 6. Copy IP Address from **Povolení IP adresy** and paste to Comgate tab **IP
    Whitelist**
