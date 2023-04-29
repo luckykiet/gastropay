@@ -72,7 +72,7 @@ export default function EditPanelPage() {
                     msg: {}
                 })
             }
-        } else if (name === "api.verifyUrl" || name === "api.menuUrl" || name === "api.posUrl") {
+        } else if (name === "api.menuUrl" || name === "api.posUrl") {
             if (!isValidUrl(value) && value !== '') {
                 setPostMsg({
                     success: false,
@@ -277,15 +277,6 @@ export default function EditPanelPage() {
                                                 <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.key'] ? "danger" : undefined} onChange={handleChange} name={"api.key"} value={restaurant.api.key} type={"text"} id="inputApiKey" placeholder="API Key" />
                                             </Control>
                                             {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.key'] && <Help color={'danger'}>{postMsg.msg['api.key']}</Help>}
-                                        </Field>
-                                        <Field>
-                                            <Label htmlFor="inputApiVerifyUrl">
-                                                Verifikační URL
-                                            </Label>
-                                            <Control>
-                                                <Input color={postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.verifyUrl'] ? "danger" : undefined} onChange={handleChange} name={"api.verifyUrl"} value={restaurant.api.verifyUrl} type={"text"} id="inputApiVerifyUrl" placeholder="https://api.npoint.io/" />
-                                            </Control>
-                                            {postMsg && typeof postMsg.msg === "object" && postMsg.msg['api.verifyUrl'] && <Help color={'danger'}>{postMsg.msg['api.verifyUrl']}</Help>}
                                         </Field>
                                         <Field>
                                             <Label htmlFor="inputApiMenuUrl">
