@@ -162,7 +162,7 @@ export default function ComgatePanel() {
                                         <Button renderAs="a" color={"info"} target="_blank" href="https://portal.comgate.cz">Portál</Button>
                                         <Button renderAs="a" color={"link"} target="_blank" href="https://help.comgate.cz/docs/api-protokol#založen%C3%AD-platby">API Dokumentace</Button>
                                     </Button.Group>
-                                    <Heading renderAs='p' size={5} mr={4} className='has-text-weight-bold'>IP whitelist:&nbsp;<FontAwesomeIcon className='is-clickable' onClick={() => { navigator.clipboard.writeText(ip) }} icon={faCopy} /> {ip}</Heading>
+                                    <Heading renderAs='p' size={5} mr={4} className='has-text-weight-bold'>IP whitelist: {ip}&nbsp;<FontAwesomeIcon className='is-clickable' onClick={() => { navigator.clipboard.writeText(ip) }} icon={faCopy} /></Heading>
                                 </Block>
                                 <Field>
                                     <Label htmlFor="inputMerchant">
