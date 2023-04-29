@@ -77,8 +77,7 @@
         "price": "10.00",
         "name": "Bun bo nam bo",
         "description": "SMAŽENÉ HOVĚZÍ MASO, RÝŽOVÉ NUDLE, SALÁT, ARAŠÍDY",
-        "allergens": [4, 5],
-        "image": "https://ms2.ostium.cz/instance/web-recepty/jINtNvoq/h397w674t.jpg"
+        "allergens": [4, 5]
       },
       "2": {
         "unit": "ks",
@@ -86,8 +85,7 @@
         "price": "5.00",
         "name": "Bun cha gio",
         "description": "JARNÍ ZÁVITKY (3 KS), RÝŽOVÉ NUDLE, SALÁT, ARAŠÍDY",
-        "allergens": [4, 5],
-        "image": "https://thevietvegan.com/wp-content/uploads/2020/09/IMG_0886W-480x480.jpg"
+        "allergens": [4, 5]
       },
       "3": {
         "unit": "ks",
@@ -103,16 +101,14 @@
         "price": "1.00",
         "name": "Bun nem nuong",
         "description": "VEPŘOVÉ KARBANÁTKY (2KS) S KREVETY, RÝŽOVÉ NUDLE, SALÁT, ARAŠÍDY",
-        "allergens": [2, 4, 5],
-        "image": "https://theravenouscouple.com/wp-content/uploads/2009/05/bunnemnuong.jpg"
+        "allergens": [2, 4, 5]
       },
       "5": {
         "unit": "ks",
         "amount": 1,
         "price": "1.00",
         "name": "Com chien ga",
-        "description": "RIZITO S KUŘECÍM MASEM, ZELENINA",
-        "image": "https://cdn.tgdd.vn/Files/2020/06/17/1263673/cach-lam-com-chien-ga-xe-thap-cam-gion-toi-hap-da-18.jpg"
+        "description": "RIZITO S KUŘECÍM MASEM, ZELENINA"
       },
       "6": {
         "unit": "ks",
@@ -121,8 +117,7 @@
         "price": "1.00",
         "name": "Com dui ga",
         "description": "KŘUPAVÉ KUŘECÍ STEHNO SE ZELENINOU, RÝŽE, SÓJOVÁ OMÁČKA",
-        "allergens": [6],
-        "image": "https://toplist.vn/images/800px/quan-com-dui-ga-ngon-nhat-ha-noi-284152.jpg"
+        "allergens": [6]
       },
       "7": {
         "unit": "ks",
@@ -160,16 +155,14 @@
         "amount": 1,
         "price": "1.00",
         "name": "Pho bo",
-        "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S HOVĚZÍM MASEM",
-        "image": "http://www.sushitime.cz/image-cache/1280x1280/_files_products_727-pho-bo-A.jpg"
+        "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S HOVĚZÍM MASEM"
       },
       "12": {
         "unit": "ks",
         "amount": 1,
         "price": "1.00",
         "name": "Pho ga",
-        "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S UŘECÍM MASO",
-        "image": "https://www.hungrywanderlust.com/wp-content/uploads/2020/01/Chicken-Pho-Recipe_0206-1024x683.jpg"
+        "description": "VIETNAMSKÁ RÝŽOVÁ NUDLOVÁ POLÉVKA S UŘECÍM MASO"
       },
       "13": {
         "unit": "ks",
