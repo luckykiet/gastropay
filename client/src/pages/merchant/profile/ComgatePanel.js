@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faCopy } from '@fortawesome/free-solid-svg-icons';
 import { Box, Content, Heading, Form, Icon, Button, Container, Block } from "react-bulma-components";
 import Toggle from 'react-toggle';
 import "react-toggle/style.css";
@@ -162,7 +162,7 @@ export default function ComgatePanel() {
                                         <Button renderAs="a" color={"info"} target="_blank" href="https://portal.comgate.cz">Portál</Button>
                                         <Button renderAs="a" color={"link"} target="_blank" href="https://help.comgate.cz/docs/api-protokol#založen%C3%AD-platby">API Dokumentace</Button>
                                     </Button.Group>
-                                    <Heading renderAs='p' size={5} mr={4} className='has-text-weight-bold'>Povolení IP adresy: {ip}</Heading>
+                                    <Heading renderAs='p' size={5} mr={4} className='has-text-weight-bold'>IP whitelist:&nbsp;<FontAwesomeIcon className='is-clickable' onClick={() => { navigator.clipboard.writeText(ip) }} icon={faCopy} /> {ip}</Heading>
                                 </Block>
                                 <Field>
                                     <Label htmlFor="inputMerchant">

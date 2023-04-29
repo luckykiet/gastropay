@@ -8,9 +8,9 @@ https://gastropay.ruano.cz/
 
 ## Supported Payment Gateways
 
-#### [Comgate](https://help.comgate.cz/docs/en/protokol-api-en 'Comgate')
+#### [Comgate](https://help.comgate.cz/docs/en/protokol-api-en "Comgate")
 
-#### [CSOB](https://github.com/csob/paymentgateway 'CSOB')
+#### [CSOB](https://github.com/csob/paymentgateway "CSOB")
 
 ## Instalation
 
@@ -28,11 +28,12 @@ yarn install
 yarn start
 ```
 
-4. Deployment on netlify
+4. Deployment on Netlify
 
-- Create netlify account
+- Create Netlify account
 - Create site to deploy
-- Set up **Enviroment Variables** same as **.env** file in _Settings/General_
+- Go to **Site** > **Site settings** > **Enviroment Variables**
+- Set up **Enviroment Variables** same as **.env** file in _Settings/General_ or just simply upload the **.env** file
 
 ```
 yarn deploy-prod
@@ -46,7 +47,7 @@ yarn deploy-prod
 ### Add payment method Comgate
 
 1. Get an Comgate account and login to
-   [Comgate Portal](https://portal.comgate.cz/ 'Comgate Portal')
+   [Comgate Portal](https://portal.comgate.cz/ "Comgate Portal")
 2. On main page go to **Integration** > **shops name** > **Shop connections** >
    **Add**
 3. Add new shop, set **Connection name**
@@ -65,10 +66,10 @@ yarn deploy-prod
 ### Add payment method CSOB
 
 1. Get an ČSOB account and login to
-   [Posman Portal](https://posman.csob.cz/ 'Posman Portal')
+   [Posman Portal](https://posman.csob.cz/ "Posman Portal")
 2. Generate **Public** and **Private key** using provided Merchant ID and
    registered E-mail on
-   [this page](https://platebnibrana.csob.cz/keygen/ 'this page')
+   [this page](https://platebnibrana.csob.cz/keygen/ "this page")
 3. On merchant page of Gastro Pay go to **Více** > **Profile** > **ČSOB**
 4. Copy and paste **Merchant ID** value to Gastro Pay **Merchant ID** field
 5. Copy and paste contents of your **Private key** to Gastro Pay **Privátní
@@ -88,8 +89,8 @@ yarn deploy-prod
 
 ### Connect to POS
 
-- Gastro Pay uses **GET** method to load the Menu
-- Gastro Pay uses **POST** method to verify connection and to send the orders to
+- Gastro Pay will SEND **GET** method to load the Menu
+- Gastro Pay will SEND **POST** method to verify connection and submit the orders to
   the POS
 
 1. Choose a restaurant, where you want to connect to
@@ -98,8 +99,8 @@ yarn deploy-prod
 4. Add URL of your API
 5. Choose Content type of requests
 6. You can test Menu using button **Test Menu API**
-7. On your API side, set API answers as examples in
-   [API examples folder](https://github.com/luckykiet/gastropay/tree/main/examples 'API examples folder')
+7. On your API side, set API structure answers as the examples in
+   [API examples folder](https://github.com/luckykiet/gastropay/tree/main/examples "API examples folder")
 8. To request transaction status, follow
-   [this API](https://app.swaggerhub.com/apis/luckykiet/GastroPay/1.0.0 'this API')
+   [this API](https://app.swaggerhub.com/apis/luckykiet/GastroPay/1.0.0 "this API")
 9. Save it
