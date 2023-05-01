@@ -9,7 +9,6 @@ const { Content, Footer } = Card;
 
 export default function ProductCard({ product, showNotification }) {
     const addToCartItem = useAddToCartItem();
-    console.log(product)
     const handleAddToCartClick = (product) => {
         addToCartItem(product, 1);
         showNotification(product.name, "success");
