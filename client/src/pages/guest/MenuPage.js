@@ -55,6 +55,8 @@ export default function MenuPage() {
                             newMenu.push({
                                 name: product.name,
                                 price: product.price,
+                                description: product.description,
+                                allergens: product.allergens ?? [],
                                 tab: tabId,
                                 ean: item.ean,
                                 image: item.image,

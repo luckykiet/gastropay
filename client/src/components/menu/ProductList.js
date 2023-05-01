@@ -32,12 +32,14 @@ export default function ProductList({ group, content }) {
         color: ''
     });
 
-    const handleShowNotification = (productName, color) => {
-        dispatch({ type: 'SHOW', msg: `Přidáno ${productName} do košíku!`, color: color });
+    const notificationTimeOut = setTimeout(() => {
+        dispatch({ type: 'HIDE' });
+    }, NOTIFICATION_DURATION);
 
-        setTimeout(() => {
-            dispatch({ type: 'HIDE' });
-        }, NOTIFICATION_DURATION);
+    const handleShowNotification = (productName, color) => {
+        clearTimeout(notificationTimeOut);
+        dispatch({ type: 'SHOW', msg: `Přidáno ${productName} do košíku!`, color: color });
+        notificationTimeOut();
     };
 
     return (

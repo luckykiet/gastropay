@@ -130,7 +130,7 @@ export default function PaymentPage() {
         <Fragment>
             <BackButtonComponent backNavigations={{ "payment": "/menu" }} />
             <Content textAlign={"center"}>
-                <Heading pt={5} spaced>Platba</Heading>
+                <Heading spaced>Platba</Heading>
             </Content>
             {isPageLoading ? <LoadingComponent /> :
                 (
