@@ -1,20 +1,14 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import { Notification, Button } from 'react-bulma-components';
+import { toast } from 'bulma-toast';
 
-export default function FoodNotification({ isShowed, msg, color }) {
-    const [showNotification, setShowNotification] = useState(isShowed);
-
-    useEffect(() => {
-        setShowNotification(isShowed);
-    }, [isShowed]);
-
-    return (
-        <Fragment>
-            {showNotification && (
-                <Notification color={color}>
-                    {msg}<Button onClick={() => setShowNotification(false)} remove />
-                </Notification>
-            )}
-        </Fragment>
-    );
+export default function FoodNotification({ msg, color }) {
+    toast({
+        message: msg,
+        type: color,
+        duration: 3000,
+        opacity: 1,
+        single: true,
+        position: 'bottom-left',
+        animate: { in: 'fadeIn', out: 'fadeOut' }
+    });
+    return null;
 }

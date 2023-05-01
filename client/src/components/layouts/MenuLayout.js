@@ -1,4 +1,5 @@
 import 'bulma/css/bulma.min.css';
+import 'animate.css';
 import React, { Fragment, useState, useLayoutEffect, useEffect } from "react";
 import FooterComponent from '../FooterComponent';
 import { Container } from 'react-bulma-components';

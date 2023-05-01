@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Heading, Columns, Button } from 'react-bulma-components';
 import { useAddToCartItem } from '../../stores/ZustandStores';
-import { addSlashAfterUrl, isValidImageUrl } from '../../utils';
-import { CONFIG } from '../../config/config'
 import FoodNotification from './FoodNotification';
+import { addSlashAfterUrl, isValidImageUrl } from '../../utils';
+import { CONFIG } from '../../config/config';
 const { Column } = Columns;
 const { Content, Footer } = Card;
 
-export default function ProductCard({ product, showNotification }) {
+export default function ProductCard({ product }) {
     const addToCartItem = useAddToCartItem();
+    const [notifications, setNotifications] = useState([]);
+
     const handleAddToCartClick = (product) => {
         addToCartItem(product, 1);
-        showNotification(product.name, "success");
+        const newNotification = `Přidáno ${product.name} do košíku!`;
+        setNotifications([newNotification]);
     };
+
     return (
         <Column narrow className='is-one-quarter'>
             <Card key={product.ean}>
@@ -41,7 +45,13 @@ export default function ProductCard({ product, showNotification }) {
                     </Footer.Item>
                 </Footer>
             </Card>
-            <FoodNotification />
+            {notifications.map((notification, index) => (
+                <FoodNotification
+                    key={index}
+                    msg={notification}
+                    color={'is-success'}
+                />
+            ))}
         </Column>
     );
 }
