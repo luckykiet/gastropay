@@ -15,6 +15,9 @@ export default function ProductCard({ product }) {
         addToCartItem(product, 1);
         const newNotification = `Přidáno ${product.name} do košíku!`;
         setNotifications([newNotification]);
+        setTimeout(() => {
+            setNotifications([]);
+        }, 3000);
     };
 
     return (
