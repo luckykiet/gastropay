@@ -25,7 +25,7 @@ export default function CollapsibleSidebar({ show, handleCloseSidebar }) {
 
     return (
         <div style={{ overflowY: "auto" }} className={`collapsible-sidebar ${!show ? "is-hidden" : ""} has-background-grey-light`}>
-            <Card mx={3} mt={3} style={{ marginBottom: "2rem" }}>
+            <Card mx={3} mt={3} style={{ marginBottom: "6rem" }}>
                 <Header>
                     <Title>
                         <Heading size={3}>Košík &nbsp;<FontAwesomeIcon icon={faCartShopping} /></Heading>
