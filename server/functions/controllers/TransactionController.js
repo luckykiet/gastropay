@@ -404,7 +404,7 @@ const getPaymentMethods = async (req, res) => {
 
         paymentGates.forEach(gate => {
             if (merchant.paymentGates[gate].isAvailable) {
-                availableGates.push(gate);
+                availableGates.push({ paymentGate: gate, test: merchant.paymentGates[gate].test });
             }
         });
         return res.status(200).json({ success: true, msg: availableGates });

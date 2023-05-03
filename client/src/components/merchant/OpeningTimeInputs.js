@@ -31,12 +31,24 @@ export default function OpeningTimeInputs({ day, handleChange, restaurant, setRe
                 <Control>
                     <TimePicker
                         onChange={(time) => {
+                            const closingTime = moment(restaurant.openingTime[day].to, "HH:mm");
+                            const newOpeningTime = moment(time, "HH:mm");
+                            if (closingTime.isSameOrBefore(newOpeningTime)) {
+                                setTimePickerMsg(produce((draft) => {
+                                    draft[day] = "Čas otevření nesmí být starší než zavření";
+                                }))
+                                return;
+                            } else {
+                                setTimePickerMsg(produce((draft) => {
+                                    draft[day] = "";
+                                }))
+                            }
+
                             setRestaurant(produce((draft) => {
-                                draft.openingTime[day].from = moment(time).format("HH:mm");;
+                                draft.openingTime[day].from = moment(time).format("HH:mm");
                             }));
                         }}
                         name={"openingTime." + day + ".from"}
-                        minuteStep={5}
                         id={"input" + day + "From"}
                         format={'HH:mm'}
                         value={restaurant.openingTime[day].from ? moment(restaurant.openingTime[day].from, "HH:mm") : moment("00:00", "HH:mm")}
@@ -73,7 +85,6 @@ export default function OpeningTimeInputs({ day, handleChange, restaurant, setRe
                             }));
                         }}
                         name={"openingTime." + day + ".to"}
-                        minuteStep={5}
                         id={"input" + day + "To"}
                         format={'HH:mm'}
                         value={restaurant.openingTime[day].to ? moment(restaurant.openingTime[day].to, "HH:mm") : moment("00:00", "HH:mm")}
