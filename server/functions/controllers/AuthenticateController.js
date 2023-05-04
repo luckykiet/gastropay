@@ -74,11 +74,16 @@ const register = async (req, res, next) => {
         }
 
         const merchant = new MerchantModel(body);
+
         await merchant.save().then(() => {
             const token = signItemToken({ userId: merchant._id, ico: merchant.ico }, "1h");
+            merchant.tokens.push(token);
+            return merchant.save();
+        }).then(() => {
+            console.log(merchant.tokens)
             return res.status(201).json({
                 success: true,
-                msg: { token: token },
+                msg: { token: merchant.tokens },
             });
         });
     } catch (error) {
