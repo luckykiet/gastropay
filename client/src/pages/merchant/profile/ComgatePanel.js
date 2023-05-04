@@ -34,6 +34,7 @@ export default function ComgatePanel() {
                 success: false,
                 msg: "Zkontrolujte vyplněné údaje!"
             });
+            setLoading(false);
         } else {
             try {
                 const axios = createAxios(addSlashAfterUrl(CONFIG.API_URL));
