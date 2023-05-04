@@ -23,8 +23,8 @@ export default function ProductCard({ product }) {
     return (
         <Column narrow className='is-one-quarter'>
             <Card key={product.ean}>
-                <div class="card-image" >
-                    <figure class="image" style={{
+                <div className="card-image" >
+                    <figure className="image" style={{
                         height: "250px",
                         borderBottomStyle: "solid",
                         borderWidth: "1px",

@@ -1,9 +1,9 @@
-import React, { Fragment, useState, useEffect, useLayoutEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { Content, Heading, Container, Box, Block, Table, Columns, Button } from 'react-bulma-components';
 import { Link, useParams } from 'react-router-dom';
 import { createAxios, addSlashAfterUrl, calculateCart, statusColor, paymentGatesName } from '../../utils';
 import LoadingComponent from '../../components/LoadingComponent';
-import ComgateFrame from '../../components/ComgateFrame';
+// import ComgateFrame from '../../components/ComgateFrame';
 import { Promise } from 'bluebird';
 import { PATHS } from '../../config/paths';
 import { API } from '../../config/api';
@@ -16,16 +16,16 @@ export default function TransactionPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [paymentMethod, setPaymentMethod] = useState({});
     const [result, setResult] = useState({});
-    const [showPaymentBox, setShowPaymentBox] = useState(false);
+    // const [showPaymentBox, setShowPaymentBox] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false);
 
-    const handlePayClick = (e) => {
-        e.preventDefault();
-        const method = Object.keys(paymentMethod)[0];
-        if (method === 'comgate') {
-            setShowPaymentBox(true);
-        }
-    }
+    // const handlePayClick = (e) => {
+    //     e.preventDefault();
+    //     const method = Object.keys(paymentMethod)[0];
+    //     if (method === 'comgate') {
+    //         setShowPaymentBox(true);
+    //     }
+    // }
 
     useEffect(() => {
         document.title = `Transakce ${idTransaction} | ${CONFIG.APP_NAME}`;
@@ -60,18 +60,18 @@ export default function TransactionPage() {
         }
     }, [idTransaction, isCompleted]);
 
-    useLayoutEffect(() => {
-        const html = document.documentElement;
-        if (showPaymentBox) {
-            html.style.overflow = "hidden";
-        } else {
-            html.style.overflow = "unset";
-        }
+    // useLayoutEffect(() => {
+    //     const html = document.documentElement;
+    //     if (showPaymentBox) {
+    //         html.style.overflow = "hidden";
+    //     } else {
+    //         html.style.overflow = "unset";
+    //     }
 
-        return () => {
-            html.style.overflow = "unset";
-        };
-    }, [showPaymentBox]);
+    //     return () => {
+    //         html.style.overflow = "unset";
+    //     };
+    // }, [showPaymentBox]);
 
     const StatusField = () => {
         const status = result.transaction.status;
@@ -107,13 +107,15 @@ export default function TransactionPage() {
         if (method === 'comgate') {
             return (
                 <Fragment>
-                    <Button size={'large'} color={'warning'} onClick={handlePayClick}>Zaplatit</Button>
+                    {/* <Button size={'large'} color={'warning'} onClick={handlePayClick}>Zaplatit</Button>
                     {showPaymentBox && (
                         <ComgateFrame
                             paymentMethod={paymentMethod[method]}
                             onClose={() => setShowPaymentBox(false)}
                         />
-                    )}
+                    )} */}
+
+                    <Button size={'large'} color={'warning'} renderAs='a' href={"https://payments.comgate.cz/client/instructions/index?id=" + paymentMethod[method].transId} >Zaplatit</Button>
                 </Fragment>
             )
         } else if (method === 'csob') {

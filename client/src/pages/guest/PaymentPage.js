@@ -108,12 +108,10 @@ export default function PaymentPage() {
             const fetchTransaction = async () => {
                 try {
                     const { data: { success, msg } } = await axios.get(`${API.TRANSACTION}/${API.PAYMENT_METHODS}/${chosenRestaurant._id}`);
-                    if (success) {
-                        setMerchantPaymentMethods(msg);
-                        console.log(msg)
-                    } else {
-                        console.log(msg);
+                    if (!success) {
+                        throw new Error(msg);
                     }
+                    setMerchantPaymentMethods(msg);
                 } catch (error) {
                     console.log(error.response.data.msg)
                 } finally {
@@ -214,8 +212,8 @@ export default function PaymentPage() {
                                             <Button.Group>
                                                 {merchantPaymentMethods.map((method) => {
                                                     if (method.paymentGate === 'comgate') {
-                                                        return <Section className='has-text-centered'>
-                                                            <Button key={method.paymentGate} onClick={(e) => handlePaymentClick(e, method.paymentGate)} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
+                                                        return <Section key={method.paymentGate} className='has-text-centered'>
+                                                            <Button onClick={(e) => handlePaymentClick(e, method.paymentGate)} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
                                                                 <img
                                                                     alt={method.paymentGate}
                                                                     src={addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + "logo/logo-comgate.png"}
@@ -232,8 +230,8 @@ export default function PaymentPage() {
                                                             {method.test === true && <Block><Heading renderAs='span' className="tag is-danger">Testovací režim</Heading></Block>}
                                                         </Section>;
                                                     } else if (method.paymentGate === 'csob') {
-                                                        return <Section className='has-text-centered'>
-                                                            <Button key={method.paymentGate} size={'large'} onClick={(e) => handlePaymentClick(e, method.paymentGate)} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
+                                                        return <Section key={method.paymentGate} className='has-text-centered'>
+                                                            <Button size={'large'} onClick={(e) => handlePaymentClick(e, method.paymentGate)} style={{ position: 'relative', overflow: 'hidden', width: '150px', height: '70px' }}>
                                                                 <img
                                                                     alt={method.paymentGate}
                                                                     src={addSlashAfterUrl(CONFIG.IMAGE_BASE_URL) + "logo/logo-csob.png"}
