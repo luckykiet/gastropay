@@ -1,0 +1,88 @@
+{
+  "common": {
+    "loading": "Đang tải...",
+    "error": "Lỗi",
+    "retry": "Thử lại",
+    "back": "Quay lại",
+    "close": "Đóng",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "confirm": "Xác nhận",
+    "search": "Tìm kiếm",
+    "language": "Ngôn ngữ"
+  },
+  "landing": {
+    "title": "GastroPay",
+    "subtitle": "Đặt món trực tiếp từ điện thoại",
+    "description": "Quét mã QR và đặt món thoải mái từ bàn của bạn"
+  },
+  "menu": {
+    "title": "Thực đơn",
+    "categories": "Danh mục",
+    "allItems": "Tất cả món",
+    "noItems": "Không có món",
+    "addToCart": "Thêm vào giỏ",
+    "selectModifiers": "Chọn tùy chọn",
+    "required": "Bắt buộc",
+    "optional": "Tùy chọn",
+    "note": "Ghi chú đơn hàng",
+    "notePlaceholder": "VD: không hành..."
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "empty": "Giỏ hàng trống",
+    "total": "Tổng",
+    "checkout": "Thanh toán",
+    "continueShopping": "Tiếp tục mua",
+    "remove": "Xóa",
+    "quantity": "Số lượng"
+  },
+  "order": {
+    "title": "Đơn hàng",
+    "summary": "Tóm tắt đơn hàng",
+    "table": "Bàn",
+    "selectTable": "Chọn bàn",
+    "noTable": "Không bàn (mang đi)",
+    "pay": "Thanh toán",
+    "total": "Tổng thanh toán",
+    "processing": "Đang xử lý...",
+    "success": "Đặt hàng thành công!",
+    "successMessage": "Đơn hàng đã được thanh toán và gửi đến bếp.",
+    "failed": "Thanh toán thất bại",
+    "failedMessage": "Vui lòng thử lại.",
+    "cancelled": "Thanh toán bị hủy",
+    "cancelledMessage": "Bạn có thể thử lại.",
+    "backToMenu": "Quay lại thực đơn",
+    "tryAgain": "Thử lại",
+    "transactionId": "Mã giao dịch",
+    "orderNumber": "Số đơn hàng",
+    "callingNumber": "Số gọi"
+  },
+  "payment": {
+    "title": "Thanh toán",
+    "email": "Email",
+    "emailPlaceholder": "email@cuaban.com",
+    "emailRequired": "Email cần thiết để xác nhận thanh toán",
+    "securePayment": "Bạn sẽ được chuyển đến cổng thanh toán bảo mật",
+    "payNow": "Thanh toán ngay"
+  },
+  "table": {
+    "selectTitle": "Chọn bàn của bạn",
+    "selectDescription": "Chọn bàn bạn đang ngồi",
+    "takeaway": "Mang đi",
+    "yourTable": "Bàn của bạn"
+  },
+  "session": {
+    "activeOrders": "Đơn hàng đang hoạt động",
+    "payAll": "Thanh toán tất cả",
+    "unpaidTotal": "Tổng chưa thanh toán",
+    "orderHistory": "Lịch sử đơn hàng"
+  },
+  "errors": {
+    "loadingFailed": "Không thể tải dữ liệu",
+    "orderFailed": "Không thể tạo đơn hàng",
+    "paymentFailed": "Thanh toán thất bại",
+    "networkError": "Lỗi kết nối",
+    "invalidRegister": "Nhà hàng không hợp lệ"
+  }
+}

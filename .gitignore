@@ -26,3 +26,9 @@ yarn-error.log*
 # Local Netlify folder
 .netlify
 .env
+
+# Next.js consumer app
+app/.next
+app/node_modules
+app/.env*.local
+app/certs/

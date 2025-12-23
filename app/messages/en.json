@@ -1,0 +1,149 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "back": "Back",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "search": "Search",
+    "language": "Language",
+    "restaurants": "Restaurants"
+  },
+  "landing": {
+    "title": "GastroPay",
+    "subtitle": "Order food directly from your phone",
+    "description": "Scan the QR code and order food comfortably from your table",
+    "startOrdering": "Start ordering!"
+  },
+  "menu": {
+    "title": "Menu",
+    "categories": "Categories",
+    "allItems": "All items",
+    "noItems": "No items",
+    "addToCart": "Add to cart",
+    "selectModifiers": "Select options",
+    "required": "Required",
+    "optional": "Optional",
+    "note": "Order note",
+    "notePlaceholder": "E.g. no onions...",
+    "error": "An error occurred",
+    "noMenu": "Restaurant has no menu.",
+    "backToRestaurants": "restaurant selection",
+    "added": "Added",
+    "cart": "Cart"
+  },
+  "cart": {
+    "title": "Cart",
+    "empty": "Cart is empty",
+    "total": "Total",
+    "checkout": "Checkout",
+    "continueShopping": "Continue shopping",
+    "remove": "Remove",
+    "quantity": "Quantity"
+  },
+  "order": {
+    "title": "Order",
+    "summary": "Order summary",
+    "table": "Table",
+    "selectTable": "Select table",
+    "noTable": "No table (takeaway)",
+    "pay": "Pay",
+    "total": "Total to pay",
+    "processing": "Processing...",
+    "success": "Order successful!",
+    "successMessage": "Your order has been paid and sent to the kitchen.",
+    "failed": "Payment failed",
+    "failedMessage": "Please try again.",
+    "cancelled": "Payment cancelled",
+    "cancelledMessage": "You can try again.",
+    "backToMenu": "Back to menu",
+    "tryAgain": "Try again",
+    "transactionId": "Transaction ID",
+    "orderNumber": "Order number",
+    "callingNumber": "Calling number"
+  },
+  "payment": {
+    "title": "Payment",
+    "email": "Email",
+    "emailPlaceholder": "Email for receipt",
+    "emailRequired": "Email is required for payment confirmation",
+    "securePayment": "You will be redirected to a secure payment portal",
+    "payNow": "Pay now",
+    "emptyCart": "Nothing to pay",
+    "backToRestaurants": "Back to restaurant selection",
+    "backToMenu": "Back to menu",
+    "yourOrder": "Your order",
+    "tips": "Tips",
+    "noTip": "No tip",
+    "total": "Total",
+    "invalidEmail": "Invalid email format",
+    "selectTable": "Select a table",
+    "table": "Table",
+    "paymentMethod": "Choose payment method",
+    "noPaymentMethods": "Merchant has no payment method configured",
+    "testMode": "Test mode",
+    "paymentError": "Payment failed"
+  },
+  "table": {
+    "selectTitle": "Select your table",
+    "selectDescription": "Select the table where you are seated",
+    "takeaway": "Takeaway",
+    "yourTable": "Your table"
+  },
+  "session": {
+    "activeOrders": "Active orders",
+    "payAll": "Pay all",
+    "unpaidTotal": "Unpaid total",
+    "orderHistory": "Order history"
+  },
+  "errors": {
+    "loadingFailed": "Failed to load data",
+    "orderFailed": "Failed to create order",
+    "paymentFailed": "Payment failed",
+    "networkError": "Connection error",
+    "invalidRegister": "Invalid restaurant"
+  },
+  "restaurants": {
+    "title": "Restaurants",
+    "description": "Choose a restaurant and order food",
+    "choose": "Choose restaurant",
+    "search": "Search restaurant...",
+    "sortBy": "Sort by",
+    "noResults": "No results found!",
+    "noActive": "No restaurant is currently active :("
+  },
+  "restaurant": {
+    "title": "Restaurant",
+    "error": "An error occurred",
+    "backTo": "Go back to",
+    "restaurantList": "restaurant selection",
+    "openingHours": "Opening hours",
+    "closed": "Closed",
+    "address": "Address",
+    "orderFood": "Order food",
+    "outsideHours": "Outside opening hours"
+  },
+  "transaction": {
+    "title": "Transaction",
+    "error": "Transaction not found",
+    "backToRestaurants": "Back to restaurant selection",
+    "transactionId": "Transaction ID",
+    "orderDetails": "Order details",
+    "restaurant": "Restaurant",
+    "table": "Table",
+    "paymentMethod": "Payment method",
+    "tips": "Tips",
+    "total": "Total",
+    "status": {
+      "pending": "Waiting for payment",
+      "calling": "Sent to kitchen",
+      "processing": "Preparing",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "refunded": "Refunded"
+    }
+  }
+}

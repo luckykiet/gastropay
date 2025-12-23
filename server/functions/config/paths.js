@@ -1,2 +1,30 @@
-require = require("esm")(module);
-module.exports = require("../../../client/src/config/paths").PATHS;
+// Server-side paths config
+const paths = {
+  HOME: '/',
+  LOGIN: '/login',
+  LOGOUT: '/logout',
+  ERROR: '/error',
+  CONTACT: '/contact',
+  ABOUT: '/about',
+  REGISTRATION: '/registration',
+  FORGOTTEN_PASS: '/forgottenpassword',
+  RESTAURANTS: '/restaurants',
+  RESTAURANT: '/restaurant',
+  MENU: '/menu',
+  PAYMENT: '/payment',
+  TRANSACTION: '/transaction',
+  MERCHANT: '/merchant',
+  CHANGE_PASSWORD: '/changepassword',
+  DASHBOARD: 'dashboard',
+  PROFILE: 'profile',
+  RESTAURANT_EDIT: 'edit',
+  RESTAURANT_ADD: 'add',
+  RESTAURANT_TRANSACTION: 'transaction',
+  COMGATE: 'comgate',
+  CSOB: 'csob',
+  ID_TRANSACTION: ':idTransaction',
+  ID_RESTAURANT: ':idRestaurant',
+  PASS_RENEW_TOKEN: ':token',
+};
+
+module.exports = paths;

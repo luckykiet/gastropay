@@ -31,8 +31,11 @@ const ProxyRouter = require('./routes/ProxyRouter');
 const PosRouter = require('./routes/PosRouter');
 
 const TransactionController = require('./controllers/TransactionController');
-setInterval(TransactionController.runAutoCheckPayment, 20000);
-setInterval(TransactionController.runAutoSendToPos, 20000);
+// Only run auto check/send in non-test environment
+if (process.env.NODE_ENV !== 'test') {
+    setInterval(TransactionController.runAutoCheckPayment, 20000);
+    setInterval(TransactionController.runAutoSendToPos, 20000);
+}
 // Inits
 const app = express();
 app.use(helmet());

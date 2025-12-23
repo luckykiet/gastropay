@@ -1,0 +1,169 @@
+{
+  "common": {
+    "loading": "Načítání...",
+    "error": "Chyba",
+    "retry": "Zkusit znovu",
+    "back": "Zpět",
+    "close": "Zavřít",
+    "save": "Uložit",
+    "cancel": "Zrušit",
+    "confirm": "Potvrdit",
+    "search": "Hledat",
+    "language": "Jazyk",
+    "restaurants": "Restaurace"
+  },
+  "landing": {
+    "title": "GastroPay",
+    "subtitle": "Objednejte jídlo přímo z mobilu",
+    "description": "Naskenujte QR kód a objednejte si jídlo pohodlně z vašeho stolu",
+    "startOrdering": "Začněte objednávat!"
+  },
+  "menu": {
+    "title": "Menu",
+    "categories": "Kategorie",
+    "allItems": "Všechny položky",
+    "noItems": "Žádné položky",
+    "addToCart": "Přidat do košíku",
+    "selectModifiers": "Vyberte varianty",
+    "required": "Povinné",
+    "optional": "Volitelné",
+    "note": "Poznámka k objednávce",
+    "notePlaceholder": "Např. bez cibule..."
+  },
+  "cart": {
+    "title": "Košík",
+    "empty": "Košík je prázdný",
+    "total": "Celkem",
+    "checkout": "K pokladně",
+    "continueShopping": "Pokračovat v nákupu",
+    "remove": "Odebrat",
+    "quantity": "Množství"
+  },
+  "order": {
+    "title": "Objednávka",
+    "summary": "Shrnutí objednávky",
+    "table": "Stůl",
+    "selectTable": "Vyberte stůl",
+    "noTable": "Bez stolu (výdej)",
+    "pay": "Zaplatit",
+    "total": "Celkem k úhradě",
+    "processing": "Zpracovávám...",
+    "success": "Objednávka úspěšná!",
+    "successMessage": "Vaše objednávka byla zaplacena a odeslána do kuchyně.",
+    "failed": "Platba se nezdařila",
+    "failedMessage": "Zkuste to prosím znovu.",
+    "cancelled": "Platba zrušena",
+    "cancelledMessage": "Můžete to zkusit znovu.",
+    "backToMenu": "Zpět na menu",
+    "tryAgain": "Zkusit znovu",
+    "transactionId": "Číslo transakce",
+    "orderNumber": "Číslo objednávky",
+    "callingNumber": "Číslo volání"
+  },
+  "payment": {
+    "title": "Platba",
+    "email": "Email",
+    "emailPlaceholder": "vas@email.cz",
+    "emailRequired": "Email je vyžadován pro potvrzení platby",
+    "securePayment": "Budete přesměrováni na zabezpečený platební portál",
+    "payNow": "Zaplatit"
+  },
+  "table": {
+    "selectTitle": "Vyberte váš stůl",
+    "selectDescription": "Vyberte stůl, u kterého sedíte",
+    "takeaway": "S sebou",
+    "yourTable": "Váš stůl"
+  },
+  "session": {
+    "activeOrders": "Aktivní objednávky",
+    "payAll": "Zaplatit vše",
+    "unpaidTotal": "Nezaplaceno celkem",
+    "orderHistory": "Historie objednávek"
+  },
+  "errors": {
+    "loadingFailed": "Nepodařilo se načíst data",
+    "orderFailed": "Nepodařilo se vytvořit objednávku",
+    "paymentFailed": "Platba se nezdařila",
+    "networkError": "Chyba připojení",
+    "invalidRegister": "Neplatná restaurace"
+  },
+  "restaurants": {
+    "title": "Restaurace",
+    "description": "Vyberte si restauraci a objednejte jídlo",
+    "choose": "Zvolte restauraci",
+    "search": "Hledat restauraci...",
+    "sortBy": "Řadit podle",
+    "noResults": "Žádný výsledek nenašlo!",
+    "noActive": "Momentálně není žádná restaurace aktivní :("
+  },
+  "restaurant": {
+    "title": "Restaurace",
+    "error": "Výskytla se chyba",
+    "backTo": "Vraťte se na",
+    "restaurantList": "výběr restaurací",
+    "openingHours": "Otevírací doba",
+    "closed": "Zavřeno",
+    "address": "Adresa",
+    "orderFood": "Objednat jídlo",
+    "outsideHours": "Mimo otevírací doby"
+  },
+  "menu": {
+    "title": "Menu",
+    "categories": "Kategorie",
+    "allItems": "Všechny položky",
+    "noItems": "Žádné položky",
+    "addToCart": "Přidat do košíku",
+    "selectModifiers": "Vyberte varianty",
+    "required": "Povinné",
+    "optional": "Volitelné",
+    "note": "Poznámka k objednávce",
+    "notePlaceholder": "Např. bez cibule...",
+    "error": "Výskytla se chyba",
+    "noMenu": "Restaurace nevložila menu.",
+    "backToRestaurants": "výběr restaurací",
+    "added": "Přidáno",
+    "cart": "Košík"
+  },
+  "payment": {
+    "title": "Platba",
+    "email": "Email",
+    "emailPlaceholder": "Email pro zasílání účtenky",
+    "emailRequired": "Email je vyžadován pro potvrzení platby",
+    "securePayment": "Budete přesměrováni na zabezpečený platební portál",
+    "payNow": "Zaplatit",
+    "emptyCart": "Nemáte co platit",
+    "backToRestaurants": "Vraťte se na výběr restaurací",
+    "backToMenu": "Zpět na menu",
+    "yourOrder": "Vaše objednávka",
+    "tips": "Spropitné",
+    "noTip": "Bez spropitného",
+    "total": "Celkem",
+    "invalidEmail": "Nesprávný email formát",
+    "selectTable": "Vyberte si stůl",
+    "table": "Stůl",
+    "paymentMethod": "Zvolte si způsob platby",
+    "noPaymentMethods": "Obchodník nemá nastavenou platební metodu",
+    "testMode": "Testovací režim",
+    "paymentError": "Platba se nezdařila"
+  },
+  "transaction": {
+    "title": "Transakce",
+    "error": "Transakce nenalezena",
+    "backToRestaurants": "Zpět na výběr restaurací",
+    "transactionId": "Číslo transakce",
+    "orderDetails": "Detail objednávky",
+    "restaurant": "Restaurace",
+    "table": "Stůl",
+    "paymentMethod": "Způsob platby",
+    "tips": "Spropitné",
+    "total": "Celkem",
+    "status": {
+      "pending": "Čeká na platbu",
+      "calling": "Odesláno do kuchyně",
+      "processing": "Připravuje se",
+      "completed": "Dokončeno",
+      "cancelled": "Zrušeno",
+      "refunded": "Vráceno"
+    }
+  }
+}

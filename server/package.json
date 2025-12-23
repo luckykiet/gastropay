@@ -25,9 +25,15 @@
   },
   "scripts": {
     "start": "node index.js",
-    "start-local": "nodemon index.js"
+    "start-local": "nodemon index.js",
+    "test": "NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit",
+    "test:coverage": "NODE_ENV=test jest --runInBand --detectOpenHandles --forceExit --coverage"
   },
   "devDependencies": {
-    "nodemon": "^2.0.21"
+    "@types/jest": "^29.5.0",
+    "jest": "^29.7.0",
+    "mongodb-memory-server": "^10.0.0",
+    "nodemon": "^2.0.21",
+    "supertest": "^7.1.4"
   }
 }
