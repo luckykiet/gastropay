@@ -1,5 +1,5 @@
 const express = require('express');
-const RestaurantController = require('../controllers/RestaurantController');
+const RestaurantController = require('../controllers/restaurant');
 const RESTAURANT = require('../config/api').RESTAURANT;
 const router = express.Router();
 

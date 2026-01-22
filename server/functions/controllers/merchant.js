@@ -1,7 +1,7 @@
 const { isObjectIdOrHexString } = require("mongoose");
-const MerchantModel = require("../models/MerchantModel");
-const RestaurantModel = require("../models/RestaurantModel");
-const TransactionModel = require("../models/TransactionModel");
+const MerchantModel = require("../models/merchant");
+const RestaurantModel = require("../models/restaurant");
+const TransactionModel = require("../models/transaction");
 const ObjectId = require("mongoose").Types.ObjectId;
 const bcrypt = require('bcryptjs');
 const moment = require('moment');

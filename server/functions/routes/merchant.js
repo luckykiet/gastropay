@@ -1,11 +1,11 @@
 const express = require('express');
-const MerchantController = require('../controllers/MerchantController');
+const MerchantController = require('../controllers/merchant');
 const MERCHANT = require('../config/api').MERCHANT;
 const RESTAURANT = require('../config/api').RESTAURANT;
 const TRANSACTION = require('../config/api').TRANSACTION;
 const CHANGE_PASSWORD = require('../config/api').CHANGE_PASSWORD;
 const router = express.Router();
-const authMiddleware = require('./AuthMiddlewares');
+const authMiddleware = require('./auth-middlewares');
 
 router.post('/' + MERCHANT + '/' + RESTAURANT, authMiddleware.authMiddleware, MerchantController.createRestaurant, authMiddleware.validationHandlerMiddleware);
 
