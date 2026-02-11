@@ -28,7 +28,18 @@ yarn-error.log*
 .env
 
 # Next.js consumer app
-app/.next
-app/node_modules
-app/.env*.local
-app/certs/
+frontend/.next
+frontend/node_modules
+frontend/.env*.local
+frontend/certs/
+
+.claude/
+plans/
+# yarn v2
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
